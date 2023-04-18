@@ -75,7 +75,7 @@ export const LoginScreen = () => {
                                 // onClick={handleGoogleLogin}
                             >
                                 <div className='d-flex align-items-center'>
-                                    <img className="google-icon bg-white h-auto rounded p-1" height={40} src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="google button" />
+                                    <img className="google-icon bg-white rounded p-1" height='40' src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="google button" />
                                     <span className='mb-n1 flex-fill fw-bold text-center align-middle text-white'>Ingresar con GOOGLE</span>
                                 </div>
                             </Card>

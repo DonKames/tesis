@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { LoginScreen } from '../auth/components/LoginScreen';
+import { RegisterScreen } from '../auth/components/RegisterScreen';
 
 
 export const AuthRouter = () => {
@@ -8,7 +9,7 @@ export const AuthRouter = () => {
             <div className='auth__box-container'>
                 <Routes>
                     <Route path='login' element={<LoginScreen />} />
-                    {/* <Route path='register' element={<RegisterScreen />} /> */}
+                    <Route path='register' element={<RegisterScreen />} />
                     {/* <Route path='*' element={<Navigate to='login' />} /> */}
                 </Routes>
             </div>
