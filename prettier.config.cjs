@@ -4,5 +4,11 @@ module.exports = {
   "tabWidth": 2,
   "semi": false,
   "singleQuote": true,
-  "endOfLine": "auto"
+  "endOfLine": "auto",
+  "extends": [
+    "plugin:react/recommended",
+    "standard-with-typescript",
+    "plugin:react/jsx-runtime",
+    "prettier",
+  ],
 }
