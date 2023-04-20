@@ -1,25 +1,24 @@
 import Swal from 'sweetalert2'
-//import { types } from "../types/types";
-//import { finishLoading, startLoading } from './ui';
+// import { types } from "../types/types";
+// import { finishLoading, startLoading } from './ui';
 import {
   createUserWithEmailAndPassword,
-  getAuth,
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
-  updateProfile,
+  updateProfile
 } from 'firebase/auth'
-import { auth } from '../../../firebase/firebase-config'
-//import { notesLogout } from "./notes";
+import { auth, googleAuthProvider } from '../../../firebase/firebase-config'
+// import { notesLogout } from "./notes";
 
-//const auth = getAuth();
+// const auth = getAuth();
 
 export const startRegisterNameEmailPass = (name, email, password) => {
   return (dispatch) => {
     createUserWithEmailAndPassword(auth, email, password)
       .then(async ({ user }) => {
         await updateProfile(user, {
-          displayName: name,
+          displayName: name
         })
         dispatch(login(user.uid, user.displayName))
       })
@@ -32,12 +31,12 @@ export const startRegisterNameEmailPass = (name, email, password) => {
 
 export const startLoginEmailPassword = (email, password) => {
   return (dispatch) => {
-    dispatch(startLoading())
+    // dispatch(startLoading())
 
     signInWithEmailAndPassword(auth, email, password)
       .then(({ user }) => {
         dispatch(login(user.uid, user.displayName))
-        dispatch(finishLoading())
+        // dispatch(finishLoading())
       })
       .catch((e) => {
         switch (e.code) {
@@ -51,7 +50,7 @@ export const startLoginEmailPassword = (email, password) => {
             Swal.fire('Error', 'Error Desconocido', 'error')
             break
         }
-        dispatch(finishLoading())
+        // dispatch(finishLoading())
       })
   }
 }
@@ -69,12 +68,12 @@ export const login = (uid, displayName) => ({
   type: types.login,
   payload: {
     uid,
-    displayName,
-  },
+    displayName
+  }
 })
 
 export const logout = () => ({
-  type: types.logout,
+  type: types.logout
 })
 
 export const startLogout = () => {
