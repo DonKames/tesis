@@ -32,16 +32,16 @@ export const RegisterScreen = () => {
 
   const isFormValid = () => {
     if (name.trim().length === 0) {
-      const msgError = 'El nombre es Requerido'
+      // const msgError = 'El nombre es Requerido'
       // dispatch(setError(msgError));
       return false
     } else if (!validator.isEmail(email)) {
-      const msgError = 'Email Invalido'
+      // const msgError = 'Email Invalido'
       // dispatch(setError(msgError));
       return false
     } else if (password !== repassword || password.length < 5) {
-      const msgError =
-        'Las passwords no son iguales o tienen menos de 6 caracteres.'
+      // const msgError =
+      // 'Las passwords no son iguales o tienen menos de 6 caracteres.'
       // dispatch(setError(msgError));
       return false
     }
