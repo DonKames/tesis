@@ -9,9 +9,8 @@ import {
   updateProfile
 } from 'firebase/auth'
 import { auth, googleAuthProvider } from '../../../firebase/firebase-config'
-// import { notesLogout } from "./notes";
-
-// const auth = getAuth();
+import { types } from '../../../types/types'
+import { login } from '../authSlice'
 
 export const startRegisterNameEmailPass = (name, email, password) => {
   return (dispatch) => {
@@ -20,6 +19,7 @@ export const startRegisterNameEmailPass = (name, email, password) => {
         await updateProfile(user, {
           displayName: name
         })
+        console.log(user)
         dispatch(login(user.uid, user.displayName))
       })
       .catch((e) => {
@@ -35,13 +35,15 @@ export const startLoginEmailPassword = (email, password) => {
 
     signInWithEmailAndPassword(auth, email, password)
       .then(({ user }) => {
-        dispatch(login(user.uid, user.displayName))
+        dispatch(setLoginData(user.uid, user.displayName))
         // dispatch(finishLoading())
       })
       .catch((e) => {
+        console.log(e.code)
         switch (e.code) {
           case 'auth/user-not-found':
 
+          // eslint-disable-next-line no-fallthrough
           case 'auth/wrong-password':
             Swal.fire('ERROR', 'Usuario o Contraseña Incorrecta', 'error')
             break
@@ -59,12 +61,12 @@ export const startGoogleLogin = () => {
   return (dispatch) => {
     signInWithPopup(auth, googleAuthProvider).then(({ user }) => {
       const { displayName, uid } = user
-      dispatch(login(uid, displayName))
+      dispatch(setLoginData(uid, displayName))
     })
   }
 }
 
-export const login = (uid, displayName) => ({
+export const setLoginData = (uid, displayName) => ({
   type: types.login,
   payload: {
     uid,

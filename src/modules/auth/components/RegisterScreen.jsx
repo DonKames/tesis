@@ -1,23 +1,24 @@
+import React from 'react'
 import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import validator from 'validator'
 
-//import { removeError, setError } from '../../actions/ui';
-//import { startRegisterNameEmailPass } from '../../actions/auth';
+// import { removeError, setError } from '../../actions/ui';
+// import { startRegisterNameEmailPass } from '../../actions/auth';
 import { useForm } from '../../hooks/useForm'
 import { Card, Form, Button } from 'react-bootstrap'
-import { startRegisterNameEmailPass } from '../actions/auth';
+import { startRegisterNameEmailPass } from '../actions/auth'
 
 export const RegisterScreen = () => {
   const dispatch = useDispatch()
 
-  //const { msgError } = useSelector(state => state.ui);
+  // const { msgError } = useSelector(state => state.ui);
 
   const [formValues, handleInputChange] = useForm({
     name: 'kames',
     email: 'camilo@hotmail.com',
     password: '123456',
-    repassword: '123456',
+    repassword: '123456'
   })
 
   const { name, email, password, repassword } = formValues
@@ -32,20 +33,20 @@ export const RegisterScreen = () => {
   const isFormValid = () => {
     if (name.trim().length === 0) {
       const msgError = 'El nombre es Requerido'
-      //dispatch(setError(msgError));
+      // dispatch(setError(msgError));
       return false
     } else if (!validator.isEmail(email)) {
       const msgError = 'Email Invalido'
-      //dispatch(setError(msgError));
+      // dispatch(setError(msgError));
       return false
     } else if (password !== repassword || password.length < 5) {
       const msgError =
         'Las passwords no son iguales o tienen menos de 6 caracteres.'
-      //dispatch(setError(msgError));
+      // dispatch(setError(msgError));
       return false
     }
 
-    //dispatch(removeError());
+    // dispatch(removeError());
     return true
   }
 
