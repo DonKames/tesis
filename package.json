@@ -22,7 +22,7 @@
     "react-router-dom": "^6.10.0",
     "redux": "^4.2.1",
     "sort-by": "^0.0.2",
-    "sweetalert2": "^11.4.8",
+    "sweetalert2": "^11.7.3",
     "validator": "^13.9.0"
   },
   "devDependencies": {
