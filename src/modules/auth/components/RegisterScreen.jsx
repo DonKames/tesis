@@ -1,14 +1,13 @@
 import React from 'react';
+
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import validator from 'validator';
-
-// import { removeError, setError } from '../../actions/ui';
-// import { startRegisterNameEmailPass } from '../../actions/auth';
-import { useForm } from '../../hooks/useForm';
 import { Card, Form, Button } from 'react-bootstrap';
+
 import { startRegisterNameEmailPass } from '../actions/auth';
 import { uiRemoveError, uiSetError } from '../../ui/uiSlice';
+import { useForm } from '../../../hooks/useForm';
 
 export const RegisterScreen = () => {
     const dispatch = useDispatch();
