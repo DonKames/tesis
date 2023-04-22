@@ -6,10 +6,9 @@ import {
     updateProfile,
 } from 'firebase/auth';
 import { auth, googleAuthProvider } from '../../../firebase/firebase-config';
-import { types } from '../../../types/types';
-import { authLogin } from '../authSlice';
+import { authLogin, authLogout } from '../authSlice';
 import Swal from 'sweetalert2';
-import { uiStartLoading } from '../../ui/uiSlice';
+import { uiFinishLoading, uiStartLoading } from '../../ui/uiSlice';
 
 export const startRegisterNameEmailPass = (name, email, password) => {
     return (dispatch) => {
@@ -31,12 +30,13 @@ export const startRegisterNameEmailPass = (name, email, password) => {
 
 export const startLoginEmailPassword = (email, password) => {
     return (dispatch) => {
-        dispatch(uiStartLoading())
+        dispatch(uiStartLoading());
 
         signInWithEmailAndPassword(auth, email, password)
             .then(({ user }) => {
-                dispatch(authLogin(user.uid, user.displayName));
-                // dispatch(finishLoading())
+                const { uid, displayName } = user;
+                dispatch(authLogin({ uid, displayName }));
+                dispatch(uiFinishLoading());
             })
             .catch((e) => {
                 console.log(e.code);
@@ -56,7 +56,7 @@ export const startLoginEmailPassword = (email, password) => {
                         Swal.fire('Error', 'Error Desconocido', 'error');
                         break;
                 }
-                // dispatch(finishLoading())
+                dispatch(uiFinishLoading());
             });
     };
 };
@@ -74,13 +74,13 @@ export const startGoogleLogin = () => {
 //   login({ uid, displayName })
 // )
 
-export const logout = () => ({
-    type: types.logout,
-});
+// export const logout = () => ({
+//     type: types.logout,
+// });
 
 export const startLogout = () => {
     return async (dispatch) => {
         await signOut(auth);
-        dispatch(logout());
+        dispatch(authLogout());
     };
 };
