@@ -11,7 +11,7 @@ export const NavBar = () => {
             <Container>
                 <Navbar.Brand
                     as={Link}
-                    to='/'
+                    to='./main'
                 >
                     Inicio
                 </Navbar.Brand>
@@ -20,19 +20,19 @@ export const NavBar = () => {
                     <Nav className='mr-auto'>
                         <Nav.Link
                             as={Link}
-                            to='/tareas'
+                            to='./tasks'
                         >
                             Tareas
                         </Nav.Link>
                         <Nav.Link
                             as={Link}
-                            to='/productos'
+                            to='./products'
                         >
                             Productos
                         </Nav.Link>
                         <Nav.Link
                             as={Link}
-                            to='/informes'
+                            to='./dashboard'
                         >
                             Informes
                         </Nav.Link>

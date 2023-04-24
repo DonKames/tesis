@@ -67,7 +67,7 @@ export const MainScreen = () => {
                                         ))}
                                     </ul>
                                 )} */}
-                                <p>Las tareas creo</p>
+                                Las tareas creo
                             </Card.Text>
                             <Link
                                 to='/tasks/new'
