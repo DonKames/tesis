@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { Card, Col, Container, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
@@ -98,7 +99,7 @@ export const MainScreen = () => {
                 <Col>
                     <button
                         className='btn btn-secondary'
-                        onClick={() => history.push('/login')}
+                        onClick={() => history.push('pbl/login')}
                     >
                         Cerrar sesión
                     </button>
