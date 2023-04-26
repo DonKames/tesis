@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { AuthRouter } from './AuthRouter';
 
 export const PublicRoutes = ({ isLoggedIn }) => {
-    return isLoggedIn ? <Navigate to='/' /> : <AuthRouter />;
+    return isLoggedIn ? <Navigate to='../pvt/main' /> : <AuthRouter />;
 };
 
 PublicRoutes.propTypes = {
