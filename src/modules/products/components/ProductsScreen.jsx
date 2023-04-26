@@ -9,18 +9,40 @@ import {
     Form,
 } from 'react-bootstrap';
 import SearchProductBar from './SearchProductBar';
+// import { useDispatch } from 'react-redux';
+import { useForm } from '../../../hooks/useForm';
 
 const ProductsScreen = () => {
+    // const dispatch = useDispatch();
+
+    const [formValues, handleInputChange, reset] = useForm({
+        productName: 'camilo@hotmail.com',
+        productDescription: 'La descripción del producto',
+        productPrice: '123456',
+        productQty: '123456',
+        productSku: '123456',
+        productLote: '123456',
+        productOrder: '123456',
+    });
+
+    const {
+        productName,
+        productDescription,
+        productPrice,
+        productQty,
+        productSku,
+        productLote,
+        productOrder,
+    } = formValues;
     const [showModal, setShowModal] = useState(false);
-    const [productName, setProductName] = useState('');
-    const [productDescription, setProductDescription] = useState('');
-    const [productPrice, setProductPrice] = useState(0);
-    const [productStock, setProductStock] = useState(0);
 
     const handleShowModal = () => setShowModal(true);
     const handleCloseModal = () => setShowModal(false);
     const handleAddProduct = () => {
         // code to add new product to database
+
+        console.log(formValues);
+        reset();
         handleCloseModal();
     };
 
@@ -71,46 +93,74 @@ const ProductsScreen = () => {
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
-                        <Form.Group controlId='productName'>
+                        <Form.Group>
                             <Form.Label>Nombre del producto</Form.Label>
                             <Form.Control
                                 type='text'
                                 placeholder='Ingrese el nombre del producto'
+                                name='productName'
                                 value={productName}
-                                onChange={(e) => setProductName(e.target.value)}
+                                onChange={handleInputChange}
                             />
                         </Form.Group>
-                        <Form.Group controlId='productDescription'>
+                        <Form.Group>
                             <Form.Label>Descripción del producto</Form.Label>
                             <Form.Control
                                 type='text'
                                 placeholder='Ingrese la descripción del producto'
+                                name='productDescription'
                                 value={productDescription}
-                                onChange={(e) =>
-                                    setProductDescription(e.target.value)
-                                }
+                                onChange={handleInputChange}
                             />
                         </Form.Group>
-                        <Form.Group controlId='productPrice'>
+                        <Form.Group>
                             <Form.Label>Precio del producto</Form.Label>
                             <Form.Control
                                 type='number'
                                 placeholder='Ingrese el precio del producto'
+                                name='productPrice'
                                 value={productPrice}
-                                onChange={(e) =>
-                                    setProductPrice(e.target.value)
-                                }
+                                onChange={handleInputChange}
                             />
                         </Form.Group>
-                        <Form.Group controlId='productStock'>
+                        <Form.Group>
                             <Form.Label>Stock del producto</Form.Label>
                             <Form.Control
                                 type='number'
                                 placeholder='Ingrese el stock del producto'
-                                value={productStock}
-                                onChange={(e) =>
-                                    setProductStock(e.target.value)
-                                }
+                                name='productQty'
+                                value={productQty}
+                                onChange={handleInputChange}
+                            />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>SKU del producto</Form.Label>
+                            <Form.Control
+                                type='text'
+                                placeholder='Ingrese el SKU del producto'
+                                name='productSku'
+                                value={productSku}
+                                onChange={handleInputChange}
+                            />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>Lote del producto</Form.Label>
+                            <Form.Control
+                                type='text'
+                                placeholder='Ingrese el lote del producto'
+                                name='productLote'
+                                value={productLote}
+                                onChange={handleInputChange}
+                            />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>Orden del producto</Form.Label>
+                            <Form.Control
+                                type='text'
+                                placeholder='Ingrese el orden del producto'
+                                name='productOrder'
+                                value={productOrder}
+                                onChange={handleInputChange}
                             />
                         </Form.Group>
                     </Form>

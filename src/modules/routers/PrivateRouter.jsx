@@ -23,7 +23,7 @@ export const PrivateRouter = () => {
                     element={<TasksScreen />}
                 />
                 <Route
-                    path='products'
+                    path='products/*'
                     element={<ProductsRouter />}
                 />
                 <Route
