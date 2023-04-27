@@ -7,14 +7,13 @@ export const ProductsRouter = () => {
     return (
         <Routes>
             <Route
-                path='products'
+                path='/'
                 element={<ProductsScreen />}
-            >
-                <Route
-                    path='add'
-                    element={<AddProductsScreen />}
-                />
-            </Route>
+            />
+            <Route
+                path='add'
+                element={<AddProductsScreen />}
+            />
         </Routes>
     );
 };
