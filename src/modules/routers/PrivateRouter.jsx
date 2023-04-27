@@ -4,8 +4,8 @@ import { MainScreen } from '../main/components/MainScreen';
 import { Layout } from '../ui/Layout';
 import { TasksScreen } from '../task/TasksScreen';
 import { DashboardScreen } from '../dashboard/components/DashboardScreen';
-import ProductsScreen from '../products/components/ProductsScreen';
 import { ProductsRouter } from '../products/routers/ProductsRouter';
+import MerchantApiTest from '../../tests/MerchantApiTest';
 
 export const PrivateRouter = () => {
     return (
@@ -29,6 +29,10 @@ export const PrivateRouter = () => {
                 <Route
                     path='dashboard'
                     element={<DashboardScreen />}
+                />
+                <Route
+                    path='test'
+                    element={<MerchantApiTest />}
                 />
             </Route>
         </Routes>
