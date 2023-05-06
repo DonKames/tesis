@@ -6,6 +6,7 @@ import { TasksScreen } from '../task/TasksScreen';
 import { DashboardScreen } from '../dashboard/components/DashboardScreen';
 import { ProductsRouter } from '../products/routers/ProductsRouter';
 import MerchantApiTest from '../../tests/MerchantApiTest';
+import { LocationsScreen } from '../locations/components/LocationsScreen';
 
 export const PrivateRouter = () => {
     return (
@@ -29,6 +30,10 @@ export const PrivateRouter = () => {
                 <Route
                     path='dashboard'
                     element={<DashboardScreen />}
+                />
+                <Route
+                    path='locations'
+                    element={<LocationsScreen />}
                 />
                 <Route
                     path='test'

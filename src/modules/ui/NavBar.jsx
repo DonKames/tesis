@@ -2,10 +2,19 @@ import React from 'react';
 import { Navbar, Nav, Container, NavDropdown, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { startLogout } from '../auth/actions/auth';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 export const NavBar = () => {
     const dispatch = useDispatch();
+
+    const { displayName } = useSelector((state) => state.auth);
+
+    const formattedDisplayName = displayName
+        ? displayName.charAt(0).toUpperCase() +
+          displayName.slice(1).toLowerCase()
+        : null;
+
+    console.log(displayName);
 
     const handleLogout = () => {
         console.log('Logout');
@@ -45,10 +54,16 @@ export const NavBar = () => {
                         >
                             Informes
                         </Nav.Link>
+                        <Nav.Link
+                            as={Link}
+                            to='./locations'
+                        >
+                            Lugares
+                        </Nav.Link>
                     </Nav>
                     <NavDropdown
                         className='ms-auto'
-                        title='Usuario'
+                        title={formattedDisplayName || 'Usuario'}
                         id='basic-nav-dropdown'
                     >
                         <NavDropdown.Item href='#profile'>
