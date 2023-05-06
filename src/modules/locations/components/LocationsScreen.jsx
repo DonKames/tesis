@@ -4,7 +4,7 @@ import { Button, Col, Container, Row, Table } from 'react-bootstrap';
 export const LocationsScreen = () => {
     return (
         <Container fluid>
-            <Row>
+            <Row className='align-items-center'>
                 <Col
                     xs='12'
                     md='6'
@@ -13,8 +13,13 @@ export const LocationsScreen = () => {
                         <Col>
                             <h1>Sucursales</h1>
                         </Col>
-                        <Col>
-                            <Button>Agregar Sucursal</Button>
+                        <Col className='text-center'>
+                            <Button
+                                type='button'
+                                onClick={() => {}}
+                            >
+                                Agregar Sucursal
+                            </Button>
                         </Col>
                     </Row>
                     <Table>
