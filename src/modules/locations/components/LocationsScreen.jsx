@@ -1,7 +1,20 @@
-import React from 'react';
-import { Button, Col, Container, Row, Table } from 'react-bootstrap';
+import React, { useState } from 'react';
+import {
+    Button,
+    Col,
+    Container,
+    Form,
+    Modal,
+    Row,
+    Table,
+} from 'react-bootstrap';
 
 export const LocationsScreen = () => {
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
     return (
         <Container fluid>
             <Row className='align-items-center'>
@@ -16,7 +29,7 @@ export const LocationsScreen = () => {
                         <Col className='text-center'>
                             <Button
                                 type='button'
-                                onClick={() => {}}
+                                onClick={handleShow}
                             >
                                 Agregar Sucursal
                             </Button>
@@ -54,6 +67,80 @@ export const LocationsScreen = () => {
                     </Table>
                 </Col>
             </Row>
+            <Modal
+                show={show}
+                onHide={handleClose}
+            >
+                <Modal.Header>Agregar Sucursal</Modal.Header>
+                <Modal.Body>
+                    <Form>
+                        <Row>
+                            <Col>
+                                <Form.Group>
+                                    <Form.Label>Nombre Sucursal</Form.Label>
+                                    <Form.Control
+                                        type='text'
+                                        placeholder='Ingrese el nombre de la Sucursal'
+                                        name='branch'
+                                        // value={productName}
+                                        // onChange={handleInputChange}
+                                    />
+                                </Form.Group>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                                <Form.Group>
+                                    <Form.Label>País</Form.Label>
+                                    <Form.Control
+                                        type='text'
+                                        placeholder='Ingrese el nombre del producto'
+                                        name='productName'
+                                        // value={productName}
+                                        // onChange={handleInputChange}
+                                    />
+                                </Form.Group>
+                            </Col>
+                            <Col>
+                                <Form.Group>
+                                    <Form.Label>Región</Form.Label>
+                                    <Form.Control
+                                        type='text'
+                                        placeholder='Ingrese el nombre del producto'
+                                        name='productName'
+                                        // value={productName}
+                                        // onChange={handleInputChange}
+                                    />
+                                </Form.Group>
+                            </Col>
+                        </Row>
+                        <Form.Group>
+                            <Form.Label>Dirección</Form.Label>
+                            <Form.Control
+                                type='text'
+                                placeholder='Ingrese el nombre del producto'
+                                name='productName'
+                                // value={productName}
+                                // onChange={handleInputChange}
+                            />
+                        </Form.Group>
+                    </Form>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button
+                        variant='secondary'
+                        onClick={handleClose}
+                    >
+                        Close
+                    </Button>
+                    <Button
+                        variant='primary'
+                        onClick={handleClose}
+                    >
+                        Save Changes
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </Container>
     );
 };

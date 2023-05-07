@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Card, Col, Container, Form, Row } from 'react-bootstrap';
 import { useForm } from '../../../hooks/useForm';
 
@@ -22,8 +22,6 @@ export const AddProductsScreen = () => {
         productLote,
         productOrder,
     } = formValues;
-
-    const [showModal, setShowModal] = useState(false);
 
     return (
         <Container>
