@@ -8,12 +8,16 @@ import {
     Row,
     Table,
 } from 'react-bootstrap';
+import { getCountries } from '../../../shared/APIs/apiCountries';
 
 export const LocationsScreen = () => {
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+    const countries = getCountries();
+    console.log(countries);
 
     return (
         <Container fluid>
@@ -85,6 +89,7 @@ export const LocationsScreen = () => {
                                         // value={productName}
                                         // onChange={handleInputChange}
                                     />
+                                    <datalist></datalist>
                                 </Form.Group>
                             </Col>
                         </Row>
