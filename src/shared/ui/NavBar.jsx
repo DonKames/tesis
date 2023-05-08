@@ -1,8 +1,8 @@
 import React from 'react';
 import { Navbar, Nav, Container, NavDropdown, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { startLogout } from '../auth/actions/auth';
 import { useDispatch, useSelector } from 'react-redux';
+import { startLogout } from '../../modules/auth/actions/auth';
 
 export const NavBar = () => {
     const dispatch = useDispatch();

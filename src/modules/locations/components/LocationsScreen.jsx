@@ -1,23 +1,48 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Button,
     Col,
     Container,
+    Dropdown,
     Form,
     Modal,
     Row,
     Table,
 } from 'react-bootstrap';
 import { getCountries } from '../../../shared/APIs/apiCountries';
+import { useDispatch, useSelector } from 'react-redux';
+import { uiSetCountries } from '../../../shared/ui/uiSlice';
 
 export const LocationsScreen = () => {
-    const [show, setShow] = useState(false);
+    const dispatch = useDispatch();
 
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const [showAddBranchModal, setShowAddBranchModal] = useState(false);
+    const [showAddWarehouseModal, setShowAddWarehouseModal] = useState(false);
 
-    const countries = getCountries();
+    const uiState = useSelector((state) => state.ui);
+
+    const handleClose = () => setShowAddBranchModal(false);
+    const handleShow = () => setShowAddBranchModal(true);
+
+    let countries = [];
+
+    useEffect(() => {
+        const fetchData = async () => {
+            countries = await getCountries();
+        };
+        return fetchData();
+    }, []);
+
     console.log(countries);
+
+    const setCountries = () => {
+        const countries = getCountries();
+        dispatch(uiSetCountries(countries));
+    };
+
+    setCountries();
+
+    const handleOptionClick = () => {};
 
     return (
         <Container fluid>
@@ -72,7 +97,7 @@ export const LocationsScreen = () => {
                 </Col>
             </Row>
             <Modal
-                show={show}
+                show={showAddBranchModal}
                 onHide={handleClose}
             >
                 <Modal.Header>Agregar Sucursal</Modal.Header>
@@ -89,22 +114,41 @@ export const LocationsScreen = () => {
                                         // value={productName}
                                         // onChange={handleInputChange}
                                     />
-                                    <datalist></datalist>
                                 </Form.Group>
                             </Col>
                         </Row>
                         <Row>
                             <Col>
-                                <Form.Group>
-                                    <Form.Label>País</Form.Label>
-                                    <Form.Control
-                                        type='text'
-                                        placeholder='Ingrese el nombre del producto'
-                                        name='productName'
-                                        // value={productName}
-                                        // onChange={handleInputChange}
-                                    />
-                                </Form.Group>
+                                <Row>
+                                    <Form.Group>
+                                        <Form.Label>País</Form.Label>
+                                        <Form.Control
+                                            type='text'
+                                            placeholder='Ingrese el nombre del producto'
+                                            name='productName'
+                                            // value={productName}
+                                            // onChange={handleInputChange}
+                                        />
+                                    </Form.Group>
+                                </Row>
+                                <Row>
+                                    <Col>
+                                        <Dropdown.Menu show>
+                                            {uiState.countries.map(
+                                                (country, index) => (
+                                                    <Dropdown.Item
+                                                        key={index}
+                                                        onClick={
+                                                            handleOptionClick
+                                                        }
+                                                    >
+                                                        {country.name}
+                                                    </Dropdown.Item>
+                                                ),
+                                            )}
+                                        </Dropdown.Menu>
+                                    </Col>
+                                </Row>
                             </Col>
                             <Col>
                                 <Form.Group>

@@ -8,7 +8,7 @@ import {
 import { auth, googleAuthProvider } from '../../../firebase/firebase-config';
 import { authLogin, authLogout } from '../authSlice';
 import Swal from 'sweetalert2';
-import { uiFinishLoading, uiStartLoading } from '../../ui/uiSlice';
+import { uiFinishLoading, uiStartLoading } from '../../../shared/ui/uiSlice';
 
 export const startRegisterNameEmailPass = (name, email, password) => {
     return (dispatch) => {

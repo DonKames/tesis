@@ -6,8 +6,8 @@ import validator from 'validator';
 import { Card, Form, Button } from 'react-bootstrap';
 
 import { startRegisterNameEmailPass } from '../actions/auth';
-import { uiRemoveError, uiSetError } from '../../ui/uiSlice';
 import { useForm } from '../../../hooks/useForm';
+import { uiRemoveError, uiSetError } from '../../../shared/ui/uiSlice';
 
 export const RegisterScreen = () => {
     const dispatch = useDispatch();

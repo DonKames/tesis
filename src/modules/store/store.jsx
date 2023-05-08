@@ -2,7 +2,7 @@ import thunk from 'redux-thunk';
 
 import { configureStore } from '@reduxjs/toolkit';
 import { authSlice } from '../auth/authSlice';
-import { uiSlice } from '../ui/uiSlice';
+import { uiSlice } from '../../shared/ui/uiSlice';
 
 const middleware = [thunk];
 

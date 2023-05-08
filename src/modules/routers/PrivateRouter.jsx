@@ -1,11 +1,11 @@
 import React from 'react';
 import { Route, Routes } from 'react-router';
 import { MainScreen } from '../main/components/MainScreen';
-import { Layout } from '../ui/Layout';
 import { TasksScreen } from '../task/TasksScreen';
 import { DashboardScreen } from '../dashboard/components/DashboardScreen';
 import { ProductsRouter } from '../products/routers/ProductsRouter';
 import MerchantApiTest from '../../tests/MerchantApiTest';
+import { Layout } from '../../shared/ui/Layout';
 import { LocationsScreen } from '../locations/components/LocationsScreen';
 
 export const PrivateRouter = () => {
