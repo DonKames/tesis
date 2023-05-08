@@ -24,23 +24,13 @@ export const LocationsScreen = () => {
     const handleClose = () => setShowAddBranchModal(false);
     const handleShow = () => setShowAddBranchModal(true);
 
-    let countries = [];
-
     useEffect(() => {
         const fetchData = async () => {
-            countries = await getCountries();
+            const countries = await getCountries();
+            dispatch(uiSetCountries(countries));
         };
-        return fetchData();
+        fetchData();
     }, []);
-
-    console.log(countries);
-
-    const setCountries = () => {
-        const countries = getCountries();
-        dispatch(uiSetCountries(countries));
-    };
-
-    setCountries();
 
     const handleOptionClick = () => {};
 
