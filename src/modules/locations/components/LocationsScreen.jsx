@@ -12,6 +12,7 @@ import {
 import { getCountries } from '../../../shared/APIs/apiCountries';
 import { useDispatch, useSelector } from 'react-redux';
 import { uiSetCountries } from '../../../shared/ui/uiSlice';
+import { useForm } from '../../../hooks/useForm';
 
 export const LocationsScreen = () => {
     const dispatch = useDispatch();
@@ -24,6 +25,15 @@ export const LocationsScreen = () => {
     const handleClose = () => setShowAddBranchModal(false);
     const handleShow = () => setShowAddBranchModal(true);
 
+    const { values, handleInputChange, reset } = useForm({
+        branch: '',
+        country: '',
+        region: '',
+        address: '',
+    });
+
+    const { branch, country, region, address } = values;
+
     useEffect(() => {
         const fetchData = async () => {
             const countries = await getCountries();
@@ -31,6 +41,16 @@ export const LocationsScreen = () => {
         };
         fetchData();
     }, []);
+
+    const handleInputCountryChange = (e) => {
+        const value = e.target.value;
+        setInputValue(value);
+
+        const filtered = options.filter((option) =>
+            option.toLowerCase().includes(value.toLowerCase()),
+        );
+        setFilteredOptions(filtered);
+    };
 
     const handleOptionClick = () => {};
 
@@ -117,7 +137,7 @@ export const LocationsScreen = () => {
                                             placeholder='Ingrese el nombre del producto'
                                             name='productName'
                                             // value={productName}
-                                            // onChange={handleInputChange}
+                                            onChange={handleInputCountryChange}
                                         />
                                     </Form.Group>
                                 </Row>
