@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Select from 'react-select';
 import {
     Button,
     Col,
@@ -19,8 +20,13 @@ export const LocationsScreen = () => {
 
     const [showAddBranchModal, setShowAddBranchModal] = useState(false);
     const [showAddWarehouseModal, setShowAddWarehouseModal] = useState(false);
+    const [showDropdown, setShowDropdown] = useState(false);
 
     const uiState = useSelector((state) => state.ui);
+    const countryOptions = uiState.countries.map((country) => ({
+        value: country.name,
+        label: country.name,
+    }));
 
     const handleClose = () => setShowAddBranchModal(false);
     const handleShow = () => setShowAddBranchModal(true);
@@ -53,6 +59,13 @@ export const LocationsScreen = () => {
     };
 
     const handleOptionClick = () => {};
+    const handleOnFocusCountry = () => {
+        setShowDropdown(true);
+    };
+    const handleOnBlurCountry = () => {
+        console.log(document);
+        //setShowDropdown(false);
+    };
 
     return (
         <Container fluid>
@@ -132,18 +145,27 @@ export const LocationsScreen = () => {
                                 <Row>
                                     <Form.Group>
                                         <Form.Label>País</Form.Label>
-                                        <Form.Control
+                                        <Select
+                                            options={countryOptions}
+                                            isSearchable
+                                        />
+                                        {/* <Form.Control
                                             type='text'
-                                            placeholder='Ingrese el nombre del producto'
+                                            placeholder='Ingrese el nombre del país'
                                             name='productName'
                                             // value={productName}
                                             onChange={handleInputCountryChange}
-                                        />
+                                            onFocus={handleOnFocusCountry}
+                                            onBlur={handleOnBlurCountry}
+                                        /> */}
                                     </Form.Group>
                                 </Row>
-                                <Row>
+                                {/* <Row>
                                     <Col>
-                                        <Dropdown.Menu show>
+                                        <Dropdown.Menu
+                                            show={showDropdown}
+                                            className='dropdown-menu-scroll'
+                                        >
                                             {uiState.countries.map(
                                                 (country, index) => (
                                                     <Dropdown.Item
@@ -158,7 +180,7 @@ export const LocationsScreen = () => {
                                             )}
                                         </Dropdown.Menu>
                                     </Col>
-                                </Row>
+                                </Row> */}
                             </Col>
                             <Col>
                                 <Form.Group>
