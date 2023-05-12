@@ -14,60 +14,50 @@ import { getCountries } from '../../../shared/APIs/apiCountries';
 import { useDispatch, useSelector } from 'react-redux';
 import { uiSetCountries } from '../../../shared/ui/uiSlice';
 import { useForm } from '../../../hooks/useForm';
+import { getRegions } from '../../../shared/APIs/apiRegions';
+import { locationsSetRegions } from '../slice/locationsSlice';
 
 export const LocationsScreen = () => {
     const dispatch = useDispatch();
 
     const [showAddBranchModal, setShowAddBranchModal] = useState(false);
     const [showAddWarehouseModal, setShowAddWarehouseModal] = useState(false);
-    const [showDropdown, setShowDropdown] = useState(false);
 
     const uiState = useSelector((state) => state.ui);
+    const locationsState = useSelector((state) => state.locations);
+
     const countryOptions = uiState.countries.map((country) => ({
-        value: country.name,
-        label: country.country_id,
+        value: country.country_id,
+        label: country.name,
+    }));
+
+    const regionOptions = locationsState.regions.map((region) => ({
+        value: region.region_id,
+        label: region.name,
     }));
 
     const handleClose = () => setShowAddBranchModal(false);
     const handleShow = () => setShowAddBranchModal(true);
 
     const { values, handleInputChange, reset } = useForm({
-        branch: '',
+        branchName: '',
         country: '',
         region: '',
         address: '',
     });
 
-    const { branch, country, region, address } = values;
+    const { branch: branchName, country, region, address } = values;
 
     useEffect(() => {
         const fetchData = async () => {
             const countries = await getCountries();
             dispatch(uiSetCountries(countries));
+
+            const regions = await getRegions();
+            dispatch(locationsSetRegions(regions));
         };
         fetchData();
     }, []);
-
-    const handleInputCountryChange = (e) => {
-        const value = e.target.value;
-        setInputValue(value);
-
-        const filtered = options.filter((option) =>
-            option.toLowerCase().includes(value.toLowerCase()),
-        );
-        setFilteredOptions(filtered);
-    };
-
-    const handleOptionClick = (e) => {
-        console.log('cambie', e);
-    };
-    const handleOnFocusCountry = () => {
-        setShowDropdown(true);
-    };
-    const handleOnBlurCountry = () => {
-        console.log(document);
-        // setShowDropdown(false);
-    };
 
     return (
         <Container fluid>
@@ -135,85 +125,34 @@ export const LocationsScreen = () => {
                                     <Form.Control
                                         type='text'
                                         placeholder='Ingrese el nombre de la Sucursal'
-                                        name='branch'
-                                        // value={productName}
-                                        // onChange={handleInputChange}
+                                        name='name'
+                                        value={branchName}
+                                        onChange={handleInputChange}
                                     />
                                 </Form.Group>
                             </Col>
                         </Row>
                         <Row>
                             <Col>
-                                <Row>
-                                    <Form.Group>
-                                        <Form.Label>País</Form.Label>
-                                        {/* <Form.Select
-                                            onChange={handleOptionClick}
-                                            name='country'
-                                            value={country}
-                                        >
-                                            <option>Países</option>
-                                            {uiState.countries.map(
-                                                (country, index) => (
-                                                    <option
-                                                        key={index}
-                                                        value={country.name}
-                                                        onClick={
-                                                            handleOptionClick
-                                                        }
-                                                    >
-                                                        {country.name}
-                                                    </option>
-                                                ),
-                                            )}
-                                            <option value='1'>One</option>
-                                            <option value='2'>Two</option>
-                                            <option value='3'>Three</option>
-                                        </Form.Select> */}
-                                        {/* ESTE FUNCA */}
-                                        <Select
-                                            name='country'
-                                            options={countryOptions}
-                                            onChange={handleInputChange}
-                                            value={country}
-                                            isSearchable
-                                        />
-                                        {/* <Form.Control
-                                            type='text'
-                                            placeholder='Ingrese el nombre del país'
-                                            name='productName'
-                                            // value={productName}
-                                            onChange={handleInputCountryChange}
-                                            onFocus={handleOnFocusCountry}
-                                            onBlur={handleOnBlurCountry}
-                                        /> */}
-                                    </Form.Group>
-                                </Row>
-                                {/* <Row>
-                                    <Col>
-                                        <Dropdown.Menu
-                                            show={showDropdown}
-                                            className='dropdown-menu-scroll'
-                                        >
-                                            {uiState.countries.map(
-                                                (country, index) => (
-                                                    <Dropdown.Item
-                                                        key={index}
-                                                        onClick={
-                                                            handleOptionClick
-                                                        }
-                                                    >
-                                                        {country.name}
-                                                    </Dropdown.Item>
-                                                ),
-                                            )}
-                                        </Dropdown.Menu>
-                                    </Col>
-                                </Row> */}
+                                <Form.Group>
+                                    <Form.Label>País</Form.Label>
+                                    <Select
+                                        name='country'
+                                        options={countryOptions}
+                                        onChange={handleInputChange}
+                                        value={country}
+                                        isSearchable
+                                        placeholder='Seleccione País'
+                                    />
+                                </Form.Group>
                             </Col>
                             <Col>
                                 <Form.Group>
                                     <Form.Label>Región</Form.Label>
+                                    <Select
+                                        name='region'
+                                        options={regionOptions}
+                                    />
                                     <Form.Control
                                         type='text'
                                         placeholder='Ingrese el nombre del producto'
