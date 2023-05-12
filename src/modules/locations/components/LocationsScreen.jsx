@@ -25,7 +25,7 @@ export const LocationsScreen = () => {
     const uiState = useSelector((state) => state.ui);
     const countryOptions = uiState.countries.map((country) => ({
         value: country.name,
-        label: country.name,
+        label: country.country_id,
     }));
 
     const handleClose = () => setShowAddBranchModal(false);
@@ -58,13 +58,15 @@ export const LocationsScreen = () => {
         setFilteredOptions(filtered);
     };
 
-    const handleOptionClick = () => {};
+    const handleOptionClick = (e) => {
+        console.log('cambie', e);
+    };
     const handleOnFocusCountry = () => {
         setShowDropdown(true);
     };
     const handleOnBlurCountry = () => {
         console.log(document);
-        //setShowDropdown(false);
+        // setShowDropdown(false);
     };
 
     return (
@@ -145,8 +147,35 @@ export const LocationsScreen = () => {
                                 <Row>
                                     <Form.Group>
                                         <Form.Label>País</Form.Label>
+                                        {/* <Form.Select
+                                            onChange={handleOptionClick}
+                                            name='country'
+                                            value={country}
+                                        >
+                                            <option>Países</option>
+                                            {uiState.countries.map(
+                                                (country, index) => (
+                                                    <option
+                                                        key={index}
+                                                        value={country.name}
+                                                        onClick={
+                                                            handleOptionClick
+                                                        }
+                                                    >
+                                                        {country.name}
+                                                    </option>
+                                                ),
+                                            )}
+                                            <option value='1'>One</option>
+                                            <option value='2'>Two</option>
+                                            <option value='3'>Three</option>
+                                        </Form.Select> */}
+                                        {/* ESTE FUNCA */}
                                         <Select
+                                            name='country'
                                             options={countryOptions}
+                                            onChange={handleInputChange}
+                                            value={country}
                                             isSearchable
                                         />
                                         {/* <Form.Control
