@@ -4,7 +4,6 @@ import {
     Button,
     Col,
     Container,
-    Dropdown,
     Form,
     Modal,
     Row,
@@ -36,17 +35,26 @@ export const LocationsScreen = () => {
         label: region.name,
     }));
 
-    const handleClose = () => setShowAddBranchModal(false);
-    const handleShow = () => setShowAddBranchModal(true);
-
-    const { values, handleInputChange, reset } = useForm({
+    const { formValues, handleInputChange, reset } = useForm({
         branchName: '',
         country: '',
         region: '',
         address: '',
     });
 
-    const { branch: branchName, country, region, address } = values;
+    const { branchName, country, region, address } = formValues;
+
+    const filteredRegions = regionOptions.filter(
+        (region) => region.fk_country_id === country,
+    );
+
+    const handleClose = () => setShowAddBranchModal(false);
+    const handleShow = () => setShowAddBranchModal(true);
+
+    const handleFormSubmit = (e) => {
+        e.preventDefault();
+        console.log(formValues);
+    };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -58,6 +66,24 @@ export const LocationsScreen = () => {
         };
         fetchData();
     }, []);
+
+    const handleCountryChange = (selectedOption) => {
+        handleInputChange({
+            target: {
+                name: 'country',
+                value: selectedOption ? selectedOption.value : '',
+            },
+        });
+    };
+
+    const handleRegionChange = (selectedOption) => {
+        handleInputChange({
+            target: {
+                name: 'region',
+                value: selectedOption ? selectedOption.value : '',
+            },
+        });
+    };
 
     return (
         <Container fluid>
@@ -117,7 +143,7 @@ export const LocationsScreen = () => {
             >
                 <Modal.Header>Agregar Sucursal</Modal.Header>
                 <Modal.Body>
-                    <Form>
+                    <Form onSubmit={handleFormSubmit}>
                         <Row>
                             <Col>
                                 <Form.Group>
@@ -125,7 +151,7 @@ export const LocationsScreen = () => {
                                     <Form.Control
                                         type='text'
                                         placeholder='Ingrese el nombre de la Sucursal'
-                                        name='name'
+                                        name='branchName'
                                         value={branchName}
                                         onChange={handleInputChange}
                                     />
@@ -139,8 +165,8 @@ export const LocationsScreen = () => {
                                     <Select
                                         name='country'
                                         options={countryOptions}
-                                        onChange={handleInputChange}
-                                        value={country}
+                                        onChange={handleCountryChange}
+                                        value={countryOptions.find()}
                                         isSearchable
                                         placeholder='Seleccione País'
                                     />
@@ -151,7 +177,9 @@ export const LocationsScreen = () => {
                                     <Form.Label>Región</Form.Label>
                                     <Select
                                         name='region'
-                                        options={regionOptions}
+                                        options={
+                                            country == '' ? filteredRegions : []
+                                        }
                                     />
                                     <Form.Control
                                         type='text'
@@ -183,8 +211,9 @@ export const LocationsScreen = () => {
                         Close
                     </Button>
                     <Button
+                        type='submit'
                         variant='primary'
-                        onClick={handleClose}
+                        // onClick={handleClose}
                     >
                         Save Changes
                     </Button>
