@@ -166,7 +166,9 @@ export const LocationsScreen = () => {
                                         name='country'
                                         options={countryOptions}
                                         onChange={handleCountryChange}
-                                        value={countryOptions.find()}
+                                        value={countryOptions.find(
+                                            country.value === country,
+                                        )}
                                         isSearchable
                                         placeholder='Seleccione País'
                                     />
@@ -178,16 +180,16 @@ export const LocationsScreen = () => {
                                     <Select
                                         name='region'
                                         options={
-                                            country == '' ? filteredRegions : []
+                                            country == '' ? [] : filteredRegions
                                         }
                                     />
-                                    <Form.Control
+                                    {/* <Form.Control
                                         type='text'
                                         placeholder='Ingrese el nombre del producto'
                                         name='productName'
                                         // value={productName}
-                                        // onChange={handleInputChange}
-                                    />
+                                        onChange={handleRegionChange}
+                                    /> */}
                                 </Form.Group>
                             </Col>
                         </Row>
@@ -195,10 +197,10 @@ export const LocationsScreen = () => {
                             <Form.Label>Dirección</Form.Label>
                             <Form.Control
                                 type='text'
-                                placeholder='Ingrese el nombre del producto'
-                                name='productName'
-                                // value={productName}
-                                // onChange={handleInputChange}
+                                placeholder='Ingrese la dirección'
+                                name='address'
+                                value={address}
+                                onChange={handleInputChange}
                             />
                         </Form.Group>
                     </Form>
