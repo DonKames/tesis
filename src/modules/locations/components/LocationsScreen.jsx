@@ -13,12 +13,12 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 
 import { useForm } from '../../../hooks/useForm';
-import { getCountries } from '../../../shared/APIs/apiCountries';
-import { getRegions } from '../../../shared/APIs/apiRegions';
+import { getRegions } from '../APIs/apiRegions';
 import {
     locationsSetCountries,
     locationsSetRegions,
 } from '../slice/locationsSlice';
+import { getCountries } from '../APIs/apiCountries';
 
 export const LocationsScreen = () => {
     const dispatch = useDispatch();
