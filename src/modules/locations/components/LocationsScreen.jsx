@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+
 import Select from 'react-select';
 import {
     Button,
@@ -9,12 +10,15 @@ import {
     Row,
     Table,
 } from 'react-bootstrap';
-import { getCountries } from '../../../shared/APIs/apiCountries';
 import { useDispatch, useSelector } from 'react-redux';
-import { uiSetCountries } from '../../../shared/ui/uiSlice';
+
 import { useForm } from '../../../hooks/useForm';
+import { getCountries } from '../../../shared/APIs/apiCountries';
 import { getRegions } from '../../../shared/APIs/apiRegions';
-import { locationsSetRegions } from '../slice/locationsSlice';
+import {
+    locationsSetCountries,
+    locationsSetRegions,
+} from '../slice/locationsSlice';
 
 export const LocationsScreen = () => {
     const dispatch = useDispatch();
@@ -22,20 +26,16 @@ export const LocationsScreen = () => {
     const [showAddBranchModal, setShowAddBranchModal] = useState(false);
     const [showAddWarehouseModal, setShowAddWarehouseModal] = useState(false);
 
-    const uiState = useSelector((state) => state.ui);
-    const locationsState = useSelector((state) => state.locations);
+    const { countries, regions } = useSelector((state) => state.locations);
 
-    const countryOptions = uiState.countries.map((country) => ({
+    const countryOptions = countries.map((country) => ({
         value: country.country_id,
         label: country.name,
     }));
 
-    const regionOptions = locationsState.regions.map((region) => ({
-        value: region.region_id,
-        label: region.name,
-    }));
+    const formRef = useRef(null);
 
-    const { formValues, handleInputChange, reset } = useForm({
+    const [formValues, handleInputChange, reset] = useForm({
         branchName: '',
         country: '',
         region: '',
@@ -44,22 +44,32 @@ export const LocationsScreen = () => {
 
     const { branchName, country, region, address } = formValues;
 
-    const filteredRegions = regionOptions.filter(
-        (region) => region.fk_country_id === country,
-    );
+    const filteredRegions =
+        country === '' || country === undefined
+            ? []
+            : regions.filter((region) => {
+                  return region.fk_country_id === country;
+              });
+
+    const regionsOptions = filteredRegions.map((region) => ({
+        value: region.region_id,
+        label: region.name,
+    }));
+    console.log(country);
 
     const handleClose = () => setShowAddBranchModal(false);
     const handleShow = () => setShowAddBranchModal(true);
 
     const handleFormSubmit = (e) => {
+        console.log('form submit');
         e.preventDefault();
-        console.log(formValues);
+        console.log(JSON.stringify(formValues));
     };
 
     useEffect(() => {
         const fetchData = async () => {
             const countries = await getCountries();
-            dispatch(uiSetCountries(countries));
+            dispatch(locationsSetCountries(countries));
 
             const regions = await getRegions();
             dispatch(locationsSetRegions(regions));
@@ -141,12 +151,17 @@ export const LocationsScreen = () => {
                 show={showAddBranchModal}
                 onHide={handleClose}
             >
-                <Modal.Header>Agregar Sucursal</Modal.Header>
+                <Modal.Header closeButton>
+                    <Modal.Title>Agregar Sucursal</Modal.Title>
+                </Modal.Header>
                 <Modal.Body>
-                    <Form onSubmit={handleFormSubmit}>
+                    <Form
+                        onSubmit={handleFormSubmit}
+                        ref={formRef}
+                    >
                         <Row>
                             <Col>
-                                <Form.Group>
+                                <Form.Group className='mb-3'>
                                     <Form.Label>Nombre Sucursal</Form.Label>
                                     <Form.Control
                                         type='text'
@@ -160,36 +175,27 @@ export const LocationsScreen = () => {
                         </Row>
                         <Row>
                             <Col>
-                                <Form.Group>
+                                <Form.Group className='mb-3'>
                                     <Form.Label>País</Form.Label>
                                     <Select
+                                        isSearchable
                                         name='country'
                                         options={countryOptions}
                                         onChange={handleCountryChange}
-                                        value={countryOptions.find(
-                                            country.value === country,
-                                        )}
-                                        isSearchable
                                         placeholder='Seleccione País'
                                     />
                                 </Form.Group>
                             </Col>
                             <Col>
-                                <Form.Group>
+                                <Form.Group className='mb-3'>
                                     <Form.Label>Región</Form.Label>
                                     <Select
+                                        isSearchable
                                         name='region'
-                                        options={
-                                            country == '' ? [] : filteredRegions
-                                        }
-                                    />
-                                    {/* <Form.Control
-                                        type='text'
-                                        placeholder='Ingrese el nombre del producto'
-                                        name='productName'
-                                        // value={productName}
+                                        options={regionsOptions}
                                         onChange={handleRegionChange}
-                                    /> */}
+                                        placeholder='Seleccione Región'
+                                    />
                                 </Form.Group>
                             </Col>
                         </Row>
@@ -197,7 +203,7 @@ export const LocationsScreen = () => {
                             <Form.Label>Dirección</Form.Label>
                             <Form.Control
                                 type='text'
-                                placeholder='Ingrese la dirección'
+                                placeholder='Ingrese la Dirección'
                                 name='address'
                                 value={address}
                                 onChange={handleInputChange}
@@ -207,17 +213,11 @@ export const LocationsScreen = () => {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button
-                        variant='secondary'
-                        onClick={handleClose}
-                    >
-                        Close
-                    </Button>
-                    <Button
-                        type='submit'
+                        type='button'
                         variant='primary'
-                        // onClick={handleClose}
+                        onClick={handleFormSubmit}
                     >
-                        Save Changes
+                        Guardar Sucursal
                     </Button>
                 </Modal.Footer>
             </Modal>

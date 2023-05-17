@@ -4,7 +4,6 @@ import { types } from '../../types/types';
 const initialState = {
     loading: false,
     msgError: null,
-    countries: [],
 };
 
 export const uiSlice = createSlice({
