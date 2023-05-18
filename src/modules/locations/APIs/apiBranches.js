@@ -1,9 +1,10 @@
-const BASE_URL = import.meta.env.VITE_BASE_URL;
+require('dotenv').config();
+
+const BASE_URL = process.env.BASE_URL;
 
 export const getCountries = async () => {
     try {
-        console.log(BASE_URL);
-        const response = await fetch(`${BASE_URL}/countries`);
+        const response = await fetch(`${BASE_URL}/branches`);
         const data = await response.json();
         return data;
     } catch (error) {
