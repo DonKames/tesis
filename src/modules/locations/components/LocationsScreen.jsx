@@ -13,12 +13,13 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 
 import { useForm } from '../../../hooks/useForm';
-import { getRegions } from '../APIs/apiRegions';
 import {
     locationsSetCountries,
     locationsSetRegions,
 } from '../slice/locationsSlice';
+import { getRegions } from '../APIs/apiRegions';
 import { getCountries } from '../APIs/apiCountries';
+import { createBranch } from '../APIs/apiBranches';
 
 export const LocationsScreen = () => {
     const dispatch = useDispatch();
@@ -64,6 +65,7 @@ export const LocationsScreen = () => {
         console.log('form submit');
         e.preventDefault();
         console.log(JSON.stringify(formValues));
+        createBranch(formValues);
     };
 
     useEffect(() => {
