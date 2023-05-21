@@ -1,24 +1,15 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import Select from 'react-select';
-import {
-    Button,
-    Col,
-    Container,
-    Form,
-    Modal,
-    Row,
-    Table,
-} from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
+import { Col, Container, Row, Table } from 'react-bootstrap';
+import { useDispatch } from 'react-redux';
 
-import { useForm } from '../../../hooks/useForm';
 import {
     locationsSetCountries,
     locationsSetRegions,
 } from '../slice/locationsSlice';
 import { getRegions } from '../APIs/apiRegions';
 import { getCountries } from '../APIs/apiCountries';
+import { AddBranchModal } from './AddBranchModal';
 import { AddWarehouseModal } from './AddWarehouseModal';
 
 export const LocationsScreen = () => {
@@ -26,13 +17,6 @@ export const LocationsScreen = () => {
 
     const [showAddBranchModal, setShowAddBranchModal] = useState(false);
     const [showAddWarehouseModal, setShowAddWarehouseModal] = useState(false);
-
-    const { countries, regions } = useSelector((state) => state.locations);
-
-    const formRef = useRef(null);
-
-    const handleClose = () => setShowAddBranchModal(false);
-    const handleShow = () => setShowAddBranchModal(true);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -60,7 +44,7 @@ export const LocationsScreen = () => {
                             <h1>Sucursales</h1>
                         </Col>
                         <Col className='text-center'>
-                            <AddWarehouseModal />
+                            <AddBranchModal />
                         </Col>
                     </Row>
                     <Table>
@@ -80,7 +64,14 @@ export const LocationsScreen = () => {
                     xs='12'
                     md='6'
                 >
-                    <h1>Bodegas</h1>
+                    <Row>
+                        <Col>
+                            <h1>Bodegas</h1>
+                        </Col>
+                        <Col>
+                            <AddWarehouseModal />
+                        </Col>
+                    </Row>
                     <Table>
                         <thead>
                             <tr>
