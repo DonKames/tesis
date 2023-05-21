@@ -1,29 +1,110 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { Col, Form, Modal, Row } from 'react-bootstrap';
+import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
 import Select from 'react-select';
+import { createBranch } from '../APIs/apiBranches';
+import { useDispatch, useSelector } from 'react-redux';
+import { useForm } from '../../../hooks/useForm';
+import { getCountries } from '../APIs/apiCountries';
+import {
+    locationsSetCountries,
+    locationsSetRegions,
+} from '../slice/locationsSlice';
+import { getRegions } from '../APIs/apiRegions';
 
 export const AddWarehouseModal = () => {
+    const dispatch = useDispatch();
+
     const [showModal, setShowModal] = useState(false);
+
+    const { countries, regions } = useSelector((state) => state.locations);
+
+    const countryOptions = countries.map((country) => ({
+        value: country.country_id,
+        label: country.name,
+    }));
+
+    const [formValues, handleInputChange, reset] = useForm({
+        branchName: '',
+        country: '',
+        region: '',
+        address: '',
+    });
+
+    const { branchName, country, region, address } = formValues;
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const countries = await getCountries();
+            dispatch(locationsSetCountries(countries));
+            const regions = await getRegions();
+            dispatch(locationsSetRegions(regions));
+        };
+        fetchData();
+    }, []);
+
+    const filteredRegions =
+        country === '' || country === undefined
+            ? []
+            : regions.filter((region) => {
+                  return region.fk_country_id === country;
+              });
+
+    const regionsOptions = filteredRegions.map((region) => ({
+        value: region.region_id,
+        label: region.name,
+    }));
 
     const handleCloseModal = () => {
         setShowModal(false);
     };
 
+    const handleOpenModal = () => {
+        setShowModal(true);
+    };
+
+    const handleFormSubmit = (e) => {
+        // console.log('form submit');
+        // console.log(JSON.stringify(formValues));
+        e.preventDefault();
+        createBranch(formValues);
+    };
+
+    const handleCountryChange = (selectedOption) => {
+        handleInputChange({
+            target: {
+                name: 'country',
+                value: selectedOption ? selectedOption.value : '',
+            },
+        });
+    };
+
+    const handleRegionChange = (selectedOption) => {
+        handleInputChange({
+            target: {
+                name: 'region',
+                value: selectedOption ? selectedOption.value : '',
+            },
+        });
+    };
+
     return (
         <>
+            <Button
+                variant='primary'
+                onClick={handleOpenModal}
+            >
+                Agregar Sucursal
+            </Button>
             <Modal
                 show={showModal}
-                onHide={handleClose}
+                onHide={handleCloseModal}
             >
                 <Modal.Header closeButton>
                     <Modal.Title>Agregar Sucursal</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form
-                        onSubmit={handleFormSubmit}
-                        ref={formRef}
-                    >
+                    <Form onSubmit={handleFormSubmit}>
                         <Row>
                             <Col>
                                 <Form.Group className='mb-3'>

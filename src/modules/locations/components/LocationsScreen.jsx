@@ -19,7 +19,6 @@ import {
 } from '../slice/locationsSlice';
 import { getRegions } from '../APIs/apiRegions';
 import { getCountries } from '../APIs/apiCountries';
-import { createBranch } from '../APIs/apiBranches';
 import { AddWarehouseModal } from './AddWarehouseModal';
 
 export const LocationsScreen = () => {
@@ -30,44 +29,10 @@ export const LocationsScreen = () => {
 
     const { countries, regions } = useSelector((state) => state.locations);
 
-    const countryOptions = countries.map((country) => ({
-        value: country.country_id,
-        label: country.name,
-    }));
-
     const formRef = useRef(null);
-
-    const [formValues, handleInputChange, reset] = useForm({
-        branchName: '',
-        country: '',
-        region: '',
-        address: '',
-    });
-
-    const { branchName, country, region, address } = formValues;
-
-    const filteredRegions =
-        country === '' || country === undefined
-            ? []
-            : regions.filter((region) => {
-                  return region.fk_country_id === country;
-              });
-
-    const regionsOptions = filteredRegions.map((region) => ({
-        value: region.region_id,
-        label: region.name,
-    }));
-    console.log(country);
 
     const handleClose = () => setShowAddBranchModal(false);
     const handleShow = () => setShowAddBranchModal(true);
-
-    const handleFormSubmit = (e) => {
-        console.log('form submit');
-        e.preventDefault();
-        console.log(JSON.stringify(formValues));
-        createBranch(formValues);
-    };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -80,26 +45,11 @@ export const LocationsScreen = () => {
         fetchData();
     }, []);
 
-    const handleCountryChange = (selectedOption) => {
-        handleInputChange({
-            target: {
-                name: 'country',
-                value: selectedOption ? selectedOption.value : '',
-            },
-        });
-    };
-
-    const handleRegionChange = (selectedOption) => {
-        handleInputChange({
-            target: {
-                name: 'region',
-                value: selectedOption ? selectedOption.value : '',
-            },
-        });
-    };
-
     return (
-        <Container fluid>
+        <Container
+            fluid
+            className='mt-2'
+        >
             <Row className='align-items-center'>
                 <Col
                     xs='12'
@@ -110,12 +60,7 @@ export const LocationsScreen = () => {
                             <h1>Sucursales</h1>
                         </Col>
                         <Col className='text-center'>
-                            <Button
-                                type='button'
-                                onClick={handleShow}
-                            >
-                                Agregar Sucursal
-                            </Button>
+                            <AddWarehouseModal />
                         </Col>
                     </Row>
                     <Table>
@@ -150,7 +95,6 @@ export const LocationsScreen = () => {
                     </Table>
                 </Col>
             </Row>
-            <AddWarehouseModal />
         </Container>
     );
 };
