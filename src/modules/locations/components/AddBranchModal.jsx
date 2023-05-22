@@ -26,7 +26,7 @@ export const AddBranchModal = () => {
 
     const [formValues, handleInputChange, reset] = useForm({
         branchName: '',
-        country: '',
+        country: 35,
         region: '',
         address: '',
     });
