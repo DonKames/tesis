@@ -1,24 +1,33 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { Col, Container, Row, Table } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
 
 import { AddBranchModal } from './AddBranchModal';
 import { AddWarehouseModal } from './AddWarehouseModal';
+import { useDispatch } from 'react-redux';
+import { getCountries } from '../APIs/apiCountries';
+import {
+    locationsSetBranches,
+    locationsSetCountries,
+    locationsSetRegions,
+} from '../slice/locationsSlice';
+import { getRegions } from '../APIs/apiRegions';
+import { getBranches } from '../APIs/apiBranches';
 
 export const LocationsScreen = () => {
     const dispatch = useDispatch();
 
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         const countries = await getCountries();
-    //         dispatch(locationsSetCountries(countries));
-
-    //         const regions = await getRegions();
-    //         dispatch(locationsSetRegions(regions));
-    //     };
-    //     fetchData();
-    // }, []);
+    useEffect(() => {
+        const fetchData = async () => {
+            const countries = await getCountries();
+            dispatch(locationsSetCountries(countries));
+            const regions = await getRegions();
+            dispatch(locationsSetRegions(regions));
+            const branches = await getBranches();
+            dispatch(locationsSetBranches(branches));
+        };
+        fetchData();
+    }, []);
 
     return (
         <Container

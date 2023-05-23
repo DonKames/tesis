@@ -3,18 +3,10 @@ import React, { useEffect, useState } from 'react';
 import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
 import Select from 'react-select';
 import { createBranch } from '../APIs/apiBranches';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useForm } from '../../../hooks/useForm';
-import { getCountries } from '../APIs/apiCountries';
-import {
-    locationsSetCountries,
-    locationsSetRegions,
-} from '../slice/locationsSlice';
-import { getRegions } from '../APIs/apiRegions';
 
 export const AddBranchModal = () => {
-    const dispatch = useDispatch();
-
     const [showModal, setShowModal] = useState(false);
 
     const { countries, regions } = useSelector((state) => state.locations);
@@ -32,16 +24,6 @@ export const AddBranchModal = () => {
     });
 
     const { branchName, country, region, address } = formValues;
-
-    useEffect(() => {
-        const fetchData = async () => {
-            const countries = await getCountries();
-            dispatch(locationsSetCountries(countries));
-            const regions = await getRegions();
-            dispatch(locationsSetRegions(regions));
-        };
-        fetchData();
-    }, []);
 
     const filteredRegions =
         country === '' || country === undefined

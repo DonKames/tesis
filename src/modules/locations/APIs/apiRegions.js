@@ -1,4 +1,4 @@
-const BASE_URL = 'http://192.168.1.2:3000/api';
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 export const getRegions = async () => {
     try {
