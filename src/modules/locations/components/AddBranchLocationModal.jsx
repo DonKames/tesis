@@ -56,14 +56,14 @@ export const AddBranchLocationModal = () => {
                 variant='primary'
                 onClick={handleOpenModal}
             >
-                Agregar Bodega
+                Agregar Lugar
             </Button>
             <Modal
                 show={showModal}
                 onHide={handleCloseModal}
             >
                 <Modal.Header closeButton>
-                    <Modal.Title>Agregar Bodega</Modal.Title>
+                    <Modal.Title>Agregar Lugar de Sucursal</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
@@ -73,7 +73,7 @@ export const AddBranchLocationModal = () => {
                                 <Select
                                     isSearchable
                                     placeholder='Seleccione la Sucursal'
-                                    name='branchId'
+                                    name='fk_branch_id'
                                     options={branchOptions}
                                     onChange={handleBranchChange}
                                 />
@@ -84,8 +84,8 @@ export const AddBranchLocationModal = () => {
                                 <Form.Label>Nombre Lugar</Form.Label>
                                 <Form.Control
                                     type='text'
-                                    placeholder='Ingrese el nombre de la Bodega'
-                                    name='warehouseName'
+                                    placeholder='Ingrese el nombre del Lugar'
+                                    name='branchLocationName'
                                     value={branchLocationName}
                                     onChange={handleInputChange}
                                 />
@@ -95,9 +95,9 @@ export const AddBranchLocationModal = () => {
                             <Form.Group>
                                 <Form.Label>Descripción</Form.Label>
                                 <Form.Control
-                                    type='number'
+                                    type='text'
                                     placeholder='Ingrese la descripción del lugar'
-                                    name='capacity'
+                                    name='description'
                                     value={description}
                                     onChange={handleInputChange}
                                 />
@@ -111,7 +111,7 @@ export const AddBranchLocationModal = () => {
                         variant='primary'
                         onClick={handleFormSubmit}
                     >
-                        Guardar Bodega
+                        Guardar Lugar
                     </Button>
                 </Modal.Footer>
             </Modal>

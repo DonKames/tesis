@@ -16,15 +16,16 @@ export const AddWarehouseModal = () => {
     }));
 
     const [formValues, handleInputChange, reset] = useForm({
-        branchId: '',
+        fk_branch_id: '',
         warehouseName: '',
         capacity: '',
     });
 
-    const { branchId, warehouseName, capacity } = formValues;
+    const { warehouseName, capacity } = formValues;
 
     const handleCloseModal = () => {
         setShowModal(false);
+        reset();
     };
 
     const handleOpenModal = () => {
@@ -39,7 +40,7 @@ export const AddWarehouseModal = () => {
     const handleBranchChange = (selectedOption) => {
         handleInputChange({
             target: {
-                name: 'branchId',
+                name: 'fk_branch_id',
                 value: selectedOption ? selectedOption.value : '',
             },
         });
@@ -68,7 +69,7 @@ export const AddWarehouseModal = () => {
                                 <Select
                                     isSearchable
                                     placeholder='Seleccione la Sucursal'
-                                    name='branchId'
+                                    name='fk_branch_id'
                                     options={branchOptions}
                                     onChange={handleBranchChange}
                                 />
