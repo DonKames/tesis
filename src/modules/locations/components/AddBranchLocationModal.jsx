@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { Button, Form, Modal, Row } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
 import Select from 'react-select';
 import { useForm } from '../../../hooks/useForm';
-import { useSelector } from 'react-redux';
-import { createWarehouse } from '../APIs/apiWarehouses';
+import {
+    createBranchLocation,
+    getBranchLocations,
+} from '../APIs/apiBranchLocation';
 
-export const AddWarehouseModal = () => {
+export const AddBranchLocationModal = () => {
     const [showModal, setShowModal] = useState(false);
 
     const { branches } = useSelector((state) => state.locations);
@@ -17,14 +20,15 @@ export const AddWarehouseModal = () => {
 
     const [formValues, handleInputChange, reset] = useForm({
         branchId: '',
-        warehouseName: '',
-        capacity: '',
+        branchLocationName: '',
+        description: '',
     });
 
-    const { branchId, warehouseName, capacity } = formValues;
+    const { branchLocationName, description } = formValues;
 
     const handleCloseModal = () => {
         setShowModal(false);
+        reset();
     };
 
     const handleOpenModal = () => {
@@ -33,7 +37,8 @@ export const AddWarehouseModal = () => {
 
     const handleFormSubmit = (e) => {
         e.preventDefault();
-        createWarehouse(formValues);
+        createBranchLocation(formValues);
+        getBranchLocations();
     };
 
     const handleBranchChange = (selectedOption) => {
@@ -62,7 +67,7 @@ export const AddWarehouseModal = () => {
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
-                        <Row>
+                        <Row className='mb-2'>
                             <Form.Group>
                                 <Form.Label>Sucursal</Form.Label>
                                 <Select
@@ -76,24 +81,24 @@ export const AddWarehouseModal = () => {
                         </Row>
                         <Row>
                             <Form.Group>
-                                <Form.Label>Nombre Bodega</Form.Label>
+                                <Form.Label>Nombre Lugar</Form.Label>
                                 <Form.Control
                                     type='text'
                                     placeholder='Ingrese el nombre de la Bodega'
                                     name='warehouseName'
-                                    value={warehouseName}
+                                    value={branchLocationName}
                                     onChange={handleInputChange}
                                 />
                             </Form.Group>
                         </Row>
                         <Row>
                             <Form.Group>
-                                <Form.Label>Capacidad en m3</Form.Label>
+                                <Form.Label>Descripción</Form.Label>
                                 <Form.Control
                                     type='number'
-                                    placeholder='Ingrese la capacidad de la Bodega'
+                                    placeholder='Ingrese la descripción del lugar'
                                     name='capacity'
-                                    value={capacity}
+                                    value={description}
                                     onChange={handleInputChange}
                                 />
                             </Form.Group>

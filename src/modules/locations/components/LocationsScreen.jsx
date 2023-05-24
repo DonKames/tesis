@@ -13,6 +13,7 @@ import {
 } from '../slice/locationsSlice';
 import { getRegions } from '../APIs/apiRegions';
 import { getBranches } from '../APIs/apiBranches';
+import { AddBranchLocationModal } from './AddBranchLocationModal';
 
 export const LocationsScreen = () => {
     const dispatch = useDispatch();
@@ -35,10 +36,7 @@ export const LocationsScreen = () => {
             className='mt-2'
         >
             <Row className='align-items-center'>
-                <Col
-                    xs='12'
-                    md='6'
-                >
+                <Col className='mb-3'>
                     <Row>
                         <Col>
                             <h1>Sucursales</h1>
@@ -60,31 +58,58 @@ export const LocationsScreen = () => {
                         </tbody>
                     </Table>
                 </Col>
-                <Col
-                    xs='12'
-                    md='6'
-                >
-                    <Row>
-                        <Col>
-                            <h1>Bodegas</h1>
-                        </Col>
-                        <Col>
-                            <AddWarehouseModal />
-                        </Col>
-                    </Row>
-                    <Table>
-                        <thead>
-                            <tr>
-                                <th>bodega</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>bodega</td>
-                            </tr>
-                        </tbody>
-                    </Table>
-                </Col>
+                <Row>
+                    <Col
+                        xs='12'
+                        md='6'
+                    >
+                        <Row>
+                            <Col>
+                                <h1>Bodegas</h1>
+                            </Col>
+                            <Col>
+                                <AddWarehouseModal />
+                            </Col>
+                        </Row>
+                        <Table>
+                            <thead>
+                                <tr>
+                                    <th>bodega</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>bodega</td>
+                                </tr>
+                            </tbody>
+                        </Table>
+                    </Col>
+                    <Col
+                        xs='12'
+                        md='6'
+                    >
+                        <Row>
+                            <Col>
+                                <h1>Lugares de Sucursal</h1>
+                            </Col>
+                            <Col>
+                                <AddBranchLocationModal />
+                            </Col>
+                        </Row>
+                        <Table>
+                            <thead>
+                                <tr>
+                                    <th>bodega</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>bodega</td>
+                                </tr>
+                            </tbody>
+                        </Table>
+                    </Col>
+                </Row>
             </Row>
         </Container>
     );
