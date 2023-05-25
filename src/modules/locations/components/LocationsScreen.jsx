@@ -4,7 +4,7 @@ import { Col, Container, Row, Table } from 'react-bootstrap';
 
 import { AddBranchModal } from './AddBranchModal';
 import { AddWarehouseModal } from './AddWarehouseModal';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getCountries } from '../APIs/apiCountries';
 import {
     locationsSetBranches,
@@ -17,6 +17,10 @@ import { AddBranchLocationModal } from './AddBranchLocationModal';
 
 export const LocationsScreen = () => {
     const dispatch = useDispatch();
+
+    const { branches, regions, countries } = useSelector(
+        (state) => state.locations,
+    );
 
     useEffect(() => {
         const fetchData = async () => {
@@ -48,10 +52,42 @@ export const LocationsScreen = () => {
                     <Table>
                         <thead>
                             <tr>
-                                <th>Haya yay</th>
+                                <th>Nombre</th>
+                                <th>País</th>
+                                <th>Region</th>
+                                <th>Dirección</th>
                             </tr>
                         </thead>
                         <tbody>
+                            {/* Mapea las sucursales a filas de la tabla */}
+                            {branches.map((branch) => (
+                                <tr key={branch.branch_id}>
+                                    <td>{branch.name}</td>
+                                    <td>
+                                        {
+                                            countries.find(
+                                                (country) =>
+                                                    country.country_id ===
+                                                    regions.find(
+                                                        (region) =>
+                                                            region.region_id ===
+                                                            branch.fk_region_id,
+                                                    ).fk_country_id,
+                                            ).name
+                                        }
+                                    </td>
+                                    <td>
+                                        {
+                                            regions.find(
+                                                (region) =>
+                                                    region.region_id ===
+                                                    branch.fk_region_id,
+                                            ).name
+                                        }
+                                    </td>
+                                    <td>{branch.address}</td>
+                                </tr>
+                            ))}
                             <tr>
                                 <td>Yay</td>
                             </tr>
