@@ -35,12 +35,6 @@ export const AddBranchLocationModal = () => {
         setShowModal(true);
     };
 
-    const handleFormSubmit = (e) => {
-        e.preventDefault();
-        createBranchLocation(formValues);
-        getBranchLocations();
-    };
-
     const handleBranchChange = (selectedOption) => {
         handleInputChange({
             target: {
@@ -48,6 +42,12 @@ export const AddBranchLocationModal = () => {
                 value: selectedOption ? selectedOption.value : '',
             },
         });
+    };
+
+    const handleFormSubmit = (e) => {
+        e.preventDefault();
+        createBranchLocation(formValues);
+        getBranchLocations();
     };
 
     return (
