@@ -1,33 +1,29 @@
 import React from 'react';
-import { Card, Col, Container, Form, Row } from 'react-bootstrap';
+import { Button, Card, Col, Container, Form, Row } from 'react-bootstrap';
 import { useForm } from '../../../hooks/useForm';
 
 export const AddProductsScreen = () => {
     const [formValues, handleInputChange, reset] = useForm({
-        productName: 'camilo@hotmail.com',
-        productDescription: 'La descripción del producto',
-        productPrice: '$10000',
-        productQty: '150',
-        productSku: 'FA654',
-        productLote: '4444',
-        productOrder: '123',
+        Name: 'camilo@hotmail.com',
+        Description: 'La descripción del producto',
+        Price: '$10000',
+        // Qty: '150',
+        Sku: 'FA654',
+        Lote: '4444',
+        Order: '123',
     });
 
-    const {
-        productName,
-        productDescription,
-        productPrice,
-        productQty,
-        productSku,
-        productLote,
-        productOrder,
-    } = formValues;
+    const { name, description, price, qty, sku, lote, order } = formValues;
+
+    const handleAddProduct = () => {
+        console.log('Agregando producto');
+    };
 
     return (
         <Container>
             <Row>
                 <Col>
-                    <h1>Add Products</h1>
+                    <h1>Agregar Productos</h1>
                     <Card className='mb-3'>
                         <Card.Body>
                             <Card.Title>Agregar Producto</Card.Title>
@@ -106,6 +102,14 @@ export const AddProductsScreen = () => {
                                 </Form.Group>
                             </Form>
                         </Card.Body>
+                        <Card.Footer>
+                            <Button
+                                className='btn btn-primary'
+                                onClick={handleAddProduct}
+                            >
+                                Guarda Producto
+                            </Button>
+                        </Card.Footer>
                     </Card>
                 </Col>
             </Row>

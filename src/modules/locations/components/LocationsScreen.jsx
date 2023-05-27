@@ -148,43 +148,51 @@ export const LocationsScreen = () => {
                         xs='12'
                         md='6'
                     >
-                        <Row>
-                            <Col>
-                                <h1>Lugares de Sucursal</h1>
-                            </Col>
-                            <Col>
-                                <AddBranchLocationModal />
-                            </Col>
-                        </Row>
-                        <Table>
-                            <thead>
-                                <tr>
-                                    <th>Nombre</th>
-                                    <th>Sucursal</th>
-                                    <th>Descripción</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {branchLocations.map((branchLocation) => (
-                                    <tr key={branchLocation.branch_location_id}>
-                                        <td>{branchLocation.name}</td>
-                                        <td>
-                                            {
-                                                branches.find(
-                                                    (branch) =>
-                                                        branch.branch_id ===
-                                                        branchLocation.fk_branch_id,
-                                                ).name
-                                            }
-                                        </td>
-                                        <td>{branchLocation.description}</td>
+                        <Card>
+                            <Row>
+                                <Col>
+                                    <h1>Lugares de Sucursal</h1>
+                                </Col>
+                                <Col>
+                                    <AddBranchLocationModal />
+                                </Col>
+                            </Row>
+                            <Table>
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Sucursal</th>
+                                        <th>Descripción</th>
                                     </tr>
-                                ))}
-                                <tr>
-                                    <td>bodega</td>
-                                </tr>
-                            </tbody>
-                        </Table>
+                                </thead>
+                                <tbody>
+                                    {branchLocations.map((branchLocation) => (
+                                        <tr
+                                            key={
+                                                branchLocation.branch_location_id
+                                            }
+                                        >
+                                            <td>{branchLocation.name}</td>
+                                            <td>
+                                                {
+                                                    branches.find(
+                                                        (branch) =>
+                                                            branch.branch_id ===
+                                                            branchLocation.fk_branch_id,
+                                                    ).name
+                                                }
+                                            </td>
+                                            <td>
+                                                {branchLocation.description}
+                                            </td>
+                                        </tr>
+                                    ))}
+                                    <tr>
+                                        <td>bodega</td>
+                                    </tr>
+                                </tbody>
+                            </Table>
+                        </Card>
                     </Col>
                 </Row>
             </Row>
