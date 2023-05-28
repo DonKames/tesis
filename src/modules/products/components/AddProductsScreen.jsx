@@ -1,22 +1,24 @@
 import React from 'react';
 import { Button, Card, Col, Container, Form, Row } from 'react-bootstrap';
 import { useForm } from '../../../hooks/useForm';
+import { createProduct } from '../APIs/apiProducts';
 
 export const AddProductsScreen = () => {
     const [formValues, handleInputChange, reset] = useForm({
-        Name: 'camilo@hotmail.com',
-        Description: 'La descripción del producto',
-        Price: '$10000',
+        name: 'camilo@hotmail.com',
+        description: 'La descripción del producto',
+        price: '$10000',
         // Qty: '150',
-        Sku: 'FA654',
-        Lote: '4444',
-        Order: '123',
+        sku: 'FA654',
+        lote: '4444',
+        order: '123',
     });
 
     const { name, description, price, qty, sku, lote, order } = formValues;
 
     const handleAddProduct = () => {
         console.log('Agregando producto');
+        createProduct(name, description, price, qty, sku, lote, order);
     };
 
     return (
@@ -34,7 +36,7 @@ export const AddProductsScreen = () => {
                                         type='text'
                                         placeholder='Ingrese el SKU del producto'
                                         name='productSku'
-                                        value={productSku}
+                                        value={sku}
                                         onChange={handleInputChange}
                                     />
                                 </Form.Group>
@@ -44,7 +46,7 @@ export const AddProductsScreen = () => {
                                         type='text'
                                         placeholder='Ingrese el nombre del producto'
                                         name='productName'
-                                        value={productName}
+                                        value={name}
                                         onChange={handleInputChange}
                                     />
                                 </Form.Group>
@@ -56,7 +58,7 @@ export const AddProductsScreen = () => {
                                         type='text'
                                         placeholder='Ingrese la descripción del producto'
                                         name='productDescription'
-                                        value={productDescription}
+                                        value={description}
                                         onChange={handleInputChange}
                                     />
                                 </Form.Group>
@@ -66,7 +68,7 @@ export const AddProductsScreen = () => {
                                         type='text'
                                         placeholder='Ingrese el precio del producto'
                                         name='productPrice'
-                                        value={productPrice}
+                                        value={price}
                                         onChange={handleInputChange}
                                     />
                                 </Form.Group>
@@ -76,7 +78,7 @@ export const AddProductsScreen = () => {
                                         type='number'
                                         placeholder='Ingrese el stock del producto'
                                         name='productQty'
-                                        value={productQty}
+                                        value={qty}
                                         onChange={handleInputChange}
                                     />
                                 </Form.Group>
@@ -86,7 +88,7 @@ export const AddProductsScreen = () => {
                                         type='text'
                                         placeholder='Ingrese el lote del producto'
                                         name='productLote'
-                                        value={productLote}
+                                        value={lote}
                                         onChange={handleInputChange}
                                     />
                                 </Form.Group>
@@ -96,7 +98,7 @@ export const AddProductsScreen = () => {
                                         type='text'
                                         placeholder='Ingrese el orden del producto'
                                         name='productOrder'
-                                        value={productOrder}
+                                        value={order}
                                         onChange={handleInputChange}
                                     />
                                 </Form.Group>
@@ -107,7 +109,7 @@ export const AddProductsScreen = () => {
                                 className='btn btn-primary'
                                 onClick={handleAddProduct}
                             >
-                                Guarda Producto
+                                Guardar Producto
                             </Button>
                         </Card.Footer>
                     </Card>
