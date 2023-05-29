@@ -18,7 +18,7 @@ export const AddWarehouseModal = () => {
     const [formValues, handleInputChange, reset] = useForm({
         fk_branch_id: '',
         warehouseName: '',
-        capacity: '',
+        capacity: 0,
     });
 
     const { warehouseName, capacity } = formValues;

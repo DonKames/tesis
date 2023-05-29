@@ -7,7 +7,7 @@ export const AddProductsScreen = () => {
     const [formValues, handleInputChange, reset] = useForm({
         name: 'camilo@hotmail.com',
         description: 'La descripción del producto',
-        price: '$10000',
+        price: '10000',
         // Qty: '150',
         sku: 'FA654',
         lote: '4444',
@@ -18,7 +18,7 @@ export const AddProductsScreen = () => {
 
     const handleAddProduct = () => {
         console.log('Agregando producto');
-        createProduct(name, description, price, qty, sku, lote, order);
+        createProduct(formValues);
     };
 
     return (
@@ -35,7 +35,7 @@ export const AddProductsScreen = () => {
                                     <Form.Control
                                         type='text'
                                         placeholder='Ingrese el SKU del producto'
-                                        name='productSku'
+                                        name='sku'
                                         value={sku}
                                         onChange={handleInputChange}
                                     />
@@ -45,7 +45,7 @@ export const AddProductsScreen = () => {
                                     <Form.Control
                                         type='text'
                                         placeholder='Ingrese el nombre del producto'
-                                        name='productName'
+                                        name='name'
                                         value={name}
                                         onChange={handleInputChange}
                                     />
@@ -57,7 +57,7 @@ export const AddProductsScreen = () => {
                                     <Form.Control
                                         type='text'
                                         placeholder='Ingrese la descripción del producto'
-                                        name='productDescription'
+                                        name='description'
                                         value={description}
                                         onChange={handleInputChange}
                                     />
@@ -67,7 +67,7 @@ export const AddProductsScreen = () => {
                                     <Form.Control
                                         type='text'
                                         placeholder='Ingrese el precio del producto'
-                                        name='productPrice'
+                                        name='price'
                                         value={price}
                                         onChange={handleInputChange}
                                     />
@@ -77,7 +77,7 @@ export const AddProductsScreen = () => {
                                     <Form.Control
                                         type='number'
                                         placeholder='Ingrese el stock del producto'
-                                        name='productQty'
+                                        name='qty'
                                         value={qty}
                                         onChange={handleInputChange}
                                     />
@@ -87,7 +87,7 @@ export const AddProductsScreen = () => {
                                     <Form.Control
                                         type='text'
                                         placeholder='Ingrese el lote del producto'
-                                        name='productLote'
+                                        name='lote'
                                         value={lote}
                                         onChange={handleInputChange}
                                     />
@@ -97,7 +97,7 @@ export const AddProductsScreen = () => {
                                     <Form.Control
                                         type='text'
                                         placeholder='Ingrese el orden del producto'
-                                        name='productOrder'
+                                        name='order'
                                         value={order}
                                         onChange={handleInputChange}
                                     />
