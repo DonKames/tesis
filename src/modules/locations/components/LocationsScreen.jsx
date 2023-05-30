@@ -27,19 +27,34 @@ export const LocationsScreen = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const countries = await getCountries();
-            dispatch(locationsSetCountries(countries));
-            const regions = await getRegions();
-            dispatch(locationsSetRegions(regions));
-            const branches = await getBranches();
-            dispatch(locationsSetBranches(branches));
-            const warehouses = await getWarehouses();
-            dispatch(locationsSetWarehouses(warehouses));
-            const branchLocations = await getBranchLocations();
-            dispatch(locationsSetBranchLocations(branchLocations));
+            if (!countries.length) {
+                const fetchedCountries = await getCountries();
+                dispatch(locationsSetCountries(fetchedCountries));
+            }
+
+            if (!regions.length) {
+                const fetchedRegions = await getRegions();
+                dispatch(locationsSetRegions(fetchedRegions));
+            }
+
+            if (!branches.length) {
+                const fetchedBranches = await getBranches();
+                dispatch(locationsSetBranches(fetchedBranches));
+            }
+
+            if (!warehouses.length) {
+                const fetchedWarehouses = await getWarehouses();
+                dispatch(locationsSetWarehouses(fetchedWarehouses));
+            }
+
+            if (!branchLocations.length) {
+                const fetchedBranchLocations = await getBranchLocations();
+                dispatch(locationsSetBranchLocations(fetchedBranchLocations));
+            }
         };
+
         fetchData();
-    }, []);
+    }, [dispatch]);
 
     return (
         <Container
@@ -83,8 +98,8 @@ export const LocationsScreen = () => {
                                                         (region) =>
                                                             region.region_id ===
                                                             branch.fk_region_id,
-                                                    ).fk_country_id,
-                                            ).name
+                                                    )?.fk_country_id,
+                                            )?.name
                                         }
                                     </td>
                                     <td>
@@ -93,7 +108,7 @@ export const LocationsScreen = () => {
                                                 (region) =>
                                                     region.region_id ===
                                                     branch.fk_region_id,
-                                            ).name
+                                            )?.name
                                         }
                                     </td>
                                     <td>{branch.address}</td>
@@ -134,7 +149,7 @@ export const LocationsScreen = () => {
                                                         (branch) =>
                                                             branch.branch_id ===
                                                             warehouse.fk_branch_id,
-                                                    ).name
+                                                    )?.name
                                                 }
                                             </td>
                                             <td>{warehouse.capacity} m3</td>

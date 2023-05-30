@@ -4,6 +4,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import { authSlice } from '../auth/authSlice';
 import { uiSlice } from '../../shared/ui/uiSlice';
 import { locationsSlice } from '../locations/slice/locationsSlice';
+import { productsSlice } from '../products/slice/productsSlice';
 
 const middleware = [thunk];
 
@@ -12,6 +13,7 @@ export const store = configureStore({
         auth: authSlice.reducer,
         ui: uiSlice.reducer,
         locations: locationsSlice.reducer,
+        products: productsSlice.reducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat(middleware),

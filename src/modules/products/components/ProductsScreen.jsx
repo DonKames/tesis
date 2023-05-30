@@ -1,32 +1,44 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import {
-    Container,
-    Row,
-    Col,
-    Table,
-    Button,
-    Modal,
-    Form,
-} from 'react-bootstrap';
+import { Container, Row, Col, Table, Button } from 'react-bootstrap';
 import SearchProductBar from './SearchProductBar';
-import { useForm } from '../../../hooks/useForm';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { getProducts } from '../APIs/apiProducts';
+import { productsSetProducts } from '../slice/productsSlice';
+import {
+    locationsSetBranches,
+    locationsSetWarehouses,
+} from '../../locations/slice/locationsSlice';
+import { getBranches } from '../../locations/APIs/apiBranches';
+import { getWarehouses } from '../../locations/APIs/apiWarehouses';
 
 const ProductsScreen = () => {
     const dispatch = useDispatch();
 
-    const [formValues, handleInputChange, reset] = useForm({
-        Name: 'camilo@hotmail.com',
-        Description: 'La descripción del producto',
-        Price: '123456',
-        Qty: '123456',
-        Sku: '123456',
-        Lote: '123456',
-        Order: '123456',
-    });
+    const { products } = useSelector((state) => state.products);
 
-    const { Name, Description, Price, Qty, Sku, Lote, Order } = formValues;
+    const { branches, warehouses } = useSelector((state) => state.locations);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            if (!products.length) {
+                const fetchedProducts = await getProducts();
+                dispatch(productsSetProducts(fetchedProducts));
+            }
+
+            if (!branches.length) {
+                const fetchedBranches = await getBranches();
+                dispatch(locationsSetBranches(fetchedBranches));
+            }
+
+            if (!warehouses.length) {
+                const fetchedWarehouses = await getWarehouses();
+                dispatch(locationsSetWarehouses(fetchedWarehouses));
+            }
+        };
+
+        fetchData();
+    }, [dispatch]);
 
     return (
         <Container>
@@ -50,8 +62,10 @@ const ProductsScreen = () => {
             >
                 <thead>
                     <tr>
-                        <th>#</th>
+                        <th>Sku</th>
                         <th>Nombre</th>
+                        <th>Sucursal</th>
+                        <th>Bodega</th>
                         <th>Descripción</th>
                         <th>Precio</th>
                         <th>Stock</th>
@@ -59,6 +73,37 @@ const ProductsScreen = () => {
                 </thead>
                 <tbody>
                     {/* code to map through product data and render rows */}
+                    {products.map((product, index) => (
+                        <tr key={product.product_id}>
+                            <td>{product.sku}</td>
+                            <td>{product.name}</td>
+                            <td>
+                                {
+                                    branches.find(
+                                        (branch) =>
+                                            branch.branch_id ===
+                                            warehouses.find(
+                                                (warehouse) =>
+                                                    warehouse.warehouse_id ===
+                                                    product.fk_warehouse_id,
+                                            )?.fk_branch_id,
+                                    )?.name
+                                }
+                            </td>
+                            <td>
+                                {
+                                    warehouses.find(
+                                        (warehouse) =>
+                                            warehouse.warehouse_id ===
+                                            product.fk_warehouse_id,
+                                    )?.name
+                                }
+                            </td>
+                            <td>{product.description}</td>
+                            <td>{product.price}</td>
+                            <td>{product.stock}</td>
+                        </tr>
+                    ))}
                     <tr>
                         <td>1</td>
                         <td>Producto 1</td>

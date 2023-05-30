@@ -33,3 +33,31 @@ export const createProduct = async (productData) => {
         return null;
     }
 };
+
+export const getProductById = async (productId) => {
+    try {
+        const response = await fetch(`${BASE_URL}/products/${productId}`);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.log('Error al obtener Producto por ID desde la API:', error);
+        return null;
+    }
+};
+
+export const getProductBySku = async (sku) => {
+    try {
+        const response = await fetch(`${BASE_URL}/products?sku=${sku}`);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.log('Error al obtener Producto por SKU desde la API:', error);
+        return null;
+    }
+};

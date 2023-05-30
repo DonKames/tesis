@@ -1,10 +1,34 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, Card, Col, Container, Form, Row } from 'react-bootstrap';
 import { useForm } from '../../../hooks/useForm';
-import { createProduct } from '../APIs/apiProducts';
+import { createProduct, getProductBySku } from '../APIs/apiProducts';
+import Select from 'react-select';
+import { useDispatch, useSelector } from 'react-redux';
+import { getBranches } from '../../locations/APIs/apiBranches';
+import { locationsSetBranches } from '../../locations/slice/locationsSlice';
 
 export const AddProductsScreen = () => {
-    const [formValues, handleInputChange, reset] = useForm({
+    const dispatch = useDispatch();
+
+    const { branches } = useSelector((state) => state.locations);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            if (!branches.length) {
+                const branches = await getBranches();
+                dispatch(locationsSetBranches(branches));
+            }
+        };
+        fetchData();
+    }, [getBranches, dispatch]);
+
+    const branchOptions = branches.map((branch) => ({
+        value: branch.branch_id,
+        label: branch.name,
+    }));
+
+    const [formValues, handleInputChange] = useForm({
+        branchId: '',
         name: 'camilo@hotmail.com',
         description: 'La descripción del producto',
         price: '10000',
@@ -18,7 +42,21 @@ export const AddProductsScreen = () => {
 
     const handleAddProduct = () => {
         console.log('Agregando producto');
-        createProduct(formValues);
+        const searchProduct = getProductBySku(sku);
+
+        if (!searchProduct) {
+            console.log('El producto no existe');
+            createProduct(formValues);
+        }
+    };
+
+    const handleBranchChange = (selectedOption) => {
+        handleInputChange({
+            target: {
+                name: 'branchId',
+                value: selectedOption ? selectedOption.value : '',
+            },
+        });
     };
 
     return (
@@ -38,6 +76,16 @@ export const AddProductsScreen = () => {
                                         name='sku'
                                         value={sku}
                                         onChange={handleInputChange}
+                                    />
+                                </Form.Group>
+                                <Form.Group>
+                                    <Form.Label>Sucursal</Form.Label>
+                                    <Select
+                                        isSearchable
+                                        placeholder='Seleccione la Sucursal'
+                                        name='fk_branch_id'
+                                        options={branchOptions}
+                                        onChange={handleBranchChange}
                                     />
                                 </Form.Group>
                                 <Form.Group>
