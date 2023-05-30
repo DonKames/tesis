@@ -78,7 +78,7 @@ export const AddProductsScreen = () => {
                                         onChange={handleInputChange}
                                     />
                                 </Form.Group>
-                                <Form.Group>
+                                {/* <Form.Group>
                                     <Form.Label>Sucursal</Form.Label>
                                     <Select
                                         isSearchable
@@ -87,7 +87,7 @@ export const AddProductsScreen = () => {
                                         options={branchOptions}
                                         onChange={handleBranchChange}
                                     />
-                                </Form.Group>
+                                </Form.Group> */}
                                 <Form.Group>
                                     <Form.Label>Nombre del producto</Form.Label>
                                     <Form.Control
@@ -120,7 +120,7 @@ export const AddProductsScreen = () => {
                                         onChange={handleInputChange}
                                     />
                                 </Form.Group>
-                                <Form.Group>
+                                {/* <Form.Group>
                                     <Form.Label>Stock del producto</Form.Label>
                                     <Form.Control
                                         type='number'
@@ -129,7 +129,7 @@ export const AddProductsScreen = () => {
                                         value={qty}
                                         onChange={handleInputChange}
                                     />
-                                </Form.Group>
+                                </Form.Group> */}
                                 <Form.Group>
                                     <Form.Label>Lote del producto</Form.Label>
                                     <Form.Control
