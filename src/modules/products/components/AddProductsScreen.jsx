@@ -22,10 +22,10 @@ export const AddProductsScreen = () => {
         fetchData();
     }, [getBranches, dispatch]);
 
-    const branchOptions = branches.map((branch) => ({
-        value: branch.branch_id,
-        label: branch.name,
-    }));
+    // const branchOptions = branches.map((branch) => ({
+    //     value: branch.branch_id,
+    //     label: branch.name,
+    // }));
 
     const [formValues, handleInputChange] = useForm({
         branchId: '',
@@ -50,14 +50,14 @@ export const AddProductsScreen = () => {
         }
     };
 
-    const handleBranchChange = (selectedOption) => {
-        handleInputChange({
-            target: {
-                name: 'branchId',
-                value: selectedOption ? selectedOption.value : '',
-            },
-        });
-    };
+    // const handleBranchChange = (selectedOption) => {
+    //     handleInputChange({
+    //         target: {
+    //             name: 'branchId',
+    //             value: selectedOption ? selectedOption.value : '',
+    //         },
+    //     });
+    // };
 
     return (
         <Container>

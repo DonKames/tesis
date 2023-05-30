@@ -64,8 +64,8 @@ const ProductsScreen = () => {
                     <tr>
                         <th>Sku</th>
                         <th>Nombre</th>
-                        <th>Sucursal</th>
-                        <th>Bodega</th>
+                        {/* <th>Sucursal</th>
+                        <th>Bodega</th> */}
                         <th>Descripción</th>
                         <th>Precio</th>
                         <th>Stock</th>
@@ -77,7 +77,7 @@ const ProductsScreen = () => {
                         <tr key={product.product_id}>
                             <td>{product.sku}</td>
                             <td>{product.name}</td>
-                            <td>
+                            {/* <td>
                                 {
                                     branches.find(
                                         (branch) =>
@@ -98,7 +98,7 @@ const ProductsScreen = () => {
                                             product.fk_warehouse_id,
                                     )?.name
                                 }
-                            </td>
+                            </td> */}
                             <td>{product.description}</td>
                             <td>{product.price}</td>
                             <td>{product.stock}</td>
