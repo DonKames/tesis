@@ -7,7 +7,7 @@ export const Layout = () => {
     return (
         <>
             <NavBar />
-            <Outlet />
+            <Outlet className='content' />
             <FooterBar />
         </>
     );

@@ -5,6 +5,8 @@ import Select from 'react-select';
 import { useForm } from '../../../hooks/useForm';
 import { productsSetSkus } from '../slice/productsSlice';
 import { getSkus } from '../APIs/apiSkus';
+import { createProduct } from '../APIs/apiProducts';
+import Swal from 'sweetalert2';
 
 export const AddProductForm = () => {
     const dispatch = useDispatch();
@@ -30,6 +32,7 @@ export const AddProductForm = () => {
     const handleBranchChange = (selectedOption) => {
         handleInputChange({
             target: {
+                name: 'branchId',
                 value: selectedOption ? selectedOption.value : '',
             },
         });
@@ -60,7 +63,31 @@ export const AddProductForm = () => {
         fetchData();
     }, [dispatch, skus]);
 
-    const handleAddProduct = () => {};
+    const handleAddProduct = async () => {
+        if (isValidSku) {
+            const response = await createProduct(formValues);
+
+            if (response) {
+                console.log('Producto creado');
+                console.log(response);
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Producto creado con éxito',
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
+            }
+        } else {
+            console.log('El producto no existe');
+            Swal.fire({
+                icon: 'error',
+                title: 'Error al crear el producto',
+                text: 'El sku no existe',
+            });
+        }
+    };
+
     return (
         <Card className='mb-3'>
             <Card.Body>
@@ -108,7 +135,7 @@ export const AddProductForm = () => {
                         <Select
                             isSearchable
                             placeholder='Seleccione la Sucursal'
-                            name='fk_branch_id'
+                            name='branchId'
                             options={branchOptions}
                             onChange={handleBranchChange}
                         />

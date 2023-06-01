@@ -70,8 +70,6 @@ const ProductsScreen = () => {
                     <tr>
                         <th>Sku</th>
                         <th>Nombre</th>
-                        {/* <th>Sucursal</th>
-                        <th>Bodega</th> */}
                         <th>Descripción</th>
                         <th>Precio</th>
                         <th>Stock</th>
@@ -83,28 +81,6 @@ const ProductsScreen = () => {
                         <tr key={sku.sku_id}>
                             <td>{sku.sku}</td>
                             <td>{sku.name}</td>
-                            {/* <td>
-                                {
-                                    branches.find(
-                                        (branch) =>
-                                            branch.branch_id ===
-                                            warehouses.find(
-                                                (warehouse) =>
-                                                    warehouse.warehouse_id ===
-                                                    product.fk_warehouse_id,
-                                            )?.fk_branch_id,
-                                    )?.name
-                                }
-                            </td>
-                            <td>
-                                {
-                                    warehouses.find(
-                                        (warehouse) =>
-                                            warehouse.warehouse_id ===
-                                            product.fk_warehouse_id,
-                                    )?.name
-                                }
-                            </td> */}
                             <td>{sku.description}</td>
                             <td>
                                 $
@@ -143,13 +119,49 @@ const ProductsScreen = () => {
             >
                 <thead>
                     <tr>
-                        <th>Nombre</th>
-                        <th>Descripción</th>
-                        <th>Precio</th>
-                        <th>Stock</th>
+                        <th>Sku</th>
+                        <th>Sucursal</th>
+                        <th>Bodega</th>
+                        <th>EPC</th>
                     </tr>
                 </thead>
-                <tbody></tbody>
+                <tbody>
+                    {products?.map((product, index) => (
+                        <tr key={product.product_id}>
+                            <td>
+                                {
+                                    skus.find(
+                                        (sku) =>
+                                            sku.sku_id === product.fk_sku_id,
+                                    )?.sku
+                                }
+                            </td>
+                            <td>
+                                {
+                                    branches.find(
+                                        (branch) =>
+                                            branch.branch_id ===
+                                            warehouses.find(
+                                                (warehouse) =>
+                                                    warehouse.warehouse_id ===
+                                                    product.fk_warehouse_id,
+                                            )?.fk_branch_id,
+                                    )?.name
+                                }
+                            </td>
+                            <td>
+                                {
+                                    warehouses.find(
+                                        (warehouse) =>
+                                            warehouse.warehouse_id ===
+                                            product.fk_warehouse_id,
+                                    )?.name
+                                }
+                            </td>
+                            <td>{product.epc}</td>
+                        </tr>
+                    ))}
+                </tbody>
             </Table>
         </Container>
     );
