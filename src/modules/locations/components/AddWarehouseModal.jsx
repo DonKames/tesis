@@ -2,10 +2,14 @@ import React, { useState } from 'react';
 import { Button, Form, Modal, Row } from 'react-bootstrap';
 import Select from 'react-select';
 import { useForm } from '../../../hooks/useForm';
-import { useSelector } from 'react-redux';
-import { createWarehouse } from '../APIs/apiWarehouses';
+import { useDispatch, useSelector } from 'react-redux';
+import { createWarehouse, getWarehouses } from '../APIs/apiWarehouses';
+import Swal from 'sweetalert2';
+import { locationsSetWarehouses } from '../slice/locationsSlice';
 
 export const AddWarehouseModal = () => {
+    const dispatch = useDispatch();
+
     const [showModal, setShowModal] = useState(false);
 
     const { branches } = useSelector((state) => state.locations);
@@ -32,9 +36,30 @@ export const AddWarehouseModal = () => {
         setShowModal(true);
     };
 
-    const handleFormSubmit = (e) => {
+    const handleFormSubmit = async (e) => {
         e.preventDefault();
-        createWarehouse(formValues);
+        const response = await createWarehouse(formValues);
+
+        if (response) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Bodega creada con éxito',
+                showConfirmButton: false,
+                timer: 1500,
+            });
+
+            handleCloseModal();
+
+            const warehouses = await getWarehouses();
+            dispatch(locationsSetWarehouses(warehouses));
+        } else {
+            console.log(response);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error al crear la Bodega',
+                text: 'Verifique los datos ingresados',
+            });
+        }
     };
 
     const handleBranchChange = (selectedOption) => {

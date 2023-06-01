@@ -202,9 +202,6 @@ export const LocationsScreen = () => {
                                             </td>
                                         </tr>
                                     ))}
-                                    <tr>
-                                        <td>bodega</td>
-                                    </tr>
                                 </tbody>
                             </Table>
                         </Card>

@@ -1,12 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
 import Select from 'react-select';
-import { createBranch } from '../APIs/apiBranches';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import Swal from 'sweetalert2';
+
+import { createBranch, getBranches } from '../APIs/apiBranches';
 import { useForm } from '../../../hooks/useForm';
+import { getWarehouses } from '../APIs/apiWarehouses';
+import {
+    locationsSetBranches,
+    locationsSetWarehouses,
+} from '../slice/locationsSlice';
 
 export const AddBranchModal = () => {
+    const dispatch = useDispatch();
+
     const [showModal, setShowModal] = useState(false);
 
     const { countries, regions } = useSelector((state) => state.locations);
@@ -23,7 +32,7 @@ export const AddBranchModal = () => {
         address: '',
     });
 
-    const { branchName, country, region, address } = formValues;
+    const { branchName, country, address } = formValues;
 
     const filteredRegions =
         country === '' || country === undefined
@@ -39,17 +48,41 @@ export const AddBranchModal = () => {
 
     const handleCloseModal = () => {
         setShowModal(false);
+        reset();
     };
 
     const handleOpenModal = () => {
         setShowModal(true);
     };
 
-    const handleFormSubmit = (e) => {
+    const handleFormSubmit = async (e) => {
         // console.log('form submit');
         // console.log(JSON.stringify(formValues));
         e.preventDefault();
-        createBranch(formValues);
+        const response = await createBranch(formValues);
+
+        if (response) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Sucursal creada con éxito',
+                showConfirmButton: false,
+                timer: 1500,
+            });
+
+            handleCloseModal();
+
+            const branches = await getBranches();
+            dispatch(locationsSetBranches(branches));
+
+            const warehouses = await getWarehouses();
+            dispatch(locationsSetWarehouses(warehouses));
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error al agregar la sucursal',
+                text: 'Ha ocurrido un error al intentar agregar la sucursal. Por favor, inténtalo nuevamente.',
+            });
+        }
     };
 
     const handleCountryChange = (selectedOption) => {
@@ -111,6 +144,7 @@ export const AddBranchModal = () => {
                                         options={countryOptions}
                                         onChange={handleCountryChange}
                                         placeholder='Seleccione País'
+                                        defaultValue={countryOptions[34]}
                                     />
                                 </Form.Group>
                             </Col>

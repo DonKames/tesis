@@ -3,6 +3,7 @@ import { types } from '../../../types/types';
 
 const initialState = {
     products: [],
+    skus: [],
 };
 
 export const productsSlice = createSlice({
@@ -14,7 +15,13 @@ export const productsSlice = createSlice({
             ...state,
             products: action.payload,
         }),
+
+        // Skus
+        productsSetSkus: (state, action) => ({
+            ...state,
+            skus: action.payload,
+        }),
     },
 });
-export const { productsSetProducts } = productsSlice.actions;
+export const { productsSetProducts, productsSetSkus } = productsSlice.actions;
 export default productsSlice.reducer;

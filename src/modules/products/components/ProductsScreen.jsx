@@ -4,18 +4,19 @@ import { Container, Row, Col, Table, Button } from 'react-bootstrap';
 import SearchProductBar from './SearchProductBar';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProducts } from '../APIs/apiProducts';
-import { productsSetProducts } from '../slice/productsSlice';
+import { productsSetProducts, productsSetSkus } from '../slice/productsSlice';
 import {
     locationsSetBranches,
     locationsSetWarehouses,
 } from '../../locations/slice/locationsSlice';
 import { getBranches } from '../../locations/APIs/apiBranches';
 import { getWarehouses } from '../../locations/APIs/apiWarehouses';
+import { getSkus } from '../APIs/apiSkus';
 
 const ProductsScreen = () => {
     const dispatch = useDispatch();
 
-    const { products } = useSelector((state) => state.products);
+    const { products, skus } = useSelector((state) => state.products);
 
     const { branches, warehouses } = useSelector((state) => state.locations);
 
@@ -35,6 +36,11 @@ const ProductsScreen = () => {
                 const fetchedWarehouses = await getWarehouses();
                 dispatch(locationsSetWarehouses(fetchedWarehouses));
             }
+
+            if (!skus.length) {
+                const fetchedSkus = await getSkus();
+                dispatch(productsSetSkus(fetchedSkus));
+            }
         };
 
         fetchData();
@@ -44,7 +50,7 @@ const ProductsScreen = () => {
         <Container>
             <Row className='mt-3 mb-2'>
                 <Col>
-                    <h1>Productos</h1>
+                    <h1>SKUs</h1>
                 </Col>
                 <Col>
                     <SearchProductBar />
@@ -73,10 +79,10 @@ const ProductsScreen = () => {
                 </thead>
                 <tbody>
                     {/* code to map through product data and render rows */}
-                    {products.map((product, index) => (
-                        <tr key={product.product_id}>
-                            <td>{product.sku}</td>
-                            <td>{product.name}</td>
+                    {skus?.map((sku, index) => (
+                        <tr key={sku.sku_id}>
+                            <td>{sku.sku}</td>
+                            <td>{sku.name}</td>
                             {/* <td>
                                 {
                                     branches.find(
@@ -99,9 +105,21 @@ const ProductsScreen = () => {
                                     )?.name
                                 }
                             </td> */}
-                            <td>{product.description}</td>
-                            <td>{product.price}</td>
-                            <td>{product.stock}</td>
+                            <td>{sku.description}</td>
+                            <td>
+                                $
+                                {sku.price.toLocaleString('es-CL', {
+                                    maximumFractionDigits: 0,
+                                })}
+                            </td>
+                            <td>
+                                {skus.reduce((accumulator, obj) => {
+                                    if (obj.sku === sku.sku) {
+                                        return accumulator + 1;
+                                    }
+                                    return accumulator;
+                                }, 0)}
+                            </td>
                         </tr>
                     ))}
                     <tr>
@@ -112,6 +130,26 @@ const ProductsScreen = () => {
                         <td>50</td>
                     </tr>
                 </tbody>
+            </Table>
+            <Row>
+                <Col>
+                    <h1>Productos</h1>
+                </Col>
+            </Row>
+            <Table
+                striped
+                bordered
+                hover
+            >
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                        <th>Precio</th>
+                        <th>Stock</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
             </Table>
         </Container>
     );

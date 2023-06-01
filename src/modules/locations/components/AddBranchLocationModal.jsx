@@ -1,14 +1,20 @@
 import React, { useState } from 'react';
+
 import { Button, Form, Modal, Row } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Select from 'react-select';
+import Swal from 'sweetalert2';
+
 import { useForm } from '../../../hooks/useForm';
 import {
     createBranchLocation,
     getBranchLocations,
 } from '../APIs/apiBranchLocation';
+import { locationsSetBranchLocations } from '../slice/locationsSlice';
 
 export const AddBranchLocationModal = () => {
+    const dispatch = useDispatch();
+
     const [showModal, setShowModal] = useState(false);
 
     const { branches } = useSelector((state) => state.locations);
@@ -44,10 +50,30 @@ export const AddBranchLocationModal = () => {
         });
     };
 
-    const handleFormSubmit = (e) => {
+    const handleFormSubmit = async (e) => {
         e.preventDefault();
-        createBranchLocation(formValues);
-        getBranchLocations();
+        const response = await createBranchLocation(formValues);
+
+        if (response) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Lugar creado con éxito',
+                showConfirmButton: false,
+                timer: 1500,
+            });
+
+            handleCloseModal();
+
+            const branchLocations = await getBranchLocations();
+            dispatch(locationsSetBranchLocations(branchLocations));
+        } else {
+            console.log(response);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error al crear el Lugar',
+                text: 'Verifique los datos ingresados',
+            });
+        }
     };
 
     return (
