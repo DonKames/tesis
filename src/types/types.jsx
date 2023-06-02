@@ -3,4 +3,5 @@ export const types = {
     ui: '[Ui]',
     locations: '[Locations]',
     products: '[Products]',
+    users: '[Users]',
 };

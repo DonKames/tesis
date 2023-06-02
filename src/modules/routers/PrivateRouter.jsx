@@ -7,6 +7,7 @@ import { ProductsRouter } from '../products/routers/ProductsRouter';
 import MerchantApiTest from '../../tests/MerchantApiTest';
 import { Layout } from '../../shared/ui/Layout';
 import { LocationsScreen } from '../locations/components/LocationsScreen';
+import { UsersScreen } from '../users/components/UsersScreen';
 
 export const PrivateRouter = () => {
     return (
@@ -34,6 +35,10 @@ export const PrivateRouter = () => {
                 <Route
                     path='locations'
                     element={<LocationsScreen />}
+                />
+                <Route
+                    path='users'
+                    element={<UsersScreen />}
                 />
                 <Route
                     path='test'

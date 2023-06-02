@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+
 import { Col, Container, Row } from 'react-bootstrap';
-import { useForm } from '../../../hooks/useForm';
 import { useDispatch, useSelector } from 'react-redux';
+
 import { getBranches } from '../../locations/APIs/apiBranches';
 import { locationsSetBranches } from '../../locations/slice/locationsSlice';
 import { AddSkuForm } from './addSkuForm';
@@ -21,27 +22,6 @@ export const AddProductsScreen = () => {
         };
         fetchData();
     }, [getBranches, dispatch]);
-
-    const branchOptions = branches.map((branch) => ({
-        value: branch.branch_id,
-        label: branch.name,
-    }));
-
-    const [formProductValues, handleProductInputChange] = useForm({
-        fkSku: '',
-        epc: '',
-    });
-
-    const { epc, fkSku } = formProductValues;
-
-    const handleBranchChange = (selectedOption) => {
-        handleProductInputChange({
-            target: {
-                name: 'branchId',
-                value: selectedOption ? selectedOption.value : '',
-            },
-        });
-    };
 
     return (
         <Container>
