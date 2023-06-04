@@ -1,8 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Card, Col, Container, Row, Table } from 'react-bootstrap';
 import { AddUsersModal } from './AddUsersModal';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUsers } from '../apis/apiUsers';
+import { usersSetUsers } from '../slice/usersSlice';
 
 export const UsersScreen = () => {
+    const dispatch = useDispatch();
+
+    const { users, roles } = useSelector((state) => state.users);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            if (!users.length) {
+                const fetchedUsers = await getUsers();
+                dispatch(usersSetUsers(fetchedUsers));
+            }
+        };
+    });
+
     return (
         <Container
             fluid

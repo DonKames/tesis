@@ -3,6 +3,7 @@ import { types } from '../../../types/types';
 
 const initialState = {
     users: [],
+    roles: [],
 };
 
 export const usersSlice = createSlice({
@@ -14,7 +15,13 @@ export const usersSlice = createSlice({
             ...state,
             users: action.payload,
         }),
+
+        // Roles
+        usersSetRoles: (state, action) => ({
+            ...state,
+            roles: action.payload,
+        }),
     },
 });
-export const { usersSetUsers } = usersSlice.actions;
+export const { usersSetUsers, usersSetRoles } = usersSlice.actions;
 export default usersSlice.reducer;
