@@ -29,21 +29,10 @@ export const uiSlice = createSlice({
             ...state,
             loading: false,
         }),
-
-        // Countries
-        uiSetCountries: (state, action) => ({
-            ...state,
-            countries: action.payload,
-        }),
     },
 });
 
-export const {
-    uiSetError,
-    uiRemoveError,
-    uiStartLoading,
-    uiFinishLoading,
-    uiSetCountries,
-} = uiSlice.actions;
+export const { uiSetError, uiRemoveError, uiStartLoading, uiFinishLoading } =
+    uiSlice.actions;
 
 export default uiSlice.reducer;

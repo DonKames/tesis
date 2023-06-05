@@ -64,9 +64,9 @@ export const AddBranchModal = () => {
         if (response) {
             Swal.fire({
                 icon: 'success',
-                title: 'Sucursal creada con éxito',
                 showConfirmButton: false,
                 timer: 1500,
+                title: 'Sucursal creada con éxito',
             });
 
             handleCloseModal();

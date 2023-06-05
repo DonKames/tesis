@@ -1,18 +1,46 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
 import { useForm } from '../../../hooks/useForm';
+import Select from 'react-select';
+import { useDispatch, useSelector } from 'react-redux';
+import { createUser, getUsers } from '../apis/apiUsers';
+import Swal from 'sweetalert2';
+import { usersSetUsers } from '../slice/usersSlice';
+import validator from 'validator';
+import { uiSetError } from '../../../shared/ui/uiSlice';
 
 export const AddUsersModal = () => {
+    const dispatch = useDispatch();
+
+    const { roles } = useSelector((state) => state.users);
+    const { msgError } = useSelector((state) => state.ui);
+
     const [showModal, setShowModal] = useState(false);
 
+    const roleOptions = roles.map((role) => ({
+        value: role.role_id,
+        label: role.name,
+    }));
+
     const [formValues, handleInputChange, reset] = useForm({
-        userName: '',
-        userLastName: '',
-        userRole: '',
-        userEmail: '',
+        name: 'Nombre',
+        lastName: 'Apellido',
+        role: 1,
+        email: 'asd@asd.com',
+        temporalPass: '123456',
     });
 
-    const { userName, userLastName, userRole, userEmail } = formValues;
+    const { name, lastName, email, temporalPass, role } = formValues;
+
+    useEffect(() => {
+        if (msgError) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error al crear el usuario',
+                text: msgError,
+            });
+        }
+    }, [msgError]);
 
     const handleOpenModal = () => {
         setShowModal(true);
@@ -20,13 +48,89 @@ export const AddUsersModal = () => {
 
     const handleCloseModal = () => {
         setShowModal(false);
+        reset();
     };
 
-    const handleFormSubmit = (e) => {
+    const isFormValid = async () => {
+        if (
+            email.trim().length === 0 ||
+            temporalPass.trim().length === 0 ||
+            name.trim().length === 0 ||
+            lastName.trim().length === 0
+        ) {
+            const msgError = 'Todos los campos son obligatorios';
+            dispatch(uiSetError(msgError));
+            return false;
+        } else if (!validator.isEmail(email)) {
+            const msgError = 'El email no es válido';
+            dispatch(uiSetError(msgError));
+            return false;
+        } else if (temporalPass.trim().length < 6) {
+            const msgError =
+                'La clave temporal debe tener al menos 6 caracteres';
+            dispatch(uiSetError(msgError));
+            return false;
+        } else if (!validator.isAlpha(name) || !validator.isAlpha(lastName)) {
+            const msgError = 'El nombre y apellido no pueden contener números';
+            dispatch(uiSetError(msgError));
+            return false;
+        } else if (!validator.isNumeric(role.toString())) {
+            const msgError = 'El rol debe ser una opción válida';
+            dispatch(uiSetError(msgError));
+            return false;
+        } else if (!validator.isEmail(email)) {
+            const msgError = 'El email no es válido';
+            dispatch(uiSetError(msgError));
+            return false;
+        }
+
+        return true;
+    };
+
+    const handleFormSubmit = async (e) => {
         e.preventDefault();
-        console.log('form submit');
-        console.log(JSON.stringify(formValues));
-        reset();
+
+        let response;
+
+        if (await isFormValid()) {
+            response = await createUser(formValues);
+        }
+
+        console.log(response);
+
+        if (response?.status === 201) {
+            console.log(response);
+
+            Swal.fire({
+                icon: 'success',
+                showConfirmButton: false,
+                timer: 1500,
+                title: 'Usuario creado con éxito',
+            });
+
+            handleCloseModal();
+
+            const users = await getUsers();
+            dispatch(usersSetUsers(users));
+            handleCloseModal();
+        }
+        // } else {
+        //     console.log(response);
+        //     Swal.fire({
+        //         icon: 'error',
+        //         title: 'Error al crear el usuario',
+        //         text: msgError,
+        //     });
+        // }
+    };
+
+    const handleRoleChange = (selectedRole) => {
+        handleInputChange({
+            target: {
+                name: 'userRole',
+                value: selectedRole ? selectedRole.value : '',
+            },
+        });
     };
 
     return (
@@ -50,45 +154,106 @@ export const AddUsersModal = () => {
                     <Form>
                         <Row>
                             <Col>
+                                {msgError && (
+                                    <h6 className='text-danger'>{msgError}</h6>
+                                )}
+
                                 <Form.Group>
                                     <Form.Label>Nombre Usuario</Form.Label>
                                     <Form.Control
+                                        autoComplete='off'
                                         type='text'
                                         placeholder='Ingrese el nombre del usuario'
-                                        name='userName'
-                                        value={userName}
+                                        name='name'
+                                        value={name}
                                         onChange={handleInputChange}
                                     />
+                                    {!validator.isAlpha(name) && (
+                                        <h6 className='text-danger'>
+                                            El nombre no puede contener números
+                                            o caracteres especiales
+                                        </h6>
+                                    )}
                                 </Form.Group>
                                 <Form.Group>
                                     <Form.Label>Apellido Usuario</Form.Label>
                                     <Form.Control
+                                        autoComplete='off'
                                         type='text'
                                         placeholder='Ingrese el apellido del usuario'
-                                        name='userLastName'
-                                        value={userLastName}
+                                        name='lastName'
+                                        value={lastName}
                                         onChange={handleInputChange}
                                     />
+                                    {!validator.isAlpha(lastName) && (
+                                        <h6 className='text-danger'>
+                                            El apellido no puede contener
+                                            números o caracteres especiales
+                                        </h6>
+                                    )}
                                 </Form.Group>
                                 <Form.Group>
                                     <Form.Label>Rol Usuario</Form.Label>
-                                    <Form.Control
-                                        type='text'
-                                        placeholder='Ingrese el rol del usuario'
-                                        name='userRole'
-                                        value={userRole}
-                                        onChange={handleInputChange}
+                                    <Select
+                                        isSearchable
+                                        name='role'
+                                        options={roleOptions}
+                                        onChange={handleRoleChange}
+                                        placeholder='Seleccione un rol'
+                                        defaultValue={roleOptions[0]}
                                     />
                                 </Form.Group>
+                                {!role && (
+                                    <h6 className='text-danger'>
+                                        Por favor, seleccione un rol.
+                                    </h6>
+                                )}
+                                {/* {role && !isValidRole(role) && (
+                                    <h6 className='text-danger'>
+                                        El rol seleccionado no es válido.
+                                    </h6>
+                                )} */}
                                 <Form.Group>
                                     <Form.Label>E-mail Usuario</Form.Label>
                                     <Form.Control
+                                        autoComplete='off'
                                         type='text'
                                         placeholder='Ingrese el e-mail del usuario'
-                                        name='userName'
-                                        value={userEmail}
+                                        name='email'
+                                        value={email}
                                         onChange={handleInputChange}
                                     />
+                                    {!validator.isEmail(email) &&
+                                        validator.isLength(email, {
+                                            min: 6,
+                                            max: undefined,
+                                        }) &&
+                                        !validator.isEmpty(email) && (
+                                            <h6 className='text-danger'>
+                                                El e-mail no es válido
+                                            </h6>
+                                        )}
+                                </Form.Group>
+                                <Form.Group>
+                                    <Form.Label>Clave Temporal</Form.Label>
+                                    <Form.Control
+                                        autoComplete='off'
+                                        type='text'
+                                        placeholder='Ingrese la clave temporal del usuario'
+                                        name='temporalPass'
+                                        value={temporalPass}
+                                        onChange={handleInputChange}
+                                    />
+                                    {!validator.isLength(temporalPass, {
+                                        min: 6,
+                                        max: 20,
+                                    }) &&
+                                        !validator.isEmpty(temporalPass) && (
+                                            <h6 className='text-danger'>
+                                                La clave temporal debe tener
+                                                entre 6 y 20 caracteres
+                                            </h6>
+                                        )}
                                 </Form.Group>
                             </Col>
                         </Row>

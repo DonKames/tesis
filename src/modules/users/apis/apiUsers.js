@@ -2,48 +2,52 @@ const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 export const getUsers = async () => {
     try {
-        const response = await fetch(`${BASE_URL}/skus`);
+        const response = await fetch(`${BASE_URL}/users`);
         const data = await response.json();
         return data;
     } catch (error) {
-        console.log('Error al obtener SKUS desde la API:', error);
-        return [];
+        console.log('Error al obtener USUARIOS desde la API:', error);
+        return error;
     }
 };
 
-export const createUser = async (skuData) => {
+export const createUser = async (userData) => {
     try {
-        console.log(skuData);
-        const response = await fetch(`${BASE_URL}/skus`, {
-            method: 'POST', // especifica el método HTTP
+        const response = await fetch(`${BASE_URL}/users`, {
+            method: 'POST',
             headers: {
-                'Content-Type': 'application/json', // especifica el tipo de contenido
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify(skuData), // convierte los datos del país a una cadena JSON
+            body: JSON.stringify(userData),
         });
 
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            console.log(await response.json());
+            throw new Error(response.error);
         }
 
         const data = await response.json();
-        return data;
+
+        delete data.pass;
+
+        return { status: response.status, data };
     } catch (error) {
-        console.log('Error al crear SKU en la API:', error);
-        return null;
+        console.log('Error al crear USUARIO en la API:', error);
+
+        return error;
     }
 };
 
-export const getUserById = async (skuId) => {
+export const getUserById = async (userId) => {
     try {
-        const response = await fetch(`${BASE_URL}/products/${skuId}`);
+        const response = await fetch(`${BASE_URL}/users/${userId}`);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
         return data;
     } catch (error) {
-        console.log('Error al obtener SKU por ID desde la API:', error);
+        console.log('Error al obtener USUARIOS por ID desde la API:', error);
         return null;
     }
 };
