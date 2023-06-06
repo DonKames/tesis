@@ -10,6 +10,61 @@ import { authLogin, authLogout } from '../authSlice';
 import Swal from 'sweetalert2';
 import { uiFinishLoading, uiStartLoading } from '../../../shared/ui/uiSlice';
 
+// Vamos de nuevo
+
+export const startRegisterNewUserNameEmailPass = (name, email, password) => {
+    return async (dispatch) => {
+        try {
+            const { user } = await auth.createUserWithEmailAndPassword(
+                email,
+                password,
+            );
+
+            // Actualizar el perfil del usuario con el nombre
+            await user.updateProfile({
+                displayName: name,
+            });
+
+            const { uid, displayName } = user;
+
+            console.log(uid, displayName);
+
+            // No se realiza el inicio de sesión automático
+
+            // dispatch(authLogin({ uid, displayName }));
+        } catch (error) {
+            console.log(error);
+            Swal.fire('Error', 'Error en el registro', 'error');
+        }
+    };
+};
+
+// export const startRegisterNewUserNameEmailPass = (name, email, password) => {
+//     return async (dispatch) => {
+//         try {
+//             const { user } = await auth.createUserWithEmailAndPassword(
+//                 email,
+//                 password,
+//             );
+
+//             // Actualizar el perfil del usuario con el nombre
+//             await user.updateProfile({
+//                 displayName: name,
+//             });
+
+//             const { uid, displayName } = user;
+//             console.log(uid, displayName);
+
+//             // No se realiza el inicio de sesión automático
+
+//             // dispatch(authLogin({ uid, displayName }));
+//         } catch (error) {
+//             console.log(error);
+//             Swal.fire('Error', 'Error en el registro', 'error');
+//         }
+//     };
+// };
+
 export const startRegisterNameEmailPass = (name, email, password) => {
     return (dispatch) => {
         createUserWithEmailAndPassword(auth, email, password)
@@ -29,7 +84,7 @@ export const startRegisterNameEmailPass = (name, email, password) => {
 };
 
 export const startLoginEmailPassword = (email, password) => {
-    return (dispatch) => {
+    return async (dispatch) => {
         dispatch(uiStartLoading());
 
         signInWithEmailAndPassword(auth, email, password)

@@ -8,6 +8,7 @@ import Swal from 'sweetalert2';
 import { usersSetUsers } from '../slice/usersSlice';
 import validator from 'validator';
 import { uiSetError } from '../../../shared/ui/uiSlice';
+import { startRegisterNewUserNameEmailPass } from '../../auth/actions/auth';
 
 export const AddUsersModal = () => {
     const dispatch = useDispatch();
@@ -25,7 +26,7 @@ export const AddUsersModal = () => {
     const [formValues, handleInputChange, reset] = useForm({
         name: 'Nombre',
         lastName: 'Apellido',
-        role: 1,
+        role: '',
         email: 'asd@asd.com',
         temporalPass: '123456',
     });
@@ -93,13 +94,24 @@ export const AddUsersModal = () => {
         let response;
 
         if (await isFormValid()) {
+            console.log('no es error de validación');
             response = await createUser(formValues);
         }
 
         console.log(response);
 
         if (response?.status === 201) {
-            console.log(response);
+            try {
+                dispatch(
+                    startRegisterNewUserNameEmailPass(
+                        name,
+                        email,
+                        temporalPass,
+                    ),
+                );
+            } catch (error) {
+                console.log('Error al registrar en firebase', error);
+            }
 
             Swal.fire({
                 icon: 'success',
@@ -113,21 +125,20 @@ export const AddUsersModal = () => {
             const users = await getUsers();
             dispatch(usersSetUsers(users));
             handleCloseModal();
+        } else {
+            console.log(response);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error al crear el usuario',
+                text: response || msgError,
+            });
         }
-        // } else {
-        //     console.log(response);
-        //     Swal.fire({
-        //         icon: 'error',
-        //         title: 'Error al crear el usuario',
-        //         text: msgError,
-        //     });
-        // }
     };
 
     const handleRoleChange = (selectedRole) => {
         handleInputChange({
             target: {
-                name: 'userRole',
+                name: 'role',
                 value: selectedRole ? selectedRole.value : '',
             },
         });
@@ -154,10 +165,6 @@ export const AddUsersModal = () => {
                     <Form>
                         <Row>
                             <Col>
-                                {msgError && (
-                                    <h6 className='text-danger'>{msgError}</h6>
-                                )}
-
                                 <Form.Group>
                                     <Form.Label>Nombre Usuario</Form.Label>
                                     <Form.Control
@@ -200,7 +207,7 @@ export const AddUsersModal = () => {
                                         options={roleOptions}
                                         onChange={handleRoleChange}
                                         placeholder='Seleccione un rol'
-                                        defaultValue={roleOptions[0]}
+                                        // defaultValue={roleOptions[0]}
                                     />
                                 </Form.Group>
                                 {!role && (

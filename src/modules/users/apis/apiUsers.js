@@ -13,6 +13,7 @@ export const getUsers = async () => {
 
 export const createUser = async (userData) => {
     try {
+        console.log(userData);
         const response = await fetch(`${BASE_URL}/users`, {
             method: 'POST',
             headers: {
@@ -22,13 +23,12 @@ export const createUser = async (userData) => {
         });
 
         if (!response.ok) {
-            console.log(await response.json());
-            throw new Error(response.error);
+            const resp = await response.json();
+            console.log(resp.error);
+            throw new Error(resp.error.detail);
         }
 
         const data = await response.json();
-
-        delete data.pass;
 
         return { status: response.status, data };
     } catch (error) {
@@ -47,7 +47,9 @@ export const getUserById = async (userId) => {
         const data = await response.json();
         return data;
     } catch (error) {
-        console.log('Error al obtener USUARIOS por ID desde la API:', error);
+        console.log(error);
+        const msgError = await error.detail;
+        console.log('Error al obtener USUARIOS por ID desde la API:', msgError);
         return null;
     }
 };

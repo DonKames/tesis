@@ -94,17 +94,6 @@ export const MainScreen = () => {
                     </Card>
                 </Col>
             </Row>
-
-            <Row className='my-3'>
-                <Col>
-                    <button
-                        className='btn btn-secondary'
-                        onClick={() => history.push('pbl/login')}
-                    >
-                        Cerrar sesión
-                    </button>
-                </Col>
-            </Row>
         </Container>
     );
 };
