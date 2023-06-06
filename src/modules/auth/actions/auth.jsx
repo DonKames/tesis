@@ -1,5 +1,6 @@
 import {
     createUserWithEmailAndPassword,
+    getAuth,
     signInWithEmailAndPassword,
     signInWithPopup,
     signOut,
@@ -13,20 +14,22 @@ import { uiFinishLoading, uiStartLoading } from '../../../shared/ui/uiSlice';
 // Vamos de nuevo
 
 export const startRegisterNewUserNameEmailPass = (name, email, password) => {
-    return async (dispatch) => {
+    return async (dispatch, getState) => {
         try {
-            const { user } = await auth.createUserWithEmailAndPassword(
+            const auth = getAuth();
+
+            const { user } = await createUserWithEmailAndPassword(
+                auth,
                 email,
                 password,
             );
 
             // Actualizar el perfil del usuario con el nombre
-            await user.updateProfile({
+            await updateProfile(user, {
                 displayName: name,
             });
 
             const { uid, displayName } = user;
-
             console.log(uid, displayName);
 
             // No se realiza el inicio de sesión automático
@@ -42,13 +45,14 @@ export const startRegisterNewUserNameEmailPass = (name, email, password) => {
 // export const startRegisterNewUserNameEmailPass = (name, email, password) => {
 //     return async (dispatch) => {
 //         try {
-//             const { user } = await auth.createUserWithEmailAndPassword(
+//             const { user } = await createUserWithEmailAndPassword(
+//                 auth,
 //                 email,
 //                 password,
 //             );
 
 //             // Actualizar el perfil del usuario con el nombre
-//             await user.updateProfile({
+//             await updateProfile(user, {
 //                 displayName: name,
 //             });
 
