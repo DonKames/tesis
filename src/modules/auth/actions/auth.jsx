@@ -10,6 +10,7 @@ import { auth, googleAuthProvider } from '../../../firebase/firebase-config';
 import { authLogin, authLogout } from '../authSlice';
 import Swal from 'sweetalert2';
 import { uiFinishLoading, uiStartLoading } from '../../../shared/ui/uiSlice';
+import { reset } from '../../../shared/resetSlice';
 
 // Vamos de nuevo
 
@@ -73,12 +74,14 @@ export const startRegisterNameEmailPass = (name, email, password) => {
     return (dispatch) => {
         createUserWithEmailAndPassword(auth, email, password)
             .then(async ({ user }) => {
+                console.log(name);
                 await updateProfile(user, {
                     displayName: name,
                 });
-                const { uid, displayName } = user;
-                console.log(uid, displayName);
-                dispatch(authLogin({ uid, displayName }));
+                const { uid, displayName, email } = user;
+                console.log(uid, displayName, email);
+                dispatch(authLogin({ uid, displayName, email }));
+                return user;
             })
             .catch((e) => {
                 console.log(e);
@@ -87,14 +90,34 @@ export const startRegisterNameEmailPass = (name, email, password) => {
     };
 };
 
-export const startLoginEmailPassword = (email, password) => {
+// Original
+// export const startRegisterNameEmailPass = (name, email, password) => {
+//     return (dispatch) => {
+//         createUserWithEmailAndPassword(auth, email, password)
+//             .then(async ({ user }) => {
+//                 await updateProfile(user, {
+//                     displayName: name,
+//                 });
+//                 const { uid, displayName } = user;
+//                 console.log(uid, displayName);
+//                 dispatch(authLogin({ uid, displayName }));
+//             })
+//             .catch((e) => {
+//                 console.log(e);
+//                 Swal.fire('Error', 'Error en el registro', 'error');
+//             });
+//     };
+// };
+
+export const startLoginEmailPassword = (email, password, name) => {
     return async (dispatch) => {
         dispatch(uiStartLoading());
 
         signInWithEmailAndPassword(auth, email, password)
             .then(({ user }) => {
-                const { uid, displayName } = user;
-                dispatch(authLogin({ uid, displayName }));
+                console.log(user);
+                const { uid, displayName, email } = user;
+                dispatch(authLogin({ uid, displayName, email }));
                 dispatch(uiFinishLoading());
             })
             .catch((e) => {
@@ -140,6 +163,7 @@ export const startGoogleLogin = () => {
 export const startLogout = () => {
     return async (dispatch) => {
         await signOut(auth);
+        dispatch(reset());
         dispatch(authLogout());
     };
 };

@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { types } from '../../../types/types';
+import { reset } from '../../../shared/resetSlice';
 
 const initialState = {
     countries: [],
@@ -42,6 +43,11 @@ export const locationsSlice = createSlice({
             ...state,
             warehouses: action.payload,
         }),
+    },
+    extraReducers: (builder) => {
+        builder.addCase(reset, () => {
+            return initialState;
+        });
     },
 });
 export const {

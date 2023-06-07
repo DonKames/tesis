@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { types } from '../../types/types';
+import { reset } from '../resetSlice';
 
 const initialState = {
     loading: false,
@@ -29,6 +30,11 @@ export const uiSlice = createSlice({
             ...state,
             loading: false,
         }),
+    },
+    extraReducers: (builder) => {
+        builder.addCase(reset, () => {
+            return initialState;
+        });
     },
 });
 

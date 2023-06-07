@@ -27,7 +27,7 @@ export const AddUsersModal = () => {
         name: 'Nombre',
         lastName: 'Apellido',
         role: '',
-        email: 'asd@asd.com',
+        email: 'a@a.com',
         temporalPass: '123456',
     });
 
@@ -101,17 +101,17 @@ export const AddUsersModal = () => {
         console.log(response);
 
         if (response?.status === 201) {
-            try {
-                dispatch(
-                    startRegisterNewUserNameEmailPass(
-                        name,
-                        email,
-                        temporalPass,
-                    ),
-                );
-            } catch (error) {
-                console.log('Error al registrar en firebase', error);
-            }
+            // try {
+            //     dispatch(
+            //         startRegisterNewUserNameEmailPass(
+            //             name,
+            //             email,
+            //             temporalPass,
+            //         ),
+            //     );
+            // } catch (error) {
+            //     console.log('Error al registrar en firebase', error);
+            // }
 
             Swal.fire({
                 icon: 'success',
@@ -233,7 +233,6 @@ export const AddUsersModal = () => {
                                     {!validator.isEmail(email) &&
                                         validator.isLength(email, {
                                             min: 6,
-                                            max: undefined,
                                         }) &&
                                         !validator.isEmpty(email) && (
                                             <h6 className='text-danger'>

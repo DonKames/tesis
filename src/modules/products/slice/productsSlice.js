@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { types } from '../../../types/types';
+import { reset } from '../../../shared/resetSlice';
 
 const initialState = {
     products: [],
@@ -21,6 +22,11 @@ export const productsSlice = createSlice({
             ...state,
             skus: action.payload,
         }),
+    },
+    extraReducers: (builder) => {
+        builder.addCase(reset, () => {
+            return initialState;
+        });
     },
 });
 export const { productsSetProducts, productsSetSkus } = productsSlice.actions;

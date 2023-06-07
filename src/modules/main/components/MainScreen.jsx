@@ -1,9 +1,24 @@
 import React from 'react';
 
 import { Card, Col, Container, Row } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { updateUserUid } from '../../users/apis/apiUsers';
 
 export const MainScreen = () => {
+    const dispatch = useDispatch();
+
+    const { displayName, isRegistered, email, uid } = useSelector(
+        (state) => state.auth,
+    );
+
+    console.log(isRegistered);
+
+    if (!isRegistered) {
+        console.log('no registrado');
+        const resp = updateUserUid(email, uid);
+    }
+
     return (
         <Container>
             <Row className='my-3'>

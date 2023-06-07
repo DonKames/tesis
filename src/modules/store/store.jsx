@@ -6,6 +6,7 @@ import { uiSlice } from '../../shared/ui/uiSlice';
 import { locationsSlice } from '../locations/slice/locationsSlice';
 import { productsSlice } from '../products/slice/productsSlice';
 import { usersSlice } from '../users/slice/usersSlice';
+import { resetSlice } from '../../shared/resetSlice';
 
 const middleware = [thunk];
 
@@ -16,6 +17,7 @@ export const store = configureStore({
         locations: locationsSlice.reducer,
         products: productsSlice.reducer,
         users: usersSlice.reducer,
+        reset: resetSlice.reducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat(middleware),
