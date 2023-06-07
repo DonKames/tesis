@@ -8,7 +8,6 @@ import Swal from 'sweetalert2';
 import { usersSetUsers } from '../slice/usersSlice';
 import validator from 'validator';
 import { uiSetError } from '../../../shared/ui/uiSlice';
-import { startRegisterNewUserNameEmailPass } from '../../auth/actions/auth';
 
 export const AddUsersModal = () => {
     const dispatch = useDispatch();

@@ -61,7 +61,21 @@ export const getUserByUid = async (userUid) => {
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const data = await response.json();
+
+        const contentType = response.headers.get('content-type');
+
+        let data;
+
+        if (contentType && contentType.indexOf('application/json') !== -1) {
+            // Comprobar si el cuerpo de la respuesta está vacío
+            if (response.status !== 204) {
+                data = await response.json();
+            }
+        } else {
+            data = await response.text();
+        }
+
+        // data = await response.json();
         return data;
     } catch (error) {
         console.log(error);

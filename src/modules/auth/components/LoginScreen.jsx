@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { Button, Card, Form, Modal, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { useForm } from '../../../hooks/useForm';
 import {
@@ -10,7 +10,7 @@ import {
     startRegisterNameEmailPass,
 } from '../actions/auth';
 import { getUserByEmail, updateUserUid } from '../../users/apis/apiUsers';
-import { authIsRegistered } from '../authSlice';
+import { authIsRegistered, authLogin } from '../authSlice';
 import validator from 'validator';
 import Swal from 'sweetalert2';
 
@@ -18,6 +18,7 @@ import Swal from 'sweetalert2';
 
 export const LoginScreen = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const [showModal, setShowModal] = useState(false);
 
@@ -111,6 +112,14 @@ export const LoginScreen = () => {
             );
 
             dispatch(authIsRegistered(true));
+
+            navigate('/pvt/main');
+
+            // dispatch(
+            //     authLogin({
+            //         isLoggedIn: true,
+            //     }),
+            // );
 
             // updateUserUid(userEmail, uid);
 

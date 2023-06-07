@@ -16,6 +16,7 @@ import { reset } from '../../../shared/resetSlice';
 
 export const startRegisterNewUserNameEmailPass = (name, email, password) => {
     return async (dispatch, getState) => {
+        console.log('entra a startRegisterNewUserNameEmailPass');
         try {
             const auth = getAuth();
 
@@ -71,51 +72,45 @@ export const startRegisterNewUserNameEmailPass = (name, email, password) => {
 // };
 
 export const startRegisterNameEmailPass = (name, email, password, role) => {
+    console.log('entra a startRegisterNameEmailPass');
     return (dispatch) => {
+        dispatch(uiStartLoading());
         createUserWithEmailAndPassword(auth, email, password)
             .then(async ({ user }) => {
-                console.log(name, password, role, email);
                 await updateProfile(user, {
                     displayName: name,
-                    role,
                 });
                 // const { uid, displayName, email } = user;
+                // console.log(user);
+                // console.log(user.uid, user.displayName, user.email);
+                // dispatch(
+                //     authLogin({
+                //         uid: user.uid,
+                //         displayName: user.displayName,
+                //         email: user.email,
+                //     }),
+                // );
+                return user;
+            })
+            .then((user) => {
                 console.log(user);
+                console.log(user.uid, user.displayName, user.email);
                 dispatch(
                     authLogin({
                         uid: user.uid,
                         displayName: user.displayName,
                         email: user.email,
-                        role: user.role,
                     }),
                 );
-                return user;
+                dispatch(uiFinishLoading());
             })
             .catch((e) => {
+                dispatch(uiFinishLoading());
                 console.log(e);
                 Swal.fire('Error', 'Error en el registro', 'error');
             });
     };
 };
-
-// Original
-// export const startRegisterNameEmailPass = (name, email, password) => {
-//     return (dispatch) => {
-//         createUserWithEmailAndPassword(auth, email, password)
-//             .then(async ({ user }) => {
-//                 await updateProfile(user, {
-//                     displayName: name,
-//                 });
-//                 const { uid, displayName } = user;
-//                 console.log(uid, displayName);
-//                 dispatch(authLogin({ uid, displayName }));
-//             })
-//             .catch((e) => {
-//                 console.log(e);
-//                 Swal.fire('Error', 'Error en el registro', 'error');
-//             });
-//     };
-// };
 
 export const startLoginEmailPassword = (email, password, name, role) => {
     return async (dispatch) => {
@@ -150,6 +145,25 @@ export const startLoginEmailPassword = (email, password, name, role) => {
             });
     };
 };
+
+// Original
+// export const startRegisterNameEmailPass = (name, email, password) => {
+//     return (dispatch) => {
+//         createUserWithEmailAndPassword(auth, email, password)
+//             .then(async ({ user }) => {
+//                 await updateProfile(user, {
+//                     displayName: name,
+//                 });
+//                 const { uid, displayName } = user;
+//                 console.log(uid, displayName);
+//                 dispatch(authLogin({ uid, displayName }));
+//             })
+//             .catch((e) => {
+//                 console.log(e);
+//                 Swal.fire('Error', 'Error en el registro', 'error');
+//             });
+//     };
+// };
 
 export const startGoogleLogin = () => {
     return (dispatch) => {
