@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../../firebase/firebase-config';
 import { authLogin } from '../auth/authSlice';
+import { getUserByUid } from '../users/apis/apiUsers';
 
 export const AppRouter = () => {
     const dispatch = useDispatch();
@@ -18,9 +19,26 @@ export const AppRouter = () => {
         () =>
             onAuthStateChanged(auth, async (user) => {
                 if (user?.uid) {
-                    const { uid, displayName } = user;
-                    setIsLoggedIn(true);
-                    dispatch(authLogin({ uid, displayName }));
+                    console.log(user.uid);
+                    const resp = await getUserByUid(user.uid);
+
+                    if (resp) {
+                        const { uid, first_name, fk_role_id, email } = resp;
+                        console.log(resp);
+                        console.log(first_name, fk_role_id, email, uid);
+                        setIsLoggedIn(true);
+                        dispatch(
+                            authLogin({
+                                uid,
+                                displayName: first_name,
+                                role: fk_role_id,
+                                email,
+                                isRegistered: true,
+                            }),
+                        );
+                    }
+
+                    const { uid, displayName, role, email } = user;
                 } else {
                     setIsLoggedIn(false);
                 }

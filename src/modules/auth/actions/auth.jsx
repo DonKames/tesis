@@ -70,17 +70,25 @@ export const startRegisterNewUserNameEmailPass = (name, email, password) => {
 //     };
 // };
 
-export const startRegisterNameEmailPass = (name, email, password) => {
+export const startRegisterNameEmailPass = (name, email, password, role) => {
     return (dispatch) => {
         createUserWithEmailAndPassword(auth, email, password)
             .then(async ({ user }) => {
-                console.log(name);
+                console.log(name, password, role, email);
                 await updateProfile(user, {
                     displayName: name,
+                    role,
                 });
-                const { uid, displayName, email } = user;
-                console.log(uid, displayName, email);
-                dispatch(authLogin({ uid, displayName, email }));
+                // const { uid, displayName, email } = user;
+                console.log(user);
+                dispatch(
+                    authLogin({
+                        uid: user.uid,
+                        displayName: user.displayName,
+                        email: user.email,
+                        role: user.role,
+                    }),
+                );
                 return user;
             })
             .catch((e) => {
@@ -109,7 +117,7 @@ export const startRegisterNameEmailPass = (name, email, password) => {
 //     };
 // };
 
-export const startLoginEmailPassword = (email, password, name) => {
+export const startLoginEmailPassword = (email, password, name, role) => {
     return async (dispatch) => {
         dispatch(uiStartLoading());
 
@@ -117,7 +125,7 @@ export const startLoginEmailPassword = (email, password, name) => {
             .then(({ user }) => {
                 console.log(user);
                 const { uid, displayName, email } = user;
-                dispatch(authLogin({ uid, displayName, email }));
+                dispatch(authLogin({ uid, displayName: name, email, role }));
                 dispatch(uiFinishLoading());
             })
             .catch((e) => {

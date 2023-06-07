@@ -9,6 +9,7 @@ const initialState = {
     // img: null,
     email: null,
     isRegistered: false,
+    role: null,
 };
 
 export const authSlice = createSlice({
@@ -16,10 +17,28 @@ export const authSlice = createSlice({
     initialState,
     reducers: {
         authLogin: (state, action) => {
+            // state.isLoggedIn = true;
+            // state.uid = action.payload.uid;
+            // state.displayName = action.payload.displayName;
+            // state.email = action.payload.email;
+            // state.role = action.payload.role;
+            // state.isRegistered = action.payload.isRegistered;
             state.isLoggedIn = true;
-            state.uid = action.payload.uid;
-            state.displayName = action.payload.displayName;
-            state.email = action.payload.email;
+            if (action.payload.uid !== undefined) {
+                state.uid = action.payload.uid;
+            }
+            if (action.payload.displayName !== undefined) {
+                state.displayName = action.payload.displayName;
+            }
+            if (action.payload.email !== undefined) {
+                state.email = action.payload.email;
+            }
+            if (action.payload.role !== undefined) {
+                state.role = action.payload.role;
+            }
+            if (action.payload.isRegistered !== undefined) {
+                state.isRegistered = action.payload.isRegistered;
+            }
         },
         authLogout: () => {
             return initialState;

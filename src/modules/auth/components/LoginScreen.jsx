@@ -19,8 +19,6 @@ import Swal from 'sweetalert2';
 export const LoginScreen = () => {
     const dispatch = useDispatch();
 
-    const { uid, email: userEmail, name } = useSelector((state) => state.auth);
-
     const [showModal, setShowModal] = useState(false);
 
     const { loading } = useSelector((state) => state.ui);
@@ -39,29 +37,51 @@ export const LoginScreen = () => {
 
     const { newPassword, reNewPassword } = passValues;
 
+    let resp;
+
     const handleLogin = async (e) => {
         e.preventDefault();
 
         if (isLoginFormValid()) {
-            const resp = await getUserByEmail(email);
+            resp = await getUserByEmail(email);
 
             if (resp) {
                 console.log(resp);
-                const { uid, first_name } = resp;
+                const { uid, first_name, fk_role_id } = resp;
 
-                if (uid === null) {
-                    dispatch(authIsRegistered(false));
-
-                    handleShowModal(true);
-                } else {
-                    dispatch(
-                        startLoginEmailPassword(email, password, first_name),
-                    );
-                    dispatch(authIsRegistered(true));
-                }
+                dispatch(
+                    startLoginEmailPassword(
+                        email,
+                        password,
+                        first_name,
+                        fk_role_id,
+                    ),
+                );
+                dispatch(authIsRegistered(true));
+            } else {
+                Swal.fire(
+                    'Error',
+                    'El Email o Password ingresados no son correctos',
+                    'error',
+                );
             }
         } else {
             Swal.fire('Error', 'Verifique los datos ingresados', 'error');
+        }
+    };
+
+    const handleEmailBlur = async () => {
+        resp = await getUserByEmail(email);
+
+        console.log(resp);
+        if (resp) {
+            const { uid, first_name } = resp;
+
+            if (uid === null) {
+                dispatch(authIsRegistered(false));
+
+                handleShowModal(true);
+            }
         }
     };
 
@@ -73,16 +93,29 @@ export const LoginScreen = () => {
         setShowModal(false);
     };
 
-    const handleSavePassword = () => {
-        dispatch(startRegisterNameEmailPass(name, email, newPassword));
+    const handleSavePassword = async () => {
+        resp = await getUserByEmail(email);
+        console.log(resp);
+        if (resp) {
+            console.log(resp);
+            const { first_name, fk_role_id } = resp;
+            console.log(first_name, fk_role_id, email, newPassword);
 
-        dispatch(authIsRegistered(true));
+            dispatch(
+                startRegisterNameEmailPass(
+                    first_name,
+                    email,
+                    newPassword,
+                    fk_role_id,
+                ),
+            );
 
-        console.log(uid, userEmail, name);
+            dispatch(authIsRegistered(true));
 
-        // updateUserUid(userEmail, uid);
+            // updateUserUid(userEmail, uid);
 
-        console.log('save password');
+            console.log('save password');
+        }
     };
 
     // const handleGoogleLogin = () => {
@@ -174,6 +207,7 @@ export const LoginScreen = () => {
                             className='mb-3'
                             value={email}
                             onChange={handleInputChange}
+                            onBlur={handleEmailBlur}
                         />
                         {!validator.isEmail(email) && (
                             <h6 className='text-danger'>
