@@ -50,7 +50,8 @@ export const getSkuById = async (skuId) => {
 
 export const getSkuBySku = async (sku) => {
     try {
-        const response = await fetch(`${BASE_URL}/products?sku=${sku}`);
+        console.log('llega al get sku by sku');
+        const response = await fetch(`${BASE_URL}/skus/sku/${sku}`);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }

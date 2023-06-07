@@ -1,6 +1,5 @@
 import {
     createUserWithEmailAndPassword,
-    getAuth,
     signInWithEmailAndPassword,
     signInWithPopup,
     signOut,
@@ -10,28 +9,24 @@ import { auth, googleAuthProvider } from '../../../firebase/firebase-config';
 import { authLogin, authLogout } from '../authSlice';
 import Swal from 'sweetalert2';
 import { uiFinishLoading, uiStartLoading } from '../../../shared/ui/uiSlice';
-import { reset } from '../../../shared/resetSlice';
 
 // Vamos de nuevo
 
 export const startRegisterNewUserNameEmailPass = (name, email, password) => {
-    return async (dispatch, getState) => {
-        console.log('entra a startRegisterNewUserNameEmailPass');
+    return async (dispatch) => {
         try {
-            const auth = getAuth();
-
-            const { user } = await createUserWithEmailAndPassword(
-                auth,
+            const { user } = await auth.createUserWithEmailAndPassword(
                 email,
                 password,
             );
 
             // Actualizar el perfil del usuario con el nombre
-            await updateProfile(user, {
+            await user.updateProfile({
                 displayName: name,
             });
 
             const { uid, displayName } = user;
+
             console.log(uid, displayName);
 
             // No se realiza el inicio de sesión automático
@@ -44,83 +39,32 @@ export const startRegisterNewUserNameEmailPass = (name, email, password) => {
     };
 };
 
-// export const startRegisterNewUserNameEmailPass = (name, email, password) => {
-//     return async (dispatch) => {
-//         try {
-//             const { user } = await createUserWithEmailAndPassword(
-//                 auth,
-//                 email,
-//                 password,
-//             );
-
-//             // Actualizar el perfil del usuario con el nombre
-//             await updateProfile(user, {
-//                 displayName: name,
-//             });
-
-//             const { uid, displayName } = user;
-//             console.log(uid, displayName);
-
-//             // No se realiza el inicio de sesión automático
-
-//             // dispatch(authLogin({ uid, displayName }));
-//         } catch (error) {
-//             console.log(error);
-//             Swal.fire('Error', 'Error en el registro', 'error');
-//         }
-//     };
-// };
-
-export const startRegisterNameEmailPass = (name, email, password, role) => {
-    console.log('entra a startRegisterNameEmailPass');
+export const startRegisterNameEmailPass = (name, email, password) => {
     return (dispatch) => {
-        dispatch(uiStartLoading());
         createUserWithEmailAndPassword(auth, email, password)
             .then(async ({ user }) => {
                 await updateProfile(user, {
                     displayName: name,
                 });
-                // const { uid, displayName, email } = user;
-                // console.log(user);
-                // console.log(user.uid, user.displayName, user.email);
-                // dispatch(
-                //     authLogin({
-                //         uid: user.uid,
-                //         displayName: user.displayName,
-                //         email: user.email,
-                //     }),
-                // );
-                return user;
-            })
-            .then((user) => {
-                console.log(user);
-                console.log(user.uid, user.displayName, user.email);
-                dispatch(
-                    authLogin({
-                        uid: user.uid,
-                        displayName: user.displayName,
-                        email: user.email,
-                    }),
-                );
-                dispatch(uiFinishLoading());
+                const { uid, displayName } = user;
+                console.log(uid, displayName);
+                dispatch(authLogin({ uid, displayName }));
             })
             .catch((e) => {
-                dispatch(uiFinishLoading());
                 console.log(e);
                 Swal.fire('Error', 'Error en el registro', 'error');
             });
     };
 };
 
-export const startLoginEmailPassword = (email, password, name, role) => {
+export const startLoginEmailPassword = (email, password) => {
     return async (dispatch) => {
         dispatch(uiStartLoading());
 
         signInWithEmailAndPassword(auth, email, password)
             .then(({ user }) => {
-                console.log(user);
-                const { uid, displayName, email } = user;
-                dispatch(authLogin({ uid, displayName: name, email, role }));
+                const { uid, displayName } = user;
+                dispatch(authLogin({ uid, displayName }));
                 dispatch(uiFinishLoading());
             })
             .catch((e) => {
@@ -146,25 +90,6 @@ export const startLoginEmailPassword = (email, password, name, role) => {
     };
 };
 
-// Original
-// export const startRegisterNameEmailPass = (name, email, password) => {
-//     return (dispatch) => {
-//         createUserWithEmailAndPassword(auth, email, password)
-//             .then(async ({ user }) => {
-//                 await updateProfile(user, {
-//                     displayName: name,
-//                 });
-//                 const { uid, displayName } = user;
-//                 console.log(uid, displayName);
-//                 dispatch(authLogin({ uid, displayName }));
-//             })
-//             .catch((e) => {
-//                 console.log(e);
-//                 Swal.fire('Error', 'Error en el registro', 'error');
-//             });
-//     };
-// };
-
 export const startGoogleLogin = () => {
     return (dispatch) => {
         signInWithPopup(auth, googleAuthProvider).then(({ user }) => {
@@ -185,7 +110,6 @@ export const startGoogleLogin = () => {
 export const startLogout = () => {
     return async (dispatch) => {
         await signOut(auth);
-        dispatch(reset());
         dispatch(authLogout());
     };
 };

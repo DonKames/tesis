@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 
-import { Button, Card, Form, Modal, Row } from 'react-bootstrap';
+import { Button, Card, Col, Form, Modal, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { useForm } from '../../../hooks/useForm';
 import {
     startLoginEmailPassword,
     startRegisterNameEmailPass,
 } from '../actions/auth';
-import { getUserByEmail, updateUserUid } from '../../users/apis/apiUsers';
-import { authIsRegistered, authLogin } from '../authSlice';
+import { getUserByEmail } from '../../users/apis/apiUsers';
+import { authIsRegistered } from '../authSlice';
 import validator from 'validator';
 import Swal from 'sweetalert2';
 
@@ -18,14 +18,13 @@ import Swal from 'sweetalert2';
 
 export const LoginScreen = () => {
     const dispatch = useDispatch();
-    const navigate = useNavigate();
 
     const [showModal, setShowModal] = useState(false);
 
     const { loading } = useSelector((state) => state.ui);
 
     const [formValues, handleInputChange] = useForm({
-        email: 'a@a.com',
+        email: 'b@a.com',
         password: '123456',
     });
 
@@ -95,35 +94,22 @@ export const LoginScreen = () => {
     };
 
     const handleSavePassword = async () => {
-        resp = await getUserByEmail(email);
-        console.log(resp);
-        if (resp) {
+        if (newPassword === reNewPassword) {
+            resp = await getUserByEmail(email);
             console.log(resp);
-            const { first_name, fk_role_id } = resp;
-            console.log(first_name, fk_role_id, email, newPassword);
+            if (resp) {
+                console.log(resp);
+                const { first_name, fk_role_id } = resp;
+                console.log(first_name, fk_role_id, email, newPassword);
 
-            dispatch(
-                startRegisterNameEmailPass(
-                    first_name,
-                    email,
-                    newPassword,
-                    fk_role_id,
-                ),
-            );
+                dispatch(
+                    startRegisterNameEmailPass(first_name, email, newPassword),
+                );
 
-            dispatch(authIsRegistered(true));
+                dispatch(authIsRegistered(true));
 
-            navigate('/pvt/main');
-
-            // dispatch(
-            //     authLogin({
-            //         isLoggedIn: true,
-            //     }),
-            // );
-
-            // updateUserUid(userEmail, uid);
-
-            console.log('save password');
+                console.log('save password');
+            }
         }
     };
 
@@ -188,6 +174,12 @@ export const LoginScreen = () => {
                                 onChange={handlePassInputChange}
                             />
                         </Form.Group>
+                        {newPassword !== reNewPassword &&
+                            !validator.isEmpty(reNewPassword) && (
+                                <h6 className='text-danger'>
+                                    Las contraseñas no coinciden
+                                </h6>
+                            )}
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
@@ -247,6 +239,11 @@ export const LoginScreen = () => {
                             </Button>
                         </div>
                         <hr />
+                        <Row className='text-center'>
+                            <Col>
+                                <strong>PRÓXIMAMENTE</strong>
+                            </Col>
+                        </Row>
                         <div>
                             <p>Ingresa con tu cuenta de:</p>
                             <Card
@@ -266,12 +263,12 @@ export const LoginScreen = () => {
                                 </div>
                             </Card>
                         </div>
-                        <Link
+                        {/* <Link
                             className='link'
                             to='/pbl/register'
                         >
                             Crear nueva Cuenta
-                        </Link>
+                        </Link> */}
                     </Form>
                 </Card.Body>
             </Card>

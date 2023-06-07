@@ -3,9 +3,9 @@ import { Button, Card, Col, Form, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Select from 'react-select';
 import { useForm } from '../../../hooks/useForm';
-import { productsSetSkus } from '../slice/productsSlice';
+import { productsSetProducts, productsSetSkus } from '../slice/productsSlice';
 import { getSkus } from '../APIs/apiSkus';
-import { createProduct } from '../APIs/apiProducts';
+import { createProduct, getProducts } from '../APIs/apiProducts';
 import Swal from 'sweetalert2';
 
 export const AddProductForm = () => {
@@ -42,7 +42,7 @@ export const AddProductForm = () => {
         const { name, value } = e.target;
 
         if (name === 'fkSku') {
-            const sku = skus.find((sku) => {
+            const sku = skus?.find((sku) => {
                 console.log(sku.sku, value);
                 return sku.sku === value;
             });
@@ -55,7 +55,7 @@ export const AddProductForm = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            if (!skus.length) {
+            if (!skus?.length) {
                 const fetchedSkus = await getSkus();
                 dispatch(productsSetSkus(fetchedSkus));
             }
@@ -66,6 +66,9 @@ export const AddProductForm = () => {
     const handleAddProduct = async () => {
         if (isValidSku) {
             const response = await createProduct(formValues);
+
+            const { products } = await getProducts();
+            dispatch(productsSetProducts(products));
 
             if (response) {
                 console.log('Producto creado');
@@ -89,7 +92,7 @@ export const AddProductForm = () => {
     };
 
     return (
-        <Card className='mb-3'>
+        <Card className='mb-3 h-100'>
             <Card.Body>
                 <Card.Title>Agregar Producto</Card.Title>
                 <Form>

@@ -1,12 +1,29 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { Card, Col, Container, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { updateUserUid } from '../../users/apis/apiUsers';
+import { getProducts } from '../../products/APIs/apiProducts';
+import {
+    productsSetProducts,
+    productsSetSkus,
+} from '../../products/slice/productsSlice';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+    faBoxes,
+    faDolly,
+    faWarehouse,
+    faMapMarkerAlt,
+    faCogs,
+} from '@fortawesome/free-solid-svg-icons';
+import { getSkus } from '../../products/APIs/apiSkus';
 
 export const MainScreen = () => {
     const dispatch = useDispatch();
+
+    const { products, skus } = useSelector((state) => state.products);
 
     const { displayName, isRegistered, email, uid } = useSelector(
         (state) => state.auth,
@@ -19,50 +36,82 @@ export const MainScreen = () => {
         const resp = updateUserUid(email, uid);
     }
 
+    useEffect(() => {
+        const fetchData = async () => {
+            if (!products.length) {
+                const fetchedProducts = await getProducts();
+                dispatch(productsSetProducts(fetchedProducts));
+            }
+
+            // if (!branches.length) {
+            //     const fetchedBranches = await getBranches();
+            //     dispatch(locationsSetBranches(fetchedBranches));
+            // }
+
+            // if (!warehouses.length) {
+            //     const fetchedWarehouses = await getWarehouses();
+            //     dispatch(locationsSetWarehouses(fetchedWarehouses));
+            // }
+
+            if (!skus.length) {
+                const fetchedSkus = await getSkus();
+                dispatch(productsSetSkus(fetchedSkus));
+            }
+        };
+
+        fetchData();
+    }, [dispatch]);
+
     return (
         <Container>
             <Row className='my-3'>
                 <Col>
-                    <Card>
+                    <Card
+                        bg='light'
+                        className='shadow h-100'
+                    >
+                        <Card.Header>
+                            <h3>Resumen de la bodega</h3>
+                        </Card.Header>
                         <Card.Body>
-                            <Card.Title>Resumen de la bodega</Card.Title>
-                            <Card.Text>
-                                Cantidad total de productos:{' '}
-                                {/* {products.length} */}
+                            <Card.Text className='my-2'>
+                                <FontAwesomeIcon icon={faBoxes} /> Cantidad
+                                total de Skus:
+                                <strong> {skus.length}</strong>
                             </Card.Text>
-                            <Card.Text>
-                                Cantidad de productos en movimiento:{' '}
-                                {/* {
-                                    taskList.filter((task) => !task.completed)
-                                        .length
-                                } */}
+                            <Card.Text className='my-2'>
+                                <FontAwesomeIcon icon={faBoxes} /> Cantidad
+                                total de productos:
+                                <strong> {products.length}</strong>
                             </Card.Text>
-                            <Card.Text>
+                            <Card.Text className='my-2'>
+                                <FontAwesomeIcon icon={faDolly} /> Cantidad de
+                                productos en movimiento:{' '}
+                                {/* {taskList.filter((task) => !task.completed).length} */}
+                            </Card.Text>
+                            <Card.Text className='my-2'>
+                                <FontAwesomeIcon icon={faWarehouse} />{' '}
                                 Inventario actual:{' '}
-                                {/* {products.reduce(
-                                    (total, product) =>
-                                        total + product.quantity,
-                                    0,
-                                )} */}
+                                {/* {products.reduce((total, product) => total + product.quantity, 0)} */}
                             </Card.Text>
-                            <Card.Text>
+                            <Card.Text className='my-2'>
+                                <FontAwesomeIcon icon={faMapMarkerAlt} />{' '}
                                 Ubicación de los productos: por implementar
                             </Card.Text>
-                            <Card.Text>
-                                Estado general del sistema: por implementar
+                            <Card.Text className='my-2'>
+                                <FontAwesomeIcon icon={faCogs} /> Estado general
+                                del sistema: por implementar
                             </Card.Text>
                         </Card.Body>
                     </Card>
                 </Col>
-            </Row>
-
-            <Row className='my-3'>
                 <Col>
-                    <Card>
+                    <Card className='shadow h-100'>
+                        <Card.Header>
+                            <h3>Tareas de movimiento de productos</h3>
+                        </Card.Header>
                         <Card.Body>
-                            <Card.Title>
-                                Tareas de movimiento de productos
-                            </Card.Title>
+                            <Card.Title></Card.Title>
                             <Card.Text>
                                 {/* {taskLoading ? (
                                     <p>Cargando tareas...</p>
@@ -96,9 +145,11 @@ export const MainScreen = () => {
                 </Col>
             </Row>
 
+            <Row className='my-3'></Row>
+
             <Row className='my-3'>
                 <Col>
-                    <Card>
+                    <Card className=' shadow'>
                         <Card.Body>
                             <Card.Title>Búsqueda de productos</Card.Title>
                             <Card.Text>

@@ -2,9 +2,12 @@ import React from 'react';
 import { Button, Card, Form } from 'react-bootstrap';
 import { useForm } from '../../../hooks/useForm';
 import Swal from 'sweetalert2';
-import { createSku, getSkuBySku } from '../APIs/apiSkus';
+import { createSku, getSkuBySku, getSkus } from '../APIs/apiSkus';
+import { useDispatch } from 'react-redux';
+import { productsSetSkus } from '../slice/productsSlice';
 
 export const AddSkuForm = () => {
+    const dispatch = useDispatch();
     const [formSkuValues, handleSkuInputChange] = useForm({
         name: 'Chaqueta Roja',
         description: 'La descripción del producto',
@@ -17,12 +20,17 @@ export const AddSkuForm = () => {
     const { name, description, price, sku, lote, order } = formSkuValues;
 
     const handleAddSku = async () => {
-        console.log('Agregando Sku');
+        console.log('Agregando Sku:', sku);
+
         const searchProduct = await getSkuBySku(sku);
 
-        if (!searchProduct.length) {
+        console.log(searchProduct);
+
+        if (!searchProduct) {
             console.log('El producto no existe');
             const response = await createSku(formSkuValues);
+            const { skus } = await getSkus();
+            dispatch(productsSetSkus(skus));
 
             if (response) {
                 console.log('Producto creado');
@@ -55,7 +63,7 @@ export const AddSkuForm = () => {
     };
 
     return (
-        <Card className='mb-3'>
+        <Card className='mb-3 h-100'>
             <Card.Body>
                 <Card.Title>Agregar SKU</Card.Title>
                 <Form>

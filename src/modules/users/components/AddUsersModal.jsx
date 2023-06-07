@@ -14,6 +14,8 @@ export const AddUsersModal = () => {
 
     const { roles } = useSelector((state) => state.users);
     const { msgError } = useSelector((state) => state.ui);
+    const { role: authRole } = useSelector((state) => state.auth);
+    console.log(authRole);
 
     const [showModal, setShowModal] = useState(false);
 
@@ -27,10 +29,9 @@ export const AddUsersModal = () => {
         lastName: 'Apellido',
         role: '',
         email: 'a@a.com',
-        temporalPass: '123456',
     });
 
-    const { name, lastName, email, temporalPass, role } = formValues;
+    const { name, lastName, email, role } = formValues;
 
     useEffect(() => {
         if (msgError) {
@@ -54,7 +55,6 @@ export const AddUsersModal = () => {
     const isFormValid = async () => {
         if (
             email.trim().length === 0 ||
-            temporalPass.trim().length === 0 ||
             name.trim().length === 0 ||
             lastName.trim().length === 0
         ) {
@@ -63,11 +63,6 @@ export const AddUsersModal = () => {
             return false;
         } else if (!validator.isEmail(email)) {
             const msgError = 'El email no es válido';
-            dispatch(uiSetError(msgError));
-            return false;
-        } else if (temporalPass.trim().length < 6) {
-            const msgError =
-                'La clave temporal debe tener al menos 6 caracteres';
             dispatch(uiSetError(msgError));
             return false;
         } else if (!validator.isAlpha(name) || !validator.isAlpha(lastName)) {
@@ -145,12 +140,14 @@ export const AddUsersModal = () => {
 
     return (
         <>
-            <Button
-                variant='primary'
-                onClick={handleOpenModal}
-            >
-                Agregar Usuario
-            </Button>
+            {authRole === 1 && (
+                <Button
+                    variant='primary'
+                    onClick={handleOpenModal}
+                >
+                    Agregar Usuario
+                </Button>
+            )}
             <Modal
                 onHide={handleCloseModal}
                 show={showModal}
@@ -236,27 +233,6 @@ export const AddUsersModal = () => {
                                         !validator.isEmpty(email) && (
                                             <h6 className='text-danger'>
                                                 El e-mail no es válido
-                                            </h6>
-                                        )}
-                                </Form.Group>
-                                <Form.Group>
-                                    <Form.Label>Clave Temporal</Form.Label>
-                                    <Form.Control
-                                        autoComplete='off'
-                                        type='text'
-                                        placeholder='Ingrese la clave temporal del usuario'
-                                        name='temporalPass'
-                                        value={temporalPass}
-                                        onChange={handleInputChange}
-                                    />
-                                    {!validator.isLength(temporalPass, {
-                                        min: 6,
-                                        max: 20,
-                                    }) &&
-                                        !validator.isEmpty(temporalPass) && (
-                                            <h6 className='text-danger'>
-                                                La clave temporal debe tener
-                                                entre 6 y 20 caracteres
                                             </h6>
                                         )}
                                 </Form.Group>
