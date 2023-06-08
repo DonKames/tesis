@@ -22,7 +22,7 @@ const ProductsScreen = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            if (!products.length) {
+            if (!products?.length) {
                 const fetchedProducts = await getProducts();
                 dispatch(productsSetProducts(fetchedProducts));
             }

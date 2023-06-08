@@ -163,15 +163,15 @@ export const LocationsScreen = () => {
                         xs='12'
                         md='6'
                     >
+                        <Row>
+                            <Col>
+                                <h1>Lugares de Sucursal</h1>
+                            </Col>
+                            <Col>
+                                <AddBranchLocationModal />
+                            </Col>
+                        </Row>
                         <Card>
-                            <Row>
-                                <Col>
-                                    <h1>Lugares de Sucursal</h1>
-                                </Col>
-                                <Col>
-                                    <AddBranchLocationModal />
-                                </Col>
-                            </Row>
                             <Table>
                                 <thead>
                                     <tr>

@@ -63,7 +63,7 @@ export const AddSkuForm = () => {
     };
 
     return (
-        <Card className='mb-3 h-100'>
+        <Card className='mb-3'>
             <Card.Body>
                 <Card.Title>Agregar SKU</Card.Title>
                 <Form>
