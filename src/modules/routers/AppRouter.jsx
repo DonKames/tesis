@@ -29,7 +29,6 @@ export const AppRouter = () => {
                 const { uid, first_name, fk_role_id, email } = respUid;
                 console.log(respUid);
                 console.log(first_name, fk_role_id, email, uid);
-                setIsLoggedIn(true);
                 dispatch(
                     authLogin({
                         uid,
@@ -39,17 +38,21 @@ export const AppRouter = () => {
                         isRegistered: true,
                     }),
                 );
-
-                setChecking(false);
-
-                // const { uid, displayName, role, email } = user;
-            } else {
-                setIsLoggedIn(false);
-                setChecking(false);
             }
             setChecking(false);
         });
-    }, [auth, dispatch, setChecking, setIsLoggedIn]);
+    }, [auth, dispatch]);
+
+    useEffect(() => {
+        onAuthStateChanged(auth, async (user) => {
+            if (user?.uid) {
+                setIsLoggedIn(true);
+            } else {
+                setIsLoggedIn(false);
+            }
+            setChecking(false);
+        });
+    }, [auth, setIsLoggedIn, setChecking]);
 
     if (checking) {
         return <h1>Wait...</h1>;

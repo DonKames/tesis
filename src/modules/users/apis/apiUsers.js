@@ -86,7 +86,7 @@ export const getUserByUid = async (userUid) => {
 };
 
 export const getUserByEmail = async (userEmail) => {
-    console.log(userEmail);
+    // console.log(userEmail);
     try {
         const response = await fetch(`${BASE_URL}/users/email/${userEmail}`);
         if (!response.ok) {
@@ -107,6 +107,7 @@ export const getUserByEmail = async (userEmail) => {
         }
 
         // const data = (await response.text()) && (await response.json());
+        // console.log(data);
         return data;
     } catch (error) {
         console.log(error);

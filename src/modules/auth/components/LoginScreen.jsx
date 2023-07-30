@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 import { Button, Card, Col, Form, Modal, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 
 import { useForm } from '../../../hooks/useForm';
 import {
@@ -76,6 +75,8 @@ export const LoginScreen = () => {
         console.log(resp);
         if (resp) {
             const { uid, first_name } = resp;
+
+            console.log(uid, first_name);
 
             if (uid === null) {
                 dispatch(authIsRegistered(false));

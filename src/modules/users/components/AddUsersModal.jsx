@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
+
 import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
-import { useForm } from '../../../hooks/useForm';
-import Select from 'react-select';
 import { useDispatch, useSelector } from 'react-redux';
-import { createUser, getUsers } from '../apis/apiUsers';
+import Select from 'react-select';
 import Swal from 'sweetalert2';
-import { usersSetUsers } from '../slice/usersSlice';
 import validator from 'validator';
+
+import { useForm } from '../../../hooks/useForm';
+import { createUser, getUsers } from '../apis/apiUsers';
+import { usersSetUsers } from '../slice/usersSlice';
 import { uiSetError } from '../../../shared/ui/uiSlice';
 
 export const AddUsersModal = () => {
