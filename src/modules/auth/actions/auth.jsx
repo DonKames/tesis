@@ -9,6 +9,7 @@ import { auth, googleAuthProvider } from '../../../firebase/firebase-config';
 import { authLogin, authLogout } from '../authSlice';
 import Swal from 'sweetalert2';
 import { uiFinishLoading, uiStartLoading } from '../../../shared/ui/uiSlice';
+import { getUserByEmail } from '../../users/apis/apiUsers';
 
 // Vamos de nuevo
 
@@ -43,12 +44,20 @@ export const startRegisterNameEmailPass = (name, email, password) => {
     return (dispatch) => {
         createUserWithEmailAndPassword(auth, email, password)
             .then(async ({ user }) => {
+                // TODO: actualizar el perfil del usuario con el nombre
+                const userData = await getUserByEmail(email);
+
+                const role = userData.fk_role_id;
+
                 await updateProfile(user, {
                     displayName: name,
                 });
+
                 const { uid, displayName } = user;
+
                 console.log(uid, displayName);
-                dispatch(authLogin({ uid, displayName }));
+
+                dispatch(authLogin({ uid, displayName, email, role }));
             })
             .catch((e) => {
                 console.log(e);

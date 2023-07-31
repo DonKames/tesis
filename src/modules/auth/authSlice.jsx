@@ -23,6 +23,7 @@ export const authSlice = createSlice({
             // state.email = action.payload.email;
             // state.role = action.payload.role;
             // state.isRegistered = action.payload.isRegistered;
+            console.log(action.payload);
             state.isLoggedIn = true;
             if (action.payload.uid !== undefined) {
                 state.uid = action.payload.uid;
