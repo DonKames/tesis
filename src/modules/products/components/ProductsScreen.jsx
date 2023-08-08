@@ -1,6 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Container, Row, Col, Table, Button } from 'react-bootstrap';
+import {
+    Container,
+    Row,
+    Col,
+    Table,
+    Button,
+    Pagination,
+} from 'react-bootstrap';
 import SearchProductBar from './SearchProductBar';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProducts } from '../APIs/apiProducts';
@@ -20,13 +27,21 @@ const ProductsScreen = () => {
 
     const { branches, warehouses } = useSelector((state) => state.locations);
 
+    const [currentProductPage, setCurrentProductPage] = useState(1);
+    const items = [];
+    const totalProductPages = Math.ceil(products.length / 50);
+
+    const handlePageChange = (pageNumber) => {
+        setCurrentProductPage(pageNumber);
+    };
+
     useEffect(() => {
         const fetchData = async () => {
             if (!products?.length) {
                 const fetchedProducts = await getProducts();
                 dispatch(productsSetProducts(fetchedProducts));
             }
-
+            p;
             if (!branches.length) {
                 const fetchedBranches = await getBranches();
                 dispatch(locationsSetBranches(fetchedBranches));
@@ -163,6 +178,21 @@ const ProductsScreen = () => {
                     ))}
                 </tbody>
             </Table>
+            <Pagination>
+                <Pagination.First />
+                <Pagination.Prev />
+                {[...Array(totalProductPages).keys()].map((page) => (
+                    <Pagination.Item
+                        key={page + 1}
+                        active={page + 1 === currentProductPage}
+                        onClick={() => handlePageChange(page + 1)}
+                    >
+                        {page + 1}
+                    </Pagination.Item>
+                ))}
+                <Pagination.Next />
+                <Pagination.Last />
+            </Pagination>
         </Container>
     );
 };
