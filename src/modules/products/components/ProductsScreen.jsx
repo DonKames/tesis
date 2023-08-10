@@ -28,8 +28,12 @@ const ProductsScreen = () => {
     const { branches, warehouses } = useSelector((state) => state.locations);
 
     const [currentProductPage, setCurrentProductPage] = useState(1);
-    const items = [];
-    const totalProductPages = Math.ceil(products.length / 50);
+
+    const [limit, setLimit] = useState(50);
+
+    const [ProductsQty, setProductsQty] = useState(0);
+
+    const [productPages, setProductPages] = useState(0);
 
     const handlePageChange = (pageNumber) => {
         setCurrentProductPage(pageNumber);
@@ -38,10 +42,11 @@ const ProductsScreen = () => {
     useEffect(() => {
         const fetchData = async () => {
             if (!products?.length) {
-                const fetchedProducts = await getProducts();
-                dispatch(productsSetProducts(fetchedProducts));
+                const fetchedData = await getProducts();
+                const productPageQty = fetchedData.totalProducts / limit;
+                dispatch(productsSetProducts(fetchedData.products));
             }
-            p;
+
             if (!branches.length) {
                 const fetchedBranches = await getBranches();
                 dispatch(locationsSetBranches(fetchedBranches));

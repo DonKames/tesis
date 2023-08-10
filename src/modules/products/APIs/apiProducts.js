@@ -6,6 +6,7 @@ export const getProducts = async (page = 1, limit = 50) => {
             `${BASE_URL}/products?page=${page}&limit=${limit}`,
         );
         const data = await response.json();
+        console.log('getProducts Data: ', data);
         return data;
     } catch (error) {
         console.log('Error al obtener Productos desde la API:', error);
