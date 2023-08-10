@@ -43,7 +43,10 @@ const ProductsScreen = () => {
         const fetchData = async () => {
             if (!products?.length) {
                 const fetchedData = await getProducts();
-                const productPageQty = fetchedData.totalProducts / limit;
+                const productPagesQty = fetchedData.totalProducts / limit;
+                console.log(fetchedData);
+                console.log(productPagesQty);
+                setProductPages(Math.ceil(productPagesQty));
                 dispatch(productsSetProducts(fetchedData.products));
             }
 
@@ -186,7 +189,7 @@ const ProductsScreen = () => {
             <Pagination>
                 <Pagination.First />
                 <Pagination.Prev />
-                {[...Array(totalProductPages).keys()].map((page) => (
+                {[...Array(productPages).keys()].map((page) => (
                     <Pagination.Item
                         key={page + 1}
                         active={page + 1 === currentProductPage}

@@ -16,7 +16,7 @@ export const AppRouter = () => {
     const [checking, setChecking] = useState(true);
 
     useEffect(() => {
-        console.log(auth);
+        // console.log(auth);
         onAuthStateChanged(auth, async (user) => {
             if (user?.uid) {
                 console.log(user.uid);

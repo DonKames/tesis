@@ -3,7 +3,7 @@ const BASE_URL = import.meta.env.VITE_BASE_URL;
 export const getProducts = async (page = 1, limit = 50) => {
     try {
         const response = await fetch(
-            `${BASE_URL}/products?page=${page}&limit=${limit}`,
+            `${BASE_URL}/products?page=${page}&limit=${limit}&includeTotal=true`,
         );
         const data = await response.json();
         console.log('getProducts Data: ', data);

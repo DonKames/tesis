@@ -107,7 +107,7 @@ export const getUserByEmail = async (userEmail) => {
         }
 
         // const data = (await response.text()) && (await response.json());
-        // console.log(data);
+        console.log(data);
         return data;
     } catch (error) {
         console.log(error);
