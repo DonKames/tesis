@@ -40,7 +40,7 @@ export const MainScreen = () => {
         const fetchData = async () => {
             if (!products.length) {
                 const fetchedProducts = await getProducts();
-                dispatch(productsSetProducts(fetchedProducts));
+                dispatch(productsSetProducts(fetchedProducts.products));
             }
 
             // if (!branches.length) {
