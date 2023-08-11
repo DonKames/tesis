@@ -3,6 +3,7 @@ import { types } from '../../../types/types';
 import { reset } from '../../../shared/resetSlice';
 
 const initialState = {
+    productQty: 0,
     products: [],
     skus: [],
 };
@@ -11,6 +12,12 @@ export const productsSlice = createSlice({
     name: types.products,
     initialState,
     reducers: {
+        // ProductQty
+        productsSetProductQty: (state, action) => ({
+            ...state,
+            productQty: action.payload,
+        }),
+
         // Products
         productsSetProducts: (state, action) => ({
             ...state,
@@ -29,5 +36,6 @@ export const productsSlice = createSlice({
         });
     },
 });
-export const { productsSetProducts, productsSetSkus } = productsSlice.actions;
+export const { productsSetProductQty, productsSetProducts, productsSetSkus } =
+    productsSlice.actions;
 export default productsSlice.reducer;

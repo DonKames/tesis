@@ -62,7 +62,7 @@ const ProductsScreen = () => {
         const fetchData = async () => {
             if (!products?.length) {
                 const fetchedData = await getProducts(1, limit);
-                const productPagesQty = fetchedData.totalProducts / limit;
+                const productPagesQty = fetchedData.productsQty / limit;
                 console.log(fetchedData);
                 console.log(productPagesQty);
                 setProductsQty(fetchedData.totalProducts);

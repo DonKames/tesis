@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { updateUserUid } from '../../users/apis/apiUsers';
 import { getProducts } from '../../products/APIs/apiProducts';
 import {
+    productsSetProductQty,
     productsSetProducts,
     productsSetSkus,
 } from '../../products/slice/productsSlice';
@@ -23,7 +24,9 @@ import { getSkus } from '../../products/APIs/apiSkus';
 export const MainScreen = () => {
     const dispatch = useDispatch();
 
-    const { products, skus } = useSelector((state) => state.products);
+    const { productQty, products, skus } = useSelector(
+        (state) => state.products,
+    );
 
     const { displayName, isRegistered, email, uid } = useSelector(
         (state) => state.auth,
@@ -40,7 +43,8 @@ export const MainScreen = () => {
         const fetchData = async () => {
             if (!products.length) {
                 const fetchedProducts = await getProducts();
-                dispatch(productsSetProducts(fetchedProducts.products));
+                // dispatch(productsSetProducts(fetchedProducts.products));
+                dispatch(productsSetProductQty(fetchedProducts.productsQty));
             }
 
             // if (!branches.length) {
@@ -82,7 +86,7 @@ export const MainScreen = () => {
                             <Card.Text className='my-2'>
                                 <FontAwesomeIcon icon={faBoxes} /> Cantidad
                                 total de productos:
-                                <strong> {products.length}</strong>
+                                <strong> {productQty}</strong>
                             </Card.Text>
                             <Card.Text className='my-2'>
                                 <FontAwesomeIcon icon={faDolly} /> Cantidad de
