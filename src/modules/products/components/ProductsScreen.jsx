@@ -10,8 +10,12 @@ import {
 } from 'react-bootstrap';
 import SearchProductBar from './SearchProductBar';
 import { useDispatch, useSelector } from 'react-redux';
-import { getProducts } from '../APIs/apiProducts';
-import { productsSetProducts, productsSetSkus } from '../slice/productsSlice';
+import { getProducts, getProductsQty } from '../APIs/apiProducts';
+import {
+    productsSetProductQty,
+    productsSetProducts,
+    productsSetSkus,
+} from '../slice/productsSlice';
 import {
     locationsSetBranches,
     locationsSetWarehouses,
@@ -44,13 +48,13 @@ const ProductsScreen = () => {
         productPages,
     );
 
-    const { products, skus } = useSelector((state) => state.products);
+    const { productsQty, products, skus } = useSelector(
+        (state) => state.products,
+    );
 
     const { branches, warehouses } = useSelector((state) => state.locations);
 
     const [limit, setLimit] = useState(20);
-
-    const [ProductsQty, setProductsQty] = useState(0);
 
     const handlePageChange = async (pageNumber) => {
         setSelectedProductPage(pageNumber);
@@ -60,13 +64,16 @@ const ProductsScreen = () => {
 
     useEffect(() => {
         const fetchData = async () => {
+            if (productsQty === null) {
+                const { productsQty } = await getProductsQty();
+                const productPagesQty = productsQty / limit;
+                setProductPages(Math.ceil(productPagesQty));
+                dispatch(productsSetProductQty(productsQty));
+            }
+
             if (!products?.length) {
                 const fetchedData = await getProducts(1, limit);
-                const productPagesQty = fetchedData.productsQty / limit;
                 console.log(fetchedData);
-                console.log(productPagesQty);
-                setProductsQty(fetchedData.totalProducts);
-                setProductPages(Math.ceil(productPagesQty));
                 dispatch(productsSetProducts(fetchedData.products));
             }
 

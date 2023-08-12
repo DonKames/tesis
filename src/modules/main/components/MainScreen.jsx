@@ -4,7 +4,7 @@ import { Card, Col, Container, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { updateUserUid } from '../../users/apis/apiUsers';
-import { getProducts } from '../../products/APIs/apiProducts';
+import { getProducts, getProductsQty } from '../../products/APIs/apiProducts';
 import {
     productsSetProductQty,
     productsSetProducts,
@@ -24,7 +24,7 @@ import { getSkus } from '../../products/APIs/apiSkus';
 export const MainScreen = () => {
     const dispatch = useDispatch();
 
-    const { productQty, products, skus } = useSelector(
+    const { productsQty, products, skus } = useSelector(
         (state) => state.products,
     );
 
@@ -32,7 +32,7 @@ export const MainScreen = () => {
         (state) => state.auth,
     );
 
-    console.log(isRegistered);
+    console.log(isRegistered, productsQty);
 
     if (!isRegistered) {
         console.log('no registrado');
@@ -41,11 +41,18 @@ export const MainScreen = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            if (!products.length) {
-                const fetchedProducts = await getProducts();
-                // dispatch(productsSetProducts(fetchedProducts.products));
-                dispatch(productsSetProductQty(fetchedProducts.productsQty));
+            console.log('dentro del fetch' + productsQty);
+            if (productsQty === null) {
+                const { productsQty } = await getProductsQty();
+                console.log(productsQty);
+                dispatch(productsSetProductQty(productsQty));
             }
+
+            // if (!products.length) {
+            //     const fetchedProducts = await getProducts();
+            //     // dispatch(productsSetProducts(fetchedProducts.products));
+            //     dispatch(productsSetProductQty(fetchedProducts.productsQty));
+            // }
 
             // if (!branches.length) {
             //     const fetchedBranches = await getBranches();
@@ -86,7 +93,7 @@ export const MainScreen = () => {
                             <Card.Text className='my-2'>
                                 <FontAwesomeIcon icon={faBoxes} /> Cantidad
                                 total de productos:
-                                <strong> {productQty}</strong>
+                                <strong> {productsQty}</strong>
                             </Card.Text>
                             <Card.Text className='my-2'>
                                 <FontAwesomeIcon icon={faDolly} /> Cantidad de

@@ -13,6 +13,17 @@ export const getProducts = async (page = 1, limit = 50) => {
         return [];
     }
 };
+export const getProductsQty = async () => {
+    try {
+        const response = await fetch(`${BASE_URL}/products/qty`);
+        const data = await response.json();
+        console.log('getProducts Data: ', data);
+        return data;
+    } catch (error) {
+        console.log('Error al obtener Productos desde la API:', error);
+        return [];
+    }
+};
 
 export const createProduct = async (productData) => {
     try {
