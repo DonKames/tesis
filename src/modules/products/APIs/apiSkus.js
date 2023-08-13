@@ -1,5 +1,20 @@
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
+export const getSkusQty = async () => {
+    try {
+        const response = await fetch(`${BASE_URL}/skus/qty`);
+        const data = await response.json();
+        console.log('getSkusQty Data: ', data);
+        return data;
+    } catch (error) {
+        console.log(
+            'Error al obtener la cantidad de Skus desde la API:',
+            error,
+        );
+        return [];
+    }
+};
+
 export const getSkus = async () => {
     try {
         const response = await fetch(`${BASE_URL}/skus`);

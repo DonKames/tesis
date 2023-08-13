@@ -9,6 +9,7 @@ import {
     productsSetProductQty,
     productsSetProducts,
     productsSetSkus,
+    productsSetSkusQty,
 } from '../../products/slice/productsSlice';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -19,14 +20,12 @@ import {
     faMapMarkerAlt,
     faCogs,
 } from '@fortawesome/free-solid-svg-icons';
-import { getSkus } from '../../products/APIs/apiSkus';
+import { getSkus, getSkusQty } from '../../products/APIs/apiSkus';
 
 export const MainScreen = () => {
     const dispatch = useDispatch();
 
-    const { productsQty, products, skus } = useSelector(
-        (state) => state.products,
-    );
+    const { productsQty, skusQty } = useSelector((state) => state.products);
 
     const { displayName, isRegistered, email, uid } = useSelector(
         (state) => state.auth,
@@ -48,6 +47,12 @@ export const MainScreen = () => {
                 dispatch(productsSetProductQty(productsQty));
             }
 
+            if (skusQty === null) {
+                const { skusQty } = await getSkusQty();
+                console.log(skusQty);
+                dispatch(productsSetSkusQty(skusQty));
+            }
+
             // if (!products.length) {
             //     const fetchedProducts = await getProducts();
             //     // dispatch(productsSetProducts(fetchedProducts.products));
@@ -64,10 +69,10 @@ export const MainScreen = () => {
             //     dispatch(locationsSetWarehouses(fetchedWarehouses));
             // }
 
-            if (!skus.length) {
-                const fetchedSkus = await getSkus();
-                dispatch(productsSetSkus(fetchedSkus));
-            }
+            // if (!skus.length) {
+            //     const fetchedSkus = await getSkus();
+            //     dispatch(productsSetSkus(fetchedSkus));
+            // }
         };
 
         fetchData();
@@ -88,7 +93,7 @@ export const MainScreen = () => {
                             <Card.Text className='my-2'>
                                 <FontAwesomeIcon icon={faBoxes} /> Cantidad
                                 total de Skus:
-                                <strong> {skus.length}</strong>
+                                <strong> {skusQty}</strong>
                             </Card.Text>
                             <Card.Text className='my-2'>
                                 <FontAwesomeIcon icon={faBoxes} /> Cantidad
