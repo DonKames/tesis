@@ -38,9 +38,9 @@ export const NavBar = () => {
                     <Nav>
                         <Nav.Link
                             as={Link}
-                            to='./tasks'
+                            to='./locations'
                         >
-                            Tareas
+                            Lugares
                         </Nav.Link>
                         <Nav.Link
                             as={Link}
@@ -48,6 +48,7 @@ export const NavBar = () => {
                         >
                             Productos
                         </Nav.Link>
+
                         <Nav.Link
                             as={Link}
                             to='./dashboard'
@@ -56,9 +57,9 @@ export const NavBar = () => {
                         </Nav.Link>
                         <Nav.Link
                             as={Link}
-                            to='./locations'
+                            to='./tasks'
                         >
-                            Lugares
+                            Tareas
                         </Nav.Link>
                         <Nav.Link
                             as={Link}
