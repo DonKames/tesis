@@ -69,6 +69,9 @@ const ProductsScreen = () => {
                 const productPagesQty = productsQty / limit;
                 setProductPages(Math.ceil(productPagesQty));
                 dispatch(productsSetProductQty(productsQty));
+            } else {
+                const productPagesQty = productsQty / limit;
+                setProductPages(Math.ceil(productPagesQty));
             }
 
             if (!products?.length) {
