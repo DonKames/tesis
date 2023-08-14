@@ -6,18 +6,33 @@ const initialState = {
     countries: [],
     regions: [],
     branches: [],
+    branchesQty: null,
     warehouses: [],
+    warehousesQty: null,
     branchLocations: [],
+    branchLocationsQty: null,
 };
 
 export const locationsSlice = createSlice({
     name: types.locations,
     initialState,
     reducers: {
+        // BranchesQty
+        locationsSetBranchesQty: (state, action) => ({
+            ...state,
+            branchesQty: action.payload,
+        }),
+
         // Branches
         locationsSetBranches: (state, action) => ({
             ...state,
             branches: action.payload,
+        }),
+
+        // Branch Locations Qty
+        locationsSetBranchLocationsQty: (state, action) => ({
+            ...state,
+            branchLocationsQty: action.payload,
         }),
 
         // Branch Locations
@@ -38,6 +53,12 @@ export const locationsSlice = createSlice({
             regions: action.payload,
         }),
 
+        // Warehouses Qty
+        locationsSetWarehousesQty: (state, action) => ({
+            ...state,
+            warehousesQty: action.payload,
+        }),
+
         // Warehouses
         locationsSetWarehouses: (state, action) => ({
             ...state,
@@ -51,10 +72,14 @@ export const locationsSlice = createSlice({
     },
 });
 export const {
+    locationsSetBranchesQty,
     locationsSetBranches,
+    locationsSetBranchLocationsQty,
     locationsSetBranchLocations,
     locationsSetCountries,
     locationsSetRegions,
+    locationsSetWarehousesQty,
     locationsSetWarehouses,
 } = locationsSlice.actions;
+
 export default locationsSlice.reducer;

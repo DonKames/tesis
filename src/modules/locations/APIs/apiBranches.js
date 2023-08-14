@@ -1,12 +1,26 @@
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
-export const getBranches = async () => {
+export const getBranches = async (page = 1, limit = 20) => {
     try {
-        const response = await fetch(`${BASE_URL}/branches`);
+        const response = await fetch(
+            `${BASE_URL}/branches?page=${page}&limit=${limit}`,
+        );
         const data = await response.json();
         return data;
     } catch (error) {
         console.log('Error al obtener Sucursales desde la API:', error);
+        return [];
+    }
+};
+
+export const getBranchesQty = async () => {
+    try {
+        const response = await fetch(`${BASE_URL}/branches/qty`);
+        const data = await response.json();
+        console.log('getBranches Data: ', data);
+        return data;
+    } catch (error) {
+        console.log('Error al obtener Branches Qty desde la API:', error);
         return [];
     }
 };
