@@ -1,11 +1,13 @@
+import { handleFetchError } from '../../../shared/utils/handleFetchError';
+
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 export const getProducts = async (page = 1, limit = 50) => {
     try {
         const response = await fetch(
-            `${BASE_URL}/products?page=${page}&limit=${limit}&includeTotal=true`,
+            `${BASE_URL}/products?page=${page}&limit=${limit}`,
         );
-        const data = await response.json();
+        const data = await handleFetchError(response);
         console.log('getProducts Data: ', data);
         return data;
     } catch (error) {

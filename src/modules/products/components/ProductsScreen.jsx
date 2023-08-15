@@ -28,14 +28,16 @@ import { getWarehouses } from '../../locations/APIs/apiWarehouses';
 import { getSkus, getSkusQty } from '../APIs/apiSkus';
 import SearchProductBar from './SearchProductBar';
 import usePagination from '../../../hooks/usePagination';
+import { PaginatedTable } from '../../../shared/ui/components/PaginatedTable';
 
 const ProductsScreen = () => {
     const dispatch = useDispatch();
 
-    // Redux Products State
+    // Redux States
     const { productsQty, products, skus, skusQty } = useSelector(
         (state) => state.products,
     );
+    const { branches, warehouses } = useSelector((state) => state.locations);
 
     // Pagination
     // Skus
@@ -75,53 +77,82 @@ const ProductsScreen = () => {
         skuLimit,
     );
 
+    // Sku table columns
+
     // Products
-    const [selectedProductPage, setSelectedProductPage] = useState(1);
-    const [productPages, setProductPages] = useState(0);
+    // const [selectedProductPage, setSelectedProductPage] = useState(1);
+    // const [productPagesQty, setProductPagesQty] = useState(0);
+    const [productLimit, setProductLimit] = useState(20);
+
+    // Products pagination hook
+    const {
+        selectedPage: selectedPageProduct,
+        pagesQty: pagesQtyProduct,
+        handlePageChange: handlePageChangeProduct,
+    } = usePagination(
+        getProducts,
+        getProductsQty,
+        productsSetProducts,
+        productsSetProductQty,
+        productsQty,
+        productLimit,
+    );
 
     const maxPagesToShow = 25;
-    const pagesBeforeCurrent = Math.floor(maxPagesToShow / 2);
 
-    const pagesAfterCurrent =
-        selectedProductPage < maxPagesToShow / 2
-            ? maxPagesToShow - selectedProductPage
-            : Math.floor(maxPagesToShow / 2);
+    // Products table columns
+    const tableColumnsProducts = ['Sku', 'Sucursal', 'Bodega', 'EPC'];
 
-    const firstPageToShow = Math.max(
-        selectedProductPage - pagesBeforeCurrent,
-        1,
+    const productRenderer = (product, index) => (
+        <tr key={product.product_id}>
+            <td>{skus.find((sku) => sku.sku_id === product.fk_sku_id)?.sku}</td>
+            <td>
+                {
+                    branches.find(
+                        (branch) =>
+                            branch.branch_id ===
+                            warehouses.find(
+                                (warehouse) =>
+                                    warehouse.warehouse_id ===
+                                    product.fk_warehouse_id,
+                            )?.fk_branch_id,
+                    )?.name
+                }
+            </td>
+            <td>
+                {
+                    warehouses.find(
+                        (warehouse) =>
+                            warehouse.warehouse_id === product.fk_warehouse_id,
+                    )?.name
+                }
+            </td>
+            <td>{product.epc}</td>
+        </tr>
     );
-    const lastPageToShow = Math.min(
-        selectedProductPage + pagesAfterCurrent,
-        productPages,
-    );
 
-    const { branches, warehouses } = useSelector((state) => state.locations);
-
-    const [limit, setLimit] = useState(20);
-
-    const handlePageChange = async (pageNumber) => {
-        setSelectedProductPage(pageNumber);
-        const fetchedProducts = await getProducts(pageNumber, limit);
-        dispatch(productsSetProducts(fetchedProducts.products));
-    };
+    // const handlePageChange = async (pageNumber) => {
+    //     setSelectedProductPage(pageNumber);
+    //     const fetchedProducts = await getProducts(pageNumber, productLimit);
+    //     dispatch(productsSetProducts(fetchedProducts.products));
+    // };
 
     useEffect(() => {
         const fetchData = async () => {
             if (productsQty === null) {
                 const { productsQty } = await getProductsQty();
-                const productPagesQty = productsQty / limit;
-                setProductPages(Math.ceil(productPagesQty));
+                const productPagesQty = productsQty / productLimit;
+                // setProductPagesQty(Math.ceil(productPagesQty));
                 dispatch(productsSetProductQty(productsQty));
             } else {
-                const productPagesQty = productsQty / limit;
-                setProductPages(Math.ceil(productPagesQty));
+                const productPagesQty = productsQty / productLimit;
+                // setProductPagesQty(Math.ceil(productPagesQty));
             }
 
             if (!products?.length) {
-                const fetchedData = await getProducts(1, limit);
+                const fetchedData = await getProducts(1, productLimit);
                 console.log(fetchedData);
-                dispatch(productsSetProducts(fetchedData.products));
+                dispatch(productsSetProducts(fetchedData));
             }
 
             if (!branches.length) {
@@ -145,7 +176,6 @@ const ProductsScreen = () => {
             } else {
                 const skuPagesQty = skusQty / skuLimit;
 
-                console.log(pagesQtySku);
                 console.log(skuPagesQty, skusQty);
                 setSkuPagesQty(Math.ceil(skuPagesQty));
                 // setSkuPagesQty(Math.ceil(pagesQtySku));
@@ -270,104 +300,15 @@ const ProductsScreen = () => {
                     <h1>Productos</h1>
                 </Col>
             </Row>
-            <Row>
-                <Table
-                    striped
-                    bordered
-                    hover
-                >
-                    <thead>
-                        <tr>
-                            <th>Sku</th>
-                            <th>Sucursal</th>
-                            <th>Bodega</th>
-                            <th>EPC</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {products?.map((product, index) => (
-                            <tr key={product.product_id}>
-                                <td>
-                                    {
-                                        skus.find(
-                                            (sku) =>
-                                                sku.sku_id ===
-                                                product.fk_sku_id,
-                                        )?.sku
-                                    }
-                                </td>
-                                <td>
-                                    {
-                                        branches.find(
-                                            (branch) =>
-                                                branch.branch_id ===
-                                                warehouses.find(
-                                                    (warehouse) =>
-                                                        warehouse.warehouse_id ===
-                                                        product.fk_warehouse_id,
-                                                )?.fk_branch_id,
-                                        )?.name
-                                    }
-                                </td>
-                                <td>
-                                    {
-                                        warehouses.find(
-                                            (warehouse) =>
-                                                warehouse.warehouse_id ===
-                                                product.fk_warehouse_id,
-                                        )?.name
-                                    }
-                                </td>
-                                <td>{product.epc}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </Table>
-            </Row>
-            <Row>
-                <Col className='d-flex justify-content-center'>
-                    <Pagination>
-                        <Pagination.First onClick={() => handlePageChange(1)} />
-                        <Pagination.Prev
-                            onClick={() =>
-                                handlePageChange(selectedProductPage - 1)
-                            }
-                        />
-
-                        {firstPageToShow > 1 && <Pagination.Ellipsis />}
-                        {[
-                            ...Array(
-                                lastPageToShow - firstPageToShow + 1,
-                            ).keys(),
-                        ].map((page) => (
-                            <Pagination.Item
-                                key={page + firstPageToShow}
-                                active={
-                                    page + firstPageToShow ===
-                                    selectedProductPage
-                                }
-                                onClick={() =>
-                                    handlePageChange(page + firstPageToShow)
-                                }
-                            >
-                                {page + firstPageToShow}
-                            </Pagination.Item>
-                        ))}
-                        {lastPageToShow < productPages && (
-                            <Pagination.Ellipsis />
-                        )}
-
-                        <Pagination.Next
-                            onClick={() =>
-                                handlePageChange(selectedProductPage + 1)
-                            }
-                        />
-                        <Pagination.Last
-                            onClick={() => handlePageChange(productPages)}
-                        />
-                    </Pagination>
-                </Col>
-            </Row>
+            <PaginatedTable
+                items={products}
+                columns={tableColumnsProducts}
+                selectedPage={selectedPageProduct}
+                pagesQty={pagesQtyProduct}
+                handlePageChange={handlePageChangeProduct}
+                itemRenderer={productRenderer}
+                footerText={`Total de productos: ${productsQty} | Páginas totales: ${pagesQtyProduct}`}
+            />
         </Container>
     );
 };

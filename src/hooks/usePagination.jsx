@@ -23,6 +23,7 @@ const usePagination = (
             } else {
                 setPagesQty(Math.ceil(itemsQty / limit));
                 const fetchedItems = await getItems(1, limit);
+                console.log(fetchedItems);
                 dispatch(setItems(fetchedItems));
             }
         };
