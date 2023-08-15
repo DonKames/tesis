@@ -1,12 +1,32 @@
+import { handleFetchError } from '../../../shared/utils/handleFetchError';
+
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
-export const getWarehouses = async () => {
+export const getWarehouses = async (page = 1, limit = 20) => {
     try {
-        const response = await fetch(`${BASE_URL}/warehouses`);
-        const data = await response.json();
-        return data;
+        const response = await fetch(
+            `${BASE_URL}/warehouses?page=${page}&limit=${limit}`,
+        );
+        const finalResp = await handleFetchError(response);
+        console.log(finalResp);
+        return finalResp;
     } catch (error) {
         console.log('Error al obtener Bodegas desde la API:', error);
+        return [];
+    }
+};
+
+export const getWarehousesQty = async () => {
+    try {
+        const response = await fetch(`${BASE_URL}/warehouses/qty`);
+        const finalResp = await handleFetchError(response);
+        console.log(finalResp);
+        return finalResp;
+    } catch (error) {
+        console.log(
+            'Error al obtener Cantidad de Bodegas desde la API:',
+            error,
+        );
         return [];
     }
 };

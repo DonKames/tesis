@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+
 import { Link } from 'react-router-dom';
 import {
     Container,
@@ -7,27 +8,74 @@ import {
     Table,
     Button,
     Pagination,
+    Card,
 } from 'react-bootstrap';
-import SearchProductBar from './SearchProductBar';
 import { useDispatch, useSelector } from 'react-redux';
-import { getProducts, getProductsQty } from '../APIs/apiProducts';
+
 import {
     productsSetProductQty,
     productsSetProducts,
     productsSetSkus,
+    productsSetSkusQty,
 } from '../slice/productsSlice';
 import {
     locationsSetBranches,
     locationsSetWarehouses,
 } from '../../locations/slice/locationsSlice';
+import { getProducts, getProductsQty } from '../APIs/apiProducts';
 import { getBranches } from '../../locations/APIs/apiBranches';
 import { getWarehouses } from '../../locations/APIs/apiWarehouses';
-import { getSkus } from '../APIs/apiSkus';
+import { getSkus, getSkusQty } from '../APIs/apiSkus';
+import SearchProductBar from './SearchProductBar';
+import usePagination from '../../../hooks/usePagination';
 
 const ProductsScreen = () => {
     const dispatch = useDispatch();
 
-    // Para la paginación.
+    // Redux Products State
+    const { productsQty, products, skus, skusQty } = useSelector(
+        (state) => state.products,
+    );
+
+    // Pagination
+    // Skus
+    const [selectedSkuPage, setSelectedSkuPage] = useState(1);
+    const [skuPagesQty, setSkuPagesQty] = useState(0);
+    const [skuLimit, setSkuLimit] = useState(10);
+
+    const maxPagesToShowSku = 25;
+    const pagesBeforeCurrentSku = Math.floor(maxPagesToShowSku / 2);
+    const pagesAfterCurrentSku =
+        selectedSkuPage < maxPagesToShowSku / 2
+            ? maxPagesToShowSku - selectedSkuPage
+            : Math.floor(maxPagesToShowSku / 2);
+
+    const firstPageToShowSku = Math.max(
+        selectedSkuPage - pagesBeforeCurrentSku,
+        1,
+    );
+
+    const lastPageToShowSku = Math.min(
+        selectedSkuPage + pagesAfterCurrentSku,
+        skuPagesQty,
+    );
+
+    // Sku pagination hook
+    console.log(skusQty);
+    const {
+        selectedPage: selectedPageSku,
+        pagesQty: pagesQtySku,
+        handlePageChange: handlePageChangeSku,
+    } = usePagination(
+        getSkus,
+        getSkusQty,
+        productsSetSkus,
+        productsSetSkusQty,
+        skusQty,
+        skuLimit,
+    );
+
+    // Products
     const [selectedProductPage, setSelectedProductPage] = useState(1);
     const [productPages, setProductPages] = useState(0);
 
@@ -46,10 +94,6 @@ const ProductsScreen = () => {
     const lastPageToShow = Math.min(
         selectedProductPage + pagesAfterCurrent,
         productPages,
-    );
-
-    const { productsQty, products, skus } = useSelector(
-        (state) => state.products,
     );
 
     const { branches, warehouses } = useSelector((state) => state.locations);
@@ -90,8 +134,24 @@ const ProductsScreen = () => {
                 dispatch(locationsSetWarehouses(fetchedWarehouses));
             }
 
+            // Skus pagination, table and data
+
+            if (skusQty === null || skusQty === undefined) {
+                const skusQty = await getSkusQty();
+                console.log(skusQty);
+                const skuPagesQty = skusQty / skuLimit;
+                setSkuPagesQty(Math.ceil(skuPagesQty));
+                dispatch(productsSetSkusQty(skusQty));
+            } else {
+                const skuPagesQty = skusQty / skuLimit;
+
+                console.log(pagesQtySku);
+                console.log(skuPagesQty, skusQty);
+                setSkuPagesQty(Math.ceil(pagesQtySku));
+            }
+
             if (!skus.length) {
-                const fetchedSkus = await getSkus();
+                const fetchedSkus = await getSkus(1, skuLimit);
                 dispatch(productsSetSkus(fetchedSkus));
             }
         };
@@ -114,10 +174,10 @@ const ProductsScreen = () => {
                     </Link>
                 </Col>
             </Row>
-            <Row>
+
+            <Card>
                 <Table
                     striped
-                    bordered
                     hover
                 >
                     <thead>
@@ -152,15 +212,57 @@ const ProductsScreen = () => {
                                 </td>
                             </tr>
                         ))}
-                        <tr>
-                            <td>1</td>
-                            <td>Producto 1</td>
-                            <td>Descripción del producto 1</td>
-                            <td>$10.00</td>
-                            <td>50</td>
-                        </tr>
                     </tbody>
                 </Table>
+                <Row className=''>
+                    <Col
+                        className='text-center text-muted'
+                        style={{ fontSize: '14px' }}
+                    >
+                        <p>{`Total de SKUs: ${skusQty} | Páginas totales: ${skuPagesQty}`}</p>
+                    </Col>
+                </Row>
+            </Card>
+            <Row className='mt-1'>
+                <Col className='d-flex justify-content-center'>
+                    <Pagination>
+                        <Pagination.First
+                            onClick={() => handlePageChangeSku(1)}
+                        />
+                        <Pagination.Prev
+                            onClick={() =>
+                                handlePageChangeSku(selectedPageSku - 1)
+                            }
+                        />
+                        {firstPageToShowSku > 1 && <Pagination.Ellipsis />}
+                        {Array.from(
+                            {
+                                length:
+                                    lastPageToShowSku - firstPageToShowSku + 1,
+                            },
+                            (_, i) => firstPageToShowSku + i,
+                        ).map((page) => (
+                            <Pagination.Item
+                                key={page}
+                                active={page === selectedPageSku}
+                                onClick={() => handlePageChangeSku(page)}
+                            >
+                                {page}
+                            </Pagination.Item>
+                        ))}
+                        {lastPageToShowSku < skuPagesQty && (
+                            <Pagination.Ellipsis />
+                        )}
+                        <Pagination.Next
+                            onClick={() =>
+                                handlePageChangeSku(selectedPageSku + 1)
+                            }
+                        />
+                        <Pagination.Last
+                            onClick={() => handlePageChangeSku(skuPagesQty)}
+                        />
+                    </Pagination>
+                </Col>
             </Row>
             <Row>
                 <Col>

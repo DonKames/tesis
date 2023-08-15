@@ -8,17 +8,22 @@ import { AddBranchLocationModal } from './AddBranchLocationModal';
 import { AddWarehouseModal } from './AddWarehouseModal';
 import {
     locationsSetBranchLocations,
+    locationsSetBranchLocationsQty,
     locationsSetBranches,
     locationsSetBranchesQty,
     locationsSetCountries,
     locationsSetRegions,
     locationsSetWarehouses,
+    locationsSetWarehousesQty,
 } from '../slice/locationsSlice';
 import { getRegions } from '../APIs/apiRegions';
 import { getBranches, getBranchesQty } from '../APIs/apiBranches';
-import { getWarehouses } from '../APIs/apiWarehouses';
+import { getWarehouses, getWarehousesQty } from '../APIs/apiWarehouses';
 import { getCountries } from '../APIs/apiCountries';
-import { getBranchLocations } from '../APIs/apiBranchLocation';
+import {
+    getBranchLocations,
+    getBranchLocationsQty,
+} from '../APIs/apiBranchLocation';
 
 export const LocationsScreen = () => {
     const dispatch = useDispatch();
@@ -86,14 +91,47 @@ export const LocationsScreen = () => {
     // Branch Locations Pagination
     const [selectedBranchLocationPage, setSelectedBranchLocationPage] =
         useState(1);
+    const [branchLocationPagesQty, setBranchLocationPagesQty] = useState(0);
+    const [branchLocationLimit, setBranchLocationLimit] = useState(10);
 
+    const maxPagesToShowBranchLocation = 13;
+    const pagesBeforeCurrentBranchLocation = Math.floor(
+        maxPagesToShowBranchLocation / 2,
+    );
+    const pagesAfterCurrentBranchLocation =
+        selectedBranchLocationPage < maxPagesToShowBranchLocation / 2
+            ? maxPagesToShowBranchLocation - selectedBranchLocationPage
+            : Math.ceil(maxPagesToShowBranchLocation / 2) - 1;
+
+    const firstPageToShowBranchLocation = Math.max(
+        selectedBranchLocationPage - pagesBeforeCurrentBranchLocation,
+        1,
+    );
+    const lastPageToShowBranchLocation = Math.min(
+        selectedBranchLocationPage + pagesAfterCurrentBranchLocation,
+        branchLocationPagesQty,
+    );
+
+    const handlePageChangeBranchLocation = async (pageNumber) => {
+        setSelectedBranchLocationPage(pageNumber);
+
+        const fetchedBranchLocations = await getBranchLocations(
+            pageNumber,
+            branchLocationLimit,
+        );
+        dispatch(locationsSetBranchLocations(fetchedBranchLocations));
+    };
+
+    // Redux
     const {
-        branchesQty,
         branches,
+        branchesQty,
         regions,
         countries,
         warehouses,
+        warehousesQty,
         branchLocations,
+        branchLocationsQty,
     } = useSelector((state) => state.locations);
 
     useEffect(() => {
@@ -115,14 +153,51 @@ export const LocationsScreen = () => {
             }
 
             // Warehouses Table, Pagination.
+            if (warehousesQty === null) {
+                const warehousesQty = await getWarehousesQty();
+                setWarehousePagesQty(Math.ceil(warehousesQty / warehouseLimit));
+                dispatch(locationsSetWarehousesQty(warehousesQty));
+            } else {
+                setWarehousePagesQty(Math.ceil(warehousesQty / warehouseLimit));
+                const fetchedWarehouses = await getWarehouses(
+                    1,
+                    warehouseLimit,
+                );
+                dispatch(locationsSetWarehouses(fetchedWarehouses));
+            }
+
             if (!warehouses.length) {
-                const fetchedWarehouses = await getWarehouses();
+                const fetchedWarehouses = await getWarehouses(
+                    1,
+                    warehouseLimit,
+                );
                 dispatch(locationsSetWarehouses(fetchedWarehouses));
             }
 
             // Branch Locations Table, Pagination.
+            if (branchLocationsQty === null) {
+                const branchLocationsQty = await getBranchLocationsQty();
+                console.log(branchLocationsQty);
+                setBranchLocationPagesQty(
+                    Math.ceil(branchLocationsQty / branchLocationLimit),
+                );
+                dispatch(locationsSetBranchLocationsQty(branchLocationsQty));
+            } else {
+                setBranchLocationPagesQty(
+                    Math.ceil(branchLocationsQty / branchLocationLimit),
+                );
+                const fetchedBranchLocations = await getBranchLocations(
+                    1,
+                    branchLocationLimit,
+                );
+                dispatch(locationsSetBranchLocations(fetchedBranchLocations));
+            }
+
             if (!branchLocations.length) {
-                const fetchedBranchLocations = await getBranchLocations();
+                const fetchedBranchLocations = await getBranchLocations(
+                    1,
+                    branchLocationLimit,
+                );
                 dispatch(locationsSetBranchLocations(fetchedBranchLocations));
             }
 
@@ -156,7 +231,7 @@ export const LocationsScreen = () => {
                             <AddBranchModal />
                         </Col>
                     </Row>
-                    <Card>
+                    <Card className='shadow'>
                         <Table
                             striped
                             hover
@@ -273,7 +348,7 @@ export const LocationsScreen = () => {
                                 <AddWarehouseModal />
                             </Col>
                         </Row>
-                        <Card className='mb-3'>
+                        <Card className='mb-3 shadow'>
                             <Table
                                 striped
                                 hover
@@ -381,7 +456,7 @@ export const LocationsScreen = () => {
                                 <AddBranchLocationModal />
                             </Col>
                         </Row>
-                        <Card>
+                        <Card className='shadow'>
                             <Table
                                 striped
                                 hover
@@ -417,6 +492,75 @@ export const LocationsScreen = () => {
                                     ))}
                                 </tbody>
                             </Table>
+                            <Row className='mt-2'>
+                                <Col className='d-flex justify-content-center'>
+                                    <Pagination>
+                                        <Pagination.First
+                                            onClick={() =>
+                                                handlePageChangeBranchLocation(
+                                                    1,
+                                                )
+                                            }
+                                        />
+                                        <Pagination.Prev
+                                            onClick={() =>
+                                                handlePageChangeBranchLocation(
+                                                    selectedBranchLocationPage -
+                                                        1,
+                                                )
+                                            }
+                                        />
+                                        {firstPageToShowBranchLocation > 1 && (
+                                            <Pagination.Ellipsis />
+                                        )}
+                                        {Array.from(
+                                            {
+                                                length:
+                                                    lastPageToShowBranchLocation -
+                                                    firstPageToShowBranchLocation +
+                                                    1,
+                                            },
+                                            (_, i) =>
+                                                firstPageToShowBranchLocation +
+                                                i,
+                                        ).map((page) => (
+                                            <Pagination.Item
+                                                key={page}
+                                                active={
+                                                    page ===
+                                                    selectedBranchLocationPage
+                                                }
+                                                onClick={() =>
+                                                    handlePageChangeBranchLocation(
+                                                        page,
+                                                    )
+                                                }
+                                            >
+                                                {page}
+                                            </Pagination.Item>
+                                        ))}
+                                        {lastPageToShowBranchLocation <
+                                            branchLocationPagesQty && (
+                                            <Pagination.Ellipsis />
+                                        )}
+                                        <Pagination.Next
+                                            onClick={() =>
+                                                handlePageChangeBranchLocation(
+                                                    selectedBranchLocationPage +
+                                                        1,
+                                                )
+                                            }
+                                        />
+                                        <Pagination.Last
+                                            onClick={() =>
+                                                handlePageChangeBranchLocation(
+                                                    branchLocationPagesQty,
+                                                )
+                                            }
+                                        />
+                                    </Pagination>
+                                </Col>
+                            </Row>
                         </Card>
                     </Col>
                 </Row>
