@@ -147,7 +147,8 @@ const ProductsScreen = () => {
 
                 console.log(pagesQtySku);
                 console.log(skuPagesQty, skusQty);
-                setSkuPagesQty(Math.ceil(pagesQtySku));
+                setSkuPagesQty(Math.ceil(skuPagesQty));
+                // setSkuPagesQty(Math.ceil(pagesQtySku));
             }
 
             if (!skus.length) {

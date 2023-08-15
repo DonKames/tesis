@@ -48,7 +48,7 @@ export const MainScreen = () => {
             }
 
             if (skusQty === null) {
-                const { skusQty } = await getSkusQty();
+                const skusQty = await getSkusQty();
                 console.log(skusQty);
                 dispatch(productsSetSkusQty(skusQty));
             }
