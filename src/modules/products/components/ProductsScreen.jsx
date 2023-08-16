@@ -1,15 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { Link } from 'react-router-dom';
-import {
-    Container,
-    Row,
-    Col,
-    Table,
-    Button,
-    Pagination,
-    Card,
-} from 'react-bootstrap';
+import { Container, Row, Col, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
@@ -30,6 +22,15 @@ import SearchProductBar from './SearchProductBar';
 import usePagination from '../../../hooks/usePagination';
 import { PaginatedTable } from '../../../shared/ui/components/PaginatedTable';
 
+/**
+ * Renders a screen that displays a table of SKUs and products with pagination and search functionality.
+ *
+ * The component fetches data from APIs and updates the Redux store using various functions and actions.
+ * It uses the `usePagination` custom hook for handling pagination logic.
+ *
+ * @returns {JSX.Element} The rendered ProductsScreen component.
+ */
+
 const ProductsScreen = () => {
     const dispatch = useDispatch();
 
@@ -41,69 +42,75 @@ const ProductsScreen = () => {
 
     // Pagination
     // Skus
-    const [selectedSkuPage, setSelectedSkuPage] = useState(1);
-    const [skuPagesQty, setSkuPagesQty] = useState(0);
-    const [skuLimit, setSkuLimit] = useState(10);
-
-    const maxPagesToShowSku = 25;
-    const pagesBeforeCurrentSku = Math.floor(maxPagesToShowSku / 2);
-    const pagesAfterCurrentSku =
-        selectedSkuPage < maxPagesToShowSku / 2
-            ? maxPagesToShowSku - selectedSkuPage
-            : Math.floor(maxPagesToShowSku / 2);
-
-    const firstPageToShowSku = Math.max(
-        selectedSkuPage - pagesBeforeCurrentSku,
-        1,
-    );
-
-    const lastPageToShowSku = Math.min(
-        selectedSkuPage + pagesAfterCurrentSku,
-        skuPagesQty,
-    );
 
     // Sku pagination hook
-    console.log(skusQty);
     const {
         selectedPage: selectedPageSku,
         pagesQty: pagesQtySku,
         handlePageChange: handlePageChangeSku,
+        setLimit: setSkuLimit,
+        limit: skuLimit,
     } = usePagination(
         getSkus,
         getSkusQty,
         productsSetSkus,
         productsSetSkusQty,
         skusQty,
-        skuLimit,
+        10,
     );
 
     // Sku table columns
+    const tableColumnsSkus = [
+        'Sku',
+        'Nombre',
+        'Descripción',
+        'Precio',
+        'Stock',
+    ];
+    const skuRenderer = (sku) => (
+        <tr key={sku.sku_id}>
+            <td>{sku.sku}</td>
+
+            <td>{sku.name}</td>
+            <td>{sku.description}</td>
+            <td>
+                $
+                {sku.price.toLocaleString('es-CL', {
+                    maximumFractionDigits: 0,
+                })}
+            </td>
+            <td>
+                {skus.reduce((accumulator, obj) => {
+                    if (obj.sku === sku.sku) {
+                        return accumulator + 1;
+                    }
+                    return accumulator;
+                }, 0)}
+            </td>
+        </tr>
+    );
 
     // Products
-    // const [selectedProductPage, setSelectedProductPage] = useState(1);
-    // const [productPagesQty, setProductPagesQty] = useState(0);
-    const [productLimit, setProductLimit] = useState(20);
-
     // Products pagination hook
     const {
         selectedPage: selectedPageProduct,
         pagesQty: pagesQtyProduct,
         handlePageChange: handlePageChangeProduct,
+        limit: productLimit,
+        setLimit: setProductLimit,
     } = usePagination(
         getProducts,
         getProductsQty,
         productsSetProducts,
         productsSetProductQty,
         productsQty,
-        productLimit,
+        10,
     );
-
-    const maxPagesToShow = 25;
 
     // Products table columns
     const tableColumnsProducts = ['Sku', 'Sucursal', 'Bodega', 'EPC'];
 
-    const productRenderer = (product, index) => (
+    const productRenderer = (product) => (
         <tr key={product.product_id}>
             <td>{skus.find((sku) => sku.sku_id === product.fk_sku_id)?.sku}</td>
             <td>
@@ -131,59 +138,52 @@ const ProductsScreen = () => {
         </tr>
     );
 
-    // const handlePageChange = async (pageNumber) => {
-    //     setSelectedProductPage(pageNumber);
-    //     const fetchedProducts = await getProducts(pageNumber, productLimit);
-    //     dispatch(productsSetProducts(fetchedProducts.products));
-    // };
-
     useEffect(() => {
         const fetchData = async () => {
-            if (productsQty === null) {
-                const { productsQty } = await getProductsQty();
-                const productPagesQty = productsQty / productLimit;
-                // setProductPagesQty(Math.ceil(productPagesQty));
-                dispatch(productsSetProductQty(productsQty));
-            } else {
-                const productPagesQty = productsQty / productLimit;
-                // setProductPagesQty(Math.ceil(productPagesQty));
-            }
+            try {
+                if (productsQty === null) {
+                    const { productsQty } = await getProductsQty();
+                    dispatch(productsSetProductQty(productsQty));
+                }
 
-            if (!products?.length) {
-                const fetchedData = await getProducts(1, productLimit);
-                console.log(fetchedData);
-                dispatch(productsSetProducts(fetchedData));
-            }
+                if (!products?.length) {
+                    const fetchedData = await getProducts(1, productLimit);
+                    console.log(fetchedData);
+                    dispatch(productsSetProducts(fetchedData));
+                }
 
-            if (!branches.length) {
-                const fetchedBranches = await getBranches();
-                dispatch(locationsSetBranches(fetchedBranches));
-            }
+                // UI
+                if (!branches.length) {
+                    const fetchedBranches = await getBranches();
+                    dispatch(locationsSetBranches(fetchedBranches));
+                }
 
-            if (!warehouses.length) {
-                const fetchedWarehouses = await getWarehouses();
-                dispatch(locationsSetWarehouses(fetchedWarehouses));
-            }
+                if (!warehouses.length) {
+                    const fetchedWarehouses = await getWarehouses();
+                    dispatch(locationsSetWarehouses(fetchedWarehouses));
+                }
 
-            // Skus pagination, table and data
+                // Skus pagination, table and data
 
-            if (skusQty === null || skusQty === undefined) {
-                const skusQty = await getSkusQty();
-                console.log(skusQty);
-                const skuPagesQty = skusQty / skuLimit;
-                setSkuPagesQty(Math.ceil(skuPagesQty));
-                dispatch(productsSetSkusQty(skusQty));
-            } else {
-                const skuPagesQty = skusQty / skuLimit;
+                if (skusQty === null || skusQty === undefined) {
+                    const skusQty = await getSkusQty();
+                    console.log(skusQty);
+                    // setSkuPagesQty(Math.ceil(skuPagesQty));
+                    dispatch(productsSetSkusQty(skusQty));
+                } else {
+                    const skuPagesQty = skusQty / skuLimit;
 
-                console.log(skuPagesQty, skusQty);
-                setSkuPagesQty(Math.ceil(skuPagesQty));
-                // setSkuPagesQty(Math.ceil(pagesQtySku));
-            }
+                    console.log(skuPagesQty, skusQty);
+                    // setSkuPagesQty(Math.ceil(skuPagesQty));
+                    // setSkuPagesQty(Math.ceil(pagesQtySku));
+                }
 
-            if (!skus.length) {
-                const fetchedSkus = await getSkus(1, skuLimit);
-                dispatch(productsSetSkus(fetchedSkus));
+                if (!skus.length) {
+                    const fetchedSkus = await getSkus(1, 10);
+                    dispatch(productsSetSkus(fetchedSkus));
+                }
+            } catch (error) {
+                console.error('Ocurrió un error al obtener los datos:', error);
             }
         };
 
@@ -205,96 +205,18 @@ const ProductsScreen = () => {
                     </Link>
                 </Col>
             </Row>
-
-            <Card>
-                <Table
-                    striped
-                    hover
-                >
-                    <thead>
-                        <tr>
-                            <th>Sku</th>
-                            <th>Nombre</th>
-                            <th>Descripción</th>
-                            <th>Precio</th>
-                            <th>Stock</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {/* code to map through product data and render rows */}
-                        {skus?.map((sku, index) => (
-                            <tr key={sku.sku_id}>
-                                <td>{sku.sku}</td>
-                                <td>{sku.name}</td>
-                                <td>{sku.description}</td>
-                                <td>
-                                    $
-                                    {sku.price.toLocaleString('es-CL', {
-                                        maximumFractionDigits: 0,
-                                    })}
-                                </td>
-                                <td>
-                                    {skus.reduce((accumulator, obj) => {
-                                        if (obj.sku === sku.sku) {
-                                            return accumulator + 1;
-                                        }
-                                        return accumulator;
-                                    }, 0)}
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </Table>
-                <Row className=''>
-                    <Col
-                        className='text-center text-muted'
-                        style={{ fontSize: '14px' }}
-                    >
-                        <p>{`Total de SKUs: ${skusQty} | Páginas totales: ${skuPagesQty}`}</p>
-                    </Col>
-                </Row>
-            </Card>
-            <Row className='mt-1'>
-                <Col className='d-flex justify-content-center'>
-                    <Pagination>
-                        <Pagination.First
-                            onClick={() => handlePageChangeSku(1)}
-                        />
-                        <Pagination.Prev
-                            onClick={() =>
-                                handlePageChangeSku(selectedPageSku - 1)
-                            }
-                        />
-                        {firstPageToShowSku > 1 && <Pagination.Ellipsis />}
-                        {Array.from(
-                            {
-                                length:
-                                    lastPageToShowSku - firstPageToShowSku + 1,
-                            },
-                            (_, i) => firstPageToShowSku + i,
-                        ).map((page) => (
-                            <Pagination.Item
-                                key={page}
-                                active={page === selectedPageSku}
-                                onClick={() => handlePageChangeSku(page)}
-                            >
-                                {page}
-                            </Pagination.Item>
-                        ))}
-                        {lastPageToShowSku < skuPagesQty && (
-                            <Pagination.Ellipsis />
-                        )}
-                        <Pagination.Next
-                            onClick={() =>
-                                handlePageChangeSku(selectedPageSku + 1)
-                            }
-                        />
-                        <Pagination.Last
-                            onClick={() => handlePageChangeSku(skuPagesQty)}
-                        />
-                    </Pagination>
-                </Col>
-            </Row>
+            <PaginatedTable
+                items={skus}
+                columns={tableColumnsSkus}
+                selectedPage={selectedPageSku}
+                pagesQty={pagesQtySku}
+                handlePageChange={handlePageChangeSku}
+                itemRenderer={skuRenderer}
+                footerText={`Total de SKUs: ${skusQty} | Páginas totales: ${pagesQtySku}`}
+                maxPagesToShow={10}
+                handleLimitChange={setSkuLimit}
+                limit={skuLimit}
+            />
             <Row>
                 <Col>
                     <h1>Productos</h1>
@@ -308,6 +230,9 @@ const ProductsScreen = () => {
                 handlePageChange={handlePageChangeProduct}
                 itemRenderer={productRenderer}
                 footerText={`Total de productos: ${productsQty} | Páginas totales: ${pagesQtyProduct}`}
+                maxPagesToShow={10}
+                handleLimitChange={setProductLimit}
+                limit={productLimit}
             />
         </Container>
     );

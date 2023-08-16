@@ -7,12 +7,13 @@ const usePagination = (
     setItems, // Acción de Redux para almacenar los elementos
     setItemsQty, // Acción de Redux para almacenar la cantidad total de elementos
     itemsQty, // Cantidad total de elementos desde Redux
-    limit, // Límite de elementos por página
+    initialLimit, // Límite de elementos por página
 ) => {
     const dispatch = useDispatch();
 
     const [selectedPage, setSelectedPage] = useState(1);
     const [pagesQty, setPagesQty] = useState(0);
+    const [limit, setLimit] = useState(initialLimit);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -23,7 +24,7 @@ const usePagination = (
             } else {
                 setPagesQty(Math.ceil(itemsQty / limit));
                 const fetchedItems = await getItems(1, limit);
-                console.log(fetchedItems);
+                console.log('setItems', fetchedItems);
                 dispatch(setItems(fetchedItems));
             }
         };
@@ -49,6 +50,8 @@ const usePagination = (
         selectedPage,
         pagesQty,
         handlePageChange,
+        setLimit,
+        limit,
     };
 };
 

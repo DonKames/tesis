@@ -56,7 +56,7 @@ export const AddProductForm = () => {
     useEffect(() => {
         const fetchData = async () => {
             if (!skus?.length) {
-                const fetchedSkus = await getSkus();
+                const fetchedSkus = await getSkus(1, 10);
                 dispatch(productsSetSkus(fetchedSkus));
             }
         };
