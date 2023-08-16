@@ -3,6 +3,7 @@ import { types } from '../../../types/types';
 import { reset } from '../../../shared/resetSlice';
 
 const initialState = {
+    usersQty: null,
     users: [],
     roles: [],
 };
@@ -17,6 +18,12 @@ export const usersSlice = createSlice({
             users: action.payload,
         }),
 
+        // Users Qty
+        usersSetUsersQty: (state, action) => ({
+            ...state,
+            usersQty: action.payload,
+        }),
+
         // Roles
         usersSetRoles: (state, action) => ({
             ...state,
@@ -29,5 +36,6 @@ export const usersSlice = createSlice({
         });
     },
 });
-export const { usersSetUsers, usersSetRoles } = usersSlice.actions;
+export const { usersSetUsers, usersSetUsersQty, usersSetRoles } =
+    usersSlice.actions;
 export default usersSlice.reducer;

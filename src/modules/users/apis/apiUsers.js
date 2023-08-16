@@ -1,13 +1,31 @@
+import { handleFetchError } from '../../../shared/utils/handleFetchError';
+
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
-export const getUsers = async () => {
+export const getUsers = async (page = 1, limit = 10) => {
     try {
-        const response = await fetch(`${BASE_URL}/users`);
-        const data = await response.json();
+        const response = await fetch(
+            `${BASE_URL}/users?page=${page}&limit=${limit}`,
+        );
+        const data = await handleFetchError(response);
         return data;
     } catch (error) {
         console.log('Error al obtener USUARIOS desde la API:', error);
-        return error;
+        return [];
+    }
+};
+
+export const getUsersQty = async () => {
+    try {
+        const response = await fetch(`${BASE_URL}/users/qty`);
+        const data = await handleFetchError(response);
+        return data;
+    } catch (error) {
+        console.log(
+            'Error al obtener la CANTIDAD DE USUARIOS desde la API:',
+            error,
+        );
+        return [];
     }
 };
 

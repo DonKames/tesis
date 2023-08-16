@@ -3,6 +3,9 @@ import { Navbar, Nav, Container, NavDropdown, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { startLogout } from '../../modules/auth/actions/auth';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBell } from '@fortawesome/free-solid-svg-icons';
+import { fab } from '@fortawesome/free-brands-svg-icons';
 
 export const NavBar = () => {
     const dispatch = useDispatch();
@@ -89,6 +92,7 @@ export const NavBar = () => {
                             </Button>
                         </NavDropdown.Item>
                     </NavDropdown>
+                    <FontAwesomeIcon icon={faBell} />
                 </Navbar.Collapse>
             </Container>
         </Navbar>

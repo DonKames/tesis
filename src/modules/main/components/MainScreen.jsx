@@ -4,11 +4,9 @@ import { Card, Col, Container, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { updateUserUid } from '../../users/apis/apiUsers';
-import { getProducts, getProductsQty } from '../../products/APIs/apiProducts';
+import { getProductsQty } from '../../products/APIs/apiProducts';
 import {
     productsSetProductQty,
-    productsSetProducts,
-    productsSetSkus,
     productsSetSkusQty,
 } from '../../products/slice/productsSlice';
 
@@ -20,22 +18,21 @@ import {
     faMapMarkerAlt,
     faCogs,
 } from '@fortawesome/free-solid-svg-icons';
-import { getSkus, getSkusQty } from '../../products/APIs/apiSkus';
+import { getSkusQty } from '../../products/APIs/apiSkus';
+import { GeneralSection } from './GeneralSection';
 
 export const MainScreen = () => {
     const dispatch = useDispatch();
 
     const { productsQty, skusQty } = useSelector((state) => state.products);
 
-    const { displayName, isRegistered, email, uid } = useSelector(
-        (state) => state.auth,
-    );
+    const { isRegistered, email, uid } = useSelector((state) => state.auth);
 
     console.log(isRegistered, productsQty);
 
     if (!isRegistered) {
         console.log('no registrado');
-        const resp = updateUserUid(email, uid);
+        updateUserUid(email, uid);
     }
 
     useEffect(() => {
@@ -52,27 +49,6 @@ export const MainScreen = () => {
                 console.log(skusQty);
                 dispatch(productsSetSkusQty(skusQty));
             }
-
-            // if (!products.length) {
-            //     const fetchedProducts = await getProducts();
-            //     // dispatch(productsSetProducts(fetchedProducts.products));
-            //     dispatch(productsSetProductQty(fetchedProducts.productsQty));
-            // }
-
-            // if (!branches.length) {
-            //     const fetchedBranches = await getBranches();
-            //     dispatch(locationsSetBranches(fetchedBranches));
-            // }
-
-            // if (!warehouses.length) {
-            //     const fetchedWarehouses = await getWarehouses();
-            //     dispatch(locationsSetWarehouses(fetchedWarehouses));
-            // }
-
-            // if (!skus.length) {
-            //     const fetchedSkus = await getSkus();
-            //     dispatch(productsSetSkus(fetchedSkus));
-            // }
         };
 
         fetchData();
@@ -80,6 +56,11 @@ export const MainScreen = () => {
 
     return (
         <Container>
+            <Row>
+                <Col>
+                    <GeneralSection />
+                </Col>
+            </Row>
             <Row className='my-3'>
                 <Col>
                     <Card

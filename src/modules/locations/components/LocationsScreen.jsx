@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
-import { Card, Col, Container, Pagination, Row, Table } from 'react-bootstrap';
+import { Col, Container, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { AddBranchModal } from './AddBranchModal';
@@ -33,19 +33,6 @@ export const LocationsScreen = () => {
 
     // Pagination
     // Branches
-    const [branchLimit, setBranchLimit] = useState(10);
-
-    const [branchLocationLimit, setBranchLocationLimit] = useState(10);
-
-    const handlePageChangeBranchLocation = async (pageNumber) => {
-        setSelectedBranchLocationPage(pageNumber);
-
-        const fetchedBranchLocations = await getBranchLocations(
-            pageNumber,
-            branchLocationLimit,
-        );
-        dispatch(locationsSetBranchLocations(fetchedBranchLocations));
-    };
 
     // Redux
     const {
@@ -68,12 +55,12 @@ export const LocationsScreen = () => {
                 dispatch(locationsSetBranchesQty(branchesQty));
             } else {
                 // setBranchPagesQty(Math.ceil(branchesQty / branchLimit));
-                const fetchedBranches = await getBranches(1, branchLimit);
+                const fetchedBranches = await getBranches(1, 10);
                 dispatch(locationsSetBranches(fetchedBranches));
             }
 
             if (!branches.length) {
-                const fetchedBranches = await getBranches(1, branchLimit);
+                const fetchedBranches = await getBranches(1, 10);
                 dispatch(locationsSetBranches(fetchedBranches));
             }
 
