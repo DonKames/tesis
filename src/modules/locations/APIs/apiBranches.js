@@ -1,3 +1,5 @@
+import { handleFetchError } from '../../../shared/utils/handleFetchError';
+
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 export const getBranches = async (page = 1, limit = 20) => {
@@ -5,7 +7,7 @@ export const getBranches = async (page = 1, limit = 20) => {
         const response = await fetch(
             `${BASE_URL}/branches?page=${page}&limit=${limit}`,
         );
-        const data = await response.json();
+        const data = await handleFetchError(response);
         return data;
     } catch (error) {
         console.log('Error al obtener Sucursales desde la API:', error);
@@ -16,7 +18,7 @@ export const getBranches = async (page = 1, limit = 20) => {
 export const getBranchesQty = async () => {
     try {
         const response = await fetch(`${BASE_URL}/branches/qty`);
-        const data = await response.json();
+        const data = await handleFetchError(response);
         console.log('getBranches Data: ', data);
         return data;
     } catch (error) {
