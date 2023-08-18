@@ -20,6 +20,8 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { getSkusQty } from '../../products/APIs/apiSkus';
 import { GeneralSection } from './GeneralSection';
+import { WarehouseSection } from './WarehouseSection';
+import { BranchSection } from './BranchSection';
 
 export const MainScreen = () => {
     const dispatch = useDispatch();
@@ -57,8 +59,14 @@ export const MainScreen = () => {
     return (
         <Container>
             <Row>
-                <Col>
+                <Col className='col-6'>
                     <GeneralSection />
+                </Col>
+                <Col className='col-3 h-100'>
+                    <WarehouseSection />
+                </Col>
+                <Col className='col-3 h-100'>
+                    <BranchSection />
                 </Col>
             </Row>
             <Row className='my-3'>

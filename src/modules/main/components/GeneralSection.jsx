@@ -117,23 +117,23 @@ export const GeneralSection = () => {
                     <Row>
                         <Col>
                             <Card.Text className='my-2'>
-                                <FontAwesomeIcon icon={faBuilding} /> Cantidad
-                                total de Sucursales:
+                                <FontAwesomeIcon icon={faBuilding} />
+                                Total de Sucursales:
                                 <strong> {branchesQty}</strong>
                             </Card.Text>
                             <Card.Text className='my-2'>
-                                <FontAwesomeIcon icon={faWarehouse} /> Cantidad
-                                total de Bodegas:{' '}
+                                <FontAwesomeIcon icon={faWarehouse} />
+                                Total de Bodegas:{' '}
                                 <strong>{warehousesQty}</strong>
                             </Card.Text>
                             <Card.Text className='my-2'>
-                                <FontAwesomeIcon icon={faTent} /> Cantidad total
-                                de Ubicaciones de Sucursal:{' '}
+                                <FontAwesomeIcon icon={faTent} /> Total de
+                                Ubicaciones de Sucursal:{' '}
                                 <strong>{branchLocationsQty}</strong>
                             </Card.Text>
                             <Card.Text className='my-2'>
-                                <FontAwesomeIcon icon={faUser} /> Cantidad total
-                                de Usuarios: <strong>{usersQty}</strong>
+                                <FontAwesomeIcon icon={faUser} /> Total de
+                                Usuarios: <strong>{usersQty}</strong>
                             </Card.Text>
                         </Col>
                         <Col className='mt-0'>
