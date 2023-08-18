@@ -21,6 +21,8 @@ import { getBranchLocationsQty } from '../../locations/APIs/apiBranchLocation';
 import { getUsersQty } from '../../users/apis/apiUsers';
 import { usersSetUsersQty } from '../../users/slice/usersSlice';
 import { PieChart } from '../../../shared/ui/components/PieChart';
+import { getProductsCountByWarehouse } from '../../products/APIs/apiProducts';
+import { productsSetProductsCountByWarehouse } from '../../products/slice/productsSlice';
 
 export const GeneralSection = () => {
     const dispatch = useDispatch();
@@ -29,19 +31,41 @@ export const GeneralSection = () => {
         (state) => state.locations,
     );
 
+    const { productsCountByWarehouse } = useSelector((state) => state.products);
+
+    console.log(productsCountByWarehouse);
     const { usersQty } = useSelector((state) => state.users);
 
+    const graphData = productsCountByWarehouse?.map((element) => {
+        console.log(element);
+        return [element.warehouse_name || '', parseInt(element.product_count)];
+    });
+
     // Graphics
-    const graphData = [
-        { name: 'Sucursales', value: branchesQty },
-        { name: 'Bodegas', value: warehousesQty },
-        { name: 'Ubicaciones', value: branchLocationsQty },
-        { name: 'Usuarios', value: usersQty },
-    ];
+    // const graphData = [
+    //     ['Work', 11],
+    //     ['Eat', 2],
+    //     ['Commute', 2],
+    //     ['Watch TV', 5],
+    //     ['Sleep', 4],
+    // ];
+
+    console.log('productsCountByWarehouse: ', productsCountByWarehouse);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
+                if (!productsCountByWarehouse.length) {
+                    const productsCountByWarehouse =
+                        await getProductsCountByWarehouse();
+                    dispatch(
+                        productsSetProductsCountByWarehouse(
+                            productsCountByWarehouse,
+                        ),
+                    );
+                }
+
+                // Quantities
                 if (branchesQty === null) {
                     const branchesQty = await getBranchesQty();
                     console.log('GeneralSection branchesQty: ', branchesQty);
@@ -70,7 +94,18 @@ export const GeneralSection = () => {
         };
 
         fetchData();
-    }, [dispatch]);
+    }, [
+        dispatch,
+        branchesQty,
+        warehousesQty,
+        branchLocationsQty,
+        usersQty,
+        productsCountByWarehouse,
+    ]);
+
+    // const graphData = productsCountByWarehouse?.map((element) => {
+    //     return [element.warehouse_name, element.product_count];
+    // });
 
     return (
         <>
@@ -101,8 +136,12 @@ export const GeneralSection = () => {
                                 de Usuarios: <strong>{usersQty}</strong>
                             </Card.Text>
                         </Col>
-                        <Col>
-                            <PieChart data={graphData} />
+                        <Col className='mt-0'>
+                            <PieChart
+                                className='mt-0'
+                                data={graphData}
+                                title={'Productos por Bodegas'}
+                            />
                         </Col>
                     </Row>
                 </Card.Body>
