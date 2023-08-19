@@ -8,6 +8,7 @@ const initialState = {
     branches: [],
     branchesQty: null,
     warehouses: [],
+    warehousesNames: [],
     warehousesQty: null,
     branchLocations: [],
     branchLocationsQty: null,

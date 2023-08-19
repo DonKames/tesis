@@ -31,6 +31,18 @@ export const getWarehousesQty = async () => {
     }
 };
 
+export const getWarehousesNames = async () => {
+    try {
+        const response = await fetch(`${BASE_URL}/warehouses/names`);
+        const data = await handleFetchError(response);
+        console.log(data);
+        return data;
+    } catch (error) {
+        console.log('Error al obtener Nombres de Bodegas desde la API:', error);
+        return [];
+    }
+};
+
 export const createWarehouse = async (warehouseData) => {
     try {
         console.log(warehouseData);
