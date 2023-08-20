@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, Col, Form, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { getWarehouses } from '../../locations/APIs/apiWarehouses';
@@ -8,7 +8,12 @@ export const WarehouseSection = () => {
     const dispatch = useDispatch();
 
     // Redux states
-    const { warehouses } = useSelector((state) => state.locations);
+    const { warehouses, mainWarehouse } = useSelector(
+        (state) => state.locations,
+    );
+
+    // Local States
+    const [selectedWarehouse, setSelectedWarehouse] = useState(null);
 
     useEffect(() => {
         try {
@@ -16,6 +21,10 @@ export const WarehouseSection = () => {
                 if (!warehouses.length) {
                     const warehousesData = await getWarehouses();
                     dispatch(locationsSetWarehouses(warehousesData));
+                }
+
+                if (selectedWarehouse === null) {
+                    locationsSetWarehouses(mainWarehouse);
                 }
             };
 
@@ -44,7 +53,9 @@ export const WarehouseSection = () => {
                 </Row>
             </Card.Header>
             <Card.Body>
-                <Card.Text></Card.Text>
+                <Card.Text>Nombre: {selectedWarehouse?.name}</Card.Text>
+                <Card.Text>Dirección: </Card.Text>
+                <Card.Text>Sucursal: </Card.Text>
             </Card.Body>
             <Card.Footer></Card.Footer>
         </Card>

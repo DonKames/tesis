@@ -79,7 +79,7 @@ export const NavBar = () => {
                         <NavDropdown.Item href='#profile'>
                             Perfil
                         </NavDropdown.Item>
-                        <NavDropdown.Item href='#settings'>
+                        <NavDropdown.Item href='/pvt/settings'>
                             Configuración
                         </NavDropdown.Item>
                         <NavDropdown.Divider />

@@ -8,6 +8,7 @@ import MerchantApiTest from '../../tests/MerchantApiTest';
 import { Layout } from '../../shared/ui/Layout';
 import { LocationsScreen } from '../locations/components/LocationsScreen';
 import { UsersScreen } from '../users/components/UsersScreen';
+import { SettingsScreen } from '../settings/components/SettingsScreen';
 
 export const PrivateRouter = () => {
     return (
@@ -43,6 +44,10 @@ export const PrivateRouter = () => {
                 <Route
                     path='test'
                     element={<MerchantApiTest />}
+                />
+                <Route
+                    path='settings'
+                    element={<SettingsScreen />}
                 />
             </Route>
         </Routes>
