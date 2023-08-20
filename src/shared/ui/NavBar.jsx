@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { startLogout } from '../../modules/auth/actions/auth';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell } from '@fortawesome/free-solid-svg-icons';
-import { fab } from '@fortawesome/free-brands-svg-icons';
 
 export const NavBar = () => {
     const dispatch = useDispatch();
@@ -28,6 +27,7 @@ export const NavBar = () => {
         <Navbar
             bg='light'
             expand='lg'
+            className='shadow-sm mb-3'
         >
             <Container>
                 <Navbar.Brand
