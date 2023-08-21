@@ -37,7 +37,7 @@ export const GeneralSection = () => {
     const { usersQty } = useSelector((state) => state.users);
 
     const graphData = productsCountByWarehouse?.map((element) => {
-        console.log(element);
+        // console.log(element);
         return [element.warehouse_name || '', parseInt(element.product_count)];
     });
 

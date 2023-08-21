@@ -3,14 +3,22 @@ import { Route, Routes } from 'react-router-dom';
 import HomeScreen from '../../HomeScreen';
 import { PublicRoutes } from './PublicRoutes';
 import { PrivateRoutes } from './PrivateRoutes';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../../firebase/firebase-config';
 import { authLogin } from '../auth/authSlice';
 import { getUserByUid, updateUserUid } from '../users/apis/apiUsers';
+import { getGlobalSettings } from '../settings/APIs/settingsApi';
+import {
+    settingsSetGlobalSettingsId,
+    settingsSetMainWarehouse,
+} from '../settings/slice/settingsSlice';
 
 export const AppRouter = () => {
     const dispatch = useDispatch();
+
+    // Redux state
+    const settings = useSelector((state) => state.settings);
 
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [checking, setChecking] = useState(true);
@@ -53,6 +61,21 @@ export const AppRouter = () => {
             setChecking(false);
         });
     }, [auth, setIsLoggedIn, setChecking]);
+
+    useEffect(() => {
+        onAuthStateChanged(auth, async (user) => {
+            if (user?.uid) {
+                if (!settings.globalSettingsId) {
+                    const settingsData = await getGlobalSettings();
+                    console.log(settingsData);
+                    dispatch(
+                        settingsSetMainWarehouse(settingsData.mainWarehouse),
+                    );
+                    dispatch(settingsSetGlobalSettingsId(settingsData.id));
+                }
+            }
+        });
+    }, [dispatch]);
 
     if (checking) {
         return <h1>Wait...</h1>;

@@ -4,4 +4,5 @@ export const types = {
     locations: '[Locations]',
     products: '[Products]',
     users: '[Users]',
+    settings: '[Settings]',
 };
