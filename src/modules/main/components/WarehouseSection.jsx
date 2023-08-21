@@ -23,9 +23,9 @@ export const WarehouseSection = () => {
                     dispatch(locationsSetWarehouses(warehousesData));
                 }
 
-                if (selectedWarehouse === null) {
-                    locationsSetWarehouses(mainWarehouse);
-                }
+                // if (selectedWarehouse === null) {
+                //     locationsSetWarehouses(mainWarehouse);
+                // }
             };
 
             fetchData();
@@ -44,7 +44,10 @@ export const WarehouseSection = () => {
                     <Col>
                         <Form.Select>
                             {warehouses.map((warehouse) => (
-                                <option key={warehouse.id}>
+                                <option
+                                    key={warehouse.id}
+                                    value={warehouse}
+                                >
                                     {warehouse.name}
                                 </option>
                             ))}

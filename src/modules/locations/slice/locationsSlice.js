@@ -3,15 +3,16 @@ import { types } from '../../../types/types';
 import { reset } from '../../../shared/resetSlice';
 
 const initialState = {
-    countries: [],
-    regions: [],
     branches: [],
     branchesQty: null,
+    branchLocations: [],
+    branchLocationsQty: null,
+    countries: [],
+    mainWarehouse: null,
+    regions: [],
     warehouses: [],
     warehousesNames: [],
     warehousesQty: null,
-    branchLocations: [],
-    branchLocationsQty: null,
 };
 
 export const locationsSlice = createSlice({
@@ -48,6 +49,12 @@ export const locationsSlice = createSlice({
             countries: action.payload,
         }),
 
+        // Main Warehouse
+        locationsSetMainWarehouse: (state, action) => ({
+            ...state,
+            mainWarehouse: action.payload,
+        }),
+
         // Regions
         locationsSetRegions: (state, action) => ({
             ...state,
@@ -78,6 +85,7 @@ export const {
     locationsSetBranchLocationsQty,
     locationsSetBranchLocations,
     locationsSetCountries,
+    locationsSetMainWarehouse,
     locationsSetRegions,
     locationsSetWarehousesQty,
     locationsSetWarehouses,
