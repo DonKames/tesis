@@ -13,6 +13,7 @@ import {
     settingsSetGlobalSettingsId,
     settingsSetMainWarehouse,
 } from '../settings/slice/settingsSlice';
+import { getWarehouseById } from '../locations/APIs/apiWarehouses';
 
 export const AppRouter = () => {
     const dispatch = useDispatch();
@@ -67,10 +68,24 @@ export const AppRouter = () => {
             if (user?.uid) {
                 if (!settings.globalSettingsId) {
                     const settingsData = await getGlobalSettings();
+
                     console.log(settingsData);
-                    dispatch(
-                        settingsSetMainWarehouse(settingsData.mainWarehouse),
-                    );
+
+                    if (settingsData) {
+                        const mainWarehouse = await getWarehouseById(
+                            settingsData.mainWarehouse,
+                        );
+
+                        console.log(mainWarehouse);
+
+                        dispatch(
+                            settingsSetMainWarehouse({
+                                id: settingsData.mainWarehouse,
+                                name: mainWarehouse.name,
+                            }),
+                        );
+                    }
+
                     dispatch(settingsSetGlobalSettingsId(settingsData.id));
                 }
             }

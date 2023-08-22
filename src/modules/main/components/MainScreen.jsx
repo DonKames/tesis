@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 
 import { Card, Col, Container, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
@@ -22,13 +22,16 @@ import { getSkusQty } from '../../products/APIs/apiSkus';
 import { GeneralSection } from './GeneralSection';
 import { WarehouseSection } from './WarehouseSection';
 import { BranchSection } from './BranchSection';
+import { getWarehousesNames } from '../../locations/APIs/apiWarehouses';
+import { uiSetWarehousesNames } from '../../../shared/ui/uiSlice';
 
 export const MainScreen = () => {
     const dispatch = useDispatch();
 
+    // Redux states
     const { productsQty, skusQty } = useSelector((state) => state.products);
-
     const { isRegistered, email, uid } = useSelector((state) => state.auth);
+    const { warehousesNames } = useSelector((state) => state.ui);
 
     console.log(isRegistered, productsQty);
 
@@ -37,24 +40,29 @@ export const MainScreen = () => {
         updateUserUid(email, uid);
     }
 
+    const fetchData = useCallback(async () => {
+        console.log('dentro del fetch' + productsQty);
+        if (productsQty === null) {
+            const { productsQty } = await getProductsQty();
+            console.log(productsQty);
+            dispatch(productsSetProductQty(productsQty));
+        }
+
+        if (skusQty === null) {
+            const skusQty = await getSkusQty();
+            console.log(skusQty);
+            dispatch(productsSetSkusQty(skusQty));
+        }
+
+        if (!warehousesNames.length) {
+            const warehousesNames = await getWarehousesNames();
+            dispatch(uiSetWarehousesNames(warehousesNames));
+        }
+    }, [dispatch, productsQty, skusQty, warehousesNames]);
+
     useEffect(() => {
-        const fetchData = async () => {
-            console.log('dentro del fetch' + productsQty);
-            if (productsQty === null) {
-                const { productsQty } = await getProductsQty();
-                console.log(productsQty);
-                dispatch(productsSetProductQty(productsQty));
-            }
-
-            if (skusQty === null) {
-                const skusQty = await getSkusQty();
-                console.log(skusQty);
-                dispatch(productsSetSkusQty(skusQty));
-            }
-        };
-
         fetchData();
-    }, [dispatch]);
+    }, [fetchData]);
 
     return (
         <Container>

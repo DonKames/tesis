@@ -5,6 +5,9 @@ import { reset } from '../resetSlice';
 const initialState = {
     loading: false,
     msgError: null,
+
+    // Selects options
+    warehousesNames: [],
 };
 
 export const uiSlice = createSlice({
@@ -30,6 +33,12 @@ export const uiSlice = createSlice({
             ...state,
             loading: false,
         }),
+
+        // Selects options
+        uiSetWarehousesNames: (state, action) => ({
+            ...state,
+            warehousesNames: action.payload,
+        }),
     },
     extraReducers: (builder) => {
         builder.addCase(reset, () => {
@@ -38,7 +47,12 @@ export const uiSlice = createSlice({
     },
 });
 
-export const { uiSetError, uiRemoveError, uiStartLoading, uiFinishLoading } =
-    uiSlice.actions;
+export const {
+    uiSetError,
+    uiRemoveError,
+    uiStartLoading,
+    uiFinishLoading,
+    uiSetWarehousesNames,
+} = uiSlice.actions;
 
 export default uiSlice.reducer;

@@ -15,7 +15,13 @@ export const SettingsScreen = () => {
     const { globalSettingsId, mainWarehouse } = useSelector(
         (state) => state.settings,
     );
+
+    console.log(mainWarehouse);
+
+    // const { id: idMainWarehouse, name: nameMainWarehouse } = mainWarehouse;
+
     const [warehousesNames, setWarehousesNames] = useState([]);
+    const [isChangesSaved, setIsChangesSaved] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -29,29 +35,39 @@ export const SettingsScreen = () => {
     }, [warehousesNames]);
 
     const handleWarehouseChange = (e) => {
-        console.log(e.target.value);
-
-        console.log(e.target.options[e.target.selectedIndex].text);
+        // Formatting
         const mainWarehouse = {
-            warehouse_id: +e.target.value,
+            id: +e.target.value,
             name: e.target.options[e.target.selectedIndex].text,
         };
-        console.log(mainWarehouse);
 
+        // Create or update global settings
         try {
             if (!globalSettingsId) {
                 createGlobalSettings(mainWarehouse);
             } else {
-                updateGlobalSettings(
-                    mainWarehouse.warehouse_id,
+                updateGlobalSettings({
+                    mainWarehouseId: mainWarehouse.id,
                     globalSettingsId,
-                );
+                });
+                saveChanges(true);
+                // setIsChangesSaved(true);
             }
-
             dispatch(settingsSetMainWarehouse(mainWarehouse));
         } catch (error) {
+            saveChanges(false);
+            // setIsChangesSaved(false);
             console.log(error);
         }
+    };
+
+    const saveChanges = (success) => {
+        setIsChangesSaved(success); // Cambia el estado a true o false
+
+        // Programa un cambio de estado a null después de 3 segundos (3000 milisegundos)
+        setTimeout(() => {
+            setIsChangesSaved(null);
+        }, 3000);
     };
 
     return (
@@ -70,12 +86,12 @@ export const SettingsScreen = () => {
                                 <Col>
                                     <Form.Select
                                         onChange={handleWarehouseChange}
-                                        value={mainWarehouse}
+                                        value={mainWarehouse?.id || ''}
                                     >
                                         {warehousesNames.map((warehouse) => (
                                             <option
-                                                key={warehouse.warehouse_id}
-                                                value={warehouse.warehouse_id}
+                                                key={warehouse.id}
+                                                value={warehouse.id}
                                             >
                                                 {warehouse.name}
                                             </option>
@@ -84,6 +100,22 @@ export const SettingsScreen = () => {
                                 </Col>
                             </Row>
                         </Card.Body>
+                        <Card.Footer>
+                            <Card.Text
+                                className={`text-center fw-bold ${
+                                    isChangesSaved === null ||
+                                    isChangesSaved === true
+                                        ? 'text-success'
+                                        : 'text-danger'
+                                }`}
+                            >
+                                {isChangesSaved === null
+                                    ? 'DataHive - RFWID'
+                                    : isChangesSaved
+                                    ? 'Cambios guardados'
+                                    : 'No se guardaron los cambios'}
+                            </Card.Text>
+                        </Card.Footer>
                     </Card>
                 </Col>
             </Row>

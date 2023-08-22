@@ -16,6 +16,18 @@ export const getWarehouses = async (page = 1, limit = 20) => {
     }
 };
 
+export const getWarehouseById = async (warehouseId) => {
+    try {
+        const response = await fetch(`${BASE_URL}/warehouses/${warehouseId}`);
+        const finalResp = await handleFetchError(response);
+        console.log(finalResp);
+        return finalResp;
+    } catch (error) {
+        console.log('Error al obtener Bodega desde la API:', error);
+        return [];
+    }
+};
+
 export const getWarehousesQty = async () => {
     try {
         const response = await fetch(`${BASE_URL}/warehouses/qty`);
