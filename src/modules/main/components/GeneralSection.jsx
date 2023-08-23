@@ -26,10 +26,12 @@ import { productsSetProductsCountByWarehouse } from '../../products/slice/produc
 
 export const GeneralSection = () => {
     const dispatch = useDispatch();
+
     // Redux states
     const { branchesQty, warehousesQty, branchLocationsQty } = useSelector(
         (state) => state.locations,
     );
+    const { mainWarehouse } = useSelector((state) => state.settings);
 
     const { productsCountByWarehouse } = useSelector((state) => state.products);
 
@@ -40,15 +42,6 @@ export const GeneralSection = () => {
         // console.log(element);
         return [element.warehouse_name || '', parseInt(element.product_count)];
     });
-
-    // Graphics
-    // const graphData = [
-    //     ['Work', 11],
-    //     ['Eat', 2],
-    //     ['Commute', 2],
-    //     ['Watch TV', 5],
-    //     ['Sleep', 4],
-    // ];
 
     console.log('productsCountByWarehouse: ', productsCountByWarehouse);
 
@@ -94,18 +87,7 @@ export const GeneralSection = () => {
         };
 
         fetchData();
-    }, [
-        dispatch,
-        branchesQty,
-        warehousesQty,
-        branchLocationsQty,
-        usersQty,
-        productsCountByWarehouse,
-    ]);
-
-    // const graphData = productsCountByWarehouse?.map((element) => {
-    //     return [element.warehouse_name, element.product_count];
-    // });
+    }, [dispatch]);
 
     return (
         <>
@@ -116,6 +98,16 @@ export const GeneralSection = () => {
                 <Card.Body>
                     <Row>
                         <Col>
+                            <Card.Text className='my-2'>
+                                <FontAwesomeIcon icon={faBuilding} />
+                                Sucursal Principal:
+                                <strong> {branchesQty}</strong>
+                            </Card.Text>
+                            <Card.Text className='my-2'>
+                                <FontAwesomeIcon icon={faBuilding} />
+                                Bodega Principal:
+                                <strong> {mainWarehouse?.name}</strong>
+                            </Card.Text>
                             <Card.Text className='my-2'>
                                 <FontAwesomeIcon icon={faBuilding} />
                                 Total de Sucursales:

@@ -1,68 +1,22 @@
-import React, { useCallback, useEffect } from 'react';
+import React from 'react';
 
 import { Card, Col, Container, Row } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { updateUserUid } from '../../users/apis/apiUsers';
-import { getProductsQty } from '../../products/APIs/apiProducts';
-import {
-    productsSetProductQty,
-    productsSetSkusQty,
-} from '../../products/slice/productsSlice';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-    faBoxes,
-    faDolly,
-    faWarehouse,
-    faMapMarkerAlt,
-    faCogs,
-} from '@fortawesome/free-solid-svg-icons';
-import { getSkusQty } from '../../products/APIs/apiSkus';
 import { GeneralSection } from './GeneralSection';
 import { WarehouseSection } from './WarehouseSection';
 import { BranchSection } from './BranchSection';
-import { getWarehousesNames } from '../../locations/APIs/apiWarehouses';
-import { uiSetWarehousesNames } from '../../../shared/ui/uiSlice';
 
 export const MainScreen = () => {
-    const dispatch = useDispatch();
-
     // Redux states
-    const { productsQty, skusQty } = useSelector((state) => state.products);
     const { isRegistered, email, uid } = useSelector((state) => state.auth);
-    const { warehousesNames } = useSelector((state) => state.ui);
-
-    console.log(isRegistered, productsQty);
 
     if (!isRegistered) {
         console.log('no registrado');
         updateUserUid(email, uid);
     }
-
-    const fetchData = useCallback(async () => {
-        console.log('dentro del fetch' + productsQty);
-        if (productsQty === null) {
-            const { productsQty } = await getProductsQty();
-            console.log(productsQty);
-            dispatch(productsSetProductQty(productsQty));
-        }
-
-        if (skusQty === null) {
-            const skusQty = await getSkusQty();
-            console.log(skusQty);
-            dispatch(productsSetSkusQty(skusQty));
-        }
-
-        if (!warehousesNames.length) {
-            const warehousesNames = await getWarehousesNames();
-            dispatch(uiSetWarehousesNames(warehousesNames));
-        }
-    }, [dispatch, productsQty, skusQty, warehousesNames]);
-
-    useEffect(() => {
-        fetchData();
-    }, [fetchData]);
 
     return (
         <Container>
@@ -87,7 +41,7 @@ export const MainScreen = () => {
                             <h3>Resumen de la bodega</h3>
                         </Card.Header>
                         <Card.Body>
-                            <Card.Text className='my-2'>
+                            {/* <Card.Text className='my-2'>
                                 <FontAwesomeIcon icon={faBoxes} /> Cantidad
                                 total de Skus:
                                 <strong> {skusQty}</strong>
@@ -100,12 +54,12 @@ export const MainScreen = () => {
                             <Card.Text className='my-2'>
                                 <FontAwesomeIcon icon={faDolly} /> Cantidad de
                                 productos en movimiento:{' '}
-                                {/* {taskList.filter((task) => !task.completed).length} */}
+                                {taskList.filter((task) => !task.completed).length}
                             </Card.Text>
                             <Card.Text className='my-2'>
                                 <FontAwesomeIcon icon={faWarehouse} />{' '}
                                 Inventario actual:{' '}
-                                {/* {products.reduce((total, product) => total + product.quantity, 0)} */}
+                                {products.reduce((total, product) => total + product.quantity, 0)}
                             </Card.Text>
                             <Card.Text className='my-2'>
                                 <FontAwesomeIcon icon={faMapMarkerAlt} />{' '}
@@ -114,7 +68,7 @@ export const MainScreen = () => {
                             <Card.Text className='my-2'>
                                 <FontAwesomeIcon icon={faCogs} /> Estado general
                                 del sistema: por implementar
-                            </Card.Text>
+                            </Card.Text> */}
                         </Card.Body>
                     </Card>
                 </Col>
