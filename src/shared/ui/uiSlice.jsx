@@ -7,6 +7,7 @@ const initialState = {
     msgError: null,
 
     // Selects options
+    branchesNames: [],
     warehousesNames: [],
 };
 
@@ -35,6 +36,10 @@ export const uiSlice = createSlice({
         }),
 
         // Selects options
+        uiSetBranchesNames: (state, action) => ({
+            ...state,
+            branchesNames: action.payload,
+        }),
         uiSetWarehousesNames: (state, action) => ({
             ...state,
             warehousesNames: action.payload,
@@ -52,6 +57,7 @@ export const {
     uiRemoveError,
     uiStartLoading,
     uiFinishLoading,
+    uiSetBranchesNames,
     uiSetWarehousesNames,
 } = uiSlice.actions;
 

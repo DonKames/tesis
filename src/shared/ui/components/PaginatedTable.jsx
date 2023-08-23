@@ -39,7 +39,7 @@ export const PaginatedTable = ({
 
     return (
         <>
-            <Card className='shadow'>
+            <Card className='shadow h-100 animate__animated animate__fadeIn animate__fast'>
                 <Table
                     hover
                     responsive

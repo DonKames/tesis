@@ -91,7 +91,7 @@ export const GeneralSection = () => {
 
     return (
         <>
-            <Card className='shadow'>
+            <Card className='shadow h-100 animate__animated animate__fadeIn animate__fast'>
                 <Card.Header>
                     <h3>Resumen General</h3>
                 </Card.Header>

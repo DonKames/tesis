@@ -4,6 +4,7 @@ import { reset } from '../../../shared/resetSlice';
 
 const initialState = {
     globalSettingsId: null,
+    mainBranch: null,
     mainWarehouse: null,
 };
 
@@ -15,6 +16,12 @@ export const settingsSlice = createSlice({
         settingsSetGlobalSettingsId: (state, action) => ({
             ...state,
             globalSettingsId: action.payload,
+        }),
+
+        // MainBranch
+        settingsSetMainBranch: (state, action) => ({
+            ...state,
+            mainBranch: action.payload,
         }),
 
         // MainWarehouse
@@ -30,6 +37,9 @@ export const settingsSlice = createSlice({
     },
 });
 
-export const { settingsSetMainWarehouse, settingsSetGlobalSettingsId } =
-    settingsSlice.actions;
+export const {
+    settingsSetMainWarehouse,
+    settingsSetMainBranch,
+    settingsSetGlobalSettingsId,
+} = settingsSlice.actions;
 export default settingsSlice.reducer;

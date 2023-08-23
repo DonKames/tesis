@@ -25,7 +25,6 @@ export const AppRouter = () => {
     const [checking, setChecking] = useState(true);
 
     useEffect(() => {
-        // console.log(auth);
         onAuthStateChanged(auth, async (user) => {
             if (user?.uid) {
                 console.log(user.uid);
@@ -47,50 +46,36 @@ export const AppRouter = () => {
                         isRegistered: true,
                     }),
                 );
-            }
-            setChecking(false);
-        });
-    }, [auth, dispatch]);
-
-    useEffect(() => {
-        onAuthStateChanged(auth, async (user) => {
-            if (user?.uid) {
                 setIsLoggedIn(true);
             } else {
                 setIsLoggedIn(false);
             }
             setChecking(false);
-        });
-    }, [auth, setIsLoggedIn, setChecking]);
 
-    useEffect(() => {
-        onAuthStateChanged(auth, async (user) => {
-            if (user?.uid) {
-                if (!settings.globalSettingsId) {
-                    const settingsData = await getGlobalSettings();
+            if (!settings.globalSettingsId) {
+                const settingsData = await getGlobalSettings();
 
-                    console.log(settingsData);
+                console.log(settingsData);
 
-                    if (settingsData) {
-                        const mainWarehouse = await getWarehouseById(
-                            settingsData.mainWarehouse,
-                        );
+                if (settingsData) {
+                    const mainWarehouse = await getWarehouseById(
+                        settingsData.mainWarehouse,
+                    );
 
-                        console.log(mainWarehouse);
+                    console.log(mainWarehouse);
 
-                        dispatch(
-                            settingsSetMainWarehouse({
-                                id: settingsData.mainWarehouse,
-                                name: mainWarehouse.name,
-                            }),
-                        );
-                    }
-
-                    dispatch(settingsSetGlobalSettingsId(settingsData.id));
+                    dispatch(
+                        settingsSetMainWarehouse({
+                            id: settingsData.mainWarehouse,
+                            name: mainWarehouse.name,
+                        }),
+                    );
                 }
+
+                dispatch(settingsSetGlobalSettingsId(settingsData.id));
             }
         });
-    }, [dispatch]);
+    }, [auth, dispatch, setIsLoggedIn, setChecking]);
 
     if (checking) {
         return <h1>Wait...</h1>;

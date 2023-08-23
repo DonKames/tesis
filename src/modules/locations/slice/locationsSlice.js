@@ -5,6 +5,7 @@ import { reset } from '../../../shared/resetSlice';
 const initialState = {
     branches: [],
     branchesQty: null,
+    branchesNames: [],
     branchLocations: [],
     branchLocationsQty: null,
     countries: [],
@@ -29,6 +30,12 @@ export const locationsSlice = createSlice({
         locationsSetBranches: (state, action) => ({
             ...state,
             branches: action.payload,
+        }),
+
+        // Branches Names
+        locationsSetBranchesNames: (state, action) => ({
+            ...state,
+            branchesNames: action.payload,
         }),
 
         // Branch Locations Qty

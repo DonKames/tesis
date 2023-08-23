@@ -24,10 +24,10 @@ export const MainScreen = () => {
                 <Col className='col-6'>
                     <GeneralSection />
                 </Col>
-                <Col className='col-3 h-100'>
+                <Col className='col-3'>
                     <WarehouseSection />
                 </Col>
-                <Col className='col-3 h-100'>
+                <Col className='col-3'>
                     <BranchSection />
                 </Col>
             </Row>

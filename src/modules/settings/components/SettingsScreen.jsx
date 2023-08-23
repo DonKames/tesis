@@ -7,6 +7,8 @@ import {
     createGlobalSettings,
     updateGlobalSettings,
 } from '../APIs/settingsApi';
+import { uiSetBranchesNames } from '../../../shared/ui/uiSlice';
+import { getBranchesNames } from '../../locations/APIs/apiBranches';
 
 export const SettingsScreen = () => {
     const dispatch = useDispatch();
@@ -15,6 +17,8 @@ export const SettingsScreen = () => {
     const { globalSettingsId, mainWarehouse } = useSelector(
         (state) => state.settings,
     );
+
+    const { branchesNames } = useSelector((state) => state.ui);
 
     console.log(mainWarehouse);
 
@@ -29,12 +33,19 @@ export const SettingsScreen = () => {
                 const warehousesData = await getWarehousesNames();
                 setWarehousesNames(warehousesData);
             }
+            if (!branchesNames.length) {
+                const branchesData = await getBranchesNames();
+                dispatch(uiSetBranchesNames(branchesData));
+            }
         };
 
         fetchData();
     }, [warehousesNames]);
 
-    const handleWarehouseChange = (e) => {
+    // TODO: Implementar el cambio de sucursal principal
+    const handleMainBranchChange = (e) => {};
+
+    const handleMainWarehouseChange = (e) => {
         // Formatting
         const mainWarehouse = {
             id: +e.target.value,
@@ -74,18 +85,38 @@ export const SettingsScreen = () => {
         <Container>
             <Row>
                 <Col className='d-flex justify-content-center'>
-                    <Card style={{ display: 'inline-block', width: 'auto' }}>
+                    <Card
+                        style={{ display: 'inline-block', width: 'auto' }}
+                        className='shadow animate__animated animate__fadeIn animate__fast'
+                    >
                         <Card.Header>
                             <h3>Configuraciones</h3>
                         </Card.Header>
                         <Card.Body>
-                            <Row className='align-items-center'>
+                            <Row className='align-items-center mb-3'>
+                                <Col>
+                                    <Card.Text>Sucursal Principal: </Card.Text>
+                                </Col>
+                                <Col>
+                                    <Form.Select>
+                                        {branchesNames.map((branch) => (
+                                            <option
+                                                key={branch.id}
+                                                value={branch.id}
+                                            >
+                                                {branch.name}
+                                            </option>
+                                        ))}
+                                    </Form.Select>
+                                </Col>
+                            </Row>
+                            <Row className='align-items-center mb-3'>
                                 <Col>
                                     <Card.Text>Bodega Principal: </Card.Text>
                                 </Col>
                                 <Col>
                                     <Form.Select
-                                        onChange={handleWarehouseChange}
+                                        onChange={handleMainWarehouseChange}
                                         value={mainWarehouse?.id || ''}
                                     >
                                         {warehousesNames.map((warehouse) => (
@@ -103,10 +134,11 @@ export const SettingsScreen = () => {
                         <Card.Footer>
                             <Card.Text
                                 className={`text-center fw-bold ${
-                                    isChangesSaved === null ||
-                                    isChangesSaved === true
-                                        ? 'text-success'
-                                        : 'text-danger'
+                                    isChangesSaved === null
+                                        ? 'text-primary animate__animated animate__fadeIn'
+                                        : isChangesSaved
+                                        ? 'text-success animate__animated animate__shakeX'
+                                        : 'text-danger animate__animated animate__shakeX'
                                 }`}
                             >
                                 {isChangesSaved === null

@@ -17,14 +17,13 @@ export const WarehouseSection = () => {
     // Local States
     const [selectedWarehouse, setSelectedWarehouse] = useState(null);
 
-    const handleWarehouseChange = (e) => {
+    const handleWarehouseChange = async (e) => {
         // Formatting
-        const warehouse = {
-            id: +e.target.value,
-            name: e.target.options[e.target.selectedIndex].text,
-        };
+        const warehouseId = +e.target.value;
 
-        setSelectedWarehouse(warehouse);
+        const warehouseData = await getWarehouseById(warehouseId);
+
+        setSelectedWarehouse(warehouseData);
     };
 
     useEffect(() => {
@@ -48,7 +47,7 @@ export const WarehouseSection = () => {
     }, [dispatch, mainWarehouse]);
 
     return (
-        <Card className='shadow'>
+        <Card className='shadow h-100 animate__animated animate__fadeIn animate__fast'>
             <Card.Header>
                 <Row>
                     <Col>
@@ -75,12 +74,16 @@ export const WarehouseSection = () => {
                 <Card.Text className=''>
                     Nombre: <strong>{selectedWarehouse?.name}</strong>
                 </Card.Text>
-                <Card.Text>Sucursal: </Card.Text>
                 <Card.Text>
-                    Capacidad: <strong>{selectedWarehouse?.address}</strong>
+                    Sucursal: <strong>{selectedWarehouse?.branchId}</strong>
+                </Card.Text>
+                <Card.Text>
+                    Capacidad:{' '}
+                    <strong>
+                        {selectedWarehouse?.capacity || 'Sin Determinar'}
+                    </strong>
                 </Card.Text>
             </Card.Body>
-            <Card.Footer></Card.Footer>
         </Card>
     );
 };
