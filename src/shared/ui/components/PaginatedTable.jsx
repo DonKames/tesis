@@ -15,7 +15,7 @@ export const PaginatedTable = ({
     handleLimitChange, // La función para manejar el cambio de límite.
     limit, // El límite actual.
 }) => {
-    console.log('limit', limit);
+    // console.log('limit', limit);
     const pagesBeforeCurrentItem = React.useMemo(
         () => Math.floor(maxPagesToShow / 2),
         [maxPagesToShow],
@@ -39,7 +39,7 @@ export const PaginatedTable = ({
 
     return (
         <>
-            <Card className='shadow h-100 animate__animated animate__fadeIn animate__fast'>
+            <Card className='shadow animate__animated animate__fadeIn animate__fast'>
                 <Table
                     hover
                     responsive

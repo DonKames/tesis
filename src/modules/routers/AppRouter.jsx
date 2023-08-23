@@ -35,8 +35,8 @@ export const AppRouter = () => {
                 }
 
                 const { uid, first_name, fk_role_id, email } = respUid;
-                console.log(respUid);
-                console.log(first_name, fk_role_id, email, uid);
+                // console.log(respUid);
+                // console.log(first_name, fk_role_id, email, uid);
                 dispatch(
                     authLogin({
                         uid,
