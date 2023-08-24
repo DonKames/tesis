@@ -56,7 +56,7 @@ export const PaginatedTable = ({
                     <tbody>{items.map(itemRenderer)}</tbody>
                 </Table>
                 {footerText && (
-                    <Row>
+                    <Row className='align-items-center'>
                         <Col>
                             <div className='text-muted small mt-0 ms-3'>
                                 {footerText}

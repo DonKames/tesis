@@ -50,7 +50,7 @@ export const LocationsScreen = () => {
         const fetchData = async () => {
             // Branches Table, Pagination.
             if (branchesQty === null) {
-                const { branchesQty } = await getBranchesQty();
+                const branchesQty = await getBranchesQty();
                 // setBranchPagesQty(Math.ceil(branchesQty / branchLimit));
                 dispatch(locationsSetBranchesQty(branchesQty));
             } else {

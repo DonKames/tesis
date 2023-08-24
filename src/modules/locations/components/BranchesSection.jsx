@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { PaginatedTable } from '../../../shared/ui/components/PaginatedTable';
 import { getBranches, getBranchesQty } from '../APIs/apiBranches';
 import {
     locationsSetBranches,
     locationsSetBranchesQty,
 } from '../slice/locationsSlice';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import usePagination from '../../../hooks/usePagination';
 
 export const BranchesSection = () => {
+    const dispatch = useDispatch();
+
     // Redux states
     const { branches, branchesQty, regions, countries } = useSelector(
         (state) => state.locations,
@@ -16,6 +18,22 @@ export const BranchesSection = () => {
 
     // Max pagination buttons to show
     const maxPaginationButtons = 10;
+
+    useEffect(() => {
+        try {
+            const fetchData = async () => {
+                if (branchesQty === null) {
+                    const branchesQty = await getBranchesQty();
+                    console.log('GeneralSection branchesQty: ', branchesQty);
+                    dispatch(locationsSetBranchesQty(branchesQty));
+                }
+            };
+
+            fetchData();
+        } catch (error) {
+            console.log('error: ', error);
+        }
+    });
 
     // Branch pagination hook
     const { selectedPage, pagesQty, handlePageChange, setLimit, limit } =
