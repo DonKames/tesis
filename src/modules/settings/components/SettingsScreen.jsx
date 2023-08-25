@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Card, Col, Container, Form, Row } from 'react-bootstrap';
-import { getWarehousesNames } from '../../locations/APIs/apiWarehouses';
 import { useDispatch, useSelector } from 'react-redux';
-import { settingsSetMainWarehouse } from '../slice/settingsSlice';
-import {
-    createGlobalSettings,
-    updateGlobalSettings,
-} from '../APIs/settingsApi';
 import { uiSetBranchesNames } from '../../../shared/ui/uiSlice';
-import { getBranchesNames } from '../../locations/APIs/branchesAPI';
+import {
+    getSettingsData,
+    updateMainBranch,
+    updateMainWarehouse,
+} from '../services/settingsServices';
 
 export const SettingsScreen = () => {
     const dispatch = useDispatch();
@@ -26,19 +24,15 @@ export const SettingsScreen = () => {
 
     console.log(mainWarehouse);
 
-    // const { id: idMainWarehouse, name: nameMainWarehouse } = mainWarehouse;
-
     const [warehousesNames, setWarehousesNames] = useState([]);
     const [isChangesSaved, setIsChangesSaved] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
             if (!warehousesNames.length) {
-                const warehousesData = await getWarehousesNames();
+                const { warehousesData, branchesData } =
+                    await getSettingsData();
                 setWarehousesNames(warehousesData);
-            }
-            if (!branchesNames.length) {
-                const branchesData = await getBranchesNames();
                 dispatch(uiSetBranchesNames(branchesData));
             }
         };
@@ -46,12 +40,15 @@ export const SettingsScreen = () => {
         if (mainWarehouse) {
             setSelectedWarehouse(mainWarehouse);
         }
-        fetchData();
-    }, [mainWarehouse]);
 
-    // TODO: Implementar el cambio de sucursal principal
-    const handleMainBranchChange = (e) => {
-        // Formatting
+        if (mainBranch) {
+            setSelectedBranch(mainBranch);
+        }
+
+        fetchData();
+    }, [mainWarehouse, mainBranch]);
+
+    const handleMainBranchChange = async (e) => {
         const mainBranch = {
             id: +e.target.value,
             name: e.target.options[e.target.selectedIndex].text,
@@ -59,32 +56,16 @@ export const SettingsScreen = () => {
 
         setSelectedBranch(mainBranch);
 
-        // Create or update global settings
-        try {
-            if (!globalSettingsId) {
-                createGlobalSettings();
-            } else {
-                console.log(
-                    mainBranch?.id,
-                    selectedWarehouse,
-                    globalSettingsId,
-                );
-
-                updateGlobalSettings({
-                    mainBranchId: mainBranch?.id,
-                    mainWarehouseId: selectedWarehouse?.id,
-                    globalSettingsId,
-                });
-                saveChanges(true);
-                // setIsChangesSaved(true);
-            }
-        } catch (error) {
-            console.log(error);
-        }
+        const success = await updateMainBranch(
+            mainBranch,
+            globalSettingsId,
+            selectedWarehouse,
+            dispatch,
+        );
+        saveChanges(success);
     };
 
-    const handleMainWarehouseChange = (e) => {
-        // Formatting
+    const handleMainWarehouseChange = async (e) => {
         const mainWarehouse = {
             id: +e.target.value,
             name: e.target.options[e.target.selectedIndex].text,
@@ -92,31 +73,18 @@ export const SettingsScreen = () => {
 
         setSelectedWarehouse(mainWarehouse);
 
-        // Create or update global settings
-        try {
-            if (!globalSettingsId) {
-                createGlobalSettings(mainWarehouse);
-            } else {
-                updateGlobalSettings({
-                    mainBranchId: selectedBranch.id,
-                    mainWarehouseId: mainWarehouse.id,
-                    globalSettingsId,
-                });
-                saveChanges(true);
-                // setIsChangesSaved(true);
-            }
-            dispatch(settingsSetMainWarehouse(mainWarehouse));
-        } catch (error) {
-            saveChanges(false);
-            // setIsChangesSaved(false);
-            console.log(error);
-        }
+        const success = await updateMainWarehouse(
+            mainWarehouse,
+            globalSettingsId,
+            selectedBranch,
+            dispatch,
+        );
+        saveChanges(success);
     };
 
     const saveChanges = (success) => {
-        setIsChangesSaved(success); // Cambia el estado a true o false
+        setIsChangesSaved(success);
 
-        // Programa un cambio de estado a null después de 3 segundos (3000 milisegundos)
         setTimeout(() => {
             setIsChangesSaved(null);
         }, 3000);

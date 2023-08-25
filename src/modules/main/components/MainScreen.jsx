@@ -25,10 +25,10 @@ export const MainScreen = () => {
                     <GeneralSection />
                 </Col>
                 <Col className='col-3'>
-                    <WarehouseSection />
+                    <BranchSection />
                 </Col>
                 <Col className='col-3'>
-                    <BranchSection />
+                    <WarehouseSection />
                 </Col>
             </Row>
             <Row className='my-3'>

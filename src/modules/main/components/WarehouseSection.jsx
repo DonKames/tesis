@@ -44,7 +44,7 @@ export const WarehouseSection = () => {
         } catch (error) {
             console.log(error);
         }
-    }, [dispatch, mainWarehouse]);
+    }, [mainWarehouse]);
 
     return (
         <Card className='shadow h-100 animate__animated animate__fadeIn animate__fast'>

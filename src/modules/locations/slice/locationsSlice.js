@@ -9,7 +9,6 @@ const initialState = {
     branchLocations: [],
     branchLocationsQty: null,
     countries: [],
-    mainWarehouse: null,
     regions: [],
     warehouses: [],
     warehousesNames: [],
@@ -54,12 +53,6 @@ export const locationsSlice = createSlice({
         locationsSetCountries: (state, action) => ({
             ...state,
             countries: action.payload,
-        }),
-
-        // Main Warehouse
-        locationsSetMainWarehouse: (state, action) => ({
-            ...state,
-            mainWarehouse: action.payload,
         }),
 
         // Regions

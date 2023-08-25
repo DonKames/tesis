@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faX } from '@fortawesome/free-solid-svg-icons';
 
 import {
     productsSetProductQty,
@@ -66,6 +68,7 @@ const ProductsScreen = () => {
         'Descripción',
         'Precio',
         'Stock',
+        '',
     ];
     const skuRenderer = (sku) => (
         <tr key={sku.sku_id}>
@@ -87,8 +90,33 @@ const ProductsScreen = () => {
                     return accumulator;
                 }, 0)}
             </td>
+            <td>
+                <Button
+                    variant='warning'
+                    onClick={() => handleEdit(sku.sku_id)}
+                >
+                    {/* <Pencil /> */}
+                </Button>
+                <Button
+                    variant='danger'
+                    onClick={() => handleDelete(sku.sku_id)}
+                >
+                    <FontAwesomeIcon icon={faX} />
+                    {/* <Trash /> */}
+                </Button>
+                <FontAwesomeIcon icon={faX} />
+            </td>
         </tr>
     );
+
+    // Funciones para manejar las acciones de editar y eliminar
+    const handleEdit = (skuId) => {
+        // Lógica para editar el SKU con el ID dado
+    };
+
+    const handleDelete = (skuId) => {
+        // Lógica para eliminar el SKU con el ID dado
+    };
 
     // Products
     // Products pagination hook
@@ -108,7 +136,7 @@ const ProductsScreen = () => {
     );
 
     // Products table columns
-    const tableColumnsProducts = ['Sku', 'Sucursal', 'Bodega', 'EPC'];
+    const tableColumnsProducts = ['Sku', 'Sucursal', 'Bodega', 'EPC', ''];
 
     const productRenderer = (product) => (
         <tr key={product.product_id}>
