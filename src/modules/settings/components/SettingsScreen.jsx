@@ -8,15 +8,19 @@ import {
     updateGlobalSettings,
 } from '../APIs/settingsApi';
 import { uiSetBranchesNames } from '../../../shared/ui/uiSlice';
-import { getBranchesNames } from '../../locations/APIs/apiBranches';
+import { getBranchesNames } from '../../locations/APIs/branchesAPI';
 
 export const SettingsScreen = () => {
     const dispatch = useDispatch();
 
-    // Redux state
-    const { globalSettingsId, mainWarehouse } = useSelector(
+    // Redux states
+    const { globalSettingsId, mainWarehouse, mainBranch } = useSelector(
         (state) => state.settings,
     );
+
+    // Local states
+    const [selectedBranch, setSelectedBranch] = useState(null);
+    const [selectedWarehouse, setSelectedWarehouse] = useState(null);
 
     const { branchesNames } = useSelector((state) => state.ui);
 
@@ -39,11 +43,45 @@ export const SettingsScreen = () => {
             }
         };
 
+        if (mainWarehouse) {
+            setSelectedWarehouse(mainWarehouse);
+        }
         fetchData();
-    }, [warehousesNames]);
+    }, [mainWarehouse]);
 
     // TODO: Implementar el cambio de sucursal principal
-    const handleMainBranchChange = (e) => {};
+    const handleMainBranchChange = (e) => {
+        // Formatting
+        const mainBranch = {
+            id: +e.target.value,
+            name: e.target.options[e.target.selectedIndex].text,
+        };
+
+        setSelectedBranch(mainBranch);
+
+        // Create or update global settings
+        try {
+            if (!globalSettingsId) {
+                createGlobalSettings();
+            } else {
+                console.log(
+                    mainBranch?.id,
+                    selectedWarehouse,
+                    globalSettingsId,
+                );
+
+                updateGlobalSettings({
+                    mainBranchId: mainBranch?.id,
+                    mainWarehouseId: selectedWarehouse?.id,
+                    globalSettingsId,
+                });
+                saveChanges(true);
+                // setIsChangesSaved(true);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     const handleMainWarehouseChange = (e) => {
         // Formatting
@@ -52,12 +90,15 @@ export const SettingsScreen = () => {
             name: e.target.options[e.target.selectedIndex].text,
         };
 
+        setSelectedWarehouse(mainWarehouse);
+
         // Create or update global settings
         try {
             if (!globalSettingsId) {
                 createGlobalSettings(mainWarehouse);
             } else {
                 updateGlobalSettings({
+                    mainBranchId: selectedBranch.id,
                     mainWarehouseId: mainWarehouse.id,
                     globalSettingsId,
                 });
@@ -98,7 +139,10 @@ export const SettingsScreen = () => {
                                     <Card.Text>Sucursal Principal: </Card.Text>
                                 </Col>
                                 <Col>
-                                    <Form.Select>
+                                    <Form.Select
+                                        onChange={handleMainBranchChange}
+                                        value={mainBranch?.id || ''}
+                                    >
                                         {branchesNames.map((branch) => (
                                             <option
                                                 key={branch.id}

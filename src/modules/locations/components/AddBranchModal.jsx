@@ -5,7 +5,7 @@ import Select from 'react-select';
 import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
 
-import { createBranch, getBranches } from '../APIs/apiBranches';
+import { createBranch, getBranches } from '../APIs/branchesAPI';
 import { useForm } from '../../../hooks/useForm';
 import { getWarehouses } from '../APIs/apiWarehouses';
 import {

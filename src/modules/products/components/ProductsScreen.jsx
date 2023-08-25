@@ -15,7 +15,7 @@ import {
     locationsSetWarehouses,
 } from '../../locations/slice/locationsSlice';
 import { getProducts, getProductsQty } from '../APIs/apiProducts';
-import { getBranches } from '../../locations/APIs/apiBranches';
+import { getBranches } from '../../locations/APIs/branchesAPI';
 import { getWarehouses } from '../../locations/APIs/apiWarehouses';
 import { getSkus, getSkusQty } from '../APIs/apiSkus';
 import SearchProductBar from './SearchProductBar';

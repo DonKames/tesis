@@ -1,19 +1,23 @@
 import React, { useEffect, useState } from 'react';
+
 import { Route, Routes } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { auth } from '../../firebase/firebase-config';
+import { onAuthStateChanged } from 'firebase/auth';
+
 import HomeScreen from '../../HomeScreen';
 import { PublicRoutes } from './PublicRoutes';
 import { PrivateRoutes } from './PrivateRoutes';
-import { useDispatch, useSelector } from 'react-redux';
-import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from '../../firebase/firebase-config';
 import { authLogin } from '../auth/authSlice';
 import { getUserByUid, updateUserUid } from '../users/apis/apiUsers';
 import { getGlobalSettings } from '../settings/APIs/settingsApi';
 import {
     settingsSetGlobalSettingsId,
+    settingsSetMainBranch,
     settingsSetMainWarehouse,
 } from '../settings/slice/settingsSlice';
 import { getWarehouseById } from '../locations/APIs/apiWarehouses';
+import { getBranchById } from '../locations/APIs/branchesAPI';
 
 export const AppRouter = () => {
     const dispatch = useDispatch();
@@ -58,21 +62,34 @@ export const AppRouter = () => {
                 console.log(settingsData);
 
                 if (settingsData) {
-                    const mainWarehouse = await getWarehouseById(
-                        settingsData.mainWarehouse,
-                    );
+                    dispatch(settingsSetGlobalSettingsId(settingsData.id));
 
-                    console.log(mainWarehouse);
+                    if (settingsData.mainWarehouse) {
+                        const mainWarehouse = await getWarehouseById(
+                            settingsData.mainWarehouse,
+                        );
 
-                    dispatch(
-                        settingsSetMainWarehouse({
-                            id: settingsData.mainWarehouse,
-                            name: mainWarehouse.name,
-                        }),
-                    );
+                        dispatch(
+                            settingsSetMainWarehouse({
+                                id: settingsData.mainWarehouse,
+                                name: mainWarehouse.name,
+                            }),
+                        );
+                    }
+
+                    if (settingsData.mainBranch) {
+                        const mainBranch = await getBranchById(
+                            settingsData.mainBranch,
+                        );
+
+                        dispatch(
+                            settingsSetMainBranch({
+                                id: settingsData.mainBranch,
+                                name: mainBranch.name,
+                            }),
+                        );
+                    }
                 }
-
-                dispatch(settingsSetGlobalSettingsId(settingsData.id));
             }
         });
     }, [auth, dispatch, setIsLoggedIn, setChecking]);

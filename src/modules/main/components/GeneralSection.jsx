@@ -10,7 +10,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { getBranchesQty } from '../../locations/APIs/apiBranches';
+import { getBranchesQty } from '../../locations/APIs/branchesAPI';
 import {
     locationsSetBranchLocationsQty,
     locationsSetBranchesQty,

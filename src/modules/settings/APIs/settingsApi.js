@@ -9,6 +9,7 @@ export const getGlobalSettings = async () => {
         console.log(finalResp);
         const data = {
             id: finalResp.global_settings_id,
+            mainBranch: finalResp.main_branch,
             mainWarehouse: finalResp.main_warehouse,
         };
         return data;

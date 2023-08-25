@@ -17,7 +17,7 @@ import {
     locationsSetWarehousesQty,
 } from '../slice/locationsSlice';
 import { getRegions } from '../APIs/apiRegions';
-import { getBranches, getBranchesQty } from '../APIs/apiBranches';
+import { getBranches, getBranchesQty } from '../APIs/branchesAPI';
 import { getWarehouses, getWarehousesQty } from '../APIs/apiWarehouses';
 import { getCountries } from '../APIs/apiCountries';
 import {

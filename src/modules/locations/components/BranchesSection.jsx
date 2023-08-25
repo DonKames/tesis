@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { PaginatedTable } from '../../../shared/ui/components/PaginatedTable';
-import { getBranches, getBranchesQty } from '../APIs/apiBranches';
+import { getBranches, getBranchesQty } from '../APIs/branchesAPI';
 import {
     locationsSetBranches,
     locationsSetBranchesQty,
