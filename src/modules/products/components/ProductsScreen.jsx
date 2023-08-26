@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
 import { Link } from 'react-router-dom';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faX } from '@fortawesome/free-solid-svg-icons';
+import { faX, faFilePen } from '@fortawesome/free-solid-svg-icons';
 
 import {
     productsSetProductQty,
@@ -19,10 +19,11 @@ import {
 import { getProducts, getProductsQty } from '../APIs/apiProducts';
 import { getBranches } from '../../locations/APIs/branchesAPI';
 import { getWarehouses } from '../../locations/APIs/apiWarehouses';
-import { getSkus, getSkusQty } from '../APIs/apiSkus';
+import { getSkus, getSkusQty } from '../APIs/skusAPI';
 import SearchProductBar from './SearchProductBar';
 import usePagination from '../../../hooks/usePagination';
 import { PaginatedTable } from '../../../shared/ui/components/PaginatedTable';
+import { GlobalButton } from '../../../shared/ui/components/GlobalButton';
 
 /**
  * Renders a screen that displays a table of SKUs and products with pagination and search functionality.
@@ -41,9 +42,6 @@ const ProductsScreen = () => {
         (state) => state.products,
     );
     const { branches, warehouses } = useSelector((state) => state.locations);
-
-    // Pagination
-    // Skus
 
     // Sku pagination hook
     const {
@@ -70,19 +68,29 @@ const ProductsScreen = () => {
         'Stock',
         '',
     ];
+
+    // Funciones para manejar las acciones de editar y eliminar
+    const handleSkuEdit = (skuId) => {
+        // Lógica para editar el SKU con el ID dado
+    };
+
+    const handleSkuDelete = (skuId) => {
+        // Lógica para eliminar el SKU con el ID dado
+    };
+
     const skuRenderer = (sku) => (
         <tr key={sku.sku_id}>
-            <td>{sku.sku}</td>
+            <td className='align-middle'>{sku.sku}</td>
 
-            <td>{sku.name}</td>
-            <td>{sku.description}</td>
-            <td>
+            <td className='align-middle'>{sku.name}</td>
+            <td className='align-middle'>{sku.description}</td>
+            <td className='align-middle'>
                 $
                 {sku.price.toLocaleString('es-CL', {
                     maximumFractionDigits: 0,
                 })}
             </td>
-            <td>
+            <td className='align-middle'>
                 {skus.reduce((accumulator, obj) => {
                     if (obj.sku === sku.sku) {
                         return accumulator + 1;
@@ -90,33 +98,26 @@ const ProductsScreen = () => {
                     return accumulator;
                 }, 0)}
             </td>
-            <td>
-                <Button
-                    variant='warning'
-                    onClick={() => handleEdit(sku.sku_id)}
-                >
-                    {/* <Pencil /> */}
-                </Button>
-                <Button
-                    variant='danger'
-                    onClick={() => handleDelete(sku.sku_id)}
-                >
-                    <FontAwesomeIcon icon={faX} />
-                    {/* <Trash /> */}
-                </Button>
-                <FontAwesomeIcon icon={faX} />
+            <td className='align-middle'>
+                {/* <FontAwesomeIcon
+                    className='ms-1 me-1 primary-global-button'
+                    icon={faFilePen}
+                    onClick={() => handleSkuEdit(sku.sku_id)}
+                />
+                <FontAwesomeIcon icon={faX} /> */}
+                <GlobalButton
+                    label={<FontAwesomeIcon icon={faFilePen} />}
+                    onClick={() => handleSkuEdit(sku.sku_id)}
+                    color={'primary'}
+                />
+                <GlobalButton
+                    label={<FontAwesomeIcon icon={faX} />}
+                    onClick={() => handleSkuDelete(sku.sku_id)}
+                    color={'danger'}
+                />
             </td>
         </tr>
     );
-
-    // Funciones para manejar las acciones de editar y eliminar
-    const handleEdit = (skuId) => {
-        // Lógica para editar el SKU con el ID dado
-    };
-
-    const handleDelete = (skuId) => {
-        // Lógica para eliminar el SKU con el ID dado
-    };
 
     // Products
     // Products pagination hook
@@ -140,8 +141,10 @@ const ProductsScreen = () => {
 
     const productRenderer = (product) => (
         <tr key={product.product_id}>
-            <td>{skus.find((sku) => sku.sku_id === product.fk_sku_id)?.sku}</td>
-            <td>
+            <td className='align-middle'>
+                {skus.find((sku) => sku.sku_id === product.fk_sku_id)?.sku}
+            </td>
+            <td className='align-middle'>
                 {
                     branches.find(
                         (branch) =>
@@ -154,7 +157,7 @@ const ProductsScreen = () => {
                     )?.name
                 }
             </td>
-            <td>
+            <td className='align-middle'>
                 {
                     warehouses.find(
                         (warehouse) =>
@@ -162,7 +165,7 @@ const ProductsScreen = () => {
                     )?.name
                 }
             </td>
-            <td>{product.epc}</td>
+            <td className='align-middle'>{product.epc}</td>
         </tr>
     );
 
@@ -194,21 +197,13 @@ const ProductsScreen = () => {
                 // Skus pagination, table and data
 
                 if (skusQty === null || skusQty === undefined) {
-                    const skusQty = await getSkusQty();
-                    console.log(skusQty);
-                    // setSkuPagesQty(Math.ceil(skuPagesQty));
-                    dispatch(productsSetSkusQty(skusQty));
-                } else {
-                    const skuPagesQty = skusQty / skuLimit;
-
-                    console.log(skuPagesQty, skusQty);
-                    // setSkuPagesQty(Math.ceil(skuPagesQty));
-                    // setSkuPagesQty(Math.ceil(pagesQtySku));
+                    const skusQtyData = await getSkusQty();
+                    dispatch(productsSetSkusQty(skusQtyData));
                 }
 
                 if (!skus.length) {
-                    const fetchedSkus = await getSkus(1, 10);
-                    dispatch(productsSetSkus(fetchedSkus));
+                    const skusData = await getSkus(1, 10);
+                    dispatch(productsSetSkus(skusData));
                 }
             } catch (error) {
                 console.error('Ocurrió un error al obtener los datos:', error);

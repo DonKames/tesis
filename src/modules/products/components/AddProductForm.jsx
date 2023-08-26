@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Select from 'react-select';
 import { useForm } from '../../../hooks/useForm';
 import { productsSetProducts, productsSetSkus } from '../slice/productsSlice';
-import { getSkus } from '../APIs/apiSkus';
+import { getSkus } from '../APIs/skusAPI';
 import { createProduct, getProducts } from '../APIs/apiProducts';
 import Swal from 'sweetalert2';
 

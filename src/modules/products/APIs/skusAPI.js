@@ -80,3 +80,19 @@ export const getSkuBySku = async (sku) => {
         return null;
     }
 };
+
+export const softDeleteSku = async (skuId) => {
+    try {
+        const response = await fetch(`${BASE_URL}/skus/${skuId}`, {
+            method: 'DELETE',
+        });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.log('Error al eliminar SKU desde la API:', error);
+        return null;
+    }
+};

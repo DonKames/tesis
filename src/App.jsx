@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { store } from './modules/store/store';
 import { AppRouter } from './modules/routers/AppRouter';
 import 'animate.css';
+import './styles/globalStyles.css';
 
 export const App = () => {
     return (

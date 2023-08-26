@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Card, Form } from 'react-bootstrap';
 import { useForm } from '../../../hooks/useForm';
 import Swal from 'sweetalert2';
-import { createSku, getSkuBySku, getSkus } from '../APIs/apiSkus';
+import { createSku, getSkuBySku, getSkus } from '../APIs/skusAPI';
 import { useDispatch } from 'react-redux';
 import { productsSetSkus } from '../slice/productsSlice';
 
