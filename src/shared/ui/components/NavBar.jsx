@@ -25,9 +25,9 @@ export const NavBar = () => {
 
     return (
         <Navbar
-            bg='light'
+            bg='dark'
             expand='lg'
-            className='shadow-sm mb-3'
+            className='shadow-sm mb-3 navbar-dark'
         >
             <Container>
                 <Navbar.Brand
@@ -72,9 +72,10 @@ export const NavBar = () => {
                         </Nav.Link>
                     </Nav>
                     <NavDropdown
-                        className='ms-auto'
+                        className='ms-auto text-light'
+                        style={{ '--bs-text-opacity': '.55' }}
                         title={formattedDisplayName || 'Usuario'}
-                        id='basic-nav-dropdown'
+                        // id='basic-nav-dropdown'
                     >
                         <NavDropdown.Item href='#profile'>
                             Perfil
@@ -97,7 +98,8 @@ export const NavBar = () => {
                     </NavDropdown>
                     <FontAwesomeIcon
                         icon={faBell}
-                        className='ms-2'
+                        className='ms-2 text-white'
+                        style={{ '--bs-text-opacity': '.55' }}
                     />
                 </Navbar.Collapse>
             </Container>
