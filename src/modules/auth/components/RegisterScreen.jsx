@@ -7,7 +7,7 @@ import { Card, Form, Button } from 'react-bootstrap';
 
 import { startRegisterNameEmailPass } from '../actions/auth';
 import { useForm } from '../../../hooks/useForm';
-import { uiRemoveError, uiSetError } from '../../../shared/ui/uiSlice';
+import { uiSetError, uiRemoveError } from '../../../shared/ui/slice/uiSlice';
 
 export const RegisterScreen = () => {
     const dispatch = useDispatch();

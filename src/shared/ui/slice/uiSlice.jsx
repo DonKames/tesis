@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { types } from '../../types/types';
-import { reset } from '../resetSlice';
+import { types } from '../../../types/types';
+import { reset } from '../../resetSlice';
 
 const initialState = {
     loading: false,

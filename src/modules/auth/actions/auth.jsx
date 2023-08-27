@@ -8,7 +8,10 @@ import {
 import { auth, googleAuthProvider } from '../../../firebase/firebase-config';
 import { authLogin, authLogout } from '../authSlice';
 import Swal from 'sweetalert2';
-import { uiFinishLoading, uiStartLoading } from '../../../shared/ui/uiSlice';
+import {
+    uiFinishLoading,
+    uiStartLoading,
+} from '../../../shared/ui/slice/uiSlice';
 import { getUserByEmail } from '../../users/apis/apiUsers';
 
 // Vamos de nuevo

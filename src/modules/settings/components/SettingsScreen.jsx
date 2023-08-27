@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Card, Col, Container, Form, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { uiSetBranchesNames } from '../../../shared/ui/uiSlice';
 import {
     getSettingsData,
     updateMainBranch,
     updateMainWarehouse,
 } from '../services/settingsServices';
+import { uiSetBranchesNames } from '../../../shared/ui/slice/uiSlice';
 
 export const SettingsScreen = () => {
     const dispatch = useDispatch();

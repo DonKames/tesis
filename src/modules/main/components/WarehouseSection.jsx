@@ -5,7 +5,7 @@ import {
     getWarehouseById,
     getWarehousesNames,
 } from '../../locations/APIs/apiWarehouses';
-import { uiSetWarehousesNames } from '../../../shared/ui/uiSlice';
+import { uiSetWarehousesNames } from '../../../shared/ui/slice/uiSlice';
 
 export const WarehouseSection = () => {
     const dispatch = useDispatch();

@@ -5,10 +5,10 @@ import { TasksScreen } from '../task/TasksScreen';
 import { DashboardScreen } from '../dashboard/components/DashboardScreen';
 import { ProductsRouter } from '../products/routers/ProductsRouter';
 import MerchantApiTest from '../../tests/MerchantApiTest';
-import { Layout } from '../../shared/ui/Layout';
 import { LocationsScreen } from '../locations/components/LocationsScreen';
 import { UsersScreen } from '../users/components/UsersScreen';
 import { SettingsScreen } from '../settings/components/SettingsScreen';
+import { Layout } from '../../shared/ui/components/Layout';
 
 export const PrivateRouter = () => {
     return (

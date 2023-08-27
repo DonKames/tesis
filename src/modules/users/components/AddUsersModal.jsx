@@ -9,7 +9,7 @@ import validator from 'validator';
 import { useForm } from '../../../hooks/useForm';
 import { createUser, getUsers } from '../apis/apiUsers';
 import { usersSetUsers } from '../slice/usersSlice';
-import { uiSetError } from '../../../shared/ui/uiSlice';
+import { uiSetError } from '../../../shared/ui/slice/uiSlice';
 
 export const AddUsersModal = () => {
     const dispatch = useDispatch();

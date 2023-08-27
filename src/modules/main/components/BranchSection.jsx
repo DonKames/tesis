@@ -5,7 +5,7 @@ import {
     getBranchById,
     getBranchesNames,
 } from '../../locations/APIs/branchesAPI';
-import { uiSetBranchesNames } from '../../../shared/ui/uiSlice';
+import { uiSetBranchesNames } from '../../../shared/ui/slice/uiSlice';
 
 export const BranchSection = () => {
     const dispatch = useDispatch();
