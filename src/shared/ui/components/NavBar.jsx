@@ -72,8 +72,8 @@ export const NavBar = () => {
                         </Nav.Link>
                     </Nav>
                     <NavDropdown
-                        className='ms-auto text-light'
-                        style={{ '--bs-text-opacity': '.55' }}
+                        className='ms-auto text-white'
+                        // style={{ '--bs-text-opacity': '.55' }}
                         title={formattedDisplayName || 'Usuario'}
                         // id='basic-nav-dropdown'
                     >
@@ -99,7 +99,7 @@ export const NavBar = () => {
                     <FontAwesomeIcon
                         icon={faBell}
                         className='ms-2 text-white'
-                        style={{ '--bs-text-opacity': '.55' }}
+                        // style={{ '--bs-text-opacity': '.55' }}
                     />
                 </Navbar.Collapse>
             </Container>

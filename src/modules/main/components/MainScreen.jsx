@@ -34,7 +34,7 @@ export const MainScreen = () => {
             <Row className='my-3'>
                 <Col>
                     <Card
-                        bg='light'
+                        // bg='light'
                         className='shadow h-100'
                     >
                         <Card.Header>
