@@ -51,10 +51,8 @@ export const LocationsScreen = () => {
             // Branches Table, Pagination.
             if (branchesQty === null) {
                 const branchesQty = await getBranchesQty();
-                // setBranchPagesQty(Math.ceil(branchesQty / branchLimit));
                 dispatch(locationsSetBranchesQty(branchesQty));
             } else {
-                // setBranchPagesQty(Math.ceil(branchesQty / branchLimit));
                 const fetchedBranches = await getBranches(1, 10);
                 dispatch(locationsSetBranches(fetchedBranches));
             }
@@ -69,13 +67,6 @@ export const LocationsScreen = () => {
                 const warehousesQty = await getWarehousesQty();
                 // setWarehousePagesQty(Math.ceil(warehousesQty / warehouseLimit));
                 dispatch(locationsSetWarehousesQty(warehousesQty));
-            } else {
-                // setWarehousePagesQty(Math.ceil(warehousesQty / warehouseLimit));
-                // const fetchedWarehouses = await getWarehouses(
-                //     1,
-                //     warehouseLimit,
-                // );
-                // dispatch(locationsSetWarehouses(fetchedWarehouses));
             }
 
             if (!warehouses.length) {

@@ -78,12 +78,7 @@ export const AddBranchLocationModal = () => {
 
     return (
         <>
-            <Button
-                variant='primary'
-                onClick={handleOpenModal}
-            >
-                Agregar Lugar
-            </Button>
+            <Button onClick={handleOpenModal}>Agregar Lugar</Button>
             <Modal
                 show={showModal}
                 onHide={handleCloseModal}

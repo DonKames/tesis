@@ -74,6 +74,7 @@ export const AddWarehouseModal = () => {
     return (
         <>
             <Button
+                style={{ '--bs-btn-color': '#f2f2f2' }}
                 variant='primary'
                 onClick={handleOpenModal}
             >
