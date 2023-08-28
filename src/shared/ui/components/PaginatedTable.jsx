@@ -109,7 +109,7 @@ export const PaginatedTable = ({
             </Card>
             <Row className='mt-2 mb-3'>
                 <Col className='d-flex justify-content-center'>
-                    <Pagination className='shadow'>
+                    <Pagination className='shadow rounded'>
                         <Pagination.First
                             onClick={() => handlePageChange(1)}
                             disabled={selectedPage === 1}
