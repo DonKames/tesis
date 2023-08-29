@@ -81,10 +81,10 @@ export const getSkuBySku = async (sku) => {
     }
 };
 
-export const softDeleteSku = async (skuId) => {
+export const deactivateSku = async (skuId) => {
     try {
         const response = await fetch(`${BASE_URL}/skus/${skuId}`, {
-            method: 'DELETE',
+            method: 'UPDATE',
         });
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);

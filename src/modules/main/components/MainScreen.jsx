@@ -21,13 +21,27 @@ export const MainScreen = () => {
     return (
         <Container>
             <Row>
-                <Col className='col-6'>
+                <Col
+                    className='mb-3'
+                    xs={12}
+                    lg={6}
+                >
                     <GeneralSection />
                 </Col>
-                <Col className='col-3'>
+                <Col
+                    className='mb-3'
+                    xs={12}
+                    md={6}
+                    lg={3}
+                >
                     <BranchSection />
                 </Col>
-                <Col className='col-3'>
+                <Col
+                    className='mb-3'
+                    xs={12}
+                    md={6}
+                    lg={3}
+                >
                     <WarehouseSection />
                 </Col>
             </Row>

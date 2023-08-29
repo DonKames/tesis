@@ -1,11 +1,15 @@
+// React
 import React, { useEffect } from 'react';
 
+// Dependencies
 import { Link } from 'react-router-dom';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faX, faFilePen } from '@fortawesome/free-solid-svg-icons';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
+// Personal
 import {
     productsSetProductQty,
     productsSetProducts,
@@ -23,7 +27,6 @@ import { getSkus, getSkusQty } from '../APIs/skusAPI';
 import SearchProductBar from './SearchProductBar';
 import usePagination from '../../../hooks/usePagination';
 import { PaginatedTable } from '../../../shared/ui/components/PaginatedTable';
-import { GlobalButton } from '../../../shared/ui/components/GlobalButton';
 
 /**
  * Renders a screen that displays a table of SKUs and products with pagination and search functionality.
@@ -76,6 +79,7 @@ const ProductsScreen = () => {
 
     const handleSkuDelete = (skuId) => {
         // Lógica para eliminar el SKU con el ID dado
+        console.log('Eliminando SKU con ID:', skuId);
     };
 
     const skuRenderer = (sku) => (
@@ -90,7 +94,7 @@ const ProductsScreen = () => {
                     maximumFractionDigits: 0,
                 })}
             </td>
-            <td className='align-middle'>
+            <td className='align-middle text-center'>
                 {skus.reduce((accumulator, obj) => {
                     if (obj.sku === sku.sku) {
                         return accumulator + 1;
@@ -98,23 +102,22 @@ const ProductsScreen = () => {
                     return accumulator;
                 }, 0)}
             </td>
-            <td className='align-middle'>
-                {/* <FontAwesomeIcon
-                    className='ms-1 me-1 primary-global-button'
-                    icon={faFilePen}
+            <td className='align-middle text-end'>
+                <Button
+                    className='me-1'
+                    // variant='info'
                     onClick={() => handleSkuEdit(sku.sku_id)}
-                />
-                <FontAwesomeIcon icon={faX} /> */}
-                <GlobalButton
-                    label={<FontAwesomeIcon icon={faFilePen} />}
-                    onClick={() => handleSkuEdit(sku.sku_id)}
-                    color={'primary'}
-                />
-                <GlobalButton
-                    label={<FontAwesomeIcon icon={faX} />}
+                >
+                    <i className='bi bi-pencil-square'></i>
+                </Button>
+
+                <Button
+                    className='text-white'
+                    variant='danger'
                     onClick={() => handleSkuDelete(sku.sku_id)}
-                    color={'danger'}
-                />
+                >
+                    <i className='bi bi-trash3'></i>
+                </Button>
             </td>
         </tr>
     );

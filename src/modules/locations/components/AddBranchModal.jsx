@@ -105,7 +105,12 @@ export const AddBranchModal = () => {
 
     return (
         <>
-            <Button onClick={handleOpenModal}>Agregar Sucursal</Button>
+            <Button
+                variant='primary'
+                onClick={handleOpenModal}
+            >
+                Agregar Sucursal
+            </Button>
             <Modal
                 show={showModal}
                 onHide={handleCloseModal}
