@@ -83,14 +83,18 @@ export const getSkuBySku = async (sku) => {
 
 export const changeActiveStateSku = async (skuId, data) => {
     try {
-        const response = await fetch(`${BASE_URL}/skus/active/${skuId}`, {
-            method: 'UPDATE',
+        const response = await fetch(`${BASE_URL}/skus/${skuId}`, {
+            method: 'PATCH', // o 'PATCH' dependiendo de tu API
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ active: data }), // Aquí enviamos la data
         });
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const data = await response.json();
-        return data;
+        const responseData = await response.json();
+        return responseData;
     } catch (error) {
         console.log(
             'Error al cambiar el estado Active SKU desde la API:',

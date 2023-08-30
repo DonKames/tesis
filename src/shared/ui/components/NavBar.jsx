@@ -27,7 +27,7 @@ export const NavBar = () => {
         <Navbar
             bg='dark'
             expand='lg'
-            className='shadow-sm mb-3 navbar-dark'
+            className='shadow-sm mb-3 navbar-dark bg-gradient'
         >
             <Container>
                 <Navbar.Brand

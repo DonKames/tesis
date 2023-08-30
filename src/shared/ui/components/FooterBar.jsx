@@ -27,7 +27,7 @@ export const FooterBar = () => {
     return (
         <>
             <Navbar
-                className='py-3 mt-auto navbar-dark'
+                className='py-3 mt-auto navbar-dark bg-gradient'
                 bg='dark'
             >
                 <Container>

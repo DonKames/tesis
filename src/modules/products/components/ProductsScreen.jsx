@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 
 // Dependencies
 import { Link } from 'react-router-dom';
-import { Container, Row, Col, Button } from 'react-bootstrap';
+import { Container, Row, Col, Button, Modal, Form } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
@@ -21,10 +21,11 @@ import {
 import { getProducts, getProductsQty } from '../APIs/apiProducts';
 import { getBranches } from '../../locations/APIs/branchesAPI';
 import { getWarehouses } from '../../locations/APIs/apiWarehouses';
-import { getSkus, getSkusQty } from '../APIs/skusAPI';
+import { changeActiveStateSku, getSkus, getSkusQty } from '../APIs/skusAPI';
 import SearchProductBar from './SearchProductBar';
 import usePagination from '../../../hooks/usePagination';
 import { PaginatedTable } from '../../../shared/ui/components/PaginatedTable';
+import Swal from 'sweetalert2';
 
 /**
  * Renders a screen that displays a table of SKUs and products with pagination and search functionality.
@@ -75,9 +76,35 @@ const ProductsScreen = () => {
         // Lógica para editar el SKU con el ID dado
     };
 
-    const handleSkuDelete = (skuId) => {
-        // Lógica para eliminar el SKU con el ID dado
-        console.log('Eliminando SKU con ID:', skuId);
+    const handleSkuDelete = async (skuId) => {
+        // Lógica para cambiar el SKU con el ID dado
+
+        const result = await Swal.fire({
+            title: '¿Estás seguro?',
+            text: 'Desactivarás este SKU y todos los productos asociados a él.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar',
+        });
+
+        if (result.isConfirmed) {
+            // Lógica para eliminar el SKU con el ID dado
+            console.log('Eliminando SKU con ID:', skuId);
+            const { status } = await changeActiveStateSku(skuId, false);
+
+            if (status === 'success') {
+                Swal.fire('Eliminado', 'El SKU ha sido eliminado.', 'success');
+            } else {
+                Swal.fire(
+                    'Error',
+                    'Ha habido un problema al eliminar el SKU.',
+                    'error',
+                );
+            }
+        }
     };
 
     // Sku table row renderer
@@ -217,6 +244,22 @@ const ProductsScreen = () => {
 
     return (
         <Container>
+            <Modal show={true}>
+                <Modal.Header></Modal.Header>
+                <Modal.Body>
+                    <h1>Editar SKU</h1>
+
+                    <Form>
+                        <Form.Group>
+                            <Form.Label>SKU</Form.Label>
+                            <Form.Control
+                                type='text'
+                                placeholder='SKU'
+                            />
+                        </Form.Group>
+                    </Form>
+                </Modal.Body>
+            </Modal>
             <Row className='mt-3 mb-2'>
                 <Col>
                     <h1>SKUs</h1>
