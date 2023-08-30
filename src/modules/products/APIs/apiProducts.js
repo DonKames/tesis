@@ -41,6 +41,22 @@ export const getProductsCountByWarehouse = async () => {
     }
 };
 
+export const getProductsByWarehouse = async (warehouseId) => {
+    try {
+        const response = await fetch(
+            `${BASE_URL}/products/warehouse/${warehouseId}`,
+        );
+        const data = await handleFetchError(response);
+        return data;
+    } catch (error) {
+        console.log(
+            'Error al obtener productos por bodega desde la API:',
+            error,
+        );
+        return [];
+    }
+};
+
 export const createProduct = async (productData) => {
     try {
         console.log(productData);

@@ -5,8 +5,6 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faX, faFilePen } from '@fortawesome/free-solid-svg-icons';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
 // Personal
@@ -82,6 +80,7 @@ const ProductsScreen = () => {
         console.log('Eliminando SKU con ID:', skuId);
     };
 
+    // Sku table row renderer
     const skuRenderer = (sku) => (
         <tr key={sku.sku_id}>
             <td className='align-middle'>{sku.sku}</td>
@@ -116,7 +115,7 @@ const ProductsScreen = () => {
                     variant='danger'
                     onClick={() => handleSkuDelete(sku.sku_id)}
                 >
-                    <i className='bi bi-trash3'></i>
+                    <i className='bi bi-trash3' />
                 </Button>
             </td>
         </tr>

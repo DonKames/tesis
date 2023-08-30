@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Navbar, Container, Nav } from 'react-bootstrap';
+import { Navbar, Container, Nav, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 import {
@@ -26,113 +26,76 @@ export const FooterBar = () => {
     // );
     return (
         <>
-            <Container
-                fluid
-                className='p-0 footer mt-auto bg-light'
-                style={{ backgroundColor: '#2FD7B4' }}
+            <Navbar
+                className='py-3 mt-auto navbar-dark'
+                bg='dark'
             >
-                <Navbar
-                    className='py-3 bg-gradient'
-                    style={{ backgroundColor: '#2FD7B4' }}
-                >
-                    <Container>
-                        <Navbar.Brand className='text-white'>
-                            <Link
-                                to='/'
-                                className='text-white'
-                            >
-                                <img
-                                    src='https://res.cloudinary.com/cloud-kames/image/upload/v1658686010/SIMB/simbLogo_vcpz3g.jpg'
-                                    width='100'
-                                    height='100'
-                                    alt='Keep'
-                                />
-                                <div className='text-dark text-center'>
-                                    RFWID
-                                </div>
-                            </Link>
-                        </Navbar.Brand>
-                        <Navbar.Toggle aria-controls='footer' />
-                        <Navbar.Collapse id='footer'>
-                            <Nav className='ms-auto me-5'>
-                                <div>
-                                    <div>
-                                        <h6>Paginas</h6>
-                                    </div>
-                                    <div>
-                                        <Link
-                                            to='/'
-                                            className='text-dark'
-                                        >
-                                            Home
-                                        </Link>
-                                    </div>
-                                    <div>
-                                        <Link
-                                            to='/'
-                                            className='text-dark'
-                                        >
-                                            Suscribir
-                                        </Link>
-                                    </div>
-                                    <div>
-                                        <Link
-                                            to='/'
-                                            className='text-dark'
-                                        >
-                                            Nosotros
-                                        </Link>
-                                    </div>
-                                    <div>
-                                        <Link
-                                            to='/'
-                                            className='text-dark'
-                                        >
-                                            Política de privacidad
-                                        </Link>
-                                    </div>
-                                </div>
-                                <div className='ms-5 me-5'>
-                                    <div>
-                                        <h6>Redes</h6>
-                                    </div>
-                                    <div>
-                                        <a
-                                            href='https://www.facebook.com/'
-                                            className='text-dark'
-                                        >
-                                            <FontAwesomeIcon
-                                                icon={faFacebook}
-                                            />
-                                            Facebook
-                                        </a>
-                                    </div>
-                                    <div>
-                                        <a
-                                            href='https://www.whatsapp.com/'
-                                            className='text-dark'
-                                        >
-                                            <FontAwesomeIcon
-                                                icon={faWhatsapp}
-                                            />
-                                            WhatsApp
-                                        </a>
-                                    </div>
-                                    <div>
-                                        <a
-                                            href='https://www.twitter.com/'
-                                            className='text-dark'
-                                        >
-                                            <FontAwesomeIcon icon={faTwitter} />
-                                            Twitter
-                                        </a>
-                                    </div>
-                                </div>
-                            </Nav>
-                        </Navbar.Collapse>
-                    </Container>
-                </Navbar>
-            </Container>
+                <Container>
+                    <Navbar.Brand className=''>
+                        <Link to='/'>
+                            <img
+                                src='https://res.cloudinary.com/cloud-kames/image/upload/v1658686010/SIMB/simbLogo_vcpz3g.jpg'
+                                width='100'
+                                height='100'
+                                alt='Keep'
+                            />
+                            <div className='text-white text-center'>RFWID</div>
+                        </Link>
+                    </Navbar.Brand>
+                    <Navbar.Toggle aria-controls='footer' />
+                    <Navbar.Collapse id='footer'>
+                        <Nav className='ms-auto me-5'>
+                            <Col>
+                                <h6 className='text-white'>Paginas</h6>
+
+                                <Nav.Link
+                                    as={Link}
+                                    to='/'
+                                >
+                                    Home
+                                </Nav.Link>
+
+                                <Nav.Link
+                                    as={Link}
+                                    to='/'
+                                >
+                                    Suscribir
+                                </Nav.Link>
+
+                                <Nav.Link to='/'>Nosotros</Nav.Link>
+                                <Nav.Link to='/'>
+                                    Política de privacidad
+                                </Nav.Link>
+                            </Col>
+                            <Col>
+                                <h6 className='text-white'>Redes</h6>
+
+                                <Nav.Link href='https://www.facebook.com/'>
+                                    <FontAwesomeIcon
+                                        icon={faFacebook}
+                                        className='me-1'
+                                    />
+                                    Facebook
+                                </Nav.Link>
+                                <Nav.Link href='https://www.whatsapp.com/'>
+                                    <FontAwesomeIcon
+                                        icon={faWhatsapp}
+                                        className='me-1'
+                                    />
+                                    WhatsApp
+                                </Nav.Link>
+                                <Nav.Link href='https://www.twitter.com/'>
+                                    <FontAwesomeIcon
+                                        icon={faTwitter}
+                                        className='me-1'
+                                    />
+                                    Twitter
+                                </Nav.Link>
+                            </Col>
+                        </Nav>
+                    </Navbar.Collapse>
+                </Container>
+            </Navbar>
         </>
     );
 };

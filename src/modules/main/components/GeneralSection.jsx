@@ -51,6 +51,8 @@ export const GeneralSection = () => {
                 if (!productsCountByWarehouse.length) {
                     const productsCountByWarehouse =
                         await getProductsCountByWarehouse();
+
+                    console.log(productsCountByWarehouse);
                     dispatch(
                         productsSetProductsCountByWarehouse(
                             productsCountByWarehouse,

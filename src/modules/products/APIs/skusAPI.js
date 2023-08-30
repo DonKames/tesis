@@ -81,9 +81,9 @@ export const getSkuBySku = async (sku) => {
     }
 };
 
-export const deactivateSku = async (skuId) => {
+export const changeActiveStateSku = async (skuId, data) => {
     try {
-        const response = await fetch(`${BASE_URL}/skus/${skuId}`, {
+        const response = await fetch(`${BASE_URL}/skus/active/${skuId}`, {
             method: 'UPDATE',
         });
         if (!response.ok) {
@@ -92,7 +92,10 @@ export const deactivateSku = async (skuId) => {
         const data = await response.json();
         return data;
     } catch (error) {
-        console.log('Error al eliminar SKU desde la API:', error);
+        console.log(
+            'Error al cambiar el estado Active SKU desde la API:',
+            error,
+        );
         return null;
     }
 };

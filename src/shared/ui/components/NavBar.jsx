@@ -96,11 +96,7 @@ export const NavBar = () => {
                             </Button>
                         </NavDropdown.Item>
                     </NavDropdown>
-                    <FontAwesomeIcon
-                        icon={faBell}
-                        className='ms-2 text-white'
-                        // style={{ '--bs-text-opacity': '.55' }}
-                    />
+                    <FontAwesomeIcon icon={faBell} />
                 </Navbar.Collapse>
             </Container>
         </Navbar>
