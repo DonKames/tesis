@@ -5,7 +5,6 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Container, Row, Col, Button, Modal, Form } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import 'bootstrap-icons/font/bootstrap-icons.css';
 
 // Personal
 import {
@@ -21,11 +20,11 @@ import {
 import { getProducts, getProductsQty } from '../APIs/apiProducts';
 import { getBranches } from '../../locations/APIs/branchesAPI';
 import { getWarehouses } from '../../locations/APIs/apiWarehouses';
-import { changeActiveStateSku, getSkus, getSkusQty } from '../APIs/skusAPI';
+import { getSkus, getSkusQty } from '../APIs/skusAPI';
 import SearchProductBar from './SearchProductBar';
 import usePagination from '../../../hooks/usePagination';
 import { PaginatedTable } from '../../../shared/ui/components/PaginatedTable';
-import Swal from 'sweetalert2';
+import { TableSkus } from './TableSkus';
 
 /**
  * Renders a screen that displays a table of SKUs and products with pagination and search functionality.
@@ -44,109 +43,6 @@ const ProductsScreen = () => {
         (state) => state.products,
     );
     const { branches, warehouses } = useSelector((state) => state.locations);
-
-    // Sku pagination hook
-    const {
-        selectedPage: selectedPageSku,
-        pagesQty: pagesQtySku,
-        handlePageChange: handlePageChangeSku,
-        setLimit: setSkuLimit,
-        limit: skuLimit,
-    } = usePagination(
-        getSkus,
-        getSkusQty,
-        productsSetSkus,
-        productsSetSkusQty,
-        skusQty,
-        10,
-    );
-
-    // Sku table columns
-    const tableColumnsSkus = [
-        'Sku',
-        'Nombre',
-        'Descripción',
-        'Precio',
-        'Stock',
-        '',
-    ];
-
-    // Funciones para manejar las acciones de editar y eliminar
-    const handleSkuEdit = (skuId) => {
-        // Lógica para editar el SKU con el ID dado
-    };
-
-    const handleSkuDelete = async (skuId) => {
-        // Lógica para cambiar el SKU con el ID dado
-
-        const result = await Swal.fire({
-            title: '¿Estás seguro?',
-            text: 'Desactivarás este SKU y todos los productos asociados a él.',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Sí, eliminar',
-            cancelButtonText: 'Cancelar',
-        });
-
-        if (result.isConfirmed) {
-            // Lógica para eliminar el SKU con el ID dado
-            console.log('Eliminando SKU con ID:', skuId);
-            const { status } = await changeActiveStateSku(skuId, false);
-
-            if (status === 'success') {
-                Swal.fire('Eliminado', 'El SKU ha sido eliminado.', 'success');
-            } else {
-                Swal.fire(
-                    'Error',
-                    'Ha habido un problema al eliminar el SKU.',
-                    'error',
-                );
-            }
-        }
-    };
-
-    // Sku table row renderer
-    const skuRenderer = (sku) => (
-        <tr key={sku.sku_id}>
-            <td className='align-middle'>{sku.sku}</td>
-
-            <td className='align-middle'>{sku.name}</td>
-            <td className='align-middle'>{sku.description}</td>
-            <td className='align-middle'>
-                $
-                {sku.price.toLocaleString('es-CL', {
-                    maximumFractionDigits: 0,
-                })}
-            </td>
-            <td className='align-middle text-center'>
-                {skus.reduce((accumulator, obj) => {
-                    if (obj.sku === sku.sku) {
-                        return accumulator + 1;
-                    }
-                    return accumulator;
-                }, 0)}
-            </td>
-            <td className='align-middle text-end'>
-                <Button
-                    className='me-1'
-                    // variant='info'
-                    onClick={() => handleSkuEdit(sku.sku_id)}
-                >
-                    <i className='bi bi-pencil-square'></i>
-                </Button>
-
-                <Button
-                    className='text-white'
-                    variant='danger'
-                    onClick={() => handleSkuDelete(sku.sku_id)}
-                >
-                    <i className='bi bi-trash3' />
-                </Button>
-            </td>
-        </tr>
-    );
 
     // Products
     // Products pagination hook
@@ -244,22 +140,6 @@ const ProductsScreen = () => {
 
     return (
         <Container>
-            <Modal show={true}>
-                <Modal.Header></Modal.Header>
-                <Modal.Body>
-                    <h1>Editar SKU</h1>
-
-                    <Form>
-                        <Form.Group>
-                            <Form.Label>SKU</Form.Label>
-                            <Form.Control
-                                type='text'
-                                placeholder='SKU'
-                            />
-                        </Form.Group>
-                    </Form>
-                </Modal.Body>
-            </Modal>
             <Row className='mt-3 mb-2'>
                 <Col>
                     <h1>SKUs</h1>
@@ -273,18 +153,8 @@ const ProductsScreen = () => {
                     </Link>
                 </Col>
             </Row>
-            <PaginatedTable
-                items={skus}
-                columns={tableColumnsSkus}
-                selectedPage={selectedPageSku}
-                pagesQty={pagesQtySku}
-                handlePageChange={handlePageChangeSku}
-                itemRenderer={skuRenderer}
-                footerText={`Total de SKUs: ${skusQty} | Páginas totales: ${pagesQtySku}`}
-                maxPagesToShow={10}
-                handleLimitChange={setSkuLimit}
-                limit={skuLimit}
-            />
+            <TableSkus />
+
             <Row>
                 <Col>
                     <h1>Productos</h1>
