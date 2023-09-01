@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 
 // Dependencies
 import { Link } from 'react-router-dom';
-import { Container, Row, Col, Button, Modal, Form } from 'react-bootstrap';
+import { Container, Row, Col, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 
 // Personal

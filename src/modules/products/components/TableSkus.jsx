@@ -25,7 +25,7 @@ export const TableSkus = () => {
         sku: '',
     });
 
-    const { active, description, minimum_stock, name, price, sku } = formValues;
+    const { active, description, minimumStock, name, sku } = formValues;
 
     // Sku pagination hook
     const {
@@ -166,6 +166,17 @@ export const TableSkus = () => {
                             />
                         </Form.Group>
                         <Form.Group>
+                            <Form.Label>Stock Mínimo</Form.Label>
+                            <Form.Control
+                                className='mb-3'
+                                name='minimum_stock'
+                                onChange={handleInputChange}
+                                placeholder='Stock Mínimo'
+                                type='number'
+                                value={minimumStock}
+                            />
+                        </Form.Group>
+                        <Form.Group>
                             <Form.Label>Descripción</Form.Label>
                             <Form.Control
                                 as={'textarea'}
@@ -177,13 +188,13 @@ export const TableSkus = () => {
                                 value={description}
                             />
                         </Form.Group>
-                        <Form.Group>
-                            <Form.Label>Activo?</Form.Label>
+                        <Form.Group className='d-flex justify-content-center'>
+                            <Form.Label className='me-1'>Activo:</Form.Label>
                             <Form.Check
-                                className='mb-3'
+                                className='ms-1'
                                 name='active'
                                 onChange={handleInputChange}
-                                type='checkbox'
+                                type='switch'
                                 value={active}
                             />
                         </Form.Group>
