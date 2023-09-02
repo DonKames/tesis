@@ -1,31 +1,26 @@
 import React, { useState } from 'react';
-import { PaginatedTable } from '../../../shared/ui/components/PaginatedTable';
-import usePagination from '../../../hooks/usePagination';
-import { changeActiveStateSku, getSkus, getSkusQty } from '../APIs/skusAPI';
-import { productsSetSkus, productsSetSkusQty } from '../slice/productsSlice';
+
 import { useSelector } from 'react-redux';
 import { Button, Form, Modal } from 'react-bootstrap';
 import Swal from 'sweetalert2';
+import validator from 'validator';
+
+import { PaginatedTable } from '../../../shared/ui/components/PaginatedTable';
+import usePagination from '../../../hooks/usePagination';
+import {
+    changeActiveStateSku,
+    getSkus,
+    getSkusQty,
+    updateSku,
+} from '../APIs/skusAPI';
+import { productsSetSkus, productsSetSkusQty } from '../slice/productsSlice';
 import { useForm } from '../../../hooks/useForm';
 
 export const TableSkus = () => {
     // Redux States
     const { skus, skusQty } = useSelector((state) => state.products);
 
-    // Local States
-
     const [showModal, setShowModal] = useState(false);
-
-    const [formValues, handleInputChange] = useForm({
-        active: true,
-        description: '',
-        minimum_stock: '',
-        name: '',
-        price: '',
-        sku: '',
-    });
-
-    const { active, description, minimumStock, name, sku } = formValues;
 
     // Sku pagination hook
     const {
@@ -94,8 +89,22 @@ export const TableSkus = () => {
     );
 
     // Funciones para manejar las acciones de editar y eliminar
-    const handleSkuEdit = (skuId) => {
+    const handleSkuEdit = async (skuId) => {
         // Lógica para editar el SKU con el ID dado
+        const sku = await skus.find((sku) => sku.sku_id === skuId);
+        console.log(sku);
+
+        const [formValues, handleInputChange] = useForm();
+        // setSkuEditForm({
+        //     active: sku.active,
+        //     description: sku.description,
+        //     minimum_stock: sku.minimum_stock,
+        //     name: sku.name,
+        //     price: sku.price,
+        //     sku: sku.sku,
+        // });
+        // console.log(skuEditForm);
+
         handleModalChange();
     };
 
@@ -132,6 +141,53 @@ export const TableSkus = () => {
 
     const handleModalChange = () => {
         setShowModal(!showModal);
+    };
+
+    // Validador de campos
+
+    const isFormValid = () => {
+        // active, description, minimumStock, name, sku
+        if (!validator.isBoolean(active)) {
+            return false;
+        }
+
+        if (!validator.isAlphanumeric(description)) {
+            return false;
+        }
+
+        if (!validator.isLength(description, { max: 255 })) {
+            return false;
+        }
+
+        if (!validator.isInt(minimumStock)) {
+            return false;
+        }
+
+        if (!validator.isLength(name, { max: 100 })) {
+            return false;
+        }
+
+        if (!validator.isLength(sku, { max: 100 })) {
+            return false;
+        }
+
+        return true;
+    };
+
+    const handleUpdateSku = async (skuId) => {
+        console.log(formValues);
+        if (isFormValid()) {
+            try {
+                updateSku(skuId, formValues);
+            } catch (error) {
+                console.log(error);
+                Swal.fire(
+                    'Error',
+                    'Ha habido un problema al actualizar el SKU.',
+                    'error',
+                );
+            }
+        }
     };
 
     return (
@@ -209,7 +265,7 @@ export const TableSkus = () => {
                     >
                         Close
                     </Button>
-                    <Button>Guardar</Button>
+                    <Button onClick={handleUpdateSku}>Guardar</Button>
                 </Modal.Footer>
             </Modal>
             <PaginatedTable
