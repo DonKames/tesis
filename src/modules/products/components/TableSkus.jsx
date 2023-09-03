@@ -48,6 +48,18 @@ export const TableSkus = () => {
         '',
     ];
 
+    // Sku form
+    const [formValues, handleInputChange, reset, setFormValues] = useForm({
+        active: true,
+        description: '',
+        minimumStock: '',
+        name: '',
+        price: '',
+        sku: '',
+    });
+
+    const { active, description, minimumStock, name, sku } = formValues;
+
     // Sku table row renderer
     const skuRenderer = (sku) => (
         <tr key={sku.sku_id}>
@@ -91,19 +103,20 @@ export const TableSkus = () => {
     // Funciones para manejar las acciones de editar y eliminar
     const handleSkuEdit = async (skuId) => {
         // Lógica para editar el SKU con el ID dado
-        const sku = await skus.find((sku) => sku.sku_id === skuId);
-        console.log(sku);
+        const skuToEdit = skus.find((sku) => sku.sku_id === skuId);
 
-        const [formValues, handleInputChange] = useForm();
-        // setSkuEditForm({
-        //     active: sku.active,
-        //     description: sku.description,
-        //     minimum_stock: sku.minimum_stock,
-        //     name: sku.name,
-        //     price: sku.price,
-        //     sku: sku.sku,
-        // });
-        // console.log(skuEditForm);
+        console.log(skuToEdit);
+
+        if (skuToEdit) {
+            setFormValues({
+                active: skuToEdit.active,
+                description: skuToEdit.description,
+                minimumStock: skuToEdit.minimum_stock || 0,
+                name: skuToEdit.name,
+                price: skuToEdit.price,
+                sku: skuToEdit.sku,
+            });
+        }
 
         handleModalChange();
     };
@@ -140,6 +153,9 @@ export const TableSkus = () => {
     };
 
     const handleModalChange = () => {
+        if (showModal) {
+            reset();
+        }
         setShowModal(!showModal);
     };
 
@@ -147,27 +163,33 @@ export const TableSkus = () => {
 
     const isFormValid = () => {
         // active, description, minimumStock, name, sku
-        if (!validator.isBoolean(active)) {
+        if (typeof active !== 'boolean') {
+            console.log('error en active');
             return false;
         }
 
-        if (!validator.isAlphanumeric(description)) {
+        if (!validator.matches(description, /^[a-zA-Z0-9 áéíóúÁÉÍÓÚ.]+$/)) {
+            console.log('error en description');
             return false;
         }
 
         if (!validator.isLength(description, { max: 255 })) {
+            console.log('error en description');
             return false;
         }
 
-        if (!validator.isInt(minimumStock)) {
+        if (!validator.isInt(minimumStock.toString())) {
+            console.log('error en minimumStock');
             return false;
         }
 
         if (!validator.isLength(name, { max: 100 })) {
+            console.log('error en name');
             return false;
         }
 
         if (!validator.isLength(sku, { max: 100 })) {
+            console.log('error en sku');
             return false;
         }
 
@@ -176,6 +198,7 @@ export const TableSkus = () => {
 
     const handleUpdateSku = async (skuId) => {
         console.log(formValues);
+        console.log(skuId);
         if (isFormValid()) {
             try {
                 updateSku(skuId, formValues);
@@ -246,12 +269,12 @@ export const TableSkus = () => {
                         </Form.Group>
                         <Form.Group className='d-flex justify-content-center'>
                             <Form.Label className='me-1'>Activo:</Form.Label>
-                            <Form.Check
+                            <Form.Switch
                                 className='ms-1'
                                 name='active'
                                 onChange={handleInputChange}
                                 type='switch'
-                                value={active}
+                                checked={active}
                             />
                         </Form.Group>
                     </Form>
