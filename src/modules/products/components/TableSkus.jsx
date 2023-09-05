@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Button, Form, Modal } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import validator from 'validator';
@@ -17,10 +17,15 @@ import { productsSetSkus, productsSetSkusQty } from '../slice/productsSlice';
 import { useForm } from '../../../hooks/useForm';
 
 export const TableSkus = () => {
+    // Dispatch
+    const dispatch = useDispatch();
+
     // Redux States
     const { skus, skusQty } = useSelector((state) => state.products);
 
+    // Local States
     const [showModal, setShowModal] = useState(false);
+    const [skuToEdit, setSkuToEdit] = useState({});
 
     // Sku pagination hook
     const {
@@ -108,6 +113,7 @@ export const TableSkus = () => {
         console.log(skuToEdit);
 
         if (skuToEdit) {
+            setSkuToEdit(skuToEdit);
             setFormValues({
                 active: skuToEdit.active,
                 description: skuToEdit.description,
@@ -152,6 +158,7 @@ export const TableSkus = () => {
         }
     };
 
+    // Función para abrir y cerrar el modal
     const handleModalChange = () => {
         if (showModal) {
             reset();
@@ -159,8 +166,43 @@ export const TableSkus = () => {
         setShowModal(!showModal);
     };
 
-    // Validador de campos
+    const handleUpdateSku = async () => {
+        const { sku_id: skuIdToEdit } = skuToEdit;
 
+        console.log(skuIdToEdit);
+        if (isFormValid()) {
+            try {
+                await updateSku(skuIdToEdit, formValues);
+
+                // Actualizar el estado de Redux
+                const updatedSkus = skus.map((sku) => {
+                    if (sku.sku_id === skuIdToEdit) {
+                        return { ...sku, ...formValues };
+                    }
+                    return sku;
+                });
+
+                dispatch(productsSetSkus(updatedSkus));
+
+                Swal.fire(
+                    'Actualizado',
+                    'El SKU ha sido actualizado.',
+                    'success',
+                );
+
+                handleModalChange();
+            } catch (error) {
+                console.log(error);
+                Swal.fire(
+                    'Error',
+                    'Ha habido un problema al actualizar el SKU.',
+                    'error',
+                );
+            }
+        }
+    };
+
+    // Validador de campos
     const isFormValid = () => {
         // active, description, minimumStock, name, sku
         if (typeof active !== 'boolean') {
@@ -194,23 +236,6 @@ export const TableSkus = () => {
         }
 
         return true;
-    };
-
-    const handleUpdateSku = async (skuId) => {
-        console.log(formValues);
-        console.log(skuId);
-        if (isFormValid()) {
-            try {
-                updateSku(skuId, formValues);
-            } catch (error) {
-                console.log(error);
-                Swal.fire(
-                    'Error',
-                    'Ha habido un problema al actualizar el SKU.',
-                    'error',
-                );
-            }
-        }
     };
 
     return (
