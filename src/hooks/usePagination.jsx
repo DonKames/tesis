@@ -17,15 +17,13 @@ const usePagination = (
 
     useEffect(() => {
         const fetchData = async () => {
-            if (itemsQty === null) {
-                const qty = await getItemsQty();
-                setPagesQty(Math.ceil(qty / limit));
-                dispatch(setItemsQty(qty)); // Aquí se almacena la cantidad en Redux
-            } else {
+            try {
                 setPagesQty(Math.ceil(itemsQty / limit));
                 const fetchedItems = await getItems(1, limit);
                 console.log('setItems', fetchedItems);
                 dispatch(setItems(fetchedItems));
+            } catch (error) {
+                console.log(error);
             }
         };
 

@@ -14,7 +14,7 @@ import {
 } from '../APIs/skusAPI';
 import { productsSetSkus, productsSetSkusQty } from '../slice/productsSlice';
 import { useForm } from '../../../hooks/useForm';
-import { SkuModal } from './SkuModal';
+import { ModalSku } from './ModalSku';
 import { useFormSkuValidation } from '../hooks/useFormSkuValidation';
 
 export const TableSkus = () => {
@@ -101,7 +101,7 @@ export const TableSkus = () => {
                 </Button>
 
                 <Button
-                    className='text-white shadow'
+                    className='me-1 text-white shadow'
                     variant='danger'
                     onClick={() => handleSkuDelete(sku.sku_id)}
                 >
@@ -224,7 +224,7 @@ export const TableSkus = () => {
 
     return (
         <>
-            <SkuModal
+            <ModalSku
                 showModal={showModal}
                 handleModalChange={handleModalChange}
                 formValues={formValues}

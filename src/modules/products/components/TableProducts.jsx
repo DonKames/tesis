@@ -9,15 +9,19 @@ import {
     productsSetProductQty,
     productsSetProducts,
 } from '../slice/productsSlice';
+import { Button } from 'react-bootstrap';
+import { ModalProduct } from './ModalProduct';
 
 export const TableProducts = () => {
     // Dispatch
     const dispatch = useDispatch();
 
     // Redux States
-    const { products, productsQty, branches, warehouses, skus } = useSelector(
+    const { products, productsQty, skus } = useSelector(
         (state) => state.products,
     );
+
+    const { branches, warehouses } = useSelector((state) => state.locations);
 
     // Local States
     const [showModal, setShowModal] = useState(false);
@@ -68,22 +72,35 @@ export const TableProducts = () => {
                 }
             </td>
             <td className='align-middle'>{product.epc}</td>
+            <td className='align-middle text-end'>
+                <Button className='me-1'>
+                    <i className='bi bi-pencil-square' />
+                </Button>
+
+                <Button
+                    className='me-1 text-white'
+                    variant='danger'
+                >
+                    <i className='bi bi-trash3' />
+                </Button>
+            </td>
         </tr>
     );
 
     return (
         <>
+            <ModalProduct />
             <PaginatedTable
                 columns={tableColumnsProducts}
-                footerText={`Mostrando ${products.length} de ${productsQty} productos`}
+                footerText={`Total de Productos: ${productsQty} | Páginas totales: ${pagesQtyProduct}`}
+                handleLimitChange={setProductLimit}
                 handlePageChange={handlePageChangeProduct}
                 itemRenderer={productRenderer}
                 items={products}
-                itemsQty={productsQty}
                 limit={productLimit}
+                maxPagesToShow={10}
                 pagesQty={pagesQtyProduct}
                 selectedPage={selectedPageProduct}
-                setLimit={setProductLimit}
             />
         </>
     );

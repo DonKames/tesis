@@ -1,8 +1,9 @@
 import React from 'react';
+
 import PropTypes from 'prop-types';
 import { Button, Form, Modal } from 'react-bootstrap';
 
-export const SkuModal = ({
+export const ModalProduct = ({
     showModal,
     handleModalChange,
     formValues,
@@ -100,7 +101,7 @@ export const SkuModal = ({
     );
 };
 
-SkuModal.propTypes = {
+ModalProduct.propTypes = {
     showModal: PropTypes.bool.isRequired,
     handleModalChange: PropTypes.func.isRequired,
     formValues: PropTypes.object.isRequired,

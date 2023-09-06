@@ -22,8 +22,6 @@ import { getBranches } from '../../locations/APIs/branchesAPI';
 import { getWarehouses } from '../../locations/APIs/apiWarehouses';
 import { getSkus, getSkusQty } from '../APIs/skusAPI';
 import SearchProductBar from './SearchProductBar';
-import usePagination from '../../../hooks/usePagination';
-import { PaginatedTable } from '../../../shared/ui/components/PaginatedTable';
 import { TableSkus } from './TableSkus';
 import { TableProducts } from './TableProducts';
 
@@ -45,56 +43,6 @@ const ProductsScreen = () => {
     );
     const { branches, warehouses } = useSelector((state) => state.locations);
 
-    // Products
-    // Products pagination hook
-    const {
-        selectedPage: selectedPageProduct,
-        pagesQty: pagesQtyProduct,
-        handlePageChange: handlePageChangeProduct,
-        limit: productLimit,
-        setLimit: setProductLimit,
-    } = usePagination(
-        getProducts,
-        getProductsQty,
-        productsSetProducts,
-        productsSetProductQty,
-        productsQty,
-        10,
-    );
-
-    // Products table columns
-    const tableColumnsProducts = ['Sku', 'Sucursal', 'Bodega', 'EPC', ''];
-
-    const productRenderer = (product) => (
-        <tr key={product.product_id}>
-            <td className='align-middle'>
-                {skus.find((sku) => sku.sku_id === product.fk_sku_id)?.sku}
-            </td>
-            <td className='align-middle'>
-                {
-                    branches.find(
-                        (branch) =>
-                            branch.branch_id ===
-                            warehouses.find(
-                                (warehouse) =>
-                                    warehouse.warehouse_id ===
-                                    product.fk_warehouse_id,
-                            )?.fk_branch_id,
-                    )?.name
-                }
-            </td>
-            <td className='align-middle'>
-                {
-                    warehouses.find(
-                        (warehouse) =>
-                            warehouse.warehouse_id === product.fk_warehouse_id,
-                    )?.name
-                }
-            </td>
-            <td className='align-middle'>{product.epc}</td>
-        </tr>
-    );
-
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -104,7 +52,7 @@ const ProductsScreen = () => {
                 }
 
                 if (!products?.length) {
-                    const fetchedData = await getProducts(1, productLimit);
+                    const fetchedData = await getProducts(1, 10);
                     console.log(fetchedData);
                     dispatch(productsSetProducts(fetchedData));
                 }
@@ -123,8 +71,8 @@ const ProductsScreen = () => {
                 // Skus pagination, table and data
 
                 if (skusQty === null || skusQty === undefined) {
-                    const skusQtyData = await getSkusQty();
-                    dispatch(productsSetSkusQty(skusQtyData));
+                    const { skusQty } = await getSkusQty();
+                    dispatch(productsSetSkusQty(skusQty));
                 }
 
                 if (!skus.length) {
@@ -161,18 +109,6 @@ const ProductsScreen = () => {
                 </Col>
             </Row>
             <TableProducts />
-            <PaginatedTable
-                items={products}
-                columns={tableColumnsProducts}
-                selectedPage={selectedPageProduct}
-                pagesQty={pagesQtyProduct}
-                handlePageChange={handlePageChangeProduct}
-                itemRenderer={productRenderer}
-                footerText={`Total de productos: ${productsQty} | Páginas totales: ${pagesQtyProduct}`}
-                maxPagesToShow={10}
-                handleLimitChange={setProductLimit}
-                limit={productLimit}
-            />
         </Container>
     );
 };
