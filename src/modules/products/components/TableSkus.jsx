@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, Form, Modal } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import Swal from 'sweetalert2';
-import validator from 'validator';
 
 import { PaginatedTable } from '../../../shared/ui/components/PaginatedTable';
 import usePagination from '../../../hooks/usePagination';
@@ -15,6 +14,8 @@ import {
 } from '../APIs/skusAPI';
 import { productsSetSkus, productsSetSkusQty } from '../slice/productsSlice';
 import { useForm } from '../../../hooks/useForm';
+import { SkuModal } from './SkuModal';
+import { useFormSkuValidation } from '../hooks/useFormSkuValidation';
 
 export const TableSkus = () => {
     // Dispatch
@@ -26,6 +27,8 @@ export const TableSkus = () => {
     // Local States
     const [showModal, setShowModal] = useState(false);
     const [skuToEdit, setSkuToEdit] = useState({});
+    const [showWarning, setShowWarning] = useState(false);
+    const [originalActiveState, setOriginalActiveState] = useState(true);
 
     // Sku pagination hook
     const {
@@ -63,7 +66,10 @@ export const TableSkus = () => {
         sku: '',
     });
 
-    const { active, description, minimumStock, name, sku } = formValues;
+    // Utilizar el hook de validación
+    const { isFormValid } = useFormSkuValidation(formValues);
+
+    // const { active, description, minimumStock, name, sku } = formValues;
 
     // Sku table row renderer
     const skuRenderer = (sku) => (
@@ -88,14 +94,14 @@ export const TableSkus = () => {
             </td>
             <td className='align-middle text-end'>
                 <Button
-                    className='me-1'
+                    className='me-1 shadow'
                     onClick={() => handleSkuEdit(sku.sku_id)}
                 >
                     <i className='bi bi-pencil-square'></i>
                 </Button>
 
                 <Button
-                    className='text-white'
+                    className='text-white shadow'
                     variant='danger'
                     onClick={() => handleSkuDelete(sku.sku_id)}
                 >
@@ -122,9 +128,12 @@ export const TableSkus = () => {
                 price: skuToEdit.price,
                 sku: skuToEdit.sku,
             });
+
+            setOriginalActiveState(skuToEdit.active);
         }
 
         handleModalChange();
+        // setShowWarning(!skuToEdit.active);
     };
 
     const handleSkuDelete = async (skuId) => {
@@ -158,10 +167,21 @@ export const TableSkus = () => {
         }
     };
 
+    const handleInputChangeWithWarning = ({ target }) => {
+        handleInputChange({ target }); // Llamada al handleInputChange original
+
+        // Mostrar u ocultar el mensaje de advertencia
+        if (target.name === 'active' && originalActiveState) {
+            setShowWarning(!target.checked);
+        }
+    };
+
     // Función para abrir y cerrar el modal
     const handleModalChange = () => {
         if (showModal) {
             reset();
+            setOriginalActiveState(true);
+            setShowWarning(false);
         }
         setShowModal(!showModal);
     };
@@ -202,131 +222,28 @@ export const TableSkus = () => {
         }
     };
 
-    // Validador de campos
-    const isFormValid = () => {
-        // active, description, minimumStock, name, sku
-        if (typeof active !== 'boolean') {
-            console.log('error en active');
-            return false;
-        }
-
-        if (!validator.matches(description, /^[a-zA-Z0-9 áéíóúÁÉÍÓÚ.]+$/)) {
-            console.log('error en description');
-            return false;
-        }
-
-        if (!validator.isLength(description, { max: 255 })) {
-            console.log('error en description');
-            return false;
-        }
-
-        if (!validator.isInt(minimumStock.toString())) {
-            console.log('error en minimumStock');
-            return false;
-        }
-
-        if (!validator.isLength(name, { max: 100 })) {
-            console.log('error en name');
-            return false;
-        }
-
-        if (!validator.isLength(sku, { max: 100 })) {
-            console.log('error en sku');
-            return false;
-        }
-
-        return true;
-    };
-
     return (
         <>
-            <Modal
-                show={showModal}
-                onHide={handleModalChange}
-            >
-                <Modal.Header className='h1'>Editar SKU</Modal.Header>
-                <Modal.Body>
-                    <Form>
-                        <Form.Group>
-                            <Form.Label>Nombre</Form.Label>
-                            <Form.Control
-                                className='mb-3'
-                                name='name'
-                                onChange={handleInputChange}
-                                placeholder='Nombre'
-                                type='text'
-                                value={name}
-                            />
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Label>SKU</Form.Label>
-                            <Form.Control
-                                className='mb-3'
-                                name='sku'
-                                onChange={handleInputChange}
-                                placeholder='SKU'
-                                type='text'
-                                value={sku}
-                            />
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Label>Stock Mínimo</Form.Label>
-                            <Form.Control
-                                className='mb-3'
-                                name='minimum_stock'
-                                onChange={handleInputChange}
-                                placeholder='Stock Mínimo'
-                                type='number'
-                                value={minimumStock}
-                            />
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Label>Descripción</Form.Label>
-                            <Form.Control
-                                as={'textarea'}
-                                className='mb-3'
-                                name='description'
-                                onChange={handleInputChange}
-                                placeholder='Descripción'
-                                type='text'
-                                value={description}
-                            />
-                        </Form.Group>
-                        <Form.Group className='d-flex justify-content-center'>
-                            <Form.Label className='me-1'>Activo:</Form.Label>
-                            <Form.Switch
-                                className='ms-1'
-                                name='active'
-                                onChange={handleInputChange}
-                                type='switch'
-                                checked={active}
-                            />
-                        </Form.Group>
-                    </Form>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button
-                        type='button'
-                        className='btn btn-secondary'
-                        data-bs-dismiss='modal'
-                        onClick={handleModalChange}
-                    >
-                        Close
-                    </Button>
-                    <Button onClick={handleUpdateSku}>Guardar</Button>
-                </Modal.Footer>
-            </Modal>
+            <SkuModal
+                showModal={showModal}
+                handleModalChange={handleModalChange}
+                formValues={formValues}
+                handleInputChange={handleInputChange}
+                handleInputChangeWithWarning={handleInputChangeWithWarning}
+                handleUpdateSku={handleUpdateSku}
+                showWarning={showWarning}
+            />
             <PaginatedTable
-                items={skus}
                 columns={tableColumnsSkus}
-                selectedPage={selectedPageSku}
-                pagesQty={pagesQtySku}
+                footerText={`Total de SKUs: ${skusQty} | Páginas totales: ${pagesQtySku}`}
+                handleLimitChange={setSkuLimit}
                 handlePageChange={handlePageChangeSku}
                 itemRenderer={skuRenderer}
-                footerText={`Total de SKUs: ${skusQty} | Páginas totales: ${pagesQtySku}`}
-                maxPagesToShow={10}
-                handleLimitChange={setSkuLimit}
+                items={skus}
                 limit={skuLimit}
+                maxPagesToShow={10}
+                pagesQty={pagesQtySku}
+                selectedPage={selectedPageSku}
             />
         </>
     );

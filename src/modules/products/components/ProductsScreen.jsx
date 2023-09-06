@@ -25,6 +25,7 @@ import SearchProductBar from './SearchProductBar';
 import usePagination from '../../../hooks/usePagination';
 import { PaginatedTable } from '../../../shared/ui/components/PaginatedTable';
 import { TableSkus } from './TableSkus';
+import { TableProducts } from './TableProducts';
 
 /**
  * Renders a screen that displays a table of SKUs and products with pagination and search functionality.
@@ -154,12 +155,12 @@ const ProductsScreen = () => {
                 </Col>
             </Row>
             <TableSkus />
-
             <Row>
                 <Col>
                     <h1>Productos</h1>
                 </Col>
             </Row>
+            <TableProducts />
             <PaginatedTable
                 items={products}
                 columns={tableColumnsProducts}

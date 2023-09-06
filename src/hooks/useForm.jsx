@@ -8,9 +8,16 @@ export const useForm = (initialState = {}) => {
     };
 
     const handleInputChange = ({ target }) => {
+        let value;
+
+        if (target.type === 'checkbox' || target.type === 'switch') {
+            value = target.checked;
+        } else {
+            value = target.value;
+        }
         setValues({
             ...values,
-            [target.name]: target.value,
+            [target.name]: value,
         });
         // console.log(values);
     };
