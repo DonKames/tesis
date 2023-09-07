@@ -2,6 +2,7 @@ import React from 'react';
 
 import PropTypes from 'prop-types';
 import { Button, Form, Modal } from 'react-bootstrap';
+import { SelectWarehouses } from '../../../shared/ui/components/SelectWarehouses';
 
 export const ModalProduct = ({
     formValues,
@@ -35,6 +36,7 @@ export const ModalProduct = ({
                     </Form.Group>
                     <Form.Group>
                         <Form.Label>Bodega</Form.Label>
+                        <SelectWarehouses />
                         <Form.Control
                             className='mb-3'
                             name='bodega'
