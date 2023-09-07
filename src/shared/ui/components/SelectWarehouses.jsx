@@ -12,9 +12,13 @@ export const SelectWarehouses = ({ handleInputChange, name, value }) => {
 
     useEffect(() => {
         const fetchWarehousesNames = async () => {
-            if (!warehousesNames.length) {
-                const fetchedWarehousesNames = await getWarehousesNames();
-                dispatch(uiSetWarehousesNames(fetchedWarehousesNames));
+            try {
+                if (!warehousesNames.length) {
+                    const fetchedWarehousesNames = await getWarehousesNames();
+                    dispatch(uiSetWarehousesNames(fetchedWarehousesNames));
+                }
+            } catch (error) {
+                console.log(error);
             }
         };
 
@@ -26,21 +30,25 @@ export const SelectWarehouses = ({ handleInputChange, name, value }) => {
         label: warehouse.name,
     }));
 
+    const defaultOption = warehousesOptions.find(
+        (option) => option.value === value,
+    );
+
     return (
-        <>
-            <Select
-                isSearchable
-                onChange={handleInputChange}
-                name={name}
-                placeholder='Bodega'
-                options={warehousesOptions}
-            />
-        </>
+        <Select
+            defaultValue={defaultOption}
+            isSearchable
+            name={name}
+            onChange={handleInputChange}
+            options={warehousesOptions}
+            placeholder='Bodega'
+            value={value}
+        />
     );
 };
 
 SelectWarehouses.propTypes = {
     handleInputChange: PropTypes.func.isRequired,
     name: PropTypes.string.isRequired,
-    value: PropTypes.string.isRequired,
+    value: PropTypes.number.isRequired,
 };

@@ -10,10 +10,11 @@ export const ModalProduct = ({
     handleInputChangeWithWarning,
     handleModalChange,
     handleUpdate,
+    productId,
     showModal,
     showWarning,
 }) => {
-    const { active, sku, bodega, epc } = formValues;
+    const { active, sku, warehouse, epc } = formValues;
 
     return (
         <Modal
@@ -36,14 +37,18 @@ export const ModalProduct = ({
                     </Form.Group>
                     <Form.Group>
                         <Form.Label>Bodega</Form.Label>
-                        <SelectWarehouses />
+                        <SelectWarehouses
+                            handleInputChange={handleInputChange}
+                            name='warehouse'
+                            value={productId}
+                        />
                         <Form.Control
                             className='mb-3'
                             name='bodega'
                             onChange={handleInputChange}
                             placeholder='Bodega'
                             type='number'
-                            value={bodega}
+                            value={warehouse}
                         />
                     </Form.Group>
                     <Form.Group>
@@ -93,11 +98,12 @@ export const ModalProduct = ({
 };
 
 ModalProduct.propTypes = {
-    showModal: PropTypes.bool.isRequired,
-    handleModalChange: PropTypes.func.isRequired,
     formValues: PropTypes.object.isRequired,
     handleInputChange: PropTypes.func.isRequired,
     handleInputChangeWithWarning: PropTypes.func.isRequired,
+    handleModalChange: PropTypes.func.isRequired,
     handleUpdate: PropTypes.func.isRequired,
+    productId: PropTypes.number.isRequired,
+    showModal: PropTypes.bool.isRequired,
     showWarning: PropTypes.bool.isRequired,
 };

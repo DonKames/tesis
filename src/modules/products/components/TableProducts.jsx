@@ -59,8 +59,7 @@ export const TableProducts = () => {
     const [formValues, handleInputChange, reset, setFormValues] = useForm({
         active: true,
         sku: '',
-        sucursal: '',
-        bodega: '',
+        warehouse: '',
         epc: '',
     });
 
@@ -114,22 +113,25 @@ export const TableProducts = () => {
     // Funciones para manejar las acciones de editar y eliminar
     const handleOpenForm = async (productId) => {
         // Lógica para editar el SKU con el ID dado
-        const productToEdit = products.find(
+        const getProductToEdit = products.find(
             (product) => product.product_id === productId,
         );
 
-        console.log(productToEdit);
+        console.log(getProductToEdit);
 
-        if (productToEdit) {
-            setProductToEdit(productToEdit);
+        if (getProductToEdit) {
+            setProductToEdit(getProductToEdit);
             setFormValues({
-                active: productToEdit.active,
-                bodega: productToEdit.fk_warehouse_id,
-                sku: productToEdit.fk_sku_id,
-                epc: productToEdit.epc,
+                active: getProductToEdit.active,
+                warehouse: getProductToEdit.fk_warehouse_id,
+                sku: getProductToEdit.fk_sku_id,
+                epc: getProductToEdit.epc,
             });
 
-            setOriginalActiveState(productToEdit.active);
+            console.log('producto a editar', getProductToEdit);
+            console.log('id?:', productToEdit.product_id);
+
+            setOriginalActiveState(getProductToEdit.active);
         }
 
         handleModalChange();
@@ -182,6 +184,7 @@ export const TableProducts = () => {
     return (
         <>
             <ModalProduct
+                productId={productToEdit.product_id}
                 formValues={formValues}
                 handleInputChange={handleInputChange}
                 handleInputChangeWithWarning={handleInputChangeWithWarning}
