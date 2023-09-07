@@ -11,10 +11,16 @@ import {
 } from '../slice/productsSlice';
 import { Button } from 'react-bootstrap';
 import { ModalProduct } from './ModalProduct';
+import { useForm } from '../../../hooks/useForm';
+import Swal from 'sweetalert2';
 
 export const TableProducts = () => {
     // Dispatch
     const dispatch = useDispatch();
+
+    // Utilizar el hook de validación
+    // TODO: Crear este hook
+    // const { isFormValid } = useFormSkuValidation(formValues);
 
     // Redux States
     const { products, productsQty, skus } = useSelector(
@@ -25,6 +31,9 @@ export const TableProducts = () => {
 
     // Local States
     const [showModal, setShowModal] = useState(false);
+    const [productToEdit, setProductToEdit] = useState({});
+    const [showWarning, setShowWarning] = useState(false);
+    const [originalActiveState, setOriginalActiveState] = useState(true);
 
     // Product pagination hook
     const {
@@ -44,6 +53,16 @@ export const TableProducts = () => {
 
     // Product table columns
     const tableColumnsProducts = ['Sku', 'Sucursal', 'Bodega', 'EPC', ''];
+
+    // MODAL
+    // Product form
+    const [formValues, handleInputChange, reset, setFormValues] = useForm({
+        active: true,
+        sku: '',
+        sucursal: '',
+        bodega: '',
+        epc: '',
+    });
 
     const productRenderer = (product) => (
         <tr key={product.product_id}>
@@ -73,13 +92,17 @@ export const TableProducts = () => {
             </td>
             <td className='align-middle'>{product.epc}</td>
             <td className='align-middle text-end'>
-                <Button className='me-1'>
+                <Button
+                    className='me-1'
+                    onClick={() => handleOpenForm(product.product_id)}
+                >
                     <i className='bi bi-pencil-square' />
                 </Button>
 
                 <Button
                     className='me-1 text-white'
                     variant='danger'
+                    onClick={() => handleProductDelete(product.product_id)}
                 >
                     <i className='bi bi-trash3' />
                 </Button>
@@ -87,9 +110,86 @@ export const TableProducts = () => {
         </tr>
     );
 
+    // Función para el Renderer
+    // Funciones para manejar las acciones de editar y eliminar
+    const handleOpenForm = async (productId) => {
+        // Lógica para editar el SKU con el ID dado
+        const productToEdit = products.find(
+            (product) => product.product_id === productId,
+        );
+
+        console.log(productToEdit);
+
+        if (productToEdit) {
+            setProductToEdit(productToEdit);
+            setFormValues({
+                active: productToEdit.active,
+                bodega: productToEdit.fk_warehouse_id,
+                sku: productToEdit.fk_sku_id,
+                epc: productToEdit.epc,
+            });
+
+            setOriginalActiveState(productToEdit.active);
+        }
+
+        handleModalChange();
+        // setShowWarning(!skuToEdit.active);
+    };
+
+    const handleProductDelete = async (productId) => {
+        // Lógica para eliminar el SKU con el ID dado
+        console.log(productId);
+
+        const result = await Swal.fire({
+            title: '¿Estás seguro?',
+            text: 'Desactivarás este Producto.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar',
+        });
+
+        if (result.isConfirmed) {
+            console.log('Eliminando PRODUCTO con ID:', productId);
+        }
+    };
+
+    const handleInputChangeWithWarning = ({ target }) => {
+        handleInputChange({ target }); // Llamada al handleInputChange original
+
+        // Mostrar u ocultar el mensaje de advertencia
+        if (target.name === 'active' && originalActiveState) {
+            setShowWarning(!target.checked);
+        }
+    };
+
+    const handleModalChange = () => {
+        if (showModal) {
+            reset();
+            setOriginalActiveState(true);
+            setShowWarning(false);
+        }
+        setShowModal(!showModal);
+    };
+
+    const handleUpdate = async () => {
+        // Lógica para actualizar el SKU
+        console.log('Actualizando SKU con ID:', productToEdit.sku_id);
+    };
+
     return (
         <>
-            <ModalProduct />
+            <ModalProduct
+                formValues={formValues}
+                handleInputChange={handleInputChange}
+                handleInputChangeWithWarning={handleInputChangeWithWarning}
+                handleModalChange={handleModalChange}
+                handleUpdate={handleUpdate}
+                showModal={showModal}
+                showWarning={false}
+            />
             <PaginatedTable
                 columns={tableColumnsProducts}
                 footerText={`Total de Productos: ${productsQty} | Páginas totales: ${pagesQtyProduct}`}

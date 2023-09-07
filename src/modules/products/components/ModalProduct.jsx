@@ -4,67 +4,56 @@ import PropTypes from 'prop-types';
 import { Button, Form, Modal } from 'react-bootstrap';
 
 export const ModalProduct = ({
-    showModal,
-    handleModalChange,
     formValues,
     handleInputChange,
     handleInputChangeWithWarning,
-    handleUpdateSku,
+    handleModalChange,
+    handleUpdate,
+    showModal,
     showWarning,
 }) => {
-    const { active, description, minimumStock, name, sku } = formValues;
+    const { active, sku, bodega, epc } = formValues;
 
     return (
         <Modal
             show={showModal}
             onHide={handleModalChange}
         >
-            <Modal.Header className='h1'>Editar SKU</Modal.Header>
+            <Modal.Header className='h1'>Editar Producto</Modal.Header>
             <Modal.Body>
                 <Form>
                     <Form.Group>
-                        <Form.Label>Nombre</Form.Label>
-                        <Form.Control
-                            className='mb-3'
-                            name='name'
-                            onChange={handleInputChange}
-                            placeholder='Nombre'
-                            type='text'
-                            value={name}
-                        />
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label>SKU</Form.Label>
+                        <Form.Label>Sku</Form.Label>
                         <Form.Control
                             className='mb-3'
                             name='sku'
                             onChange={handleInputChange}
-                            placeholder='SKU'
+                            placeholder='Sku'
                             type='text'
                             value={sku}
                         />
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label>Stock Mínimo</Form.Label>
+                        <Form.Label>Bodega</Form.Label>
                         <Form.Control
                             className='mb-3'
-                            name='minimum_stock'
+                            name='bodega'
                             onChange={handleInputChange}
-                            placeholder='Stock Mínimo'
+                            placeholder='Bodega'
                             type='number'
-                            value={minimumStock}
+                            value={bodega}
                         />
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label>Descripción</Form.Label>
+                        <Form.Label>EPC</Form.Label>
                         <Form.Control
                             as={'textarea'}
                             className='mb-3'
-                            name='description'
+                            name='epc'
                             onChange={handleInputChange}
-                            placeholder='Descripción'
+                            placeholder='epc'
                             type='text'
-                            value={description}
+                            value={epc}
                         />
                     </Form.Group>
                     <Form.Group className='d-flex justify-content-center'>
@@ -95,7 +84,7 @@ export const ModalProduct = ({
                 >
                     Close
                 </Button>
-                <Button onClick={handleUpdateSku}>Guardar</Button>
+                <Button onClick={handleUpdate}>Guardar</Button>
             </Modal.Footer>
         </Modal>
     );
@@ -107,6 +96,6 @@ ModalProduct.propTypes = {
     formValues: PropTypes.object.isRequired,
     handleInputChange: PropTypes.func.isRequired,
     handleInputChangeWithWarning: PropTypes.func.isRequired,
-    handleUpdateSku: PropTypes.func.isRequired,
+    handleUpdate: PropTypes.func.isRequired,
     showWarning: PropTypes.bool.isRequired,
 };

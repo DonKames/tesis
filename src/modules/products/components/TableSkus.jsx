@@ -69,8 +69,6 @@ export const TableSkus = () => {
     // Utilizar el hook de validación
     const { isFormValid } = useFormSkuValidation(formValues);
 
-    // const { active, description, minimumStock, name, sku } = formValues;
-
     // Sku table row renderer
     const skuRenderer = (sku) => (
         <tr key={sku.sku_id}>
@@ -95,7 +93,7 @@ export const TableSkus = () => {
             <td className='align-middle text-end'>
                 <Button
                     className='me-1 shadow'
-                    onClick={() => handleSkuEdit(sku.sku_id)}
+                    onClick={() => handleOpenForm(sku.sku_id)}
                 >
                     <i className='bi bi-pencil-square'></i>
                 </Button>
@@ -112,7 +110,7 @@ export const TableSkus = () => {
     );
 
     // Funciones para manejar las acciones de editar y eliminar
-    const handleSkuEdit = async (skuId) => {
+    const handleOpenForm = async (skuId) => {
         // Lógica para editar el SKU con el ID dado
         const skuToEdit = skus.find((sku) => sku.sku_id === skuId);
 
@@ -225,12 +223,12 @@ export const TableSkus = () => {
     return (
         <>
             <ModalSku
-                showModal={showModal}
-                handleModalChange={handleModalChange}
                 formValues={formValues}
                 handleInputChange={handleInputChange}
                 handleInputChangeWithWarning={handleInputChangeWithWarning}
+                handleModalChange={handleModalChange}
                 handleUpdateSku={handleUpdateSku}
+                showModal={showModal}
                 showWarning={showWarning}
             />
             <PaginatedTable
