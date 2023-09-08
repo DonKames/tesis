@@ -14,9 +14,8 @@ export const ModalProduct = ({
     showModal,
     showWarning,
 }) => {
+    console.log(formValues);
     const { active, sku, warehouse, epc } = formValues;
-
-    console.log(productId);
 
     return (
         <Modal

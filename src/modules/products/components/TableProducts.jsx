@@ -66,7 +66,7 @@ export const TableProducts = () => {
     const [formValues, handleInputChange, reset, setFormValues] = useForm({
         active: true,
         sku: '',
-        warehouse: '',
+        warehouse: 0,
         epc: '',
         productId: '',
     });
