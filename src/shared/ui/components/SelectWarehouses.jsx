@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getWarehousesNames } from '../../../modules/locations/APIs/apiWarehouses';
 import { uiSetWarehousesNames } from '../slice/uiSlice';
 
-export const SelectWarehouses = ({ handleInputChange, name, value }) => {
+export const SelectWarehouses = ({ handleInputChange, name }) => {
     const dispatch = useDispatch();
     const { warehousesNames } = useSelector((state) => state.ui);
 
@@ -30,19 +30,13 @@ export const SelectWarehouses = ({ handleInputChange, name, value }) => {
         label: warehouse.name,
     }));
 
-    const defaultOption = warehousesOptions.find(
-        (option) => option.value === value,
-    );
-
     return (
         <Select
-            defaultValue={defaultOption}
             isSearchable
             name={name}
             onChange={handleInputChange}
             options={warehousesOptions}
             placeholder='Bodega'
-            value={value}
         />
     );
 };
@@ -50,5 +44,4 @@ export const SelectWarehouses = ({ handleInputChange, name, value }) => {
 SelectWarehouses.propTypes = {
     handleInputChange: PropTypes.func.isRequired,
     name: PropTypes.string.isRequired,
-    value: PropTypes.number.isRequired,
 };

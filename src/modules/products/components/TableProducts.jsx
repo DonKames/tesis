@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -35,6 +35,13 @@ export const TableProducts = () => {
     const [showWarning, setShowWarning] = useState(false);
     const [originalActiveState, setOriginalActiveState] = useState(true);
 
+    useEffect(() => {
+        if (productToEdit.product_id) {
+            console.log('id?:', productToEdit.product_id);
+            console.log('producto a editar', productToEdit);
+        }
+    }, [productToEdit]);
+
     // Product pagination hook
     const {
         selectedPage: selectedPageProduct,
@@ -61,6 +68,7 @@ export const TableProducts = () => {
         sku: '',
         warehouse: '',
         epc: '',
+        productId: '',
     });
 
     const productRenderer = (product) => (
@@ -111,13 +119,40 @@ export const TableProducts = () => {
 
     // Función para el Renderer
     // Funciones para manejar las acciones de editar y eliminar
+    // const handleOpenForm = async (productId) => {
+    //     // Lógica para editar el SKU con el ID dado
+    //     const getProductToEdit = await products.find(
+    //         (product) => product.product_id === productId,
+    //     );
+
+    //     console.log(getProductToEdit);
+
+    //     if (getProductToEdit) {
+    //         console.log('entro al if table products');
+    //         await setProductToEdit(getProductToEdit);
+    //         await setFormValues({
+    //             active: getProductToEdit.active,
+    //             warehouse: getProductToEdit.fk_warehouse_id,
+    //             sku: getProductToEdit.fk_sku_id,
+    //             epc: getProductToEdit.epc,
+    //         });
+
+    //         console.log('id?:', productToEdit.product_id);
+    //         console.log('producto a editar', productToEdit);
+
+    //         setOriginalActiveState(getProductToEdit.active);
+    //     }
+
+    //     handleModalChange();
+    //     // setShowWarning(!skuToEdit.active);
+    // };
+
     const handleOpenForm = async (productId) => {
-        // Lógica para editar el SKU con el ID dado
-        const getProductToEdit = products.find(
+        const getProductToEdit = await products.find(
             (product) => product.product_id === productId,
         );
 
-        console.log(getProductToEdit);
+        console.log('Producto encontrado:', getProductToEdit);
 
         if (getProductToEdit) {
             setProductToEdit(getProductToEdit);
@@ -127,15 +162,13 @@ export const TableProducts = () => {
                 sku: getProductToEdit.fk_sku_id,
                 epc: getProductToEdit.epc,
             });
-
-            console.log('producto a editar', getProductToEdit);
-            console.log('id?:', productToEdit.product_id);
-
             setOriginalActiveState(getProductToEdit.active);
+            console.log('Estado original activo:', getProductToEdit.active);
+        } else {
+            console.log('No se encontró el producto con el ID:', productId);
         }
 
         handleModalChange();
-        // setShowWarning(!skuToEdit.active);
     };
 
     const handleProductDelete = async (productId) => {
