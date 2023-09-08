@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import PropTypes from 'prop-types';
 import Select from 'react-select';
@@ -6,9 +6,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getWarehousesNames } from '../../../modules/locations/APIs/apiWarehouses';
 import { uiSetWarehousesNames } from '../slice/uiSlice';
 
-export const SelectWarehouses = ({ handleInputChange, name }) => {
+export const SelectWarehouses = ({ handleInputChange, name, warehouseId }) => {
     const dispatch = useDispatch();
+
+    // Redux States
     const { warehousesNames } = useSelector((state) => state.ui);
+
+    // Local States
+    const [defaultValue, setDefaultValue] = useState({ value: '', label: '' });
 
     useEffect(() => {
         const fetchWarehousesNames = async () => {
@@ -26,15 +31,37 @@ export const SelectWarehouses = ({ handleInputChange, name }) => {
     }, []);
 
     const warehousesOptions = warehousesNames.map((warehouse) => ({
-        value: warehouse.warehouse_id,
+        value: warehouse.id,
         label: warehouse.name,
     }));
 
+    useEffect(() => {
+        const defaultWarehouse = warehousesOptions.find(
+            (warehouse) => warehouse.value === warehouseId,
+        );
+
+        const defaultValue = defaultWarehouse
+            ? { value: defaultWarehouse.id, label: defaultWarehouse.name }
+            : { value: '', label: '' };
+
+        setDefaultValue(defaultValue);
+    }, [warehousesNames, warehouseId]);
+
+    const handleWarehouseChange = (warehouse) => {
+        handleInputChange({
+            target: {
+                name,
+                value: warehouse.value,
+            },
+        });
+    };
+
     return (
         <Select
+            defaultValue={defaultValue}
             isSearchable
             name={name}
-            onChange={handleInputChange}
+            onChange={handleWarehouseChange}
             options={warehousesOptions}
             placeholder='Bodega'
         />
@@ -44,4 +71,5 @@ export const SelectWarehouses = ({ handleInputChange, name }) => {
 SelectWarehouses.propTypes = {
     handleInputChange: PropTypes.func.isRequired,
     name: PropTypes.string.isRequired,
+    warehouseId: PropTypes.number,
 };
