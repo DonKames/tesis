@@ -117,36 +117,6 @@ export const TableProducts = () => {
         </tr>
     );
 
-    // Función para el Renderer
-    // Funciones para manejar las acciones de editar y eliminar
-    // const handleOpenForm = async (productId) => {
-    //     // Lógica para editar el SKU con el ID dado
-    //     const getProductToEdit = await products.find(
-    //         (product) => product.product_id === productId,
-    //     );
-
-    //     console.log(getProductToEdit);
-
-    //     if (getProductToEdit) {
-    //         console.log('entro al if table products');
-    //         await setProductToEdit(getProductToEdit);
-    //         await setFormValues({
-    //             active: getProductToEdit.active,
-    //             warehouse: getProductToEdit.fk_warehouse_id,
-    //             sku: getProductToEdit.fk_sku_id,
-    //             epc: getProductToEdit.epc,
-    //         });
-
-    //         console.log('id?:', productToEdit.product_id);
-    //         console.log('producto a editar', productToEdit);
-
-    //         setOriginalActiveState(getProductToEdit.active);
-    //     }
-
-    //     handleModalChange();
-    //     // setShowWarning(!skuToEdit.active);
-    // };
-
     const handleOpenForm = async (productId) => {
         const getProductToEdit = await products.find(
             (product) => product.product_id === productId,
@@ -211,7 +181,7 @@ export const TableProducts = () => {
 
     const handleUpdate = async () => {
         // Lógica para actualizar el SKU
-        console.log('Actualizando SKU con ID:', productToEdit.sku_id);
+        console.log('Actualizando SKU con ID:', productToEdit.product_id);
     };
 
     return (
