@@ -72,31 +72,13 @@ export const TableProducts = () => {
     });
 
     const productRenderer = (product) => (
-        <tr key={product.product_id}>
-            <td className='align-middle'>
-                {skus.find((sku) => sku.sku_id === product.fk_sku_id)?.sku}
-            </td>
-            <td className='align-middle'>
-                {
-                    branches.find(
-                        (branch) =>
-                            branch.branch_id ===
-                            warehouses.find(
-                                (warehouse) =>
-                                    warehouse.warehouse_id ===
-                                    product.fk_warehouse_id,
-                            )?.fk_branch_id,
-                    )?.name
-                }
-            </td>
-            <td className='align-middle'>
-                {
-                    warehouses.find(
-                        (warehouse) =>
-                            warehouse.warehouse_id === product.fk_warehouse_id,
-                    )?.name
-                }
-            </td>
+        <tr
+            key={product.product_id}
+            style={{ backgroundColor: product.active ? 'white' : 'red' }}
+        >
+            <td className='align-middle'>{product.sku}</td>
+            <td className='align-middle'>{product.branch_name}</td>
+            <td className='align-middle'>{product.warehouse_name}</td>
             <td className='align-middle'>{product.epc}</td>
             <td className='align-middle text-end'>
                 <Button
