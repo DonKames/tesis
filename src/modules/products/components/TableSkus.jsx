@@ -37,6 +37,8 @@ export const TableSkus = () => {
         handlePageChange: handlePageChangeSku,
         setLimit: setSkuLimit,
         limit: skuLimit,
+        showInactive,
+        setShowInactive,
     } = usePagination(
         getSkus,
         getSkusQty,
@@ -72,9 +74,7 @@ export const TableSkus = () => {
     // Sku table row renderer
     const skuRenderer = (sku) => (
         <tr
-            className={
-                sku.active ? 'bg-primary text-white' : 'bg-secondary text-white'
-            }
+            className={sku.active ? '' : 'table-danger'}
             key={sku.sku_id}
 
             // style={{ backgroundColor: sku.active ? 'white' : 'red' }}
@@ -249,6 +249,9 @@ export const TableSkus = () => {
                 maxPagesToShow={10}
                 pagesQty={pagesQtySku}
                 selectedPage={selectedPageSku}
+                setShowInactive={setShowInactive}
+                showInactive={showInactive}
+                title='SKUs'
             />
         </>
     );

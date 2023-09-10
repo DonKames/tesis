@@ -14,6 +14,7 @@ const usePagination = (
     const [selectedPage, setSelectedPage] = useState(1);
     const [pagesQty, setPagesQty] = useState(0);
     const [limit, setLimit] = useState(initialLimit);
+    const [showInactive, setShowInactive] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -40,16 +41,18 @@ const usePagination = (
 
     const handlePageChange = async (pageNumber) => {
         setSelectedPage(pageNumber);
-        const fetchedItems = await getItems(pageNumber, limit);
+        const fetchedItems = await getItems(pageNumber, limit, showInactive);
         dispatch(setItems(fetchedItems));
     };
 
     return {
-        selectedPage,
-        pagesQty,
         handlePageChange,
-        setLimit,
         limit,
+        pagesQty,
+        selectedPage,
+        setLimit,
+        setShowInactive,
+        showInactive,
     };
 };
 

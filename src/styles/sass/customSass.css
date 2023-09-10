@@ -1,4 +1,8 @@
 @charset "UTF-8";
+.inactive-row {
+  background-color: #ec2a21 !important;
+}
+
 .btn.btn-primary {
   --bs-btn-color: #f2f2f2;
 }
@@ -321,6 +325,7 @@ caption {
 }
 
 th {
+  font-weight: bold;
   text-align: inherit;
   text-align: -webkit-match-parent;
 }
@@ -1738,20 +1743,20 @@ progress {
   }
 }
 .table {
-  --bs-table-color: var(--bs-body-color);
-  --bs-table-bg: transparent;
-  --bs-table-border-color: var(--bs-border-color);
+  --bs-table-color: #383838;
+  --bs-table-bg: #f2f2f2;
+  --bs-table-border-color: #d6d6d6;
   --bs-table-accent-bg: transparent;
-  --bs-table-striped-color: var(--bs-body-color);
-  --bs-table-striped-bg: rgba(0, 0, 0, 0.05);
-  --bs-table-active-color: var(--bs-body-color);
-  --bs-table-active-bg: rgba(0, 0, 0, 0.1);
-  --bs-table-hover-color: var(--bs-body-color);
-  --bs-table-hover-bg: rgba(0, 0, 0, 0.075);
+  --bs-table-striped-color: #383838;
+  --bs-table-striped-bg: #d6d6d6;
+  --bs-table-active-color: #f2f2f2;
+  --bs-table-active-bg: #6b8994;
+  --bs-table-hover-color: #fff;
+  --bs-table-hover-bg: #a2b5be;
   width: 100%;
   margin-bottom: 1rem;
   color: var(--bs-table-color);
-  vertical-align: top;
+  vertical-align: middle;
   border-color: var(--bs-table-border-color);
 }
 .table > :not(caption) > * > * {

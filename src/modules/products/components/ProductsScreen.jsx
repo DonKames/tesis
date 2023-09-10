@@ -103,11 +103,11 @@ const ProductsScreen = () => {
                 </Col>
             </Row>
             <TableSkus />
-            <Row>
+            {/* <Row>
                 <Col>
                     <h1>Productos</h1>
                 </Col>
-            </Row>
+            </Row> */}
             <TableProducts />
         </Container>
     );

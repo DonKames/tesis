@@ -16,10 +16,10 @@ export const getSkusQty = async () => {
     }
 };
 
-export const getSkus = async (page = 1, limit = 20) => {
+export const getSkus = async (page = 1, limit = 20, showInactive = false) => {
     try {
         const response = await fetch(
-            `${BASE_URL}/skus?page=${page}&limit=${limit}`,
+            `${BASE_URL}/skus?page=${page}&limit=${limit}&showInactive=${showInactive}`,
         );
         const finalResp = await handleFetchError(response);
         return finalResp;

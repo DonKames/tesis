@@ -189,6 +189,7 @@ export const TableProducts = () => {
                 maxPagesToShow={10}
                 pagesQty={pagesQtyProduct}
                 selectedPage={selectedPageProduct}
+                title='Productos'
             />
         </>
     );
