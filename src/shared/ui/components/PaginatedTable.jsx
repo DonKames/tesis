@@ -43,8 +43,7 @@ export const PaginatedTable = ({
                 <Table
                     hover
                     responsive
-                    striped
-                    className='m-0 '
+                    className='m-0'
                 >
                     <thead>
                         <tr>

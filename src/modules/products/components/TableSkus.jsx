@@ -71,7 +71,14 @@ export const TableSkus = () => {
 
     // Sku table row renderer
     const skuRenderer = (sku) => (
-        <tr key={sku.sku_id}>
+        <tr
+            className={
+                sku.active ? 'bg-primary text-white' : 'bg-secondary text-white'
+            }
+            key={sku.sku_id}
+
+            // style={{ backgroundColor: sku.active ? 'white' : 'red' }}
+        >
             <td className='align-middle'>{sku.sku}</td>
 
             <td className='align-middle'>{sku.name}</td>
