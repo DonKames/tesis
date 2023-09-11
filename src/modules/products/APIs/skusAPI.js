@@ -18,7 +18,7 @@ export const getSkusQty = async (showInactive) => {
     }
 };
 
-export const getSkus = async (page = 1, limit = 20, showInactive = false) => {
+export const getSkus = async (page = 1, limit = 10, showInactive = false) => {
     try {
         const response = await fetch(
             `${BASE_URL}/skus?page=${page}&limit=${limit}&showInactive=${showInactive}`,

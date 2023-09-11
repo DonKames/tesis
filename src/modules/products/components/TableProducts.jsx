@@ -4,7 +4,11 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { PaginatedTable } from '../../../shared/ui/components/PaginatedTable';
 import usePagination from '../../../hooks/usePagination';
-import { getProducts, getProductsQty } from '../APIs/apiProducts';
+import {
+    changeActiveStateProduct,
+    getProducts,
+    getProductsQty,
+} from '../APIs/apiProducts';
 import {
     productsSetProductQty,
     productsSetProducts,
@@ -35,12 +39,12 @@ export const TableProducts = () => {
     const [showWarning, setShowWarning] = useState(false);
     const [originalActiveState, setOriginalActiveState] = useState(true);
 
-    useEffect(() => {
-        if (productToEdit.product_id) {
-            console.log('id?:', productToEdit.product_id);
-            console.log('producto a editar', productToEdit);
-        }
-    }, [productToEdit]);
+    // useEffect(() => {
+    //     if (productToEdit.product_id) {
+    //         console.log('id?:', productToEdit.product_id);
+    //         console.log('producto a editar', productToEdit);
+    //     }
+    // }, [productToEdit]);
 
     // Product pagination hook
     const {
@@ -49,6 +53,9 @@ export const TableProducts = () => {
         handlePageChange: handlePageChangeProduct,
         setLimit: setProductLimit,
         limit: productLimit,
+        showInactive,
+        setShowInactive,
+        setPagesQty,
     } = usePagination(
         getProducts,
         getProductsQty,
@@ -59,7 +66,6 @@ export const TableProducts = () => {
     );
 
     // Product table columns
-    // const tableColumnsProducts = ['Sku', 'Sucursal', 'Bodega', 'EPC', ''];
     const tableColumnsProducts = [
         {
             name: 'Sku',
@@ -95,17 +101,17 @@ export const TableProducts = () => {
 
     const productRenderer = (product) => (
         <tr
-            key={product.product_id}
-            style={{ backgroundColor: product.active ? 'white' : 'red' }}
+            key={product.id}
+            className={product.active ? '' : 'table-danger'}
         >
             <td className='align-middle'>{product.sku}</td>
-            <td className='align-middle'>{product.branch_name}</td>
-            <td className='align-middle'>{product.warehouse_name}</td>
+            <td className='align-middle'>{product.branchName}</td>
+            <td className='align-middle'>{product.warehouseName}</td>
             <td className='align-middle'>{product.epc}</td>
             <td className='align-middle text-end'>
                 <Button
                     className='me-1'
-                    onClick={() => handleOpenForm(product.product_id)}
+                    onClick={() => handleOpenForm(product.id)}
                 >
                     <i className='bi bi-pencil-square' />
                 </Button>
@@ -113,7 +119,7 @@ export const TableProducts = () => {
                 <Button
                     className='me-1 text-white'
                     variant='danger'
-                    onClick={() => handleProductDelete(product.product_id)}
+                    onClick={() => handleDeactivateProduct(product.id)}
                 >
                     <i className='bi bi-trash3' />
                 </Button>
@@ -145,7 +151,7 @@ export const TableProducts = () => {
         handleModalChange();
     };
 
-    const handleProductDelete = async (productId) => {
+    const handleDeactivateProduct = async (productId) => {
         // Lógica para eliminar el SKU con el ID dado
         console.log(productId);
 
@@ -162,6 +168,33 @@ export const TableProducts = () => {
 
         if (result.isConfirmed) {
             console.log('Eliminando PRODUCTO con ID:', productId);
+
+            const { status, data } = await changeActiveStateProduct(
+                productId,
+                false,
+            );
+
+            if (status === 'success') {
+                Swal.fire({
+                    title: '¡Producto desactivado!',
+                    text: 'El producto ha sido desactivado.',
+                    icon: 'success',
+                });
+
+                const updatedProducts = products.map((product) =>
+                    product.product_id === productId
+                        ? { ...product, active: false }
+                        : product,
+                );
+
+                dispatch(productsSetProducts(updatedProducts));
+            } else {
+                Swal.fire({
+                    title: 'Error',
+                    text: data.message,
+                    icon: 'error',
+                });
+            }
         }
     };
 
@@ -211,6 +244,9 @@ export const TableProducts = () => {
                 maxPagesToShow={10}
                 pagesQty={pagesQtyProduct}
                 selectedPage={selectedPageProduct}
+                setPagesQty={setPagesQty}
+                setShowInactive={setShowInactive}
+                showInactive={showInactive}
                 title='Productos'
             />
         </>
