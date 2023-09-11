@@ -17,13 +17,6 @@ export const authSlice = createSlice({
     initialState,
     reducers: {
         authLogin: (state, action) => {
-            // state.isLoggedIn = true;
-            // state.uid = action.payload.uid;
-            // state.displayName = action.payload.displayName;
-            // state.email = action.payload.email;
-            // state.role = action.payload.role;
-            // state.isRegistered = action.payload.isRegistered;
-            console.log(action.payload);
             state.isLoggedIn = true;
             if (action.payload.uid !== undefined) {
                 state.uid = action.payload.uid;

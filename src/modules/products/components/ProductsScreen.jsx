@@ -70,10 +70,10 @@ const ProductsScreen = () => {
 
                 // Skus pagination, table and data
 
-                if (skusQty === null || skusQty === undefined) {
-                    const { skusQty } = await getSkusQty();
-                    dispatch(productsSetSkusQty(skusQty));
-                }
+                // if (skusQty === null || skusQty === undefined) {
+                //     const { skusQty } = await getSkusQty();
+                //     dispatch(productsSetSkusQty(skusQty));
+                // }
 
                 if (!skus.length) {
                     const skusData = await getSkus(1, 10);
@@ -90,9 +90,7 @@ const ProductsScreen = () => {
     return (
         <Container>
             <Row className='mt-3 mb-2'>
-                <Col>
-                    <h1>SKUs</h1>
-                </Col>
+                <Col></Col>
                 <Col>
                     <SearchProductBar />
                 </Col>

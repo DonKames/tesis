@@ -31,21 +31,25 @@ export const AppRouter = () => {
     useEffect(() => {
         onAuthStateChanged(auth, async (user) => {
             if (user?.uid) {
-                console.log(user.uid);
                 const respUid = await getUserByUid(user.uid);
 
                 if (!respUid) {
                     updateUserUid(user.email, user.uid);
                 }
 
-                const { uid, first_name, fk_role_id, email } = respUid;
+                const {
+                    uid,
+                    first_name: firstName,
+                    fk_role_id: fkRoleId,
+                    email,
+                } = respUid;
                 // console.log(respUid);
                 // console.log(first_name, fk_role_id, email, uid);
                 dispatch(
                     authLogin({
                         uid,
-                        displayName: first_name,
-                        role: fk_role_id,
+                        displayName: firstName,
+                        role: fkRoleId,
                         email,
                         isRegistered: true,
                     }),

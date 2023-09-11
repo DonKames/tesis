@@ -2,9 +2,11 @@ import { handleFetchError } from '../../../shared/utils/handleFetchError';
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
-export const getSkusQty = async () => {
+export const getSkusQty = async (showInactive) => {
     try {
-        const response = await fetch(`${BASE_URL}/skus/qty`);
+        const response = await fetch(
+            `${BASE_URL}/skus/qty?showInactive=${showInactive}`,
+        );
         const finalResp = await handleFetchError(response);
         return finalResp;
     } catch (error) {

@@ -17,10 +17,12 @@ const usePagination = (
     const [showInactive, setShowInactive] = useState(false);
 
     useEffect(() => {
+        console.log(pagesQty);
+
         const fetchData = async () => {
             try {
                 setPagesQty(Math.ceil(itemsQty / limit));
-                const fetchedItems = await getItems(1, limit);
+                const fetchedItems = await getItems(1, limit, showInactive);
                 console.log('setItems', fetchedItems);
                 dispatch(setItems(fetchedItems));
             } catch (error) {
@@ -29,15 +31,14 @@ const usePagination = (
         };
 
         fetchData();
-    }, [
-        dispatch,
-        getItems,
-        getItemsQty,
-        setItems,
-        setItemsQty,
-        itemsQty,
-        limit,
-    ]);
+    }, [dispatch, itemsQty, limit]);
+
+    useEffect(() => {
+        // Obtener la nueva cantidad de elementos
+        getItemsQty(showInactive).then((newItemsQty) => {
+            dispatch(setItemsQty(newItemsQty));
+        });
+    }, [showInactive, dispatch]);
 
     const handlePageChange = async (pageNumber) => {
         setSelectedPage(pageNumber);
@@ -49,6 +50,7 @@ const usePagination = (
         handlePageChange,
         limit,
         pagesQty,
+        setPagesQty,
         selectedPage,
         setLimit,
         setShowInactive,

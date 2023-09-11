@@ -59,7 +59,29 @@ export const TableProducts = () => {
     );
 
     // Product table columns
-    const tableColumnsProducts = ['Sku', 'Sucursal', 'Bodega', 'EPC', ''];
+    // const tableColumnsProducts = ['Sku', 'Sucursal', 'Bodega', 'EPC', ''];
+    const tableColumnsProducts = [
+        {
+            name: 'Sku',
+            className: '',
+        },
+        {
+            name: 'Sucursal',
+            className: '',
+        },
+        {
+            name: 'Bodega',
+            className: '',
+        },
+        {
+            name: 'EPC',
+            className: '',
+        },
+        {
+            name: '',
+            className: 'text-end',
+        },
+    ];
 
     // MODAL
     // Product form

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'react-bootstrap';
@@ -39,6 +39,7 @@ export const TableSkus = () => {
         limit: skuLimit,
         showInactive,
         setShowInactive,
+        setPagesQty,
     } = usePagination(
         getSkus,
         getSkusQty,
@@ -50,12 +51,12 @@ export const TableSkus = () => {
 
     // Sku table columns
     const tableColumnsSkus = [
-        'Sku',
-        'Nombre',
-        'Descripción',
-        'Precio',
-        'Stock',
-        '',
+        { name: 'Sku', className: '' },
+        { name: 'Nombre', className: '' },
+        { name: 'Descripción', className: '' },
+        { name: 'Stock', className: 'text-center' },
+        { name: 'Cantidad Mínima', className: 'text-center' },
+        { name: '', className: '' },
     ];
 
     // Sku form
@@ -75,7 +76,7 @@ export const TableSkus = () => {
     const skuRenderer = (sku) => (
         <tr
             className={sku.active ? '' : 'table-danger'}
-            key={sku.sku_id}
+            key={sku.id}
 
             // style={{ backgroundColor: sku.active ? 'white' : 'red' }}
         >
@@ -83,35 +84,33 @@ export const TableSkus = () => {
 
             <td className='align-middle'>{sku.name}</td>
             <td className='align-middle'>{sku.description}</td>
-            <td className='align-middle'>
-                $
-                {sku.price.toLocaleString('es-CL', {
-                    maximumFractionDigits: 0,
-                })}
-            </td>
-            <td className='align-middle text-center'>
-                {skus.reduce((accumulator, obj) => {
-                    if (obj.sku === sku.sku) {
-                        return accumulator + 1;
-                    }
-                    return accumulator;
-                }, 0)}
-            </td>
+            <td className='align-middle text-center'>{sku.stock}</td>
+            <td className='align-middle text-center'>{sku.minimumStock}</td>
             <td className='align-middle text-end'>
                 <Button
                     className='me-1 shadow'
-                    onClick={() => handleOpenForm(sku.sku_id)}
+                    onClick={() => handleOpenForm(sku.id)}
                 >
                     <i className='bi bi-pencil-square'></i>
                 </Button>
 
-                <Button
-                    className='me-1 text-white shadow'
-                    variant='danger'
-                    onClick={() => handleSkuDelete(sku.sku_id)}
-                >
-                    <i className='bi bi-trash3' />
-                </Button>
+                {sku.active ? (
+                    <Button
+                        className='me-1 text-white shadow'
+                        variant='danger'
+                        onClick={() => handleDeactivateSku(sku.id)}
+                    >
+                        <i className='bi bi-trash3' />
+                    </Button>
+                ) : (
+                    <Button
+                        className='me-1 shadow'
+                        onClick={() => handleActivateSku(sku.id)}
+                        variant='success'
+                    >
+                        <i className='bi bi-recycle' />
+                    </Button>
+                )}
             </td>
         </tr>
     );
@@ -119,7 +118,7 @@ export const TableSkus = () => {
     // Funciones para manejar las acciones de editar y eliminar
     const handleOpenForm = async (skuId) => {
         // Lógica para editar el SKU con el ID dado
-        const skuToEdit = skus.find((sku) => sku.sku_id === skuId);
+        const skuToEdit = skus.find((sku) => sku.id === skuId);
 
         console.log(skuToEdit);
 
@@ -128,7 +127,7 @@ export const TableSkus = () => {
             setFormValues({
                 active: skuToEdit.active,
                 description: skuToEdit.description,
-                minimumStock: skuToEdit.minimum_stock || 0,
+                minimumStock: skuToEdit.minimumStock || 0,
                 name: skuToEdit.name,
                 price: skuToEdit.price,
                 sku: skuToEdit.sku,
@@ -141,7 +140,7 @@ export const TableSkus = () => {
         // setShowWarning(!skuToEdit.active);
     };
 
-    const handleSkuDelete = async (skuId) => {
+    const handleDeactivateSku = async (skuId) => {
         // Lógica para cambiar el SKU con el ID dado
 
         const result = await Swal.fire({
@@ -158,14 +157,67 @@ export const TableSkus = () => {
         if (result.isConfirmed) {
             // Lógica para eliminar el SKU con el ID dado
             console.log('Eliminando SKU con ID:', skuId);
-            const { status } = await changeActiveStateSku(skuId, false);
+            const { status, data } = await changeActiveStateSku(skuId, false);
 
             if (status === 'success') {
                 Swal.fire('Eliminado', 'El SKU ha sido eliminado.', 'success');
+
+                console.log(data);
+
+                // Actualizar el estado de Redux
+                const updatedSkus = skus.map((sku) => {
+                    if (sku.id === skuId) {
+                        return { ...sku, active: data.active };
+                    }
+                    return sku;
+                });
+
+                dispatch(productsSetSkus(updatedSkus));
             } else {
                 Swal.fire(
                     'Error',
                     'Ha habido un problema al eliminar el SKU.',
+                    'error',
+                );
+            }
+        }
+    };
+
+    const handleActivateSku = async (skuId) => {
+        // Lógica para cambiar el SKU con el ID dado
+
+        const result = await Swal.fire({
+            title: '¿Estás seguro?',
+            text: 'Activarás este SKU y pero no todos los productos asociados a él.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, activar',
+            cancelButtonText: 'Cancelar',
+        });
+
+        if (result.isConfirmed) {
+            // Lógica para eliminar el SKU con el ID dado
+            console.log('Activando SKU con ID:', skuId);
+            const { status, data } = await changeActiveStateSku(skuId, true);
+
+            if (status === 'success') {
+                Swal.fire('Activado', 'El SKU ha sido activado.', 'success');
+
+                // Actualizar el estado de Redux
+                const updatedSkus = skus.map((sku) => {
+                    if (sku.id === skuId) {
+                        return { ...sku, active: data.active };
+                    }
+                    return sku;
+                });
+
+                dispatch(productsSetSkus(updatedSkus));
+            } else {
+                Swal.fire(
+                    'Error',
+                    'Ha habido un problema al activar el SKU.',
                     'error',
                 );
             }
@@ -192,7 +244,7 @@ export const TableSkus = () => {
     };
 
     const handleUpdateSku = async () => {
-        const { sku_id: skuIdToEdit } = skuToEdit;
+        const { id: skuIdToEdit } = skuToEdit;
 
         console.log(skuIdToEdit);
         if (isFormValid()) {
@@ -201,7 +253,7 @@ export const TableSkus = () => {
 
                 // Actualizar el estado de Redux
                 const updatedSkus = skus.map((sku) => {
-                    if (sku.sku_id === skuIdToEdit) {
+                    if (sku.id === skuIdToEdit) {
                         return { ...sku, ...formValues };
                     }
                     return sku;
@@ -227,6 +279,14 @@ export const TableSkus = () => {
         }
     };
 
+    useEffect(() => {
+        if (skusQty === null || skusQty === undefined) {
+            getSkusQty().then((skusQty) =>
+                dispatch(productsSetSkusQty(skusQty)),
+            );
+        }
+    }, [dispatch, skusQty, showInactive]);
+
     return (
         <>
             <ModalSku
@@ -249,6 +309,7 @@ export const TableSkus = () => {
                 maxPagesToShow={10}
                 pagesQty={pagesQtySku}
                 selectedPage={selectedPageSku}
+                setPagesQty={setPagesQty}
                 setShowInactive={setShowInactive}
                 showInactive={showInactive}
                 title='SKUs'

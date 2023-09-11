@@ -6,7 +6,6 @@ export const getGlobalSettings = async () => {
     try {
         const response = await fetch(`${BASE_URL}/global_settings`);
         const finalResp = await handleFetchError(response);
-        console.log(finalResp);
         const data = {
             id: finalResp.global_settings_id,
             mainBranch: finalResp.main_branch,

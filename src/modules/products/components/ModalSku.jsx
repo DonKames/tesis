@@ -47,7 +47,9 @@ export const ModalSku = ({
                         <Form.Label>Stock Mínimo</Form.Label>
                         <Form.Control
                             className='mb-3'
-                            name='minimum_stock'
+                            min={0}
+                            step={1}
+                            name='minimumStock'
                             onChange={handleInputChange}
                             placeholder='Stock Mínimo'
                             type='number'

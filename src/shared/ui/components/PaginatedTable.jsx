@@ -19,6 +19,7 @@ export const PaginatedTable = ({
     title, // title: El título de la tabla.
 }) => {
     // console.log('limit', limit);
+
     const pagesBeforeCurrentItem = React.useMemo(
         () => Math.floor(maxPagesToShow / 2),
         [maxPagesToShow],
@@ -68,10 +69,20 @@ export const PaginatedTable = ({
                 >
                     <thead className='rounded'>
                         <tr>
+                            {columns.map((column, index) => (
+                                <th
+                                    key={index}
+                                    className={column.className}
+                                >
+                                    {column.name}
+                                </th>
+                            ))}
+                        </tr>
+                        {/* <tr>
                             {columns.map((column) => (
                                 <th key={column}>{column}</th>
                             ))}
-                        </tr>
+                        </tr> */}
                     </thead>
                     <tbody>{items.map(itemRenderer)}</tbody>
                 </Table>
@@ -170,7 +181,13 @@ export const PaginatedTable = ({
 };
 
 PaginatedTable.propTypes = {
-    columns: PropTypes.arrayOf(PropTypes.string).isRequired,
+    columns: PropTypes.arrayOf(
+        PropTypes.shape({
+            name: PropTypes.string.isRequired,
+            className: PropTypes.string,
+        }),
+    ).isRequired,
+    // columns: PropTypes.arrayOf(PropTypes.string).isRequired,
     footerText: PropTypes.string,
     handleLimitChange: PropTypes.func,
     handlePageChange: PropTypes.func.isRequired,
