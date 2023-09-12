@@ -1,43 +1,49 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Select } from 'react-select';
-import { getBranches } from '../../../api/branches';
+import Select from 'react-select';
 import { useDispatch, useSelector } from 'react-redux';
+import { getBranchesNames } from '../../../modules/locations/APIs/branchesAPI';
+import { uiSetBranchesNames } from '../slice/uiSlice';
 
-const { Option } = Select;
-
-const SelectBranches = ({ value, onChange, disabled }) => {
+export const SelectBranches = ({ onChange, name, branchId }) => {
     const dispatch = useDispatch();
 
     const { branchesNames } = useSelector((state) => state.locations);
 
-    const [branches, setBranches] = useState([]);
+    const [selectedValue, setSelectedValue] = useState(null);
 
     useEffect(() => {
-        const fetchBranches = async () => {
-            const data = await getBranches();
-            setBranches(data);
+        const fetchBranchesNames = async () => {
+            try {
+                if (!branchesNames.length) {
+                    const fetchedBranchesNames = await getBranchesNames();
+                    dispatch(uiSetBranchesNames(fetchedBranchesNames));
+                }
+            } catch (error) {
+                console.log(error);
+            }
         };
-        fetchBranches();
+        fetchBranchesNames();
     }, []);
+
+    useEffect(() => {
+        const defaultBranch = branchesNames.find(
+            (branch) => branch.id === branchId,
+        );
+        if (defaultBranch) {
+            setSelectedValue({
+                value: defaultBranch.id,
+                label: defaultBranch.name,
+            });
+        }
+    }, [branchId, branchesNames]);
 
     return (
         <Select
-            value={value}
+            value={selectedValue}
             onChange={onChange}
-            disabled={disabled}
-            placeholder='Select a branch'
-            loading={!branches.length}
-        >
-            {branches.map((branch) => (
-                <Option
-                    key={branch.id}
-                    value={branch.id}
-                >
-                    {branch.name}
-                </Option>
-            ))}
-        </Select>
+            placeholder='Selecciona una sucursal'
+        />
     );
 };
 
@@ -51,5 +57,3 @@ SelectBranches.defaultProps = {
     value: undefined,
     disabled: false,
 };
-
-export default SelectBranches;

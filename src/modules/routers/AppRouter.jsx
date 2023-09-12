@@ -96,7 +96,7 @@ export const AppRouter = () => {
                 }
             }
         });
-    }, [auth]);
+    }, [dispatch, settings.globalSettingsId]);
 
     if (checking) {
         return <h1>Wait...</h1>;

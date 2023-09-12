@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Form, Modal } from 'react-bootstrap';
 import { SelectWarehouses } from '../../../shared/ui/components/SelectWarehouses';
+import { SelectBranches } from '../../../shared/ui/components/SelectBranches';
 
 export const ModalProduct = React.memo(function ModalProduct({
     formValues,
@@ -14,8 +15,7 @@ export const ModalProduct = React.memo(function ModalProduct({
     showModal,
     showWarning,
 }) {
-    console.log(formValues);
-    const { active, sku, warehouse, epc } = formValues;
+    const { active, sku, warehouse, branch, epc } = formValues;
 
     return (
         <Modal
@@ -34,6 +34,14 @@ export const ModalProduct = React.memo(function ModalProduct({
                             placeholder='Sku'
                             type='text'
                             value={sku}
+                        />
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label>Sucursal</Form.Label>
+                        <SelectBranches
+                            onChange={handleInputChange}
+                            name='branch'
+                            branchId={branch}
                         />
                     </Form.Group>
                     <Form.Group>

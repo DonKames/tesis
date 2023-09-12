@@ -277,7 +277,7 @@ export const TableProducts = () => {
                 dispatch(productsSetProductQty(qty)),
             );
         }
-    }, [productsQty, showInactive]);
+    }, [dispatch, productsQty, showInactive]);
 
     return (
         <>

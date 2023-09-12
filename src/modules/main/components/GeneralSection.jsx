@@ -89,7 +89,14 @@ export const GeneralSection = () => {
         };
 
         fetchData();
-    }, [dispatch]);
+    }, [
+        branchLocationsQty,
+        branchesQty,
+        productsCountByWarehouse,
+        usersQty,
+        warehousesQty,
+        dispatch,
+    ]);
 
     return (
         <>

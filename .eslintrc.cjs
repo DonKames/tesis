@@ -10,11 +10,13 @@ module.exports = {
         ecmaVersion: 'latest',
         sourceType: 'module',
     },
-    plugins: ['react'],
+    plugins: ['react', 'react-hooks'], // Añade 'react-hooks' aquí
     rules: {
         indent: ['error', 4, { SwitchCase: 1 }],
         semi: 'off',
         'comma-dangle': ['error', 'always-multiline'],
         'space-before-function-paren': 'off',
+        'react-hooks/rules-of-hooks': 'error', // Añade esta línea
+        'react-hooks/exhaustive-deps': 'warn', // Añade esta línea
     },
 };

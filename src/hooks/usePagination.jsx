@@ -32,7 +32,7 @@ const usePagination = (
         };
 
         fetchData();
-    }, [dispatch, itemsQty, limit]);
+    }, [itemsQty, limit]);
 
     useEffect(() => {
         // Obtener la nueva cantidad de elementos

@@ -43,7 +43,7 @@ export const PaginatedTable = ({
 
     useEffect(() => {
         handlePageChange(selectedPage);
-    }, [showInactive]);
+    }, [showInactive, selectedPage]);
 
     return (
         <>
