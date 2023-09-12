@@ -37,19 +37,12 @@ const ProductsScreen = () => {
     const dispatch = useDispatch();
 
     // Redux States
-    const { productsQty, products, skus } = useSelector(
-        (state) => state.products,
-    );
+    const { products, skus } = useSelector((state) => state.products);
     const { branches, warehouses } = useSelector((state) => state.locations);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                if (productsQty === null) {
-                    const productsQty = await getProductsQty();
-                    dispatch(productsSetProductQty(productsQty));
-                }
-
                 if (!products?.length) {
                     const fetchedData = await getProducts(1, 10);
                     console.log(fetchedData);
@@ -77,7 +70,7 @@ const ProductsScreen = () => {
         };
 
         fetchData();
-    }, [dispatch]);
+    }, []);
 
     return (
         <Container>

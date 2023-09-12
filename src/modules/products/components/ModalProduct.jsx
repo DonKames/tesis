@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Button, Form, Modal } from 'react-bootstrap';
 import { SelectWarehouses } from '../../../shared/ui/components/SelectWarehouses';
 
-export const ModalProduct = ({
+export const ModalProduct = React.memo(function ModalProduct({
     formValues,
     handleInputChange,
     handleInputChangeWithWarning,
@@ -13,7 +13,7 @@ export const ModalProduct = ({
     productId,
     showModal,
     showWarning,
-}) => {
+}) {
     console.log(formValues);
     const { active, sku, warehouse, epc } = formValues;
 
@@ -96,7 +96,7 @@ export const ModalProduct = ({
             </Modal.Footer>
         </Modal>
     );
-};
+});
 
 ModalProduct.propTypes = {
     formValues: PropTypes.object.isRequired,

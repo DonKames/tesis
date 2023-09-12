@@ -12,6 +12,7 @@ export const ModalSku = ({
     showWarning,
 }) => {
     const { active, description, minimumStock, name, sku } = formValues;
+    console.log(formValues);
 
     return (
         <Modal

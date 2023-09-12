@@ -39,7 +39,7 @@ const usePagination = (
         getItemsQty(showInactive).then((newItemsQty) => {
             dispatch(setItemsQty(newItemsQty));
         });
-    }, [showInactive, dispatch]);
+    }, [showInactive]);
 
     const handlePageChange = async (pageNumber) => {
         setSelectedPage(pageNumber);
