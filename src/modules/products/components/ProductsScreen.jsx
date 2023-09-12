@@ -11,7 +11,6 @@ import {
     productsSetProductQty,
     productsSetProducts,
     productsSetSkus,
-    productsSetSkusQty,
 } from '../slice/productsSlice';
 import {
     locationsSetBranches,
@@ -20,7 +19,7 @@ import {
 import { getProducts, getProductsQty } from '../APIs/apiProducts';
 import { getBranches } from '../../locations/APIs/branchesAPI';
 import { getWarehouses } from '../../locations/APIs/apiWarehouses';
-import { getSkus, getSkusQty } from '../APIs/skusAPI';
+import { getSkus } from '../APIs/skusAPI';
 import SearchProductBar from './SearchProductBar';
 import { TableSkus } from './TableSkus';
 import { TableProducts } from './TableProducts';
@@ -38,7 +37,7 @@ const ProductsScreen = () => {
     const dispatch = useDispatch();
 
     // Redux States
-    const { productsQty, products, skus, skusQty } = useSelector(
+    const { productsQty, products, skus } = useSelector(
         (state) => state.products,
     );
     const { branches, warehouses } = useSelector((state) => state.locations);
@@ -47,7 +46,7 @@ const ProductsScreen = () => {
         const fetchData = async () => {
             try {
                 if (productsQty === null) {
-                    const { productsQty } = await getProductsQty();
+                    const productsQty = await getProductsQty();
                     dispatch(productsSetProductQty(productsQty));
                 }
 
@@ -67,13 +66,6 @@ const ProductsScreen = () => {
                     const fetchedWarehouses = await getWarehouses();
                     dispatch(locationsSetWarehouses(fetchedWarehouses));
                 }
-
-                // Skus pagination, table and data
-
-                // if (skusQty === null || skusQty === undefined) {
-                //     const { skusQty } = await getSkusQty();
-                //     dispatch(productsSetSkusQty(skusQty));
-                // }
 
                 if (!skus.length) {
                     const skusData = await getSkus(1, 10);

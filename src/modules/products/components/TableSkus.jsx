@@ -32,14 +32,14 @@ export const TableSkus = () => {
 
     // Sku pagination hook
     const {
-        selectedPage: selectedPageSku,
-        pagesQty: pagesQtySku,
         handlePageChange: handlePageChangeSku,
-        setLimit: setSkuLimit,
         limit: skuLimit,
-        showInactive,
-        setShowInactive,
+        pagesQty: pagesQtySku,
+        selectedPage: selectedPageSku,
+        setLimit: setSkuLimit,
         setPagesQty,
+        setShowInactive,
+        showInactive,
     } = usePagination(
         getSkus,
         getSkusQty,

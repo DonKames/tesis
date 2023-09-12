@@ -23,7 +23,8 @@ const usePagination = (
             try {
                 setPagesQty(Math.ceil(itemsQty / limit));
                 const fetchedItems = await getItems(1, limit, showInactive);
-                console.log('setItems', fetchedItems);
+                console.log(showInactive);
+                // console.log('setItems', fetchedItems);
                 dispatch(setItems(fetchedItems));
             } catch (error) {
                 console.log(error);

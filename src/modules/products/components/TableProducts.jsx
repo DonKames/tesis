@@ -39,23 +39,16 @@ export const TableProducts = () => {
     const [showWarning, setShowWarning] = useState(false);
     const [originalActiveState, setOriginalActiveState] = useState(true);
 
-    // useEffect(() => {
-    //     if (productToEdit.product_id) {
-    //         console.log('id?:', productToEdit.product_id);
-    //         console.log('producto a editar', productToEdit);
-    //     }
-    // }, [productToEdit]);
-
     // Product pagination hook
     const {
-        selectedPage: selectedPageProduct,
-        pagesQty: pagesQtyProduct,
         handlePageChange: handlePageChangeProduct,
-        setLimit: setProductLimit,
         limit: productLimit,
-        showInactive,
-        setShowInactive,
+        pagesQty: pagesQtyProduct,
+        selectedPage: selectedPageProduct,
+        setLimit: setProductLimit,
         setPagesQty,
+        setShowInactive,
+        showInactive,
     } = usePagination(
         getProducts,
         getProductsQty,
@@ -101,8 +94,8 @@ export const TableProducts = () => {
 
     const productRenderer = (product) => (
         <tr
-            key={product.id}
             className={product.active ? '' : 'table-danger'}
+            key={product.id}
         >
             <td className='align-middle'>{product.sku}</td>
             <td className='align-middle'>{product.branchName}</td>
@@ -116,13 +109,23 @@ export const TableProducts = () => {
                     <i className='bi bi-pencil-square' />
                 </Button>
 
-                <Button
-                    className='me-1 text-white'
-                    variant='danger'
-                    onClick={() => handleDeactivateProduct(product.id)}
-                >
-                    <i className='bi bi-trash3' />
-                </Button>
+                {product.active ? (
+                    <Button
+                        className='me-1 text-white'
+                        variant='danger'
+                        onClick={() => handleDeactivateProduct(product.id)}
+                    >
+                        <i className='bi bi-trash3' />
+                    </Button>
+                ) : (
+                    <Button
+                        className='me-1'
+                        onClick={() => handleActivateSku(product.id)}
+                        variant='success'
+                    >
+                        <i className='bi bi-recycle' />
+                    </Button>
+                )}
             </td>
         </tr>
     );
@@ -198,6 +201,53 @@ export const TableProducts = () => {
         }
     };
 
+    const handleActivateSku = async () => {
+        // Lógica para activar el SKU
+        console.log('Activando SKU con ID:', productToEdit.product_id);
+
+        const result = await Swal.fire({
+            title: '¿Estás seguro?',
+            text: 'Activarás este Producto.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, activar',
+            cancelButtonText: 'Cancelar',
+        });
+
+        if (result.isConfirmed) {
+            console.log('Activando PRODUCTO con ID:', productToEdit.product_id);
+
+            const { status, data } = await changeActiveStateProduct(
+                productToEdit.product_id,
+                true,
+            );
+
+            if (status === 'success') {
+                Swal.fire({
+                    title: '¡Producto activado!',
+                    text: 'El producto ha sido activado.',
+                    icon: 'success',
+                });
+
+                const updatedProducts = products.map((product) =>
+                    product.product_id === productToEdit.product_id
+                        ? { ...product, active: true }
+                        : product,
+                );
+
+                dispatch(productsSetProducts(updatedProducts));
+            } else {
+                Swal.fire({
+                    title: 'Error',
+                    text: data.message,
+                    icon: 'error',
+                });
+            }
+        }
+    };
+
     const handleInputChangeWithWarning = ({ target }) => {
         handleInputChange({ target }); // Llamada al handleInputChange original
 
@@ -220,6 +270,14 @@ export const TableProducts = () => {
         // Lógica para actualizar el SKU
         console.log('Actualizando SKU con ID:', productToEdit.product_id);
     };
+
+    useEffect(() => {
+        if (productsQty === null || productsQty === undefined) {
+            getProductsQty().then((qty) =>
+                dispatch(productsSetProductQty(qty)),
+            );
+        }
+    }, [dispatch, productsQty, showInactive]);
 
     return (
         <>
