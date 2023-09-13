@@ -7,7 +7,6 @@ import { getWarehousesNames } from '../../../modules/locations/APIs/apiWarehouse
 import { uiSetWarehousesNames } from '../slice/uiSlice';
 
 export const SelectWarehouses = ({ handleInputChange, name, warehouseId }) => {
-    console.log(warehouseId);
     const dispatch = useDispatch();
     const { warehousesNames } = useSelector((state) => state.ui);
     const [selectedValue, setSelectedValue] = useState(null);

@@ -8,7 +8,7 @@ import { uiSetBranchesNames } from '../slice/uiSlice';
 export const SelectBranches = ({ onChange, name, branchId }) => {
     const dispatch = useDispatch();
 
-    const { branchesNames } = useSelector((state) => state.locations);
+    const { branchesNames } = useSelector((state) => state.ui);
 
     const [selectedValue, setSelectedValue] = useState(null);
 
@@ -41,19 +41,25 @@ export const SelectBranches = ({ onChange, name, branchId }) => {
     return (
         <Select
             value={selectedValue}
+            isSearchable
+            name={name}
             onChange={onChange}
+            options={branchesNames.map((branch) => ({
+                value: branch.id,
+                label: branch.name,
+            }))}
             placeholder='Selecciona una sucursal'
         />
     );
 };
 
 SelectBranches.propTypes = {
-    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    branchId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     onChange: PropTypes.func.isRequired,
-    disabled: PropTypes.bool,
+    name: PropTypes.string.isRequired,
 };
 
-SelectBranches.defaultProps = {
-    value: undefined,
-    disabled: false,
-};
+// SelectBranches.defaultProps = {
+//     branchId: 0,
+//     name: '',
+// };

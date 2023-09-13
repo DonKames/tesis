@@ -27,11 +27,7 @@ export const TableProducts = () => {
     // const { isFormValid } = useFormSkuValidation(formValues);
 
     // Redux States
-    const { products, productsQty, skus } = useSelector(
-        (state) => state.products,
-    );
-
-    const { branches, warehouses } = useSelector((state) => state.locations);
+    const { products, productsQty } = useSelector((state) => state.products);
 
     // Local States
     const [showModal, setShowModal] = useState(false);
@@ -132,7 +128,7 @@ export const TableProducts = () => {
 
     const handleOpenForm = async (productId) => {
         const getProductToEdit = await products.find(
-            (product) => product.product_id === productId,
+            (product) => product.id === productId,
         );
 
         console.log('Producto encontrado:', getProductToEdit);
@@ -282,14 +278,14 @@ export const TableProducts = () => {
     return (
         <>
             <ModalProduct
-                productId={productToEdit.product_id}
+                productId={productToEdit.id}
                 formValues={formValues}
                 handleInputChange={handleInputChange}
                 handleInputChangeWithWarning={handleInputChangeWithWarning}
                 handleModalChange={handleModalChange}
                 handleUpdate={handleUpdate}
                 showModal={showModal}
-                showWarning={false}
+                showWarning={showWarning}
             />
             <PaginatedTable
                 columns={tableColumnsProducts}

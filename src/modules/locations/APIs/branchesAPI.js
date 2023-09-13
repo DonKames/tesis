@@ -42,6 +42,7 @@ export const getBranchesNames = async () => {
     try {
         const response = await fetch(`${BASE_URL}/branches/names`);
         const data = await handleFetchError(response);
+        console.log(data);
         return data;
     } catch (error) {
         console.log('Error al obtener Branches Names desde la API:', error);

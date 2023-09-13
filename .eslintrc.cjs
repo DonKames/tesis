@@ -16,7 +16,5 @@ module.exports = {
         semi: 'off',
         'comma-dangle': ['error', 'always-multiline'],
         'space-before-function-paren': 'off',
-        'react-hooks/rules-of-hooks': 'error', // Añade esta línea
-        'react-hooks/exhaustive-deps': 'warn', // Añade esta línea
     },
 };
