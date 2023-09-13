@@ -4,15 +4,15 @@ import { Card, Col, Container, Row } from 'react-bootstrap';
 export const DashboardScreen = () => {
     return (
         <Container>
-            <Row className='my-3'>
+            <Row className="my-3">
                 <Col>
                     <h1>Informes</h1>
                 </Col>
             </Row>
-            <Row className='my-3'>
+            <Row className="my-3">
                 <Col>
                     <Card>
-                        <Card.Header as='h5'>
+                        <Card.Header as="h5">
                             Volumen entrada y salida
                         </Card.Header>
                         <Card.Body>
@@ -22,10 +22,10 @@ export const DashboardScreen = () => {
                     </Card>
                 </Col>
             </Row>
-            <Row className='my-3'>
+            <Row className="my-3">
                 <Col>
                     <Card>
-                        <Card.Header as='h5'>Inventario Actual</Card.Header>
+                        <Card.Header as="h5">Inventario Actual</Card.Header>
                         <Card.Body>
                             <Card.Title>Dashboard</Card.Title>
                             <Card.Text>Lorem ipsum</Card.Text>
@@ -33,10 +33,10 @@ export const DashboardScreen = () => {
                     </Card>
                 </Col>
             </Row>
-            <Row className='my-3'>
+            <Row className="my-3">
                 <Col>
                     <Card>
-                        <Card.Header as='h5'>Estado Actual</Card.Header>
+                        <Card.Header as="h5">Estado Actual</Card.Header>
                         <Card.Body>
                             <Card.Title>Dashboard</Card.Title>
                             <Card.Text>Lorem ipsum</Card.Text>

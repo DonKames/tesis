@@ -36,9 +36,12 @@ const usePagination = (
 
     useEffect(() => {
         // Obtener la nueva cantidad de elementos
-        getItemsQty(showInactive).then((newItemsQty) => {
-            dispatch(setItemsQty(newItemsQty));
-        });
+
+        if (showInactive !== undefined) {
+            getItemsQty(showInactive).then((newItemsQty) => {
+                dispatch(setItemsQty(newItemsQty));
+            });
+        }
     }, [showInactive]);
 
     const handlePageChange = async (pageNumber) => {

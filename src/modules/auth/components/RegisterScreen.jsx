@@ -49,63 +49,54 @@ export const RegisterScreen = () => {
     };
 
     return (
-        <Card className='shadow position-absolute top-50 start-50 translate-middle col-10 col-md-4 col-xxl-2 animate__animated animate__fadeIn animate__faster'>
+        <Card className="shadow position-absolute top-50 start-50 translate-middle col-10 col-md-4 col-xxl-2 animate__animated animate__fadeIn animate__faster">
             <Card.Body>
-                <Card.Title
-                    className='text-center'
-                    tag='h5'
-                >
+                <Card.Title className="text-center" tag="h5">
                     Registro
                 </Card.Title>
                 <Form onSubmit={handleRegister}>
                     <Form.Control
-                        type='text'
-                        placeholder='Nombre'
-                        name='name'
-                        autoComplete='off'
-                        className='mb-3 border-top-0 border-end-0 border-start-0'
+                        type="text"
+                        placeholder="Nombre"
+                        name="name"
+                        autoComplete="off"
+                        className="mb-3 border-top-0 border-end-0 border-start-0"
                         value={name}
                         onChange={handleInputChange}
                     />
                     <Form.Control
-                        type='text'
-                        placeholder='E-mail'
-                        name='email'
-                        className='mb-3 border-top-0 border-end-0 border-start-0'
-                        autoComplete='off'
+                        type="text"
+                        placeholder="E-mail"
+                        name="email"
+                        className="mb-3 border-top-0 border-end-0 border-start-0"
+                        autoComplete="off"
                         value={email}
                         onChange={handleInputChange}
                     />
                     <Form.Control
-                        type='password'
-                        placeholder='Contraseña'
-                        name='password'
-                        className='mb-3 border-top-0 border-end-0 border-start-0'
-                        autoComplete='current-password'
+                        type="password"
+                        placeholder="Contraseña"
+                        name="password"
+                        className="mb-3 border-top-0 border-end-0 border-start-0"
+                        autoComplete="current-password"
                         value={password}
                         onChange={handleInputChange}
                     />
                     <Form.Control
-                        type='password'
-                        placeholder='Re-Contraseña'
-                        name='repassword'
-                        className='mb-3 border-top-0 border-end-0 border-start-0'
-                        autoComplete='current-password'
+                        type="password"
+                        placeholder="Re-Contraseña"
+                        name="repassword"
+                        className="mb-3 border-top-0 border-end-0 border-start-0"
+                        autoComplete="current-password"
                         value={repassword}
                         onChange={handleInputChange}
                     />
-                    <div className='d-grid'>
-                        <Button
-                            type='submit'
-                            color='primary'
-                        >
+                    <div className="d-grid">
+                        <Button type="submit" color="primary">
                             Registrar
                         </Button>
                     </div>
-                    <Link
-                        className='link mt-5'
-                        to='/pbl/login'
-                    >
+                    <Link className="link mt-5" to="/pbl/login">
                         Ya registrado?
                     </Link>
                 </Form>

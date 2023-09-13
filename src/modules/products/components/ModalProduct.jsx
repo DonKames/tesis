@@ -15,24 +15,22 @@ export const ModalProduct = React.memo(function ModalProduct({
     showModal,
     showWarning,
 }) {
-    const { active, sku, warehouse, branch, epc } = formValues;
+    console.log(formValues);
+    const { active, sku, warehouseId, branchId, epc } = formValues;
 
     return (
-        <Modal
-            show={showModal}
-            onHide={handleModalChange}
-        >
-            <Modal.Header className='h1'>Editar Producto</Modal.Header>
+        <Modal show={showModal} onHide={handleModalChange}>
+            <Modal.Header className="h1">Editar Producto</Modal.Header>
             <Modal.Body>
                 <Form>
                     <Form.Group>
                         <Form.Label>Sku</Form.Label>
                         <Form.Control
-                            className='mb-3'
-                            name='sku'
+                            className="mb-3"
+                            name="sku"
                             onChange={handleInputChange}
-                            placeholder='Sku'
-                            type='text'
+                            placeholder="Sku"
+                            type="text"
                             value={sku}
                         />
                     </Form.Group>
@@ -40,16 +38,16 @@ export const ModalProduct = React.memo(function ModalProduct({
                         <Form.Label>Sucursal</Form.Label>
                         <SelectBranches
                             onChange={handleInputChange}
-                            name='branch'
-                            branchId={branch}
+                            name="branch"
+                            branchId={branchId}
                         />
                     </Form.Group>
                     <Form.Group>
                         <Form.Label>Bodega</Form.Label>
                         <SelectWarehouses
                             handleInputChange={handleInputChange}
-                            name='warehouse'
-                            warehouseId={warehouse}
+                            name="warehouse"
+                            warehouseId={warehouseId}
                         />
                         {/* <Form.Control
                             className='mb-3'
@@ -64,27 +62,27 @@ export const ModalProduct = React.memo(function ModalProduct({
                         <Form.Label>EPC</Form.Label>
                         <Form.Control
                             as={'textarea'}
-                            className='mb-3'
-                            name='epc'
+                            className="mb-3"
+                            name="epc"
                             onChange={handleInputChange}
-                            placeholder='epc'
-                            type='text'
+                            placeholder="epc"
+                            type="text"
                             value={epc}
                         />
                     </Form.Group>
-                    <Form.Group className='d-flex justify-content-center'>
-                        <Form.Label className='me-1'>Activo:</Form.Label>
+                    <Form.Group className="d-flex justify-content-center">
+                        <Form.Label className="me-1">Activo:</Form.Label>
                         <Form.Switch
-                            className='ms-1'
-                            name='active'
+                            className="ms-1"
+                            name="active"
                             onChange={handleInputChangeWithWarning}
-                            type='switch'
+                            type="switch"
                             checked={active}
                         />
                     </Form.Group>
                 </Form>
                 {showWarning && (
-                    <div className='alert alert-warning mt-2 animate__animated animate__fadeIn animate__fast'>
+                    <div className="alert alert-warning mt-2 animate__animated animate__fadeIn animate__fast">
                         Si desactivas este SKU, también se desactivarán todas
                         las bodegas asociadas a este SKU y los productos
                         asociados a esas bodegas.
@@ -93,9 +91,9 @@ export const ModalProduct = React.memo(function ModalProduct({
             </Modal.Body>
             <Modal.Footer>
                 <Button
-                    type='button'
-                    className='btn btn-secondary'
-                    data-bs-dismiss='modal'
+                    type="button"
+                    className="btn btn-secondary"
+                    data-bs-dismiss="modal"
                     onClick={handleModalChange}
                 >
                     Close

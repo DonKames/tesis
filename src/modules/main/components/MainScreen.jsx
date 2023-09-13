@@ -21,35 +21,21 @@ export const MainScreen = () => {
     return (
         <Container>
             <Row>
-                <Col
-                    className='mb-3'
-                    xs={12}
-                    lg={6}
-                >
+                <Col className="mb-3" xs={12} lg={6}>
                     <GeneralSection />
                 </Col>
-                <Col
-                    className='mb-3'
-                    xs={12}
-                    md={6}
-                    lg={3}
-                >
+                <Col className="mb-3" xs={12} md={6} lg={3}>
                     <BranchSection />
                 </Col>
-                <Col
-                    className='mb-3'
-                    xs={12}
-                    md={6}
-                    lg={3}
-                >
+                <Col className="mb-3" xs={12} md={6} lg={3}>
                     <WarehouseSection />
                 </Col>
             </Row>
-            <Row className='my-3'>
+            <Row className="my-3">
                 <Col>
                     <Card
                         // bg='light'
-                        className='shadow h-100'
+                        className="shadow h-100"
                     >
                         <Card.Header>
                             <h3>Resumen de la bodega</h3>
@@ -87,7 +73,7 @@ export const MainScreen = () => {
                     </Card>
                 </Col>
                 <Col>
-                    <Card className='shadow h-100'>
+                    <Card className="shadow h-100">
                         <Card.Header>
                             <h3>Tareas de movimiento de productos</h3>
                         </Card.Header>
@@ -115,10 +101,7 @@ export const MainScreen = () => {
                                 )} */}
                                 Las tareas creo
                             </Card.Text>
-                            <Link
-                                to='/tasks/new'
-                                className='btn btn-primary'
-                            >
+                            <Link to="/tasks/new" className="btn btn-primary">
                                 Crear nueva tarea
                             </Link>
                         </Card.Body>
@@ -126,11 +109,11 @@ export const MainScreen = () => {
                 </Col>
             </Row>
 
-            <Row className='my-3'></Row>
+            <Row className="my-3"></Row>
 
-            <Row className='my-3'>
+            <Row className="my-3">
                 <Col>
-                    <Card className=' shadow'>
+                    <Card className=" shadow">
                         <Card.Body>
                             <Card.Title>Búsqueda de productos</Card.Title>
                             <Card.Text>

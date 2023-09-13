@@ -6,14 +6,8 @@ import ProductsScreen from '../components/ProductsScreen';
 export const ProductsRouter = () => {
     return (
         <Routes>
-            <Route
-                path='/'
-                element={<ProductsScreen />}
-            />
-            <Route
-                path='add'
-                element={<AddProductsScreen />}
-            />
+            <Route path="/" element={<ProductsScreen />} />
+            <Route path="add" element={<AddProductsScreen />} />
         </Routes>
     );
 };

@@ -4,10 +4,7 @@ import '../../../styles/globalStyles.css';
 
 export const GlobalButton = ({ label, onClick, color }) => {
     return (
-        <button
-            className={`global-button ${color}`}
-            onClick={onClick}
-        >
+        <button className={`global-button ${color}`} onClick={onClick}>
             {label}
         </button>
     );

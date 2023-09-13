@@ -1,4 +1,4 @@
-import { getWarehousesNames } from '../../locations/APIs/apiWarehouses';
+import { getWarehousesNames } from '../../locations/APIs/warehouseAPI';
 import { getBranchesNames } from '../../locations/APIs/branchesAPI';
 import {
     createGlobalSettings,

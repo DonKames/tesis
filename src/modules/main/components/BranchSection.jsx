@@ -49,7 +49,7 @@ export const BranchSection = () => {
     }, [mainBranch]);
 
     return (
-        <Card className='shadow h-100 animate__animated animate__fadeIn animate__fast'>
+        <Card className="shadow h-100 animate__animated animate__fadeIn animate__fast">
             <Card.Header>
                 <Row>
                     <Col>
@@ -61,10 +61,7 @@ export const BranchSection = () => {
                             onChange={handleBranchChange}
                         >
                             {branchesNames.map((branch) => (
-                                <option
-                                    key={branch.id}
-                                    value={branch.id}
-                                >
+                                <option key={branch.id} value={branch.id}>
                                     {branch.name}
                                 </option>
                             ))}

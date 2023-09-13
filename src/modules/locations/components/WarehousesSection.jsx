@@ -2,7 +2,7 @@ import React from 'react';
 import { PaginatedTable } from '../../../shared/ui/components/PaginatedTable';
 import { useSelector } from 'react-redux';
 import usePagination from '../../../hooks/usePagination';
-import { getWarehouses, getWarehousesQty } from '../APIs/apiWarehouses';
+import { getWarehouses, getWarehousesQty } from '../APIs/warehouseAPI';
 import {
     locationsSetWarehouses,
     locationsSetWarehousesQty,

@@ -93,16 +93,16 @@ export const SettingsScreen = () => {
     return (
         <Container>
             <Row>
-                <Col className='d-flex justify-content-center'>
+                <Col className="d-flex justify-content-center">
                     <Card
                         style={{ display: 'inline-block', width: 'auto' }}
-                        className='shadow animate__animated animate__fadeIn animate__fast'
+                        className="shadow animate__animated animate__fadeIn animate__fast"
                     >
                         <Card.Header>
                             <h3>Configuraciones</h3>
                         </Card.Header>
                         <Card.Body>
-                            <Row className='align-items-center mb-3'>
+                            <Row className="align-items-center mb-3">
                                 <Col>
                                     <Card.Text>Sucursal Principal: </Card.Text>
                                 </Col>
@@ -122,7 +122,7 @@ export const SettingsScreen = () => {
                                     </Form.Select>
                                 </Col>
                             </Row>
-                            <Row className='align-items-center mb-3'>
+                            <Row className="align-items-center mb-3">
                                 <Col>
                                     <Card.Text>Bodega Principal: </Card.Text>
                                 </Col>

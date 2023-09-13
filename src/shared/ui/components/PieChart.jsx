@@ -7,7 +7,7 @@ export const PieChart = ({ data, title }) => {
         <Chart
             width={'300px'}
             height={'300px'}
-            chartType='PieChart'
+            chartType="PieChart"
             loader={<div>Loading Chart</div>}
             data={[['Task', 'Hours per Day'], ...data]}
             options={{

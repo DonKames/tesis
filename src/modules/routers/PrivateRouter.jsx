@@ -13,42 +13,15 @@ import { Layout } from '../../shared/ui/components/Layout';
 export const PrivateRouter = () => {
     return (
         <Routes>
-            <Route
-                path='/'
-                element={<Layout />}
-            >
-                <Route
-                    path='main'
-                    element={<MainScreen />}
-                />
-                <Route
-                    path='tasks'
-                    element={<TasksScreen />}
-                />
-                <Route
-                    path='products/*'
-                    element={<ProductsRouter />}
-                />
-                <Route
-                    path='dashboard'
-                    element={<DashboardScreen />}
-                />
-                <Route
-                    path='locations'
-                    element={<LocationsScreen />}
-                />
-                <Route
-                    path='users'
-                    element={<UsersScreen />}
-                />
-                <Route
-                    path='test'
-                    element={<MerchantApiTest />}
-                />
-                <Route
-                    path='settings'
-                    element={<SettingsScreen />}
-                />
+            <Route path="/" element={<Layout />}>
+                <Route path="main" element={<MainScreen />} />
+                <Route path="tasks" element={<TasksScreen />} />
+                <Route path="products/*" element={<ProductsRouter />} />
+                <Route path="dashboard" element={<DashboardScreen />} />
+                <Route path="locations" element={<LocationsScreen />} />
+                <Route path="users" element={<UsersScreen />} />
+                <Route path="test" element={<MerchantApiTest />} />
+                <Route path="settings" element={<SettingsScreen />} />
             </Route>
         </Routes>
     );

@@ -16,19 +16,16 @@ const SearchBar = () => {
 
     return (
         <form onSubmit={handleSubmit}>
-            <div className='input-group'>
+            <div className="input-group">
                 <input
-                    type='text'
-                    className='form-control'
-                    placeholder='Buscar producto...'
+                    type="text"
+                    className="form-control"
+                    placeholder="Buscar producto..."
                     value={searchTerm}
                     onChange={handleChange}
                 />
-                <div className='input-group-append'>
-                    <button
-                        className='btn btn-primary'
-                        type='submit'
-                    >
+                <div className="input-group-append">
+                    <button className="btn btn-primary" type="submit">
                         Buscar
                     </button>
                 </div>

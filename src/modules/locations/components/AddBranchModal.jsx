@@ -7,7 +7,7 @@ import Swal from 'sweetalert2';
 
 import { createBranch, getBranches } from '../APIs/branchesAPI';
 import { useForm } from '../../../hooks/useForm';
-import { getWarehouses } from '../APIs/apiWarehouses';
+import { getWarehouses } from '../APIs/warehouseAPI';
 import {
     locationsSetBranches,
     locationsSetWarehouses,
@@ -105,16 +105,10 @@ export const AddBranchModal = () => {
 
     return (
         <>
-            <Button
-                variant='primary'
-                onClick={handleOpenModal}
-            >
+            <Button variant="primary" onClick={handleOpenModal}>
                 Agregar Sucursal
             </Button>
-            <Modal
-                show={showModal}
-                onHide={handleCloseModal}
-            >
+            <Modal show={showModal} onHide={handleCloseModal}>
                 <Modal.Header closeButton>
                     <Modal.Title>Agregar Sucursal</Modal.Title>
                 </Modal.Header>
@@ -122,12 +116,12 @@ export const AddBranchModal = () => {
                     <Form onSubmit={handleFormSubmit}>
                         <Row>
                             <Col>
-                                <Form.Group className='mb-3'>
+                                <Form.Group className="mb-3">
                                     <Form.Label>Nombre Sucursal</Form.Label>
                                     <Form.Control
-                                        type='text'
-                                        placeholder='Ingrese el nombre de la Sucursal'
-                                        name='branchName'
+                                        type="text"
+                                        placeholder="Ingrese el nombre de la Sucursal"
+                                        name="branchName"
                                         value={branchName}
                                         onChange={handleInputChange}
                                     />
@@ -136,27 +130,27 @@ export const AddBranchModal = () => {
                         </Row>
                         <Row>
                             <Col>
-                                <Form.Group className='mb-3'>
+                                <Form.Group className="mb-3">
                                     <Form.Label>País</Form.Label>
                                     <Select
                                         isSearchable
-                                        name='country'
+                                        name="country"
                                         options={countryOptions}
                                         onChange={handleCountryChange}
-                                        placeholder='Seleccione País'
+                                        placeholder="Seleccione País"
                                         defaultValue={countryOptions[34]}
                                     />
                                 </Form.Group>
                             </Col>
                             <Col>
-                                <Form.Group className='mb-3'>
+                                <Form.Group className="mb-3">
                                     <Form.Label>Región</Form.Label>
                                     <Select
                                         isSearchable
-                                        name='region'
+                                        name="region"
                                         options={regionsOptions}
                                         onChange={handleRegionChange}
-                                        placeholder='Seleccione Región'
+                                        placeholder="Seleccione Región"
                                     />
                                 </Form.Group>
                             </Col>
@@ -164,9 +158,9 @@ export const AddBranchModal = () => {
                         <Form.Group>
                             <Form.Label>Dirección</Form.Label>
                             <Form.Control
-                                type='text'
-                                placeholder='Ingrese la Dirección'
-                                name='address'
+                                type="text"
+                                placeholder="Ingrese la Dirección"
+                                name="address"
                                 value={address}
                                 onChange={handleInputChange}
                             />
@@ -175,8 +169,8 @@ export const AddBranchModal = () => {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button
-                        type='button'
-                        variant='primary'
+                        type="button"
+                        variant="primary"
                         onClick={handleFormSubmit}
                     >
                         Guardar Sucursal

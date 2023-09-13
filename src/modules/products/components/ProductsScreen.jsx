@@ -1,25 +1,11 @@
 // React
-import React, { useEffect } from 'react';
+import React from 'react';
 
 // Dependencies
 import { Link } from 'react-router-dom';
 import { Container, Row, Col, Button } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
 
 // Personal
-import {
-    productsSetProductQty,
-    productsSetProducts,
-    productsSetSkus,
-} from '../slice/productsSlice';
-import {
-    locationsSetBranches,
-    locationsSetWarehouses,
-} from '../../locations/slice/locationsSlice';
-import { getProducts, getProductsQty } from '../APIs/apiProducts';
-import { getBranches } from '../../locations/APIs/branchesAPI';
-import { getWarehouses } from '../../locations/APIs/apiWarehouses';
-import { getSkus } from '../APIs/skusAPI';
 import SearchProductBar from './SearchProductBar';
 import { TableSkus } from './TableSkus';
 import { TableProducts } from './TableProducts';
@@ -34,63 +20,20 @@ import { TableProducts } from './TableProducts';
  */
 
 const ProductsScreen = () => {
-    const dispatch = useDispatch();
-
-    // Redux States
-    const { products, skus } = useSelector((state) => state.products);
-    const { branches, warehouses } = useSelector((state) => state.locations);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                if (!products?.length) {
-                    const fetchedData = await getProducts(1, 10);
-                    console.log(fetchedData);
-                    dispatch(productsSetProducts(fetchedData));
-                }
-
-                // UI
-                if (!branches.length) {
-                    const fetchedBranches = await getBranches();
-                    dispatch(locationsSetBranches(fetchedBranches));
-                }
-
-                if (!warehouses.length) {
-                    const fetchedWarehouses = await getWarehouses();
-                    dispatch(locationsSetWarehouses(fetchedWarehouses));
-                }
-
-                if (!skus.length) {
-                    const skusData = await getSkus(1, 10);
-                    dispatch(productsSetSkus(skusData));
-                }
-            } catch (error) {
-                console.error('Ocurrió un error al obtener los datos:', error);
-            }
-        };
-
-        fetchData();
-    }, []);
-
     return (
         <Container>
-            <Row className='mt-3 mb-2'>
+            <Row className="mt-3 mb-2">
                 <Col></Col>
                 <Col>
                     <SearchProductBar />
                 </Col>
-                <Col className='text-end'>
-                    <Link to='add'>
+                <Col className="text-end">
+                    <Link to="add">
                         <Button>Agregar producto</Button>
                     </Link>
                 </Col>
             </Row>
             <TableSkus />
-            {/* <Row>
-                <Col>
-                    <h1>Productos</h1>
-                </Col>
-            </Row> */}
             <TableProducts />
         </Container>
     );

@@ -80,35 +80,35 @@ export const TableSkus = () => {
 
             // style={{ backgroundColor: sku.active ? 'white' : 'red' }}
         >
-            <td className='align-middle'>{sku.sku}</td>
+            <td className="align-middle">{sku.sku}</td>
 
-            <td className='align-middle'>{sku.name}</td>
-            <td className='align-middle'>{sku.description}</td>
-            <td className='align-middle text-center'>{sku.stock}</td>
-            <td className='align-middle text-center'>{sku.minimumStock}</td>
-            <td className='align-middle text-end'>
+            <td className="align-middle">{sku.name}</td>
+            <td className="align-middle">{sku.description}</td>
+            <td className="align-middle text-center">{sku.stock}</td>
+            <td className="align-middle text-center">{sku.minimumStock}</td>
+            <td className="align-middle text-end">
                 <Button
-                    className='me-1 shadow'
+                    className="me-1 shadow"
                     onClick={() => handleOpenForm(sku.id)}
                 >
-                    <i className='bi bi-pencil-square'></i>
+                    <i className="bi bi-pencil-square"></i>
                 </Button>
 
                 {sku.active ? (
                     <Button
-                        className='me-1 text-white shadow'
-                        variant='danger'
+                        className="me-1 text-white shadow"
+                        variant="danger"
                         onClick={() => handleDeactivateSku(sku.id)}
                     >
-                        <i className='bi bi-trash3' />
+                        <i className="bi bi-trash3" />
                     </Button>
                 ) : (
                     <Button
-                        className='me-1 shadow'
+                        className="me-1 shadow"
                         onClick={() => handleActivateSku(sku.id)}
-                        variant='success'
+                        variant="success"
                     >
-                        <i className='bi bi-recycle' />
+                        <i className="bi bi-recycle" />
                     </Button>
                 )}
             </td>
@@ -279,14 +279,6 @@ export const TableSkus = () => {
         }
     };
 
-    useEffect(() => {
-        if (skusQty === null || skusQty === undefined) {
-            getSkusQty().then((skusQty) =>
-                dispatch(productsSetSkusQty(skusQty)),
-            );
-        }
-    }, [dispatch, skusQty, showInactive]);
-
     return (
         <>
             <ModalSku
@@ -312,7 +304,7 @@ export const TableSkus = () => {
                 setPagesQty={setPagesQty}
                 setShowInactive={setShowInactive}
                 showInactive={showInactive}
-                title='SKUs'
+                title="SKUs"
             />
         </>
     );

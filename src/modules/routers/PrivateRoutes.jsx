@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { PrivateRouter } from './PrivateRouter';
 
 export const PrivateRoutes = ({ isLoggedIn }) => {
-    return isLoggedIn ? <PrivateRouter /> : <Navigate to='../pbl/login' />;
+    return isLoggedIn ? <PrivateRouter /> : <Navigate to="../pbl/login" />;
 };
 
 PrivateRoutes.propTypes = {

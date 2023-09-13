@@ -16,7 +16,7 @@ import {
     locationsSetBranchesQty,
     locationsSetWarehousesQty,
 } from '../../locations/slice/locationsSlice';
-import { getWarehousesQty } from '../../locations/APIs/apiWarehouses';
+import { getWarehousesQty } from '../../locations/APIs/warehouseAPI';
 import { getBranchLocationsQty } from '../../locations/APIs/apiBranchLocation';
 import { getUsersQty } from '../../users/apis/apiUsers';
 import { usersSetUsersQty } from '../../users/slice/usersSlice';
@@ -100,46 +100,46 @@ export const GeneralSection = () => {
 
     return (
         <>
-            <Card className='shadow h-100 animate__animated animate__fadeIn animate__fast'>
+            <Card className="shadow h-100 animate__animated animate__fadeIn animate__fast">
                 <Card.Header>
                     <h3>Resumen General</h3>
                 </Card.Header>
                 <Card.Body>
                     <Row>
                         <Col>
-                            <Card.Text className='my-2'>
+                            <Card.Text className="my-2">
                                 <FontAwesomeIcon icon={faBuilding} />
                                 Sucursal Principal:
                                 <strong> {branchesQty}</strong>
                             </Card.Text>
-                            <Card.Text className='my-2'>
+                            <Card.Text className="my-2">
                                 <FontAwesomeIcon icon={faBuilding} />
                                 Bodega Principal:
                                 <strong> {mainWarehouse?.name}</strong>
                             </Card.Text>
-                            <Card.Text className='my-2'>
+                            <Card.Text className="my-2">
                                 <FontAwesomeIcon icon={faBuilding} />
                                 Total de Sucursales:
                                 <strong> {branchesQty}</strong>
                             </Card.Text>
-                            <Card.Text className='my-2'>
+                            <Card.Text className="my-2">
                                 <FontAwesomeIcon icon={faWarehouse} />
                                 Total de Bodegas:{' '}
                                 <strong>{warehousesQty}</strong>
                             </Card.Text>
-                            <Card.Text className='my-2'>
+                            <Card.Text className="my-2">
                                 <FontAwesomeIcon icon={faTent} /> Total de
                                 Ubicaciones de Sucursal:{' '}
                                 <strong>{branchLocationsQty}</strong>
                             </Card.Text>
-                            <Card.Text className='my-2'>
+                            <Card.Text className="my-2">
                                 <FontAwesomeIcon icon={faUser} /> Total de
                                 Usuarios: <strong>{usersQty}</strong>
                             </Card.Text>
                         </Col>
-                        <Col className='mt-0'>
+                        <Col className="mt-0">
                             <PieChart
-                                className='mt-0'
+                                className="mt-0"
                                 data={graphData}
                                 title={'Productos por Bodegas'}
                             />

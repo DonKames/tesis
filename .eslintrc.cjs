@@ -4,16 +4,20 @@ module.exports = {
         es2021: true,
         node: true,
     },
-    extends: ['plugin:react/recommended', 'standard'],
-    overrides: [],
+    extends: [
+        'plugin:react/recommended',
+        'standard',
+        'plugin:prettier/recommended',
+    ],
     parserOptions: {
         ecmaVersion: 'latest',
         sourceType: 'module',
     },
-    plugins: ['react', 'react-hooks'], // Añade 'react-hooks' aquí
+    plugins: ['react', 'react-hooks', 'prettier'],
     rules: {
+        'prettier/prettier': 'error',
         indent: ['error', 4, { SwitchCase: 1 }],
-        semi: 'off',
+        semi: ['error', 'always'],
         'comma-dangle': ['error', 'always-multiline'],
         'space-before-function-paren': 'off',
     },

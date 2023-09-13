@@ -3,13 +3,13 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Select from 'react-select';
 import { useDispatch, useSelector } from 'react-redux';
-import { getWarehousesNames } from '../../../modules/locations/APIs/apiWarehouses';
+import { getWarehousesNames } from '../../../modules/locations/APIs/warehouseAPI';
 import { uiSetWarehousesNames } from '../slice/uiSlice';
 
 export const SelectWarehouses = ({ handleInputChange, name, warehouseId }) => {
     const dispatch = useDispatch();
     const { warehousesNames } = useSelector((state) => state.ui);
-    const [selectedValue, setSelectedValue] = useState(null);
+    const [selectedValue, setSelectedValue] = useState(0);
 
     useEffect(() => {
         const fetchWarehousesNames = async () => {
@@ -51,6 +51,7 @@ export const SelectWarehouses = ({ handleInputChange, name, warehouseId }) => {
     return (
         <Select
             value={selectedValue}
+            // defaultValue={warehouseId}
             isSearchable
             name={name}
             onChange={handleWarehouseChange}
@@ -58,7 +59,7 @@ export const SelectWarehouses = ({ handleInputChange, name, warehouseId }) => {
                 value: warehouse.id,
                 label: warehouse.name,
             }))}
-            placeholder='Bodega'
+            placeholder="Bodega"
         />
     );
 };

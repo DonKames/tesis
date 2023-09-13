@@ -132,15 +132,12 @@ export const LoginScreen = () => {
 
     return (
         <>
-            <Modal
-                show={showModal}
-                onHide={handleCloseModal}
-            >
+            <Modal show={showModal} onHide={handleCloseModal}>
                 <Modal.Header closeButton>
                     <Modal.Title>Primer Ingreso</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Row className='text-center'>
+                    <Row className="text-center">
                         <p style={{ color: 'red' }}>
                             <b>Ya que es su primer ingreso.</b>
                         </p>
@@ -153,94 +150,88 @@ export const LoginScreen = () => {
                         <hr />
                     </Row>
                     <Form>
-                        <Form.Group className='mb-3'>
+                        <Form.Group className="mb-3">
                             <Form.Label>Contraseña</Form.Label>
                             <Form.Control
-                                type='password'
-                                placeholder='Contraseña'
-                                name='newPassword'
-                                className='mb-3'
+                                type="password"
+                                placeholder="Contraseña"
+                                name="newPassword"
+                                className="mb-3"
                                 value={newPassword}
                                 onChange={handlePassInputChange}
                             />
                         </Form.Group>
-                        <Form.Group className='mb-3'>
+                        <Form.Group className="mb-3">
                             <Form.Label>Repetir Contraseña</Form.Label>
                             <Form.Control
-                                type='password'
-                                placeholder='Repetir Contraseña'
-                                name='reNewPassword'
-                                className='mb-3'
+                                type="password"
+                                placeholder="Repetir Contraseña"
+                                name="reNewPassword"
+                                className="mb-3"
                                 value={reNewPassword}
                                 onChange={handlePassInputChange}
                             />
                         </Form.Group>
                         {newPassword !== reNewPassword &&
                             !validator.isEmpty(reNewPassword) && (
-                                <h6 className='text-danger'>
+                                <h6 className="text-danger">
                                     Las contraseñas no coinciden
                                 </h6>
                             )}
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button
-                        variant='primary'
-                        onClick={handleSavePassword}
-                    >
+                    <Button variant="primary" onClick={handleSavePassword}>
                         Guardar Contraseña
                     </Button>
                 </Modal.Footer>
             </Modal>
-            <Card className='shadow position-absolute top-50 start-50 translate-middle col-10 col-md-4 col-xxl-2 animate__animated animate__fadeIn animate__faster'>
+            <Card className="shadow position-absolute top-50 start-50 translate-middle col-10 col-md-4 col-xxl-2 animate__animated animate__fadeIn animate__faster">
                 <Card.Body>
-                    <Card.Title
-                        className='text-center'
-                        tag='h5'
-                    >
+                    <Card.Title className="text-center" tag="h5">
                         Login
                     </Card.Title>
                     <Form onSubmit={handleLogin}>
                         <Form.Control
-                            type='email'
-                            placeholder='E-mail'
-                            name='email'
-                            autoComplete='off'
-                            className='mb-3'
+                            type="email"
+                            placeholder="E-mail"
+                            name="email"
+                            autoComplete="off"
+                            className="mb-3"
                             value={email}
                             onChange={handleInputChange}
                             onBlur={handleEmailBlur}
                         />
                         {!validator.isEmail(email) && (
-                            <h6 className='text-danger'>
+                            <h6 className="text-danger">
                                 El e-mail no es valido
                             </h6>
                         )}
                         <Form.Control
-                            type='password'
-                            placeholder='Password'
-                            name='password'
-                            autoComplete='current-password'
-                            className='mb-3'
+                            type="password"
+                            placeholder="Password"
+                            name="password"
+                            autoComplete="current-password"
+                            className="mb-3"
                             value={password}
                             onChange={handleInputChange}
                         />
                         {!validator.isLength(password, { min: 6 }) && (
-                            <h6 className='text-danger'>
+                            <h6 className="text-danger">
                                 La contraseña debe tener al menos 6 caracteres
                             </h6>
                         )}
-                        <div className='d-grid'>
+                        <div className="d-grid">
                             <Button
-                                type='submit'
-                                color='primary'
+                                type="submit"
+                                color="primary"
                                 disabled={loading}
                             >
                                 Ingresar
                             </Button>
                         </div>
                         <hr />
-                        <Row className='text-center'>
+                        <Row className="text-center">
                             <Col>
                                 <strong>PRÓXIMAMENTE</strong>
                             </Col>
@@ -248,17 +239,17 @@ export const LoginScreen = () => {
                         <div>
                             <p>Ingresa con tu cuenta de:</p>
                             <Card
-                                className='google-btn bg-primary'
+                                className="google-btn bg-primary"
                                 // onClick={handleGoogleLogin}
                             >
-                                <div className='d-flex align-items-center'>
+                                <div className="d-flex align-items-center">
                                     <img
-                                        className='google-icon bg-white rounded p-1'
-                                        height='40'
-                                        src='https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg'
-                                        alt='google button'
+                                        className="google-icon bg-white rounded p-1"
+                                        height="40"
+                                        src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
+                                        alt="google button"
                                     />
-                                    <span className='mb-n1 flex-fill fw-bold text-center align-middle text-white'>
+                                    <span className="mb-n1 flex-fill fw-bold text-center align-middle text-white">
                                         Ingresar con GOOGLE
                                     </span>
                                 </div>

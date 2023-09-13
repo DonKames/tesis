@@ -143,17 +143,11 @@ export const AddUsersModal = () => {
     return (
         <>
             {authRole === 1 && (
-                <Button
-                    variant='primary'
-                    onClick={handleOpenModal}
-                >
+                <Button variant="primary" onClick={handleOpenModal}>
                     Agregar Usuario
                 </Button>
             )}
-            <Modal
-                onHide={handleCloseModal}
-                show={showModal}
-            >
+            <Modal onHide={handleCloseModal} show={showModal}>
                 <Modal.Header>
                     <Modal.Title>
                         <h1>Agregar Usuario</h1>
@@ -166,15 +160,15 @@ export const AddUsersModal = () => {
                                 <Form.Group>
                                     <Form.Label>Nombre Usuario</Form.Label>
                                     <Form.Control
-                                        autoComplete='off'
-                                        type='text'
-                                        placeholder='Ingrese el nombre del usuario'
-                                        name='name'
+                                        autoComplete="off"
+                                        type="text"
+                                        placeholder="Ingrese el nombre del usuario"
+                                        name="name"
                                         value={name}
                                         onChange={handleInputChange}
                                     />
                                     {!validator.isAlpha(name) && (
-                                        <h6 className='text-danger'>
+                                        <h6 className="text-danger">
                                             El nombre no puede contener números
                                             o caracteres especiales
                                         </h6>
@@ -183,15 +177,15 @@ export const AddUsersModal = () => {
                                 <Form.Group>
                                     <Form.Label>Apellido Usuario</Form.Label>
                                     <Form.Control
-                                        autoComplete='off'
-                                        type='text'
-                                        placeholder='Ingrese el apellido del usuario'
-                                        name='lastName'
+                                        autoComplete="off"
+                                        type="text"
+                                        placeholder="Ingrese el apellido del usuario"
+                                        name="lastName"
                                         value={lastName}
                                         onChange={handleInputChange}
                                     />
                                     {!validator.isAlpha(lastName) && (
-                                        <h6 className='text-danger'>
+                                        <h6 className="text-danger">
                                             El apellido no puede contener
                                             números o caracteres especiales
                                         </h6>
@@ -201,15 +195,15 @@ export const AddUsersModal = () => {
                                     <Form.Label>Rol Usuario</Form.Label>
                                     <Select
                                         isSearchable
-                                        name='role'
+                                        name="role"
                                         options={roleOptions}
                                         onChange={handleRoleChange}
-                                        placeholder='Seleccione un rol'
+                                        placeholder="Seleccione un rol"
                                         // defaultValue={roleOptions[0]}
                                     />
                                 </Form.Group>
                                 {!role && (
-                                    <h6 className='text-danger'>
+                                    <h6 className="text-danger">
                                         Por favor, seleccione un rol.
                                     </h6>
                                 )}
@@ -221,10 +215,10 @@ export const AddUsersModal = () => {
                                 <Form.Group>
                                     <Form.Label>E-mail Usuario</Form.Label>
                                     <Form.Control
-                                        autoComplete='off'
-                                        type='text'
-                                        placeholder='Ingrese el e-mail del usuario'
-                                        name='email'
+                                        autoComplete="off"
+                                        type="text"
+                                        placeholder="Ingrese el e-mail del usuario"
+                                        name="email"
                                         value={email}
                                         onChange={handleInputChange}
                                     />
@@ -233,7 +227,7 @@ export const AddUsersModal = () => {
                                             min: 6,
                                         }) &&
                                         !validator.isEmpty(email) && (
-                                            <h6 className='text-danger'>
+                                            <h6 className="text-danger">
                                                 El e-mail no es válido
                                             </h6>
                                         )}
@@ -244,8 +238,8 @@ export const AddUsersModal = () => {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button
-                        type='button'
-                        variant='primary'
+                        type="button"
+                        variant="primary"
                         onClick={handleFormSubmit}
                     >
                         Guardar Usuario

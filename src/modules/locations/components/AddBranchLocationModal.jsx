@@ -79,22 +79,19 @@ export const AddBranchLocationModal = () => {
     return (
         <>
             <Button onClick={handleOpenModal}>Agregar Lugar</Button>
-            <Modal
-                show={showModal}
-                onHide={handleCloseModal}
-            >
+            <Modal show={showModal} onHide={handleCloseModal}>
                 <Modal.Header closeButton>
                     <Modal.Title>Agregar Lugar de Sucursal</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
-                        <Row className='mb-2'>
+                        <Row className="mb-2">
                             <Form.Group>
                                 <Form.Label>Sucursal</Form.Label>
                                 <Select
                                     isSearchable
-                                    placeholder='Seleccione la Sucursal'
-                                    name='fk_branch_id'
+                                    placeholder="Seleccione la Sucursal"
+                                    name="fk_branch_id"
                                     options={branchOptions}
                                     onChange={handleBranchChange}
                                 />
@@ -104,9 +101,9 @@ export const AddBranchLocationModal = () => {
                             <Form.Group>
                                 <Form.Label>Nombre Lugar</Form.Label>
                                 <Form.Control
-                                    type='text'
-                                    placeholder='Ingrese el nombre del Lugar'
-                                    name='branchLocationName'
+                                    type="text"
+                                    placeholder="Ingrese el nombre del Lugar"
+                                    name="branchLocationName"
                                     value={branchLocationName}
                                     onChange={handleInputChange}
                                 />
@@ -116,9 +113,9 @@ export const AddBranchLocationModal = () => {
                             <Form.Group>
                                 <Form.Label>Descripción</Form.Label>
                                 <Form.Control
-                                    type='text'
-                                    placeholder='Ingrese la descripción del lugar'
-                                    name='description'
+                                    type="text"
+                                    placeholder="Ingrese la descripción del lugar"
+                                    name="description"
                                     value={description}
                                     onChange={handleInputChange}
                                 />
@@ -128,8 +125,8 @@ export const AddBranchLocationModal = () => {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button
-                        type='button'
-                        variant='primary'
+                        type="button"
+                        variant="primary"
                         onClick={handleFormSubmit}
                     >
                         Guardar Lugar

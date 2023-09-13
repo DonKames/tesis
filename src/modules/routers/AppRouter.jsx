@@ -16,7 +16,7 @@ import {
     settingsSetMainBranch,
     settingsSetMainWarehouse,
 } from '../settings/slice/settingsSlice';
-import { getWarehouseById } from '../locations/APIs/apiWarehouses';
+import { getWarehouseById } from '../locations/APIs/warehouseAPI';
 import { getBranchById } from '../locations/APIs/branchesAPI';
 
 export const AppRouter = () => {
@@ -105,17 +105,13 @@ export const AppRouter = () => {
     return (
         <Routes>
             {/* <Route path="/" element={<Layout />}> */}
+            <Route exact index element={<HomeScreen />} />
             <Route
-                exact
-                index
-                element={<HomeScreen />}
-            />
-            <Route
-                path='pbl/*'
+                path="pbl/*"
                 element={<PublicRoutes isLoggedIn={isLoggedIn} />}
             />
             <Route
-                path='pvt/*'
+                path="pvt/*"
                 element={<PrivateRoutes isLoggedIn={isLoggedIn} />}
             />
         </Routes>

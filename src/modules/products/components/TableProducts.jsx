@@ -82,44 +82,41 @@ export const TableProducts = () => {
     // Product form
     const [formValues, handleInputChange, reset, setFormValues] = useForm({
         active: true,
-        sku: '',
-        warehouse: 0,
+        branchId: 0,
         epc: '',
-        productId: '',
+        sku: '',
+        warehouseId: 0,
     });
 
     const productRenderer = (product) => (
-        <tr
-            className={product.active ? '' : 'table-danger'}
-            key={product.id}
-        >
-            <td className='align-middle'>{product.sku}</td>
-            <td className='align-middle'>{product.branchName}</td>
-            <td className='align-middle'>{product.warehouseName}</td>
-            <td className='align-middle'>{product.epc}</td>
-            <td className='align-middle text-end'>
+        <tr className={product.active ? '' : 'table-danger'} key={product.id}>
+            <td className="align-middle">{product.sku}</td>
+            <td className="align-middle">{product.branchName}</td>
+            <td className="align-middle">{product.warehouseName}</td>
+            <td className="align-middle">{product.epc}</td>
+            <td className="align-middle text-end">
                 <Button
-                    className='me-1'
+                    className="me-1"
                     onClick={() => handleOpenForm(product.id)}
                 >
-                    <i className='bi bi-pencil-square' />
+                    <i className="bi bi-pencil-square" />
                 </Button>
 
                 {product.active ? (
                     <Button
-                        className='me-1 text-white'
-                        variant='danger'
+                        className="me-1 text-white"
+                        variant="danger"
                         onClick={() => handleDeactivateProduct(product.id)}
                     >
-                        <i className='bi bi-trash3' />
+                        <i className="bi bi-trash3" />
                     </Button>
                 ) : (
                     <Button
-                        className='me-1'
+                        className="me-1"
                         onClick={() => handleActivateSku(product.id)}
-                        variant='success'
+                        variant="success"
                     >
-                        <i className='bi bi-recycle' />
+                        <i className="bi bi-recycle" />
                     </Button>
                 )}
             </td>
@@ -137,8 +134,9 @@ export const TableProducts = () => {
             setProductToEdit(getProductToEdit);
             setFormValues({
                 active: getProductToEdit.active,
-                warehouse: getProductToEdit.fk_warehouse_id,
-                sku: getProductToEdit.fk_sku_id,
+                branchId: getProductToEdit.branchId,
+                warehouseId: getProductToEdit.warehouseId,
+                sku: getProductToEdit.sku,
                 epc: getProductToEdit.epc,
             });
             setOriginalActiveState(getProductToEdit.active);
@@ -267,14 +265,6 @@ export const TableProducts = () => {
         console.log('Actualizando SKU con ID:', productToEdit.product_id);
     };
 
-    useEffect(() => {
-        if (productsQty === null || productsQty === undefined) {
-            getProductsQty().then((qty) =>
-                dispatch(productsSetProductQty(qty)),
-            );
-        }
-    }, [dispatch, productsQty, showInactive]);
-
     return (
         <>
             <ModalProduct
@@ -301,7 +291,7 @@ export const TableProducts = () => {
                 setPagesQty={setPagesQty}
                 setShowInactive={setShowInactive}
                 showInactive={showInactive}
-                title='Productos'
+                title="Productos"
             />
         </>
     );

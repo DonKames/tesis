@@ -46,17 +46,14 @@ export const UsersScreen = () => {
     }, [dispatch]);
 
     return (
-        <Container
-            fluid
-            className='mt-2'
-        >
+        <Container fluid className="mt-2">
             <Row>
                 <Col>
                     <Row>
                         <Col>
                             <h1>Usuarios</h1>
                         </Col>
-                        <Col className='text-center'>
+                        <Col className="text-center">
                             <AddUsersModal />
                         </Col>
                     </Row>

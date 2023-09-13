@@ -7,15 +7,12 @@ export default function HomeScreen() {
     return (
         <Container
             fluid
-            className='d-flex align-items-center justify-content-center vh-100'
+            className="d-flex align-items-center justify-content-center vh-100"
         >
             <Row>
                 <Col>
                     <Button>
-                        <Link
-                            to='pbl/login'
-                            className='nav-link  ms-3 me-2'
-                        >
+                        <Link to="pbl/login" className="nav-link  ms-3 me-2">
                             Iniciar sesión
                         </Link>
                     </Button>

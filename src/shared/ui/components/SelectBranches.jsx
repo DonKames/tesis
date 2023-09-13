@@ -10,7 +10,7 @@ export const SelectBranches = ({ onChange, name, branchId }) => {
 
     const { branchesNames } = useSelector((state) => state.ui);
 
-    const [selectedValue, setSelectedValue] = useState(null);
+    const [selectedValue, setSelectedValue] = useState(0);
 
     useEffect(() => {
         const fetchBranchesNames = async () => {
@@ -48,7 +48,7 @@ export const SelectBranches = ({ onChange, name, branchId }) => {
                 value: branch.id,
                 label: branch.name,
             }))}
-            placeholder='Selecciona una sucursal'
+            placeholder="Selecciona una sucursal"
         />
     );
 };

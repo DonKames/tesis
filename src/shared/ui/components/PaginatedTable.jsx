@@ -47,33 +47,26 @@ export const PaginatedTable = ({
 
     return (
         <>
-            <Card className='shadow rounded animate__animated animate__fadeIn animate__fast'>
+            <Card className="shadow rounded animate__animated animate__fadeIn animate__fast">
                 <Card.Header>
-                    <Row className='align-items-center'>
-                        <Col className='fs-2'>{title}</Col>
+                    <Row className="align-items-center">
+                        <Col className="fs-2">{title}</Col>
                         <Col>
                             <Form.Check
                                 reverse
-                                label='Mostrar elementos inactivos: '
-                                type='checkbox'
+                                label="Mostrar elementos inactivos: "
+                                type="checkbox"
                                 checked={showInactive}
                                 onChange={() => setShowInactive(!showInactive)}
                             />
                         </Col>
                     </Row>
                 </Card.Header>
-                <Table
-                    hover
-                    responsive
-                    className='m-0 rounded'
-                >
-                    <thead className='rounded'>
+                <Table hover responsive className="m-0 rounded">
+                    <thead className="rounded">
                         <tr>
                             {columns.map((column, index) => (
-                                <th
-                                    key={index}
-                                    className={column.className}
-                                >
+                                <th key={index} className={column.className}>
                                     {column.name}
                                 </th>
                             ))}
@@ -87,15 +80,15 @@ export const PaginatedTable = ({
                     <tbody>{items.map(itemRenderer)}</tbody>
                 </Table>
                 {footerText && (
-                    <Row className='align-items-center'>
+                    <Row className="align-items-center">
                         <Col>
-                            <div className='text-muted small mt-0 ms-3'>
+                            <div className="text-muted small mt-0 ms-3">
                                 {footerText}
                             </div>
                         </Col>
                         <Col>
-                            <div className='text-muted text-end me-3'>
-                                <label className='me-2'>
+                            <div className="text-muted text-end me-3">
+                                <label className="me-2">
                                     Elementos por página:
                                     <select
                                         value={limit}
@@ -111,7 +104,7 @@ export const PaginatedTable = ({
                                     </select>
                                 </label>
                                 <span
-                                    className='text-primary text-center'
+                                    className="text-primary text-center"
                                     onClick={() => handleLimitChange(10)}
                                     style={{ cursor: 'pointer' }}
                                 >
@@ -119,7 +112,7 @@ export const PaginatedTable = ({
                                 </span>
                                 {' | '}
                                 <span
-                                    className='text-primary text-center'
+                                    className="text-primary text-center"
                                     onClick={() => handleLimitChange(20)}
                                     style={{ cursor: 'pointer' }}
                                 >
@@ -127,7 +120,7 @@ export const PaginatedTable = ({
                                 </span>
                                 {' | '}
                                 <span
-                                    className='text-primary text-center'
+                                    className="text-primary text-center"
                                     onClick={() => handleLimitChange(50)}
                                     style={{ cursor: 'pointer' }}
                                 >
@@ -138,9 +131,9 @@ export const PaginatedTable = ({
                     </Row>
                 )}
             </Card>
-            <Row className='mt-2 mb-3'>
-                <Col className='d-flex justify-content-center'>
-                    <Pagination className='shadow rounded'>
+            <Row className="mt-2 mb-3">
+                <Col className="d-flex justify-content-center">
+                    <Pagination className="shadow rounded">
                         <Pagination.First
                             onClick={() => handlePageChange(1)}
                             disabled={selectedPage === 1}

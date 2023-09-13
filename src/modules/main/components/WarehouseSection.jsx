@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
     getWarehouseById,
     getWarehousesNames,
-} from '../../locations/APIs/apiWarehouses';
+} from '../../locations/APIs/warehouseAPI';
 import { uiSetWarehousesNames } from '../../../shared/ui/slice/uiSlice';
 
 export const WarehouseSection = () => {
@@ -47,7 +47,7 @@ export const WarehouseSection = () => {
     }, [mainWarehouse]);
 
     return (
-        <Card className='shadow h-100 animate__animated animate__fadeIn animate__fast'>
+        <Card className="shadow h-100 animate__animated animate__fadeIn animate__fast">
             <Card.Header>
                 <Row>
                     <Col>
@@ -59,10 +59,7 @@ export const WarehouseSection = () => {
                             onChange={handleWarehouseChange}
                         >
                             {warehousesNames.map((warehouse) => (
-                                <option
-                                    key={warehouse.id}
-                                    value={warehouse.id}
-                                >
+                                <option key={warehouse.id} value={warehouse.id}>
                                     {warehouse.name}
                                 </option>
                             ))}
@@ -71,7 +68,7 @@ export const WarehouseSection = () => {
                 </Row>
             </Card.Header>
             <Card.Body>
-                <Card.Text className=''>
+                <Card.Text className="">
                     Nombre: <strong>{selectedWarehouse?.name}</strong>
                 </Card.Text>
                 <Card.Text>

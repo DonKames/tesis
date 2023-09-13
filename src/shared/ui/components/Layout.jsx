@@ -8,7 +8,7 @@ export const Layout = () => {
     return (
         <>
             <NavBar />
-            <Outlet className='content' />
+            <Outlet className="content" />
             <FooterBar />
         </>
     );
