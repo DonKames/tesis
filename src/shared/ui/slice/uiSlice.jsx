@@ -8,6 +8,7 @@ const initialState = {
 
     // Selects options
     branchesNames: [],
+    skusNames: [],
     warehousesNames: [],
 };
 
@@ -40,6 +41,10 @@ export const uiSlice = createSlice({
             ...state,
             branchesNames: action.payload,
         }),
+        uiSetSkusNames: (state, action) => ({
+            ...state,
+            skusNames: action.payload,
+        }),
         uiSetWarehousesNames: (state, action) => ({
             ...state,
             warehousesNames: action.payload,
@@ -58,6 +63,7 @@ export const {
     uiStartLoading,
     uiFinishLoading,
     uiSetBranchesNames,
+    uiSetSkusNames,
     uiSetWarehousesNames,
 } = uiSlice.actions;
 

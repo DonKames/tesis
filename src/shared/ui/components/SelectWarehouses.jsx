@@ -51,7 +51,6 @@ export const SelectWarehouses = ({ handleInputChange, name, warehouseId }) => {
     return (
         <Select
             value={selectedValue}
-            // defaultValue={warehouseId}
             isSearchable
             name={name}
             onChange={handleWarehouseChange}
@@ -59,7 +58,7 @@ export const SelectWarehouses = ({ handleInputChange, name, warehouseId }) => {
                 value: warehouse.id,
                 label: warehouse.name,
             }))}
-            placeholder="Bodega"
+            placeholder="Seleccione su Bodega"
         />
     );
 };

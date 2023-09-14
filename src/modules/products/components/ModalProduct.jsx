@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Button, Form, Modal } from 'react-bootstrap';
 import { SelectWarehouses } from '../../../shared/ui/components/SelectWarehouses';
 import { SelectBranches } from '../../../shared/ui/components/SelectBranches';
+import { SelectSkus } from '../../../shared/ui/components/SelectSkus';
 
 export const ModalProduct = React.memo(function ModalProduct({
     formValues,
@@ -25,6 +26,7 @@ export const ModalProduct = React.memo(function ModalProduct({
                 <Form>
                     <Form.Group>
                         <Form.Label>Sku</Form.Label>
+                        <SelectSkus />
                         <Form.Control
                             className="mb-3"
                             name="sku"

@@ -2,6 +2,19 @@ import { handleFetchError } from '../../../shared/utils/handleFetchError';
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
+export const getSkus = async (page = 1, limit = 10, showInactive = false) => {
+    try {
+        const response = await fetch(
+            `${BASE_URL}/skus?page=${page}&limit=${limit}&showInactive=${showInactive}`,
+        );
+        const finalResp = await handleFetchError(response);
+        return finalResp;
+    } catch (error) {
+        console.log('Error al obtener SKUS desde la API:', error);
+        return [];
+    }
+};
+
 export const getSkusQty = async (showInactive) => {
     try {
         const response = await fetch(
@@ -18,15 +31,14 @@ export const getSkusQty = async (showInactive) => {
     }
 };
 
-export const getSkus = async (page = 1, limit = 10, showInactive = false) => {
+export const getSkusNames = async () => {
     try {
-        const response = await fetch(
-            `${BASE_URL}/skus?page=${page}&limit=${limit}&showInactive=${showInactive}`,
-        );
-        const finalResp = await handleFetchError(response);
-        return finalResp;
+        const response = await fetch(`${BASE_URL}/skus/names`);
+        return await handleFetchError(response);
+        // const finalResp = await handleFetchError(response);
+        // return finalResp;
     } catch (error) {
-        console.log('Error al obtener SKUS desde la API:', error);
+        console.log('Error al obtener SKUS Names desde la API:', error);
         return [];
     }
 };
