@@ -34,9 +34,9 @@ export const getSkusQty = async (showInactive) => {
 export const getSkusNames = async () => {
     try {
         const response = await fetch(`${BASE_URL}/skus/names`);
-        return await handleFetchError(response);
-        // const finalResp = await handleFetchError(response);
-        // return finalResp;
+        // return await handleFetchError(response);
+        const finalResp = await handleFetchError(response);
+        return finalResp;
     } catch (error) {
         console.log('Error al obtener SKUS Names desde la API:', error);
         return [];

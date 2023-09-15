@@ -17,7 +17,7 @@ export const ModalProduct = React.memo(function ModalProduct({
     showWarning,
 }) {
     console.log(formValues);
-    const { active, sku, warehouseId, branchId, epc } = formValues;
+    const { active, skuId, warehouseId, branchId, epc } = formValues;
 
     return (
         <Modal show={showModal} onHide={handleModalChange}>
@@ -26,16 +26,13 @@ export const ModalProduct = React.memo(function ModalProduct({
                 <Form>
                     <Form.Group>
                         <Form.Label>Sku</Form.Label>
-                        <SelectSkus />
-                        <Form.Control
-                            className="mb-3"
+                        <SelectSkus
+                            handleInputChange={handleInputChange}
                             name="sku"
-                            onChange={handleInputChange}
-                            placeholder="Sku"
-                            type="text"
-                            value={sku}
+                            skuId={skuId}
                         />
                     </Form.Group>
+
                     <Form.Group>
                         <Form.Label>Sucursal</Form.Label>
                         <SelectBranches
@@ -44,6 +41,7 @@ export const ModalProduct = React.memo(function ModalProduct({
                             branchId={branchId}
                         />
                     </Form.Group>
+
                     <Form.Group>
                         <Form.Label>Bodega</Form.Label>
                         <SelectWarehouses
@@ -51,15 +49,8 @@ export const ModalProduct = React.memo(function ModalProduct({
                             name="warehouse"
                             warehouseId={warehouseId}
                         />
-                        {/* <Form.Control
-                            className='mb-3'
-                            name='bodega'
-                            onChange={handleInputChange}
-                            placeholder='Bodega'
-                            type='number'
-                            value={warehouse}
-                        /> */}
                     </Form.Group>
+
                     <Form.Group>
                         <Form.Label>EPC</Form.Label>
                         <Form.Control
@@ -72,6 +63,7 @@ export const ModalProduct = React.memo(function ModalProduct({
                             value={epc}
                         />
                     </Form.Group>
+
                     <Form.Group className="d-flex justify-content-center">
                         <Form.Label className="me-1">Activo:</Form.Label>
                         <Form.Switch

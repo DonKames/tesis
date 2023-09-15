@@ -84,7 +84,7 @@ export const TableProducts = () => {
         active: true,
         branchId: 0,
         epc: '',
-        sku: '',
+        skuId: 0,
         warehouseId: 0,
     });
 
@@ -136,7 +136,7 @@ export const TableProducts = () => {
                 active: getProductToEdit.active,
                 branchId: getProductToEdit.branchId,
                 warehouseId: getProductToEdit.warehouseId,
-                sku: getProductToEdit.sku,
+                skuId: getProductToEdit.skuId,
                 epc: getProductToEdit.epc,
             });
             setOriginalActiveState(getProductToEdit.active);
