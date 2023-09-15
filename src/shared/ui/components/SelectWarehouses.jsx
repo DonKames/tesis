@@ -6,7 +6,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getWarehousesNames } from '../../../modules/locations/APIs/warehouseAPI';
 import { uiSetWarehousesNames } from '../slice/uiSlice';
 
-export const SelectWarehouses = ({ handleInputChange, name, warehouseId }) => {
+export const SelectWarehouses = ({
+    handleInputChange,
+    name,
+    warehouseId,
+    selectedBranch,
+}) => {
     const dispatch = useDispatch();
     const { warehousesNames } = useSelector((state) => state.ui);
     const [selectedValue, setSelectedValue] = useState(0);
@@ -48,16 +53,28 @@ export const SelectWarehouses = ({ handleInputChange, name, warehouseId }) => {
         });
     };
 
+    /* eslint-disable indent */
+    const options =
+        selectedBranch === 0
+            ? warehousesNames.map((warehouse) => ({
+                  value: warehouse.id,
+                  label: warehouse.name,
+              }))
+            : warehousesNames
+                  .filter((warehouse) => warehouse.branchId === selectedBranch)
+                  .map((warehouse) => ({
+                      value: warehouse.id,
+                      label: warehouse.name,
+                  }));
+    /* eslint-enable indent */
+
     return (
         <Select
             value={selectedValue}
             isSearchable
             name={name}
             onChange={handleWarehouseChange}
-            options={warehousesNames.map((warehouse) => ({
-                value: warehouse.id,
-                label: warehouse.name,
-            }))}
+            options={options}
             placeholder="Seleccione su Bodega"
         />
     );
@@ -67,4 +84,5 @@ SelectWarehouses.propTypes = {
     handleInputChange: PropTypes.func.isRequired,
     name: PropTypes.string.isRequired,
     warehouseId: PropTypes.number,
+    selectedBranch: PropTypes.number,
 };

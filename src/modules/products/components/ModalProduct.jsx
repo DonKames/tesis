@@ -28,7 +28,7 @@ export const ModalProduct = React.memo(function ModalProduct({
                         <Form.Label>Sku</Form.Label>
                         <SelectSkus
                             handleInputChange={handleInputChange}
-                            name="sku"
+                            name="skuId"
                             skuId={skuId}
                         />
                     </Form.Group>
@@ -37,7 +37,7 @@ export const ModalProduct = React.memo(function ModalProduct({
                         <Form.Label>Sucursal</Form.Label>
                         <SelectBranches
                             onChange={handleInputChange}
-                            name="branch"
+                            name="branchId"
                             branchId={branchId}
                         />
                     </Form.Group>
@@ -46,8 +46,9 @@ export const ModalProduct = React.memo(function ModalProduct({
                         <Form.Label>Bodega</Form.Label>
                         <SelectWarehouses
                             handleInputChange={handleInputChange}
-                            name="warehouse"
+                            name="warehouseId"
                             warehouseId={warehouseId}
+                            selectedBranch={branchId}
                         />
                     </Form.Group>
 

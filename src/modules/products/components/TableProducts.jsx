@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -21,10 +21,6 @@ import Swal from 'sweetalert2';
 export const TableProducts = () => {
     // Dispatch
     const dispatch = useDispatch();
-
-    // Utilizar el hook de validación
-    // TODO: Crear este hook
-    // const { isFormValid } = useFormSkuValidation(formValues);
 
     // Redux States
     const { products, productsQty } = useSelector((state) => state.products);
@@ -87,6 +83,8 @@ export const TableProducts = () => {
         skuId: 0,
         warehouseId: 0,
     });
+
+    const { isFormValid } = useForm(formValues);
 
     const productRenderer = (product) => (
         <tr className={product.active ? '' : 'table-danger'} key={product.id}>

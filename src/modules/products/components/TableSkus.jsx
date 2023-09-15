@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'react-bootstrap';
@@ -15,7 +15,7 @@ import {
 import { productsSetSkus, productsSetSkusQty } from '../slice/productsSlice';
 import { useForm } from '../../../hooks/useForm';
 import { ModalSku } from './ModalSku';
-import { useFormSkuValidation } from '../hooks/useFormSkuValidation';
+import { useSkuValidation } from '../hooks/useSkuValidation';
 
 export const TableSkus = () => {
     // Dispatch
@@ -70,7 +70,7 @@ export const TableSkus = () => {
     });
 
     // Utilizar el hook de validación
-    const { isFormValid } = useFormSkuValidation(formValues);
+    const { isFormValid } = useSkuValidation(formValues);
 
     // Sku table row renderer
     const skuRenderer = (sku) => (

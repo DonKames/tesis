@@ -1,6 +1,6 @@
 import validator from 'validator';
 
-export const useFormSkuValidation = (formValues) => {
+export const useSkuValidation = (formValues) => {
     const { active, description, minimumStock, name, sku } = formValues;
 
     const isFormValid = () => {

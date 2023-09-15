@@ -38,12 +38,22 @@ export const SelectBranches = ({ onChange, name, branchId }) => {
         }
     }, [branchId, branchesNames]);
 
+    const handleChange = (selectedOption) => {
+        setSelectedValue(selectedOption);
+        onChange({
+            target: {
+                name,
+                value: selectedOption.value,
+            },
+        });
+    };
+
     return (
         <Select
             value={selectedValue}
             isSearchable
             name={name}
-            onChange={onChange}
+            onChange={handleChange}
             options={branchesNames.map((branch) => ({
                 value: branch.id,
                 label: branch.name,
@@ -58,8 +68,3 @@ SelectBranches.propTypes = {
     onChange: PropTypes.func.isRequired,
     name: PropTypes.string.isRequired,
 };
-
-// SelectBranches.defaultProps = {
-//     branchId: 0,
-//     name: '',
-// };
