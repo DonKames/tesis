@@ -21,8 +21,8 @@ import { getBranchLocationsQty } from '../../locations/APIs/apiBranchLocation';
 import { getUsersQty } from '../../users/apis/apiUsers';
 import { usersSetUsersQty } from '../../users/slice/usersSlice';
 import { PieChart } from '../../../shared/ui/components/PieChart';
-import { getProductsCountByWarehouse } from '../../products/APIs/apiProducts';
 import { productsSetProductsCountByWarehouse } from '../../products/slice/productsSlice';
+import { getProductsCountByWarehouse } from '../../products/APIs/productsAPI';
 
 export const GeneralSection = () => {
     const dispatch = useDispatch();

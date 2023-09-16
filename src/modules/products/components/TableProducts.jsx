@@ -8,7 +8,8 @@ import {
     changeActiveStateProduct,
     getProducts,
     getProductsQty,
-} from '../APIs/apiProducts';
+    updateProduct,
+} from '../APIs/productsAPI';
 import {
     productsSetProductQty,
     productsSetProducts,
@@ -17,6 +18,7 @@ import { Button } from 'react-bootstrap';
 import { ModalProduct } from './ModalProduct';
 import { useForm } from '../../../hooks/useForm';
 import Swal from 'sweetalert2';
+import { useProductValidationForm } from '../hooks/useProductValidationForm';
 
 export const TableProducts = () => {
     // Dispatch
@@ -83,8 +85,6 @@ export const TableProducts = () => {
         skuId: 0,
         warehouseId: 0,
     });
-
-    const { isFormValid } = useForm(formValues);
 
     const productRenderer = (product) => (
         <tr className={product.active ? '' : 'table-danger'} key={product.id}>
@@ -260,7 +260,40 @@ export const TableProducts = () => {
 
     const handleUpdate = async () => {
         // Lógica para actualizar el SKU
-        console.log('Actualizando SKU con ID:', productToEdit.product_id);
+        console.log('Actualizando SKU con ID:', productToEdit.id);
+
+        const { id } = productToEdit;
+
+        const { isFormValid } = useProductValidationForm(formValues);
+
+        if (isFormValid) {
+            try {
+                const resp = await updateProduct(id, formValues);
+
+                console.log(resp);
+
+                const updatedProducts = products.map((product) =>
+                    product.id === id ? { ...product, ...formValues } : product,
+                );
+
+                dispatch(productsSetProducts(updatedProducts));
+
+                Swal.fire({
+                    title: '¡Producto actualizado!',
+                    text: 'El producto ha sido actualizado.',
+                    icon: 'success',
+                });
+
+                handleModalChange();
+            } catch (error) {
+                console.log(error);
+                Swal.fire({
+                    title: 'Error',
+                    text: error.message,
+                    icon: 'error',
+                });
+            }
+        }
     };
 
     return (

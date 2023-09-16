@@ -122,3 +122,26 @@ export const changeActiveStateProduct = async (productId, activeState) => {
         return null;
     }
 };
+
+export const updateProduct = async (productId, productData) => {
+    try {
+        const response = await fetch(`${BASE_URL}/products/${productId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(productData),
+        });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.log(
+            `Error al actualizar el Producto ${productId} en la API:`,
+            error,
+        );
+        return null;
+    }
+};

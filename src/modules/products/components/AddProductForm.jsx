@@ -5,8 +5,8 @@ import Select from 'react-select';
 import { useForm } from '../../../hooks/useForm';
 import { productsSetProducts, productsSetSkus } from '../slice/productsSlice';
 import { getSkus } from '../APIs/skusAPI';
-import { createProduct, getProducts } from '../APIs/apiProducts';
 import Swal from 'sweetalert2';
+import { createProduct, getProducts } from '../APIs/productsAPI';
 
 export const AddProductForm = () => {
     const dispatch = useDispatch();
