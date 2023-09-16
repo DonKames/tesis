@@ -64,7 +64,7 @@ export const SelectBranches = ({ onChange, name, branchId }) => {
 };
 
 SelectBranches.propTypes = {
-    branchId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    branchId: PropTypes.number,
     onChange: PropTypes.func.isRequired,
     name: PropTypes.string.isRequired,
 };

@@ -26,6 +26,7 @@ export const TableProducts = () => {
 
     // Redux States
     const { products, productsQty } = useSelector((state) => state.products);
+    const { branchesNames, warehousesNames } = useSelector((state) => state.ui);
 
     // Local States
     const [showModal, setShowModal] = useState(false);
@@ -272,9 +273,23 @@ export const TableProducts = () => {
 
                 console.log(resp);
 
+                /* eslint-disable indent */
                 const updatedProducts = products.map((product) =>
-                    product.id === id ? { ...product, ...formValues } : product,
+                    product.id === id
+                        ? {
+                              ...product,
+                              ...formValues,
+                              warehouseName: warehousesNames.find(
+                                  (warehouse) =>
+                                      warehouse.id === formValues.warehouseId,
+                              ).name,
+                              branchName: branchesNames.find(
+                                  (branch) => branch.id === formValues.branchId,
+                              ).name,
+                          }
+                        : product,
                 );
+                /* eslint-enable indent */
 
                 dispatch(productsSetProducts(updatedProducts));
 
@@ -299,12 +314,13 @@ export const TableProducts = () => {
     return (
         <>
             <ModalProduct
-                productId={productToEdit.id}
                 formValues={formValues}
                 handleInputChange={handleInputChange}
                 handleInputChangeWithWarning={handleInputChangeWithWarning}
                 handleModalChange={handleModalChange}
                 handleUpdate={handleUpdate}
+                originalBranchId={productToEdit.branchId}
+                productId={productToEdit.id}
                 showModal={showModal}
                 showWarning={showWarning}
             />

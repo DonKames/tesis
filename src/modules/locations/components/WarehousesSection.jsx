@@ -29,25 +29,26 @@ export const WarehousesSection = () => {
         );
 
     // Table columns
-    const columns = ['Nombre', 'Sucursal', 'Capacidad'];
+    // const columns = ['Nombre', 'Sucursal', 'Capacidad'];
+    const columns = [
+        { name: 'Nombre', className: '' },
+        { name: 'Sucursal', className: '' },
+        { name: 'Capacidad', className: '' },
+        { name: '', className: 'text-end' },
+    ];
 
     // Item Renderer
     const itemRenderer = (warehouse) => {
         return (
-            <tr key={warehouse.warehouse_id}>
+            <tr key={warehouse.id}>
                 <td>{warehouse.name}</td>
-                <td>
-                    {
-                        branches.find(
-                            (branch) =>
-                                branch.branch_id === warehouse.fk_branch_id,
-                        )?.name
-                    }
-                </td>
+                <td>{warehouse.branch_id}</td>
                 <td>{warehouse.capacity} m3</td>
             </tr>
         );
     };
+
+    console.log('warehouses', warehouses);
 
     return (
         <>
@@ -61,6 +62,7 @@ export const WarehousesSection = () => {
                 footerText={`Total de Bodegas: ${warehousesQty} | Páginas Totales: ${pagesQty} `}
                 handleLimitChange={setLimit}
                 limit={limit}
+                title="Bodegas"
             />
         </>
     );

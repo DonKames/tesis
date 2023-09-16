@@ -11,10 +11,12 @@ export const SelectWarehouses = ({
     name,
     warehouseId,
     selectedBranch,
+    originalBranchId,
 }) => {
     const dispatch = useDispatch();
     const { warehousesNames } = useSelector((state) => state.ui);
     const [selectedValue, setSelectedValue] = useState(0);
+    // const [options, setOptions] = useState([]);
 
     useEffect(() => {
         const fetchWarehousesNames = async () => {
@@ -68,6 +70,21 @@ export const SelectWarehouses = ({
                   }));
     /* eslint-enable indent */
 
+    useEffect(() => {
+        if (originalBranchId !== selectedBranch) {
+            setSelectedValue({
+                value: options ? options[0]?.value : 0,
+                label: options ? options[0]?.label : '',
+            });
+            handleInputChange({
+                target: {
+                    name,
+                    value: options ? options[0]?.value : 0,
+                },
+            });
+        }
+    }, [selectedBranch]);
+
     return (
         <Select
             value={selectedValue}
@@ -85,4 +102,9 @@ SelectWarehouses.propTypes = {
     name: PropTypes.string.isRequired,
     warehouseId: PropTypes.number,
     selectedBranch: PropTypes.number,
+};
+
+SelectWarehouses.defaultProps = {
+    warehouseId: 0,
+    selectedBranch: 0,
 };

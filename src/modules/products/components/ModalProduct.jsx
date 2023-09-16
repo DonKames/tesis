@@ -12,7 +12,7 @@ export const ModalProduct = React.memo(function ModalProduct({
     handleInputChangeWithWarning,
     handleModalChange,
     handleUpdate,
-    productId,
+    originalBranchId,
     showModal,
     showWarning,
 }) {
@@ -47,8 +47,9 @@ export const ModalProduct = React.memo(function ModalProduct({
                         <SelectWarehouses
                             handleInputChange={handleInputChange}
                             name="warehouseId"
-                            warehouseId={warehouseId}
+                            originalBranchId={originalBranchId}
                             selectedBranch={branchId}
+                            warehouseId={warehouseId}
                         />
                     </Form.Group>
 
@@ -105,7 +106,7 @@ ModalProduct.propTypes = {
     handleInputChangeWithWarning: PropTypes.func.isRequired,
     handleModalChange: PropTypes.func.isRequired,
     handleUpdate: PropTypes.func.isRequired,
-    productId: PropTypes.number,
+    originalBranchId: PropTypes.number.isRequired,
     showModal: PropTypes.bool.isRequired,
     showWarning: PropTypes.bool.isRequired,
 };

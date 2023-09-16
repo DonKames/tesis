@@ -32,7 +32,13 @@ export const BranchLocationsSection = () => {
         );
 
     // Columns to show in the table
-    const columns = ['Nombre', 'Sucursal', 'Direccion'];
+    // const columns = ['Nombre', 'Sucursal', 'Direccion'];
+    const columns = [
+        { name: 'Nombre', className: '' },
+        { name: 'Sucursal', className: '' },
+        { name: 'Dirección', className: '' },
+        { name: '', className: 'text-end' },
+    ];
 
     // Item Renderer
     const itemRenderer = (branchLocation) => {
@@ -65,6 +71,7 @@ export const BranchLocationsSection = () => {
                 footerText={`Total de Sucursales: ${branchLocationsQty} | Páginas Totales: ${pagesQty} `}
                 handleLimitChange={setLimit}
                 limit={limit}
+                title="Lugares de Sucursales"
             />
         </>
     );
