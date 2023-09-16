@@ -1,0 +1,60 @@
+// Variables de Bootstrap
+$font-family-sans-serif: 'Fira Sans', 'Nunito', 'Roboto', sans-serif;
+
+$primary: #6b8994;
+$secondary: #a2b5be;
+$danger: #ec2a21;
+
+$light: #d6d6d6;
+$dark: #383838;
+
+$body-bg: #f2f2f2;
+$gray-200: #d6d6d6;
+
+$navbar-dark-color: #f2f2f2;
+$navbar-dark: #f2f2f2;
+$navbar-dark-bg: #383838;
+
+$headings-color: #383838;
+$body-color: #6b8994;
+$text-muted: #a2b5be;
+
+$border-color: #d6d6d6;
+
+.btn.btn-primary {
+    --bs-btn-color: #f2f2f2;
+}
+
+// Padding y alineación
+$table-cell-padding-y: .5rem;
+$table-cell-padding-x: .5rem;
+$table-cell-vertical-align: middle;
+
+// // Colores generales y fondo
+$table-color: #383838; // Color del texto
+$table-bg: #f2f2f2; // Color de fondo
+
+// Encabezados de la tabla
+$table-th-font-weight: bold;
+
+// Filas con rayas (striped rows)
+$table-striped-color: $table-color;
+$table-striped-bg: #d6d6d6; // Un tono más claro para las filas alternas
+
+// Filas activas (por ejemplo, al hacer clic en ellas)
+$table-active-color: #f2f2f2; // Color del texto en filas activas
+$table-active-bg: #6b8994; // Color de fondo en filas activas
+
+// Hover (al pasar el ratón por encima)
+$table-hover-color: #fff;
+$table-hover-bg: #a2b5be; // Un tono más claro para el hover
+
+// Bordes de la tabla
+$table-border-width: 1px;
+$table-border-color: #d6d6d6; // Color de los bordes
+
+// Caption (título de la tabla)
+$table-caption-color: #a2b5be; // Color para el texto del título
+
+
+@import "../../../node_modules/bootstrap/scss/bootstrap";

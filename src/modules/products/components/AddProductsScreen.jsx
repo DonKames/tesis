@@ -3,9 +3,9 @@ import React, { useEffect } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { getBranches } from '../../locations/APIs/apiBranches';
+import { getBranches } from '../../locations/APIs/branchesAPI';
 import { locationsSetBranches } from '../../locations/slice/locationsSlice';
-import { AddSkuForm } from './addSkuForm';
+import { AddSkuForm } from './AddSkuForm';
 import { AddProductForm } from './AddProductForm';
 
 export const AddProductsScreen = () => {

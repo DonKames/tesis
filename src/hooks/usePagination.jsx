@@ -14,44 +14,51 @@ const usePagination = (
     const [selectedPage, setSelectedPage] = useState(1);
     const [pagesQty, setPagesQty] = useState(0);
     const [limit, setLimit] = useState(initialLimit);
+    const [showInactive, setShowInactive] = useState(false);
 
     useEffect(() => {
+        console.log(pagesQty);
+
         const fetchData = async () => {
-            if (itemsQty === null) {
-                const qty = await getItemsQty();
-                setPagesQty(Math.ceil(qty / limit));
-                dispatch(setItemsQty(qty)); // Aquí se almacena la cantidad en Redux
-            } else {
+            try {
                 setPagesQty(Math.ceil(itemsQty / limit));
-                const fetchedItems = await getItems(1, limit);
-                console.log('setItems', fetchedItems);
+                const fetchedItems = await getItems(1, limit, showInactive);
+                console.log(showInactive);
+                // console.log('setItems', fetchedItems);
                 dispatch(setItems(fetchedItems));
+            } catch (error) {
+                console.log(error);
             }
         };
 
         fetchData();
-    }, [
-        dispatch,
-        getItems,
-        getItemsQty,
-        setItems,
-        setItemsQty,
-        itemsQty,
-        limit,
-    ]);
+    }, [itemsQty, limit]);
+
+    useEffect(() => {
+        // Obtener la nueva cantidad de elementos
+
+        if (showInactive !== undefined) {
+            getItemsQty(showInactive).then((newItemsQty) => {
+                dispatch(setItemsQty(newItemsQty));
+            });
+        }
+    }, [showInactive]);
 
     const handlePageChange = async (pageNumber) => {
         setSelectedPage(pageNumber);
-        const fetchedItems = await getItems(pageNumber, limit);
+        const fetchedItems = await getItems(pageNumber, limit, showInactive);
         dispatch(setItems(fetchedItems));
     };
 
     return {
-        selectedPage,
-        pagesQty,
         handlePageChange,
-        setLimit,
         limit,
+        pagesQty,
+        setPagesQty,
+        selectedPage,
+        setLimit,
+        setShowInactive,
+        showInactive,
     };
 };
 

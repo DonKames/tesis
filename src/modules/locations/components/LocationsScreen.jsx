@@ -17,8 +17,8 @@ import {
     locationsSetWarehousesQty,
 } from '../slice/locationsSlice';
 import { getRegions } from '../APIs/apiRegions';
-import { getBranches, getBranchesQty } from '../APIs/apiBranches';
-import { getWarehouses, getWarehousesQty } from '../APIs/apiWarehouses';
+import { getBranches, getBranchesQty } from '../APIs/branchesAPI';
+import { getWarehouses, getWarehousesQty } from '../APIs/warehouseAPI';
 import { getCountries } from '../APIs/apiCountries';
 import {
     getBranchLocations,
@@ -50,11 +50,9 @@ export const LocationsScreen = () => {
         const fetchData = async () => {
             // Branches Table, Pagination.
             if (branchesQty === null) {
-                const { branchesQty } = await getBranchesQty();
-                // setBranchPagesQty(Math.ceil(branchesQty / branchLimit));
+                const branchesQty = await getBranchesQty();
                 dispatch(locationsSetBranchesQty(branchesQty));
             } else {
-                // setBranchPagesQty(Math.ceil(branchesQty / branchLimit));
                 const fetchedBranches = await getBranches(1, 10);
                 dispatch(locationsSetBranches(fetchedBranches));
             }
@@ -69,13 +67,6 @@ export const LocationsScreen = () => {
                 const warehousesQty = await getWarehousesQty();
                 // setWarehousePagesQty(Math.ceil(warehousesQty / warehouseLimit));
                 dispatch(locationsSetWarehousesQty(warehousesQty));
-            } else {
-                // setWarehousePagesQty(Math.ceil(warehousesQty / warehouseLimit));
-                // const fetchedWarehouses = await getWarehouses(
-                //     1,
-                //     warehouseLimit,
-                // );
-                // dispatch(locationsSetWarehouses(fetchedWarehouses));
             }
 
             if (!warehouses.length) {
@@ -115,27 +106,21 @@ export const LocationsScreen = () => {
     }, [dispatch]);
 
     return (
-        <Container
-            fluid
-            className='mt-2'
-        >
-            <Row className='align-items-center'>
-                <Col className='mb-3'>
+        <Container fluid className="mt-2">
+            <Row className="align-items-center">
+                <Col className="mb-3">
                     <Row>
                         <Col>
                             <h1>Sucursales</h1>
                         </Col>
-                        <Col className='text-center'>
+                        <Col className="text-center">
                             <AddBranchModal />
                         </Col>
                     </Row>
                     <BranchesSection />
                 </Col>
                 <Row>
-                    <Col
-                        xs='12'
-                        md='6'
-                    >
+                    <Col xs="12" md="6">
                         <Row>
                             <Col>
                                 <h1>Bodegas</h1>
@@ -146,10 +131,7 @@ export const LocationsScreen = () => {
                         </Row>
                         <WarehousesSection />
                     </Col>
-                    <Col
-                        xs='12'
-                        md='6'
-                    >
+                    <Col xs="12" md="6">
                         <Row>
                             <Col>
                                 <h1>Lugares de Sucursal</h1>

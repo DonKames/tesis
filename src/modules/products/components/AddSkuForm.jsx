@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Card, Form } from 'react-bootstrap';
 import { useForm } from '../../../hooks/useForm';
 import Swal from 'sweetalert2';
-import { createSku, getSkuBySku, getSkus } from '../APIs/apiSkus';
+import { createSku, getSkuBySku, getSkus } from '../APIs/skusAPI';
 import { useDispatch } from 'react-redux';
 import { productsSetSkus } from '../slice/productsSlice';
 
@@ -63,16 +63,16 @@ export const AddSkuForm = () => {
     };
 
     return (
-        <Card className='mb-3'>
+        <Card className="mb-3">
             <Card.Body>
                 <Card.Title>Agregar SKU</Card.Title>
                 <Form>
                     <Form.Group>
                         <Form.Label>SKU del producto</Form.Label>
                         <Form.Control
-                            type='text'
-                            placeholder='Ingrese el SKU para el producto'
-                            name='sku'
+                            type="text"
+                            placeholder="Ingrese el SKU para el producto"
+                            name="sku"
                             value={sku}
                             onChange={handleSkuInputChange}
                         />
@@ -80,9 +80,9 @@ export const AddSkuForm = () => {
                     <Form.Group>
                         <Form.Label>Nombre del producto</Form.Label>
                         <Form.Control
-                            type='text'
-                            placeholder='Ingrese el nombre del producto'
-                            name='name'
+                            type="text"
+                            placeholder="Ingrese el nombre del producto"
+                            name="name"
                             value={name}
                             onChange={handleSkuInputChange}
                         />
@@ -90,9 +90,9 @@ export const AddSkuForm = () => {
                     <Form.Group>
                         <Form.Label>Descripción del producto</Form.Label>
                         <Form.Control
-                            type='text'
-                            placeholder='Ingrese la descripción del producto'
-                            name='description'
+                            type="text"
+                            placeholder="Ingrese la descripción del producto"
+                            name="description"
                             value={description}
                             onChange={handleSkuInputChange}
                         />
@@ -100,9 +100,9 @@ export const AddSkuForm = () => {
                     <Form.Group>
                         <Form.Label>Precio del producto</Form.Label>
                         <Form.Control
-                            type='text'
-                            placeholder='Ingrese el precio del producto'
-                            name='price'
+                            type="text"
+                            placeholder="Ingrese el precio del producto"
+                            name="price"
                             value={price}
                             onChange={handleSkuInputChange}
                         />
@@ -110,9 +110,9 @@ export const AddSkuForm = () => {
                     <Form.Group>
                         <Form.Label>Lote del producto</Form.Label>
                         <Form.Control
-                            type='text'
-                            placeholder='Ingrese el lote del producto'
-                            name='lote'
+                            type="text"
+                            placeholder="Ingrese el lote del producto"
+                            name="lote"
                             value={lote}
                             onChange={handleSkuInputChange}
                         />
@@ -120,9 +120,9 @@ export const AddSkuForm = () => {
                     <Form.Group>
                         <Form.Label>Orden del producto</Form.Label>
                         <Form.Control
-                            type='text'
-                            placeholder='Ingrese el orden del producto'
-                            name='order'
+                            type="text"
+                            placeholder="Ingrese el orden del producto"
+                            name="order"
                             value={order}
                             onChange={handleSkuInputChange}
                         />
@@ -130,10 +130,7 @@ export const AddSkuForm = () => {
                 </Form>
             </Card.Body>
             <Card.Footer>
-                <Button
-                    className='btn btn-primary'
-                    onClick={handleAddSku}
-                >
+                <Button className="btn btn-primary" onClick={handleAddSku}>
                     Guardar Producto
                 </Button>
             </Card.Footer>

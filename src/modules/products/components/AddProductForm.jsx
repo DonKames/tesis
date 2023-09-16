@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import Select from 'react-select';
 import { useForm } from '../../../hooks/useForm';
 import { productsSetProducts, productsSetSkus } from '../slice/productsSlice';
-import { getSkus } from '../APIs/apiSkus';
-import { createProduct, getProducts } from '../APIs/apiProducts';
+import { getSkus } from '../APIs/skusAPI';
 import Swal from 'sweetalert2';
+import { createProduct, getProducts } from '../APIs/productsAPI';
 
 export const AddProductForm = () => {
     const dispatch = useDispatch();
@@ -92,16 +92,16 @@ export const AddProductForm = () => {
     };
 
     return (
-        <Card className='mb-3'>
+        <Card className="mb-3">
             <Card.Body>
                 <Card.Title>Agregar Producto</Card.Title>
                 <Form>
                     <Form.Group>
-                        <Row className='justify-content-between'>
+                        <Row className="justify-content-between">
                             <Col>
                                 <Form.Label>Código SKU</Form.Label>
                             </Col>
-                            <Col className='text-end'>
+                            <Col className="text-end">
                                 <Form.Label>
                                     {isValidSku ? (
                                         <span
@@ -126,9 +126,9 @@ export const AddProductForm = () => {
                             </Col>
                         </Row>
                         <Form.Control
-                            type='text'
-                            placeholder='Ingrese el Sku del producto'
-                            name='fkSku'
+                            type="text"
+                            placeholder="Ingrese el Sku del producto"
+                            name="fkSku"
                             value={fkSku}
                             onChange={handleSkuChange}
                         />
@@ -137,8 +137,8 @@ export const AddProductForm = () => {
                         <Form.Label>Sucursal</Form.Label>
                         <Select
                             isSearchable
-                            placeholder='Seleccione la Sucursal'
-                            name='branchId'
+                            placeholder="Seleccione la Sucursal"
+                            name="branchId"
                             options={branchOptions}
                             onChange={handleBranchChange}
                         />
@@ -146,9 +146,9 @@ export const AddProductForm = () => {
                     <Form.Group>
                         <Form.Label>Código Etiqueta (EPC)</Form.Label>
                         <Form.Control
-                            type='text'
-                            placeholder='Ingrese el epc para el producto'
-                            name='epc'
+                            type="text"
+                            placeholder="Ingrese el epc para el producto"
+                            name="epc"
                             value={epc}
                             onChange={handleInputChange}
                         />
@@ -156,10 +156,7 @@ export const AddProductForm = () => {
                 </Form>
             </Card.Body>
             <Card.Footer>
-                <Button
-                    className='btn btn-primary'
-                    onClick={handleAddProduct}
-                >
+                <Button className="btn btn-primary" onClick={handleAddProduct}>
                     Guardar Producto
                 </Button>
             </Card.Footer>

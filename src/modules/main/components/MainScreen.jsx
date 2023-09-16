@@ -1,77 +1,47 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { Card, Col, Container, Row } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { updateUserUid } from '../../users/apis/apiUsers';
-import { getProductsQty } from '../../products/APIs/apiProducts';
-import {
-    productsSetProductQty,
-    productsSetSkusQty,
-} from '../../products/slice/productsSlice';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-    faBoxes,
-    faDolly,
-    faWarehouse,
-    faMapMarkerAlt,
-    faCogs,
-} from '@fortawesome/free-solid-svg-icons';
-import { getSkusQty } from '../../products/APIs/apiSkus';
 import { GeneralSection } from './GeneralSection';
+import { WarehouseSection } from './WarehouseSection';
+import { BranchSection } from './BranchSection';
 
 export const MainScreen = () => {
-    const dispatch = useDispatch();
-
-    const { productsQty, skusQty } = useSelector((state) => state.products);
-
+    // Redux states
     const { isRegistered, email, uid } = useSelector((state) => state.auth);
-
-    console.log(isRegistered, productsQty);
 
     if (!isRegistered) {
         console.log('no registrado');
         updateUserUid(email, uid);
     }
 
-    useEffect(() => {
-        const fetchData = async () => {
-            console.log('dentro del fetch' + productsQty);
-            if (productsQty === null) {
-                const { productsQty } = await getProductsQty();
-                console.log(productsQty);
-                dispatch(productsSetProductQty(productsQty));
-            }
-
-            if (skusQty === null) {
-                const skusQty = await getSkusQty();
-                console.log(skusQty);
-                dispatch(productsSetSkusQty(skusQty));
-            }
-        };
-
-        fetchData();
-    }, [dispatch]);
-
     return (
         <Container>
             <Row>
-                <Col>
+                <Col className="mb-3" xs={12} lg={6}>
                     <GeneralSection />
                 </Col>
+                <Col className="mb-3" xs={12} md={6} lg={3}>
+                    <BranchSection />
+                </Col>
+                <Col className="mb-3" xs={12} md={6} lg={3}>
+                    <WarehouseSection />
+                </Col>
             </Row>
-            <Row className='my-3'>
+            <Row className="my-3">
                 <Col>
                     <Card
-                        bg='light'
-                        className='shadow h-100'
+                        // bg='light'
+                        className="shadow h-100"
                     >
                         <Card.Header>
                             <h3>Resumen de la bodega</h3>
                         </Card.Header>
                         <Card.Body>
-                            <Card.Text className='my-2'>
+                            {/* <Card.Text className='my-2'>
                                 <FontAwesomeIcon icon={faBoxes} /> Cantidad
                                 total de Skus:
                                 <strong> {skusQty}</strong>
@@ -84,12 +54,12 @@ export const MainScreen = () => {
                             <Card.Text className='my-2'>
                                 <FontAwesomeIcon icon={faDolly} /> Cantidad de
                                 productos en movimiento:{' '}
-                                {/* {taskList.filter((task) => !task.completed).length} */}
+                                {taskList.filter((task) => !task.completed).length}
                             </Card.Text>
                             <Card.Text className='my-2'>
                                 <FontAwesomeIcon icon={faWarehouse} />{' '}
                                 Inventario actual:{' '}
-                                {/* {products.reduce((total, product) => total + product.quantity, 0)} */}
+                                {products.reduce((total, product) => total + product.quantity, 0)}
                             </Card.Text>
                             <Card.Text className='my-2'>
                                 <FontAwesomeIcon icon={faMapMarkerAlt} />{' '}
@@ -98,12 +68,12 @@ export const MainScreen = () => {
                             <Card.Text className='my-2'>
                                 <FontAwesomeIcon icon={faCogs} /> Estado general
                                 del sistema: por implementar
-                            </Card.Text>
+                            </Card.Text> */}
                         </Card.Body>
                     </Card>
                 </Col>
                 <Col>
-                    <Card className='shadow h-100'>
+                    <Card className="shadow h-100">
                         <Card.Header>
                             <h3>Tareas de movimiento de productos</h3>
                         </Card.Header>
@@ -131,10 +101,7 @@ export const MainScreen = () => {
                                 )} */}
                                 Las tareas creo
                             </Card.Text>
-                            <Link
-                                to='/tasks/new'
-                                className='btn btn-primary'
-                            >
+                            <Link to="/tasks/new" className="btn btn-primary">
                                 Crear nueva tarea
                             </Link>
                         </Card.Body>
@@ -142,11 +109,11 @@ export const MainScreen = () => {
                 </Col>
             </Row>
 
-            <Row className='my-3'></Row>
+            <Row className="my-3"></Row>
 
-            <Row className='my-3'>
+            <Row className="my-3">
                 <Col>
-                    <Card className=' shadow'>
+                    <Card className=" shadow">
                         <Card.Body>
                             <Card.Title>Búsqueda de productos</Card.Title>
                             <Card.Text>

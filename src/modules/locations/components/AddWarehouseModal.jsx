@@ -3,7 +3,7 @@ import { Button, Form, Modal, Row } from 'react-bootstrap';
 import Select from 'react-select';
 import { useForm } from '../../../hooks/useForm';
 import { useDispatch, useSelector } from 'react-redux';
-import { createWarehouse, getWarehouses } from '../APIs/apiWarehouses';
+import { createWarehouse, getWarehouses } from '../APIs/warehouseAPI';
 import Swal from 'sweetalert2';
 import { locationsSetWarehouses } from '../slice/locationsSlice';
 
@@ -74,15 +74,13 @@ export const AddWarehouseModal = () => {
     return (
         <>
             <Button
-                variant='primary'
+                style={{ '--bs-btn-color': '#f2f2f2' }}
+                variant="primary"
                 onClick={handleOpenModal}
             >
                 Agregar Bodega
             </Button>
-            <Modal
-                show={showModal}
-                onHide={handleCloseModal}
-            >
+            <Modal show={showModal} onHide={handleCloseModal}>
                 <Modal.Header closeButton>
                     <Modal.Title>Agregar Bodega</Modal.Title>
                 </Modal.Header>
@@ -93,8 +91,8 @@ export const AddWarehouseModal = () => {
                                 <Form.Label>Sucursal</Form.Label>
                                 <Select
                                     isSearchable
-                                    placeholder='Seleccione la Sucursal'
-                                    name='fk_branch_id'
+                                    placeholder="Seleccione la Sucursal"
+                                    name="fk_branch_id"
                                     options={branchOptions}
                                     onChange={handleBranchChange}
                                 />
@@ -104,9 +102,9 @@ export const AddWarehouseModal = () => {
                             <Form.Group>
                                 <Form.Label>Nombre Bodega</Form.Label>
                                 <Form.Control
-                                    type='text'
-                                    placeholder='Ingrese el nombre de la Bodega'
-                                    name='warehouseName'
+                                    type="text"
+                                    placeholder="Ingrese el nombre de la Bodega"
+                                    name="warehouseName"
                                     value={warehouseName}
                                     onChange={handleInputChange}
                                 />
@@ -116,9 +114,9 @@ export const AddWarehouseModal = () => {
                             <Form.Group>
                                 <Form.Label>Capacidad en m3</Form.Label>
                                 <Form.Control
-                                    type='number'
-                                    placeholder='Ingrese la capacidad de la Bodega'
-                                    name='capacity'
+                                    type="number"
+                                    placeholder="Ingrese la capacidad de la Bodega"
+                                    name="capacity"
                                     value={capacity}
                                     onChange={handleInputChange}
                                 />
@@ -128,8 +126,8 @@ export const AddWarehouseModal = () => {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button
-                        type='button'
-                        variant='primary'
+                        type="button"
+                        variant="primary"
                         onClick={handleFormSubmit}
                     >
                         Guardar Bodega

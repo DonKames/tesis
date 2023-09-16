@@ -74,7 +74,6 @@ export const getUserById = async (userId) => {
 
 export const getUserByUid = async (userUid) => {
     try {
-        console.log(userUid);
         const response = await fetch(`${BASE_URL}/users/uid/${userUid}`);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);

@@ -10,26 +10,28 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { getBranchesQty } from '../../locations/APIs/apiBranches';
+import { getBranchesQty } from '../../locations/APIs/branchesAPI';
 import {
     locationsSetBranchLocationsQty,
     locationsSetBranchesQty,
     locationsSetWarehousesQty,
 } from '../../locations/slice/locationsSlice';
-import { getWarehousesQty } from '../../locations/APIs/apiWarehouses';
+import { getWarehousesQty } from '../../locations/APIs/warehouseAPI';
 import { getBranchLocationsQty } from '../../locations/APIs/apiBranchLocation';
 import { getUsersQty } from '../../users/apis/apiUsers';
 import { usersSetUsersQty } from '../../users/slice/usersSlice';
 import { PieChart } from '../../../shared/ui/components/PieChart';
-import { getProductsCountByWarehouse } from '../../products/APIs/apiProducts';
 import { productsSetProductsCountByWarehouse } from '../../products/slice/productsSlice';
+import { getProductsCountByWarehouse } from '../../products/APIs/productsAPI';
 
 export const GeneralSection = () => {
     const dispatch = useDispatch();
+
     // Redux states
     const { branchesQty, warehousesQty, branchLocationsQty } = useSelector(
         (state) => state.locations,
     );
+    const { mainWarehouse } = useSelector((state) => state.settings);
 
     const { productsCountByWarehouse } = useSelector((state) => state.products);
 
@@ -37,18 +39,9 @@ export const GeneralSection = () => {
     const { usersQty } = useSelector((state) => state.users);
 
     const graphData = productsCountByWarehouse?.map((element) => {
-        console.log(element);
+        // console.log(element);
         return [element.warehouse_name || '', parseInt(element.product_count)];
     });
-
-    // Graphics
-    // const graphData = [
-    //     ['Work', 11],
-    //     ['Eat', 2],
-    //     ['Commute', 2],
-    //     ['Watch TV', 5],
-    //     ['Sleep', 4],
-    // ];
 
     console.log('productsCountByWarehouse: ', productsCountByWarehouse);
 
@@ -58,6 +51,8 @@ export const GeneralSection = () => {
                 if (!productsCountByWarehouse.length) {
                     const productsCountByWarehouse =
                         await getProductsCountByWarehouse();
+
+                    console.log(productsCountByWarehouse);
                     dispatch(
                         productsSetProductsCountByWarehouse(
                             productsCountByWarehouse,
@@ -95,50 +90,56 @@ export const GeneralSection = () => {
 
         fetchData();
     }, [
-        dispatch,
-        branchesQty,
-        warehousesQty,
         branchLocationsQty,
-        usersQty,
+        branchesQty,
         productsCountByWarehouse,
+        usersQty,
+        warehousesQty,
+        dispatch,
     ]);
-
-    // const graphData = productsCountByWarehouse?.map((element) => {
-    //     return [element.warehouse_name, element.product_count];
-    // });
 
     return (
         <>
-            <Card className='shadow'>
+            <Card className="shadow h-100 animate__animated animate__fadeIn animate__fast">
                 <Card.Header>
                     <h3>Resumen General</h3>
                 </Card.Header>
                 <Card.Body>
                     <Row>
                         <Col>
-                            <Card.Text className='my-2'>
-                                <FontAwesomeIcon icon={faBuilding} /> Cantidad
-                                total de Sucursales:
+                            <Card.Text className="my-2">
+                                <FontAwesomeIcon icon={faBuilding} />
+                                Sucursal Principal:
                                 <strong> {branchesQty}</strong>
                             </Card.Text>
-                            <Card.Text className='my-2'>
-                                <FontAwesomeIcon icon={faWarehouse} /> Cantidad
-                                total de Bodegas:{' '}
+                            <Card.Text className="my-2">
+                                <FontAwesomeIcon icon={faBuilding} />
+                                Bodega Principal:
+                                <strong> {mainWarehouse?.name}</strong>
+                            </Card.Text>
+                            <Card.Text className="my-2">
+                                <FontAwesomeIcon icon={faBuilding} />
+                                Total de Sucursales:
+                                <strong> {branchesQty}</strong>
+                            </Card.Text>
+                            <Card.Text className="my-2">
+                                <FontAwesomeIcon icon={faWarehouse} />
+                                Total de Bodegas:{' '}
                                 <strong>{warehousesQty}</strong>
                             </Card.Text>
-                            <Card.Text className='my-2'>
-                                <FontAwesomeIcon icon={faTent} /> Cantidad total
-                                de Ubicaciones de Sucursal:{' '}
+                            <Card.Text className="my-2">
+                                <FontAwesomeIcon icon={faTent} /> Total de
+                                Ubicaciones de Sucursal:{' '}
                                 <strong>{branchLocationsQty}</strong>
                             </Card.Text>
-                            <Card.Text className='my-2'>
-                                <FontAwesomeIcon icon={faUser} /> Cantidad total
-                                de Usuarios: <strong>{usersQty}</strong>
+                            <Card.Text className="my-2">
+                                <FontAwesomeIcon icon={faUser} /> Total de
+                                Usuarios: <strong>{usersQty}</strong>
                             </Card.Text>
                         </Col>
-                        <Col className='mt-0'>
+                        <Col className="mt-0">
                             <PieChart
-                                className='mt-0'
+                                className="mt-0"
                                 data={graphData}
                                 title={'Productos por Bodegas'}
                             />

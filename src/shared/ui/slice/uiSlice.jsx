@@ -1,10 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { types } from '../../types/types';
-import { reset } from '../resetSlice';
+import { types } from '../../../types/types';
+import { reset } from '../../resetSlice';
 
 const initialState = {
     loading: false,
     msgError: null,
+
+    // Selects options
+    branchesNames: [],
+    skusNames: [],
+    warehousesNames: [],
 };
 
 export const uiSlice = createSlice({
@@ -30,6 +35,20 @@ export const uiSlice = createSlice({
             ...state,
             loading: false,
         }),
+
+        // Selects options
+        uiSetBranchesNames: (state, action) => ({
+            ...state,
+            branchesNames: action.payload,
+        }),
+        uiSetSkusNames: (state, action) => ({
+            ...state,
+            skusNames: action.payload,
+        }),
+        uiSetWarehousesNames: (state, action) => ({
+            ...state,
+            warehousesNames: action.payload,
+        }),
     },
     extraReducers: (builder) => {
         builder.addCase(reset, () => {
@@ -38,7 +57,14 @@ export const uiSlice = createSlice({
     },
 });
 
-export const { uiSetError, uiRemoveError, uiStartLoading, uiFinishLoading } =
-    uiSlice.actions;
+export const {
+    uiSetError,
+    uiRemoveError,
+    uiStartLoading,
+    uiFinishLoading,
+    uiSetBranchesNames,
+    uiSetSkusNames,
+    uiSetWarehousesNames,
+} = uiSlice.actions;
 
 export default uiSlice.reducer;
