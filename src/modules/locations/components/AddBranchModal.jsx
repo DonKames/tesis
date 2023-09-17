@@ -71,6 +71,7 @@ export const AddBranchModal = () => {
 
             handleCloseModal();
 
+            console.log('entro al AddBranchModal');
             const branches = await getBranches();
             dispatch(locationsSetBranches(branches));
 

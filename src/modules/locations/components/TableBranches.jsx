@@ -7,6 +7,7 @@ import {
     locationsSetBranches,
     locationsSetBranchesQty,
 } from '../slice/locationsSlice';
+import { Button } from 'react-bootstrap';
 
 export const TableBranches = () => {
     const maxPaginationButtons = 10;
@@ -37,10 +38,20 @@ export const TableBranches = () => {
         return (
             <tr key={branch.branch_id}>
                 <td>{branch.name}</td>
-                <td>{'pais parece'}</td>
-                <td>{'region'}</td>
+                <td>{branch.countryName}</td>
+                <td>{branch.regionName}</td>
                 <td>{branch.address}</td>
-                <td></td>
+                <td>
+                    {branch.active ? (
+                        <Button className="me-1 text-white" variant="danger">
+                            <i className="bi bi-trash3" />
+                        </Button>
+                    ) : (
+                        <Button>
+                            <i className="bi bi-recycle" />
+                        </Button>
+                    )}
+                </td>
             </tr>
         );
     };
