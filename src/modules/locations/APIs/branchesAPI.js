@@ -2,10 +2,14 @@ import { handleFetchError } from '../../../shared/utils/handleFetchError';
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
-export const getBranches = async (page = 1, limit = 20) => {
+export const getBranches = async (
+    page = 1,
+    limit = 20,
+    showInactive = false,
+) => {
     try {
         const response = await fetch(
-            `${BASE_URL}/branches?page=${page}&limit=${limit}`,
+            `${BASE_URL}/branches?page=${page}&limit=${limit}&showInactive=${showInactive}`,
         );
         const data = await handleFetchError(response);
         return data;
@@ -26,9 +30,11 @@ export const getBranchById = async (branchId) => {
     }
 };
 
-export const getBranchesQty = async () => {
+export const getBranchesQty = async (showInactive) => {
     try {
-        const response = await fetch(`${BASE_URL}/branches/qty`);
+        const response = await fetch(
+            `${BASE_URL}/branches/qty?showInactive=${showInactive}`,
+        );
         const data = await handleFetchError(response);
         console.log('getBranches Data: ', data);
         return data;
@@ -69,6 +75,32 @@ export const createBranch = async (branchData) => {
         return data;
     } catch (error) {
         console.log('Error al crear Sucursal en la API:', error);
+        return null;
+    }
+};
+
+export const changeActiveStateBranch = async (branchId, activeState) => {
+    try {
+        const response = await fetch(`${BASE_URL}/branches/${branchId}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ active: activeState }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.log(
+            `Error al cambiar estado de Sucursal ${branchId} en la API: `,
+            error,
+        );
+
         return null;
     }
 };

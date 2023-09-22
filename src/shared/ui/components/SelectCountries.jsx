@@ -4,38 +4,42 @@ import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import Select from 'react-select';
 
-import { uiSetSkusNames } from '../slice/uiSlice';
-import { getSkusNames } from '../../../modules/products/APIs/skusAPI';
+import { getCountries } from '../../../modules/locations/APIs/countriesAPI';
+import { uiSetCountries } from '../slice/uiSlice';
 
-export const SelectSkus = ({ handleInputChange, name, skuId }) => {
+export const SelectCountries = ({ handleInputChange, name, countryId }) => {
     const dispatch = useDispatch();
-    const { skusNames } = useSelector((state) => state.ui);
+
+    const { countries } = useSelector((state) => state.ui);
+
     const [selectedValue, setSelectedValue] = useState(0);
 
     useEffect(() => {
-        const fetchSkusNames = async () => {
+        const fetchCountries = async () => {
             try {
-                if (!skusNames.length) {
-                    const fetchedSkusNames = await getSkusNames();
-                    dispatch(uiSetSkusNames(fetchedSkusNames));
+                if (!countries.length) {
+                    const fetchedCountries = await getCountries();
+                    dispatch(uiSetCountries(fetchedCountries));
                 }
             } catch (error) {
                 console.log(error);
             }
         };
 
-        fetchSkusNames();
+        fetchCountries();
     }, []);
 
     useEffect(() => {
-        const defaultSku = skusNames.find((sku) => sku.id === skuId);
-        if (defaultSku) {
+        const defaultCountry = countries.find(
+            (country) => country.id === countryId,
+        );
+        if (defaultCountry) {
             setSelectedValue({
-                value: defaultSku.id,
-                label: defaultSku.name,
+                value: defaultCountry.id,
+                label: defaultCountry.name,
             });
         }
-    }, [skuId, skusNames]);
+    }, [countryId, countries]);
 
     const handleChange = (selectedOption) => {
         setSelectedValue(selectedOption);
@@ -52,18 +56,18 @@ export const SelectSkus = ({ handleInputChange, name, skuId }) => {
             isSearchable
             name={name}
             onChange={handleChange}
-            options={skusNames.map((sku) => ({
-                value: sku.id,
-                label: sku.name,
+            options={countries.map((country) => ({
+                value: country.id,
+                label: country.name,
             }))}
-            placeholder="Seleccione su Sku"
+            placeholder="Seleccione su País"
             value={selectedValue}
         />
     );
 };
 
-SelectSkus.propTypes = {
+SelectCountries.propTypes = {
     handleInputChange: PropTypes.func.isRequired,
     name: PropTypes.string.isRequired,
-    skuId: PropTypes.number,
+    countryId: PropTypes.number.isRequired,
 };

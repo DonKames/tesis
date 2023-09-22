@@ -87,12 +87,12 @@ export const SelectWarehouses = ({
 
     return (
         <Select
-            value={selectedValue}
             isSearchable
             name={name}
             onChange={handleWarehouseChange}
             options={options}
             placeholder="Seleccione su Bodega"
+            value={selectedValue}
         />
     );
 };
@@ -100,8 +100,9 @@ export const SelectWarehouses = ({
 SelectWarehouses.propTypes = {
     handleInputChange: PropTypes.func.isRequired,
     name: PropTypes.string.isRequired,
-    warehouseId: PropTypes.number,
+    originalBranchId: PropTypes.number,
     selectedBranch: PropTypes.number,
+    warehouseId: PropTypes.number,
 };
 
 SelectWarehouses.defaultProps = {

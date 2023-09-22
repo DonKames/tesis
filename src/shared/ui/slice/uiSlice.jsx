@@ -10,6 +10,8 @@ const initialState = {
     branchesNames: [],
     skusNames: [],
     warehousesNames: [],
+    countries: [],
+    regions: [],
 };
 
 export const uiSlice = createSlice({
@@ -49,6 +51,14 @@ export const uiSlice = createSlice({
             ...state,
             warehousesNames: action.payload,
         }),
+        uiSetCountries: (state, action) => ({
+            ...state,
+            countries: action.payload,
+        }),
+        uiSetRegions: (state, action) => ({
+            ...state,
+            regions: action.payload,
+        }),
     },
     extraReducers: (builder) => {
         builder.addCase(reset, () => {
@@ -63,6 +73,8 @@ export const {
     uiStartLoading,
     uiFinishLoading,
     uiSetBranchesNames,
+    uiSetCountries,
+    uiSetRegions,
     uiSetSkusNames,
     uiSetWarehousesNames,
 } = uiSlice.actions;

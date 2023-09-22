@@ -112,7 +112,7 @@ export const TableProducts = () => {
                 ) : (
                     <Button
                         className="me-1"
-                        onClick={() => handleActivateSku(product.id)}
+                        onClick={() => handleActivateProduct(product.id)}
                         variant="success"
                     >
                         <i className="bi bi-recycle" />
@@ -194,9 +194,9 @@ export const TableProducts = () => {
         }
     };
 
-    const handleActivateSku = async () => {
+    const handleActivateProduct = async () => {
         // Lógica para activar el SKU
-        console.log('Activando SKU con ID:', productToEdit.product_id);
+        console.log('Activando SKU con ID:', productToEdit.id);
 
         const result = await Swal.fire({
             title: '¿Estás seguro?',
@@ -210,7 +210,7 @@ export const TableProducts = () => {
         });
 
         if (result.isConfirmed) {
-            console.log('Activando PRODUCTO con ID:', productToEdit.product_id);
+            console.log('Activando PRODUCTO con ID:', productToEdit.id);
 
             const { status, data } = await changeActiveStateProduct(
                 productToEdit.product_id,
