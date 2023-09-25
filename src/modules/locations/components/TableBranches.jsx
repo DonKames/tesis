@@ -96,11 +96,12 @@ export const TableBranches = () => {
     // Modal
     // Form
     const [formValues, handleInputChange, reset, setFormValues] = useForm({
-        branchId: 0,
-        name: '',
-        country: 0,
-        region: 0,
         address: '',
+        branchId: 0,
+        country: 0,
+        municipality: 0,
+        name: '',
+        region: 0,
     });
 
     const handleDeactivateBranch = async (branchId) => {

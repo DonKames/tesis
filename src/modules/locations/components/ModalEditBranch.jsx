@@ -4,6 +4,7 @@ import { Form, Modal } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { SelectCountries } from '../../../shared/ui/components/SelectCountries';
 import { SelectRegions } from '../../../shared/ui/components/SelectRegions';
+import { SelectMunicipalities } from '../../../shared/ui/components/SelectMunicipalities';
 
 export const ModalEditBranch = React.memo(function ModalEditBranch({
     formValues,
@@ -14,9 +15,8 @@ export const ModalEditBranch = React.memo(function ModalEditBranch({
     showModal,
     showWarning,
 }) {
-    // nombre, pais, region, direccion
+    const { name, country, region, address, municipality } = formValues;
 
-    const { name, country, region, address } = formValues;
     return (
         <Modal show={showModal} onHide={handleModalChange}>
             <Modal.Header className="h1">Editar Sucursal</Modal.Header>
@@ -48,6 +48,15 @@ export const ModalEditBranch = React.memo(function ModalEditBranch({
                             name="region"
                             regionId={region}
                             selectedCountry={country}
+                        />
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label>Comunas</Form.Label>
+                        <SelectMunicipalities
+                            handleInputChange={handleInputChange}
+                            name="municipality"
+                            municipalityId={municipality}
+                            selectedRegion={region}
                         />
                     </Form.Group>
                     <Form.Group>

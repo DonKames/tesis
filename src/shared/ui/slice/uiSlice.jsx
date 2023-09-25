@@ -12,6 +12,7 @@ const initialState = {
     warehousesNames: [],
     countries: [],
     regions: [],
+    municipalities: [],
 };
 
 export const uiSlice = createSlice({
@@ -59,6 +60,10 @@ export const uiSlice = createSlice({
             ...state,
             regions: action.payload,
         }),
+        uiSetMunicipalities: (state, action) => ({
+            ...state,
+            municipalities: action.payload,
+        }),
     },
     extraReducers: (builder) => {
         builder.addCase(reset, () => {
@@ -77,6 +82,7 @@ export const {
     uiSetRegions,
     uiSetSkusNames,
     uiSetWarehousesNames,
+    uiSetMunicipalities,
 } = uiSlice.actions;
 
 export default uiSlice.reducer;
