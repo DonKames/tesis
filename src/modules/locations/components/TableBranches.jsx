@@ -28,7 +28,7 @@ export const TableBranches = () => {
 
     // Local State
     const [showModal, setShowModal] = useState(false);
-    const [branchToEdit, setBranchToEdit] = useState({});
+    // const [branchToEdit, setBranchToEdit] = useState({});
 
     const tableColumnsBranches = [
         { name: 'Nombre', className: '' },
@@ -204,7 +204,7 @@ export const TableBranches = () => {
     const handleOpenForm = (branchId) => {
         const branchToEdit = branches.find((branch) => branch.id === branchId);
 
-        setBranchToEdit(branchToEdit);
+        // setBranchToEdit(branchToEdit);
 
         setFormValues({
             branchId: branchToEdit.id,
