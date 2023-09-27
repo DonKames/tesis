@@ -38,6 +38,8 @@ export const SelectMunicipalities = ({
             (municipality) => municipality.id === municipalityId,
         );
 
+        console.log(defaultMunicipality);
+
         if (defaultMunicipality) {
             setSelectedValue({
                 value: defaultMunicipality.id,
@@ -59,7 +61,10 @@ export const SelectMunicipalities = ({
     /* eslint-disable indent */
     const options =
         selectedRegion === 0
-            ? []
+            ? municipalities.map((municipality) => ({
+                  value: municipality.id,
+                  label: municipality.name,
+              }))
             : municipalities
                   .filter(
                       (municipality) =>

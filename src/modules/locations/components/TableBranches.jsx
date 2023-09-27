@@ -34,6 +34,7 @@ export const TableBranches = () => {
         { name: 'Nombre', className: '' },
         { name: 'País', className: '' },
         { name: 'Región', className: '' },
+        { name: 'Comuna', className: '' },
         { name: 'Dirección', className: '' },
         { name: '', className: 'text-end' },
     ];
@@ -63,6 +64,7 @@ export const TableBranches = () => {
                 <td className="align-middle">{branch.name}</td>
                 <td className="align-middle">{branch.countryName}</td>
                 <td className="align-middle">{branch.regionName}</td>
+                <td className="align-middle">{branch.municipalityName}</td>
                 <td className="align-middle">{branch.address}</td>
                 <td className="align-middle text-end">
                     <Button
@@ -212,6 +214,7 @@ export const TableBranches = () => {
             country: branchToEdit.countryId,
             region: branchToEdit.regionId,
             address: branchToEdit.address,
+            municipality: branchToEdit.municipalityId,
         });
 
         handleModalChange();
