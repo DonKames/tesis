@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Modal } from 'react-bootstrap';
+import { Button, Form, Modal } from 'react-bootstrap';
 
 import PropTypes from 'prop-types';
 import { SelectCountries } from '../../../shared/ui/components/SelectCountries';
@@ -72,6 +72,18 @@ export const ModalEditBranch = React.memo(function ModalEditBranch({
                     </Form.Group>
                 </Form>
             </Modal.Body>
+            <Modal.Footer>
+                <Button
+                    className="btn btn-secondary"
+                    onClick={handleModalChange}
+                    type="button"
+                >
+                    Cancelar
+                </Button>
+                <Button onClick={handleUpdate} type="button">
+                    Actualizar
+                </Button>
+            </Modal.Footer>
         </Modal>
     );
 });

@@ -28,7 +28,7 @@ export const TableBranches = () => {
 
     // Local State
     const [showModal, setShowModal] = useState(false);
-    // const [branchToEdit, setBranchToEdit] = useState({});
+    const [branchToEdit, setBranchToEdit] = useState({});
 
     const tableColumnsBranches = [
         { name: 'Nombre', className: '' },
@@ -220,6 +220,8 @@ export const TableBranches = () => {
         handleModalChange();
     };
 
+    const handleUpdateBranch = async () => {};
+
     return (
         <>
             <ModalEditBranch
@@ -228,7 +230,7 @@ export const TableBranches = () => {
                 // TODO: Cambiar por handleInputChangeWithWarning
                 handleInputChangeWithWarning={() => console.log('Warning')}
                 handleModalChange={handleModalChange}
-                handleUpdate={() => console.log('Actualizando Sucursal')}
+                handleUpdate={handleUpdateBranch}
                 showModal={showModal}
                 showWarning={false}
             />
