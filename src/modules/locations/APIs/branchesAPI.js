@@ -104,3 +104,29 @@ export const changeActiveStateBranch = async (branchId, activeState) => {
         return null;
     }
 };
+
+export const updateBranch = async (branchId, branchData) => {
+    try {
+        const response = await fetch(`${BASE_URL}/branches/${branchId}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(branchData),
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.log(
+            `Error al actualizar Sucursal ${branchId} en la API: `,
+            error,
+        );
+
+        return null;
+    }
+};

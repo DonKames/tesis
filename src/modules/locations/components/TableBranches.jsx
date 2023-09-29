@@ -10,6 +10,7 @@ import {
     changeActiveStateBranch,
     getBranches,
     getBranchesQty,
+    updateBranch,
 } from '../APIs/branchesAPI';
 import {
     locationsSetBranches,
@@ -17,6 +18,7 @@ import {
 } from '../slice/locationsSlice';
 import { useForm } from '../../../hooks/useForm';
 import { ModalEditBranch } from './ModalEditBranch';
+import { useBranchValidationForm } from '../hooks/useBranchValidationForm';
 
 export const TableBranches = () => {
     const maxPaginationButtons = 10;
@@ -104,6 +106,7 @@ export const TableBranches = () => {
         municipality: 0,
         name: '',
         region: 0,
+        active: true,
     });
 
     const handleDeactivateBranch = async (branchId) => {
@@ -215,12 +218,42 @@ export const TableBranches = () => {
             region: branchToEdit.regionId,
             address: branchToEdit.address,
             municipality: branchToEdit.municipalityId,
+            active: branchToEdit.active,
         });
 
         handleModalChange();
     };
 
-    const handleUpdateBranch = async () => {};
+    const handleUpdateBranch = async () => {
+        const { id } = branchToEdit;
+
+        const { isFormValid } = useBranchValidationForm();
+
+        if (isFormValid) {
+            try {
+                const resp = await updateBranch(id, formValues);
+                console.log(resp);
+
+                if (resp.status === 'success') {
+                    const updatedBranches = branches.map((branch) =>
+                        branch.id === id
+                            ? { ...branch, ...formValues }
+                            : branch,
+                    );
+
+                    dispatch(locationsSetBranches(updatedBranches));
+
+                    Swal.fire({
+                        title: '¡Sucursal actualizada!',
+                        text: 'La sucursal ha sido actualizada con éxito.',
+                        icon: 'success',
+                    });
+
+                    handleModalChange();
+                }
+            } catch (error) {}
+        }
+    };
 
     return (
         <>
