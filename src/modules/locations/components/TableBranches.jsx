@@ -30,7 +30,6 @@ export const TableBranches = () => {
 
     // Local State
     const [showModal, setShowModal] = useState(false);
-    const [branchToEdit, setBranchToEdit] = useState({});
 
     const tableColumnsBranches = [
         { name: 'Nombre', className: '' },
@@ -225,18 +224,20 @@ export const TableBranches = () => {
     };
 
     const handleUpdateBranch = async () => {
-        const { id } = branchToEdit;
+        // const { id } = branchToEdit;
 
-        const { isFormValid } = useBranchValidationForm();
+        const { branchId } = formValues;
+
+        const { isFormValid } = useBranchValidationForm(formValues);
 
         if (isFormValid) {
             try {
-                const resp = await updateBranch(id, formValues);
+                const resp = await updateBranch(branchId, formValues);
                 console.log(resp);
 
                 if (resp.status === 'success') {
                     const updatedBranches = branches.map((branch) =>
-                        branch.id === id
+                        branch.id === branchId
                             ? { ...branch, ...formValues }
                             : branch,
                     );

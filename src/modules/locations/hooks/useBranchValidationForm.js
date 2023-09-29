@@ -1,6 +1,7 @@
 import validator from 'validator';
 
 export const useBranchValidationForm = (formValues) => {
+    console.log(formValues);
     const { branchId, name, country, region, address, municipality, active } =
         formValues;
 

@@ -77,7 +77,7 @@ export const PaginatedTable = ({
                             ))}
                         </tr> */}
                     </thead>
-                    <tbody>{items.map(itemRenderer)}</tbody>
+                    <tbody>{items?.map(itemRenderer)}</tbody>
                 </Table>
                 {footerText && (
                     <Row className="align-items-center">

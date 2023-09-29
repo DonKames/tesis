@@ -106,9 +106,10 @@ export const changeActiveStateBranch = async (branchId, activeState) => {
 };
 
 export const updateBranch = async (branchId, branchData) => {
+    console.log(branchId, branchData);
     try {
         const response = await fetch(`${BASE_URL}/branches/${branchId}`, {
-            method: 'PATCH',
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -118,7 +119,7 @@ export const updateBranch = async (branchId, branchData) => {
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-
+        console.log(response);
         const data = await response.json();
         return data;
     } catch (error) {

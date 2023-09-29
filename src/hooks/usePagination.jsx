@@ -46,13 +46,13 @@ const usePagination = (
 
     const handlePageChange = async (pageNumber) => {
         setSelectedPage(pageNumber);
-        console.log(
-            'es por el handle?: ',
-            pageNumber,
-            limit,
-            showInactive,
-            itemsQty,
-        );
+        // console.log(
+        //     'es por el handle?: ',
+        //     pageNumber,
+        //     limit,
+        //     showInactive,
+        //     itemsQty,
+        // );
         const fetchedItems = await getItems(pageNumber, limit, showInactive);
         dispatch(setItems(fetchedItems));
     };
