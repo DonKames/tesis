@@ -9,6 +9,7 @@ import {
 import usePagination from '../../../hooks/usePagination';
 import { Button } from 'react-bootstrap';
 import { ModalEditWarehouse } from './ModalEditWarehouse';
+import { useForm } from '../../../hooks/useForm';
 
 export const TableWarehouses = () => {
     const maxPaginationButtons = 10;
@@ -83,9 +84,28 @@ export const TableWarehouses = () => {
         );
     };
 
+    const [formValues, handleInputChange, reset, setFormValues] = useForm({
+        name: '',
+        branch: '',
+        capacity: '',
+        active: true,
+    });
+
+    const handleModalChange = () => {
+        if (showModal) {
+            reset();
+        }
+
+        setShowModal(!showModal);
+    };
+
     return (
         <>
-            <ModalEditWarehouse />
+            <ModalEditWarehouse
+                formValues={formValues}
+                handleInputChange={handleInputChange}
+                handleModalChange={() => {}}
+            />
             <PaginatedTable
                 columns={tableColumnsWarehouses}
                 footerText={`Total de Bodegas: ${warehousesQty} | Páginas Totales: ${pagesQty} `}
