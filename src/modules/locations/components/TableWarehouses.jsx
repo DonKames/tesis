@@ -52,7 +52,7 @@ export const TableWarehouses = () => {
                 key={warehouse.id}
             >
                 <td className="align-middle">{warehouse.name}</td>
-                <td className="align-middle">{warehouse.branchId}</td>
+                <td className="align-middle">{warehouse.branchName}</td>
                 <td className="align-middle">{warehouse.capacity} m3</td>
                 <td className="align-middle text-end">
                     <Button

@@ -7,9 +7,9 @@ export const getWarehouses = async (page = 1, limit = 20) => {
         const response = await fetch(
             `${BASE_URL}/warehouses?page=${page}&limit=${limit}`,
         );
-        const finalResp = await handleFetchError(response);
-        console.log(finalResp);
-        return finalResp;
+        const { data } = await handleFetchError(response);
+        console.log(data);
+        return data;
     } catch (error) {
         console.log('Error al obtener Bodegas desde la API:', error);
         return [];

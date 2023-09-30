@@ -65,7 +65,7 @@ export const PaginatedTable = ({
                 <Table hover responsive className="m-0 rounded">
                     <thead className="rounded">
                         <tr>
-                            {columns.map((column, index) => (
+                            {columns?.map((column, index) => (
                                 <th key={index} className={column.className}>
                                     {column.name}
                                 </th>
