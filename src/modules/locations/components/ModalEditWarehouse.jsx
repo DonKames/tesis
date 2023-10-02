@@ -1,33 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { SelectBranches } from '../../../shared/ui/components/SelectBranches';
-import { useForm } from '../../../hooks/useForm';
 
 export const ModalEditWarehouse = React.memo(function ModalEditWarehouse({
-    // formValues,
-    // handleInputChange,
-    // handleModalChange,
+    formValues,
+    handleInputChange,
+    handleModalChange,
     handleUpdate,
-    // showModal,
+    showModal,
 }) {
-    const [formValues, handleInputChange, reset, setFormValues] = useForm({
-        name: '',
-        branch: '',
-        capacity: '',
-        active: true,
-    });
-    const { name, branch, capacity, active } = formValues;
-
-    const [showModal, setShowModal] = useState(false);
-
-    const handleModalChange = () => {
-        if (showModal) {
-            reset();
-        }
-
-        setShowModal(!showModal);
-    };
+    const { name, branchId, capacity, active } = formValues;
 
     return (
         <Modal show={showModal} onHide={handleModalChange}>
@@ -48,9 +31,9 @@ export const ModalEditWarehouse = React.memo(function ModalEditWarehouse({
                     <Form.Group>
                         <Form.Label>Sucursal</Form.Label>
                         <SelectBranches
-                            handleInputChange={handleInputChange}
-                            name="branch"
-                            branchId={branch}
+                            onChange={handleInputChange}
+                            name="branchId"
+                            branchId={branchId}
                         />
                     </Form.Group>
                     <Form.Group>
@@ -87,10 +70,10 @@ export const ModalEditWarehouse = React.memo(function ModalEditWarehouse({
     );
 });
 
-// ModalEditWarehouse.propTypes = {
-//     formValues: PropTypes.object.isRequired,
-//     handleInputChange: PropTypes.func.isRequired,
-//     handleModalChange: PropTypes.func.isRequired,
-//     handleUpdate: PropTypes.func.isRequired,
-//     showModal: PropTypes.bool.isRequired,
-// };
+ModalEditWarehouse.propTypes = {
+    formValues: PropTypes.object.isRequired,
+    handleInputChange: PropTypes.func.isRequired,
+    handleModalChange: PropTypes.func.isRequired,
+    handleUpdate: PropTypes.func.isRequired,
+    showModal: PropTypes.bool.isRequired,
+};

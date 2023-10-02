@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { PaginatedTable } from '../../../shared/ui/components/PaginatedTable';
 import { useDispatch, useSelector } from 'react-redux';
-import { getWarehouses, getWarehousesQty } from '../APIs/warehouseAPI';
+import {
+    changeActiveStateWarehouse,
+    getWarehouses,
+    getWarehousesQty,
+    updateWarehouse,
+} from '../APIs/warehouseAPI';
 import {
     locationsSetWarehouses,
     locationsSetWarehousesQty,
@@ -10,6 +15,7 @@ import usePagination from '../../../hooks/usePagination';
 import { Button } from 'react-bootstrap';
 import { ModalEditWarehouse } from './ModalEditWarehouse';
 import { useForm } from '../../../hooks/useForm';
+import Swal from 'sweetalert2';
 
 export const TableWarehouses = () => {
     const maxPaginationButtons = 10;
@@ -20,6 +26,9 @@ export const TableWarehouses = () => {
     const { warehouses, warehousesQty } = useSelector(
         (state) => state.locations,
     );
+
+    // Local State
+    const [showModal, setShowModal] = useState(false);
 
     const tableColumnsWarehouses = [
         { name: 'Nombre', className: '' },
@@ -58,7 +67,7 @@ export const TableWarehouses = () => {
                 <td className="align-middle text-end">
                     <Button
                         className="me-1"
-                        // onClick={() => handleEdit(warehouse)}
+                        onClick={() => handleOpenForm(warehouse.id)}
                     >
                         <i className="bi bi-pencil-square"></i>
                     </Button>
@@ -66,7 +75,9 @@ export const TableWarehouses = () => {
                         <Button
                             className="me-1 text-white"
                             variant="danger"
-                            // onClick={() => handleDelete(warehouse.id)}
+                            onClick={() =>
+                                handleDeactivateWarehouse(warehouse.id)
+                            }
                         >
                             <i className="bi bi-trash"></i>
                         </Button>
@@ -74,7 +85,9 @@ export const TableWarehouses = () => {
                         <Button
                             className="me-1"
                             variant="success"
-                            // onClick={() => handleRestore(warehouse.id)}
+                            onClick={() =>
+                                handleActivateWarehouse(warehouse.id)
+                            }
                         >
                             <i className="bi bi-arrow-repeat"></i>
                         </Button>
@@ -86,9 +99,10 @@ export const TableWarehouses = () => {
 
     const [formValues, handleInputChange, reset, setFormValues] = useForm({
         name: '',
-        branch: '',
+        branchId: 0,
         capacity: '',
         active: true,
+        warehouseId: 0,
     });
 
     const handleModalChange = () => {
@@ -99,12 +113,137 @@ export const TableWarehouses = () => {
         setShowModal(!showModal);
     };
 
+    const handleOpenForm = (id) => {
+        const warehouseToEdit = warehouses.find((w) => w.id === id);
+
+        setFormValues({
+            name: warehouseToEdit.name,
+            branchId: warehouseToEdit.branchId,
+            capacity: warehouseToEdit.capacity || 0,
+            active: warehouseToEdit.active,
+            warehouseId: warehouseToEdit.id,
+        });
+
+        handleModalChange();
+    };
+
+    const handleUpdate = async () => {
+        const { warehouseId } = formValues;
+
+        // TODO - create validation hook and use it here
+        const isFormValid = true;
+
+        if (isFormValid) {
+            try {
+                const resp = await updateWarehouse(warehouseId, formValues);
+
+                if (resp.status === 'success') {
+                    const updatedWarehouses = warehouses.map((w) =>
+                        w.id === warehouseId ? { ...w, ...formValues } : w,
+                    );
+
+                    dispatch(locationsSetWarehouses(updatedWarehouses));
+
+                    Swal.fire({
+                        title: '¡Bodega actualizada!',
+                        text: `La bodega ${formValues.name} ha sido actualizada exitosamente.`,
+                        icon: 'success',
+                    });
+
+                    handleModalChange();
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        handleModalChange();
+    };
+
+    const handleDeactivateWarehouse = async (id) => {
+        const result = await Swal.fire({
+            title: '¿Estás seguro?',
+            text: 'La bodega será desactivada y no podrá ser utilizada en el sistema.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3084d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, desactivar',
+            cancelButtonText: 'No, cancelar',
+        });
+
+        if (result.isConfirmed) {
+            const { status, data } = await changeActiveStateWarehouse(
+                id,
+                false,
+            );
+
+            if (status === 'success') {
+                Swal.fire({
+                    title: '¡Bodega desactivada!',
+                    text: 'La bodega ha sido desactivada con éxito.',
+                    icon: 'success',
+                });
+
+                const updatedWarehouses = warehouses.map((w) =>
+                    w.id === id ? { ...w, active: false } : w,
+                );
+
+                dispatch(locationsSetWarehouses(updatedWarehouses));
+            } else {
+                Swal.fire({
+                    title: '¡Error!',
+                    text: data.message,
+                    icon: 'error',
+                });
+            }
+        }
+    };
+
+    const handleActivateWarehouse = async (id) => {
+        const result = await Swal.fire({
+            title: '¿Estás seguro?',
+            text: 'La bodega será activada y podrá ser utilizada en el sistema.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3084d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, activar',
+            cancelButtonText: 'Cancelar',
+        });
+
+        if (result.isConfirmed) {
+            const { status, data } = await changeActiveStateWarehouse(id, true);
+
+            if (status === 'success') {
+                Swal.fire({
+                    title: '¡Bodega activada!',
+                    text: 'La bodega ha sido activada con éxito.',
+                    icon: 'success',
+                });
+
+                const updatedWarehouses = warehouses.map((w) =>
+                    w.id === id ? { ...w, active: true } : w,
+                );
+
+                dispatch(locationsSetWarehouses(updatedWarehouses));
+            } else {
+                Swal.fire({
+                    title: '¡Error!',
+                    text: data.message,
+                    icon: 'error',
+                });
+            }
+        }
+    };
+
     return (
         <>
             <ModalEditWarehouse
                 formValues={formValues}
                 handleInputChange={handleInputChange}
-                handleModalChange={() => {}}
+                handleModalChange={handleModalChange}
+                handleUpdate={handleUpdate}
+                showModal={showModal}
             />
             <PaginatedTable
                 columns={tableColumnsWarehouses}

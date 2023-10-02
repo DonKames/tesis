@@ -10,6 +10,8 @@ import {
     locationsSetBranchLocationsQty,
 } from '../slice/locationsSlice';
 import { PaginatedTable } from '../../../shared/ui/components/PaginatedTable';
+import { Row } from 'react-bootstrap';
+import { TableBranchLocations } from './TableBranchLocations';
 
 export const BranchLocationsSection = () => {
     // Redux states
@@ -61,16 +63,18 @@ export const BranchLocationsSection = () => {
 
     return (
         <>
+            <Row></Row>
+            {/* <TableBranchLocations /> */}
             <PaginatedTable
-                items={branchLocations}
                 columns={columns}
-                handlePageChange={handlePageChange}
-                itemRenderer={itemRenderer}
-                pagesQty={pagesQty}
-                selectedPage={selectedPage}
                 footerText={`Total de Sucursales: ${branchLocationsQty} | Páginas Totales: ${pagesQty} `}
                 handleLimitChange={setLimit}
+                handlePageChange={handlePageChange}
+                itemRenderer={itemRenderer}
+                items={branchLocations}
                 limit={limit}
+                pagesQty={pagesQty}
+                selectedPage={selectedPage}
                 title="Lugares de Sucursales"
             />
         </>

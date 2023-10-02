@@ -252,8 +252,11 @@ export const TableBranches = () => {
 
                     handleModalChange();
                 }
-            } catch (error) {}
+            } catch (error) {
+                console.log(error);
+            }
         }
+        handleModalChange();
     };
 
     return (

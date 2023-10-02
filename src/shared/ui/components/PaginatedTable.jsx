@@ -45,6 +45,11 @@ export const PaginatedTable = ({
         handlePageChange(selectedPage);
     }, [showInactive, selectedPage]);
 
+    const handleShowInactiveChange = () => {
+        handlePageChange(1);
+        setShowInactive(!showInactive);
+    };
+
     return (
         <>
             <Card className="shadow rounded animate__animated animate__fadeIn animate__fast">
@@ -57,7 +62,7 @@ export const PaginatedTable = ({
                                 label="Mostrar elementos inactivos: "
                                 type="checkbox"
                                 checked={showInactive}
-                                onChange={() => setShowInactive(!showInactive)}
+                                onChange={handleShowInactiveChange}
                             />
                         </Col>
                     </Row>
