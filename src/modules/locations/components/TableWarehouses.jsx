@@ -89,7 +89,7 @@ export const TableWarehouses = () => {
                                 handleActivateWarehouse(warehouse.id)
                             }
                         >
-                            <i className="bi bi-arrow-repeat"></i>
+                            <i className="bi bi-arrow-repeat" />
                         </Button>
                     )}
                 </td>
@@ -172,27 +172,35 @@ export const TableWarehouses = () => {
         });
 
         if (result.isConfirmed) {
-            const { status, data } = await changeActiveStateWarehouse(
-                id,
-                false,
-            );
-
-            if (status === 'success') {
-                Swal.fire({
-                    title: '¡Bodega desactivada!',
-                    text: 'La bodega ha sido desactivada con éxito.',
-                    icon: 'success',
-                });
-
-                const updatedWarehouses = warehouses.map((w) =>
-                    w.id === id ? { ...w, active: false } : w,
+            try {
+                const { status, data } = await changeActiveStateWarehouse(
+                    id,
+                    false,
                 );
 
-                dispatch(locationsSetWarehouses(updatedWarehouses));
-            } else {
+                if (status === 'success') {
+                    Swal.fire({
+                        title: '¡Bodega desactivada!',
+                        text: 'La bodega ha sido desactivada con éxito.',
+                        icon: 'success',
+                    });
+
+                    const updatedWarehouses = warehouses.map((w) =>
+                        w.id === id ? { ...w, active: false } : w,
+                    );
+
+                    dispatch(locationsSetWarehouses(updatedWarehouses));
+                } else {
+                    Swal.fire({
+                        title: '¡Error!',
+                        text: data.message,
+                        icon: 'error',
+                    });
+                }
+            } catch (error) {
                 Swal.fire({
                     title: '¡Error!',
-                    text: data.message,
+                    text: 'No se pudo desactivar la Bodega - Error al conectar con la API',
                     icon: 'error',
                 });
             }

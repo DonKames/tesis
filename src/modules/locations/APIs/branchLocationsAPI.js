@@ -57,3 +57,30 @@ export const createBranchLocation = async (branchLocationData) => {
         return null;
     }
 };
+
+export const changeBranchLocationState = async (branchLocationId, state) => {
+    try {
+        const response = await fetch(
+            `${BASE_URL}/branchLocations/${branchLocationId}`,
+            {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ state }),
+            },
+        );
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.log(
+            `Error al cambiar estado de Lugar de Sucursal en la API: ${error}`,
+        );
+        return null;
+    }
+};

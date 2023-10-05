@@ -17,7 +17,7 @@ import {
     locationsSetWarehousesQty,
 } from '../../locations/slice/locationsSlice';
 import { getWarehousesQty } from '../../locations/APIs/warehouseAPI';
-import { getBranchLocationsQty } from '../../locations/APIs/apiBranchLocation';
+import { getBranchLocationsQty } from '../../locations/APIs/branchLocationsAPI';
 import { getUsersQty } from '../../users/apis/apiUsers';
 import { usersSetUsersQty } from '../../users/slice/usersSlice';
 import { PieChart } from '../../../shared/ui/components/PieChart';
