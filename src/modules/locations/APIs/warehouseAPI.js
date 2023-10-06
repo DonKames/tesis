@@ -82,6 +82,7 @@ export const createWarehouse = async (warehouseData) => {
         return null;
     }
 };
+
 export const updateWarehouse = async (warehouseId, warehouseData) => {
     try {
         const response = await fetch(`${BASE_URL}/warehouses/${warehouseId}`, {

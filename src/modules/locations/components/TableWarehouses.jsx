@@ -98,10 +98,10 @@ export const TableWarehouses = () => {
     };
 
     const [formValues, handleInputChange, reset, setFormValues] = useForm({
-        name: '',
+        active: true,
         branchId: 0,
         capacity: '',
-        active: true,
+        name: '',
         warehouseId: 0,
     });
 

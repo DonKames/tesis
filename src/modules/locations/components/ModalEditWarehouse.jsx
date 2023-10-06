@@ -10,7 +10,7 @@ export const ModalEditWarehouse = React.memo(function ModalEditWarehouse({
     handleUpdate,
     showModal,
 }) {
-    const { name, branchId, capacity, active } = formValues;
+    const { name, branchId, capacity } = formValues;
 
     return (
         <Modal show={showModal} onHide={handleModalChange}>
