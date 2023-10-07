@@ -2,13 +2,18 @@ import { handleFetchError } from '../../../shared/utils/handleFetchError';
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
-export const getUsers = async (page = 1, limit = 10) => {
+export const getUsers = async (page = 1, limit = 10, showInactive = false) => {
     try {
         const response = await fetch(
-            `${BASE_URL}/users?page=${page}&limit=${limit}`,
+            `${BASE_URL}/users?page=${page}&limit=${limit}&showInactive=${showInactive}`,
         );
-        const data = await handleFetchError(response);
-        return data;
+
+        const { status, data } = await handleFetchError(response);
+
+        if (status === 'success') {
+            return data;
+        }
+        return [];
     } catch (error) {
         console.log('Error al obtener USUARIOS desde la API:', error);
         return [];

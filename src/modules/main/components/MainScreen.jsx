@@ -3,7 +3,7 @@ import React from 'react';
 import { Card, Col, Container, Row } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { updateUserUid } from '../../users/apis/apiUsers';
+import { updateUserUid } from '../../users/apis/usersAPI';
 
 import { GeneralSection } from './GeneralSection';
 import { WarehouseSection } from './WarehouseSection';

@@ -9,7 +9,7 @@ import HomeScreen from '../../HomeScreen';
 import { PublicRoutes } from './PublicRoutes';
 import { PrivateRoutes } from './PrivateRoutes';
 import { authLogin } from '../auth/authSlice';
-import { getUserByUid, updateUserUid } from '../users/apis/apiUsers';
+import { getUserByUid, updateUserUid } from '../users/apis/usersAPI';
 import { getGlobalSettings } from '../settings/APIs/settingsApi';
 import {
     settingsSetGlobalSettingsId,
