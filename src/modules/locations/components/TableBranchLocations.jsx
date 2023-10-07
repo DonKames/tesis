@@ -216,7 +216,7 @@ export const TableBranchLocations = () => {
     };
 
     const handleUpdate = async () => {
-        const { branchLocationId } = formValues;
+        const { id } = formValues;
 
         // TODO: create validation hook for this
         const isFormValid = true;
@@ -224,8 +224,8 @@ export const TableBranchLocations = () => {
         if (isFormValid) {
             try {
                 const { status, data } = await updateBranchLocation(
-                    branchLocationId,
-                    true,
+                    id,
+                    formValues,
                 );
 
                 if (status === 'success') {
@@ -236,14 +236,14 @@ export const TableBranchLocations = () => {
                     });
 
                     const updatedBranchLocations = branchLocations.map((bL) =>
-                        bL.id === branchLocationId
-                            ? { ...bL, ...formValues }
-                            : bL,
+                        bL.id === id ? { ...bL, ...formValues } : bL,
                     );
 
                     dispatch(
                         locationsSetBranchLocations(updatedBranchLocations),
                     );
+
+                    handleModalChange();
                 } else {
                     Swal.fire({
                         title: '¡Error!',

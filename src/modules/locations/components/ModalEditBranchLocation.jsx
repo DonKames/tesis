@@ -12,7 +12,7 @@ export const ModalEditBranchLocation = React.memo(
         handleUpdate,
         showModal,
     }) {
-        const { name, branchId, capacity } = formValues;
+        const { name, branchId, description } = formValues;
 
         return (
             <Modal show={showModal} onHide={handleModalChange}>
@@ -41,13 +41,14 @@ export const ModalEditBranchLocation = React.memo(
                             />
                         </Form.Group>
                         <Form.Group>
-                            <Form.Label>Capacidad</Form.Label>
+                            <Form.Label>Descripción</Form.Label>
                             <Form.Control
+                                as="textarea"
                                 className="mb-3"
-                                name="capacity"
+                                name="description"
                                 placeholder="Capacidad"
-                                type="number"
-                                value={capacity}
+                                type="text"
+                                value={description}
                                 onChange={handleInputChange}
                             />
                         </Form.Group>

@@ -151,9 +151,20 @@ export const TableWarehouses = () => {
                     });
 
                     handleModalChange();
+                } else {
+                    Swal.fire({
+                        title: '¡Error!',
+                        text: resp.data.message,
+                        icon: 'error',
+                    });
                 }
             } catch (error) {
                 console.log(error);
+                Swal.fire({
+                    title: '¡Error!',
+                    text: 'No se pudo actualizar la Bodega - Error al conectar con la API',
+                    icon: 'error',
+                });
             }
         }
         handleModalChange();

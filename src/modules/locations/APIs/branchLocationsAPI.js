@@ -101,6 +101,7 @@ export const updateBranchLocation = async (
     branchLocationId,
     branchLocationData,
 ) => {
+    console.log(branchLocationId, branchLocationData);
     try {
         const response = await fetch(
             `${BASE_URL}/branchLocations/${branchLocationId}`,
