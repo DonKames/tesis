@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Button, Form, Modal } from 'react-bootstrap';
 import PropTypes from 'prop-types';
@@ -13,11 +13,14 @@ export const ModalEditUser = React.memo(function ModalEditUser({
 }) {
     const { name, lastName, email, roleId } = formValues;
 
+    // Local State
+    // const [validated, setValidated] = useState(false);
+
     return (
         <Modal show={showModal} onHide={handleModalChange}>
             <Modal.Header className="h1">Editar Usuario</Modal.Header>
             <Modal.Body>
-                <Form>
+                <Form className="needs-validation">
                     <Form.Group>
                         <Form.Label>Nombre</Form.Label>
                         <Form.Control
@@ -28,6 +31,7 @@ export const ModalEditUser = React.memo(function ModalEditUser({
                             value={name}
                             onChange={handleInputChange}
                         />
+                        <div></div>
                     </Form.Group>
                     <Form.Group>
                         <Form.Label>Apellido</Form.Label>

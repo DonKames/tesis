@@ -2,7 +2,12 @@ import React from 'react';
 import { PaginatedTable } from '../../../shared/ui/components/PaginatedTable';
 import { useDispatch, useSelector } from 'react-redux';
 import usePagination from '../../../hooks/usePagination';
-import { changeUserState, getUsers, getUsersQty } from '../apis/usersAPI';
+import {
+    changeUserState,
+    getUsers,
+    getUsersQty,
+    updateUser,
+} from '../apis/usersAPI';
 import { usersSetUsers, usersSetUsersQty } from '../slice/usersSlice';
 import { Button } from 'react-bootstrap';
 import Swal from 'sweetalert2';
@@ -200,10 +205,11 @@ export const TableUsers = () => {
 
         if (isFormValid) {
             try {
-                const { status, data, message } = await changeUserState(
-                    id,
-                    true,
-                );
+                const { data: completeData } = await updateUser(id, formValues);
+
+                const { status, message, data } = completeData;
+
+                console.log(status, data, message);
 
                 if (status === 'success') {
                     Swal.fire({
@@ -222,7 +228,7 @@ export const TableUsers = () => {
                 } else {
                     Swal.fire({
                         title: 'Error',
-                        text: message,
+                        text: message || 'No Message',
                         icon: 'error',
                     });
                 }
