@@ -223,7 +223,7 @@ export const TableBranchLocations = () => {
 
         if (isFormValid) {
             try {
-                const { status, data } = await updateBranchLocation(
+                const { status, data, message } = await updateBranchLocation(
                     id,
                     formValues,
                 );
@@ -231,7 +231,7 @@ export const TableBranchLocations = () => {
                 if (status === 'success') {
                     Swal.fire({
                         title: '¡Lugar de Sucursal Actualizado!',
-                        text: data?.message,
+                        text: message,
                         icon: 'success',
                     });
 
@@ -247,7 +247,7 @@ export const TableBranchLocations = () => {
                 } else {
                     Swal.fire({
                         title: '¡Error!',
-                        text: data.message,
+                        text: message,
                         icon: 'error',
                     });
                 }

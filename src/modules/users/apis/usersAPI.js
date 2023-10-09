@@ -23,8 +23,12 @@ export const getUsers = async (page = 1, limit = 10, showInactive = false) => {
 export const getUsersQty = async () => {
     try {
         const response = await fetch(`${BASE_URL}/users/qty`);
-        const data = await handleFetchError(response);
-        return data;
+        const { data, status } = await handleFetchError(response);
+
+        if (status === 'success') {
+            return data;
+        }
+        return 0;
     } catch (error) {
         console.log(
             'Error al obtener la CANTIDAD DE USUARIOS desde la API:',
@@ -190,5 +194,27 @@ export const updateUser = async (userId, updatedUserData) => {
     } catch (error) {
         console.log('Error al actualizar USUARIO en la API:', error);
         return error;
+    }
+};
+
+export const changeUserState = async (userId, state) => {
+    try {
+        const response = await fetch(`${BASE_URL}/users/${userId}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ state }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.log('Error al cambiar estado de USUARIO en la API: ', error);
+        return null;
     }
 };
