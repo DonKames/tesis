@@ -6,12 +6,13 @@ import {
     getWarehousesNames,
 } from '../../locations/APIs/warehouseAPI';
 import { uiSetWarehousesNames } from '../../../shared/ui/slice/uiSlice';
+import { SelectWarehouses } from '../../../shared/ui/components/SelectWarehouses';
 
 export const WarehouseSection = () => {
     const dispatch = useDispatch();
 
     // Redux states
-    const { warehousesNames } = useSelector((state) => state.ui);
+    const { warehousesNames, branchesNames } = useSelector((state) => state.ui);
     const { mainWarehouse } = useSelector((state) => state.settings);
 
     // Local States
@@ -36,6 +37,7 @@ export const WarehouseSection = () => {
 
                 if (mainWarehouse) {
                     const warehouse = await getWarehouseById(mainWarehouse.id);
+                    console.log(warehouse);
                     setSelectedWarehouse(warehouse);
                 }
             };
@@ -54,7 +56,12 @@ export const WarehouseSection = () => {
                         <h3>Bodegas</h3>
                     </Col>
                     <Col>
-                        <Form.Select
+                        <SelectWarehouses
+                            handleInputChange={handleWarehouseChange}
+                            name="warehouseId"
+                            warehouseId={selectedWarehouse?.id}
+                        />
+                        {/* <Form.Select
                             value={selectedWarehouse?.id}
                             onChange={handleWarehouseChange}
                         >
@@ -63,7 +70,7 @@ export const WarehouseSection = () => {
                                     {warehouse.name}
                                 </option>
                             ))}
-                        </Form.Select>
+                        </Form.Select> */}
                     </Col>
                 </Row>
             </Card.Header>
@@ -72,7 +79,15 @@ export const WarehouseSection = () => {
                     Nombre: <strong>{selectedWarehouse?.name}</strong>
                 </Card.Text>
                 <Card.Text>
-                    Sucursal: <strong>{selectedWarehouse?.branchId}</strong>
+                    Sucursal:{' '}
+                    <strong>
+                        {
+                            branchesNames.find(
+                                (branch) =>
+                                    branch.id === selectedWarehouse?.branchId,
+                            )?.name
+                        }
+                    </strong>
                 </Card.Text>
                 <Card.Text>
                     Capacidad:{' '}

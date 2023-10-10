@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { PaginatedTable } from '../../../shared/ui/components/PaginatedTable';
 import { useDispatch, useSelector } from 'react-redux';
 import usePagination from '../../../hooks/usePagination';
@@ -12,7 +12,6 @@ import { usersSetUsers, usersSetUsersQty } from '../slice/usersSlice';
 import { Button } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import { ModalEditUser } from './ModalEditUser';
-import { useState } from 'react';
 import { useForm } from '../../../hooks/useForm';
 
 export const TableUsers = () => {
@@ -20,6 +19,8 @@ export const TableUsers = () => {
 
     // Redux State
     const { users, usersQty } = useSelector((state) => state.users);
+
+    const { roles } = useSelector((state) => state.ui);
 
     // Local State
     const [showModal, setShowModal] = useState(false);
@@ -207,9 +208,7 @@ export const TableUsers = () => {
             try {
                 const { data: completeData } = await updateUser(id, formValues);
 
-                const { status, message, data } = completeData;
-
-                console.log(status, data, message);
+                const { status, message } = completeData;
 
                 if (status === 'success') {
                     Swal.fire({
@@ -218,9 +217,19 @@ export const TableUsers = () => {
                         icon: 'success',
                     });
 
+                    /* eslint-disable indent */
                     const updatedUsers = users.map((user) =>
-                        user.id === id ? { ...user, ...formValues } : user,
+                        user.id === id
+                            ? {
+                                  ...user,
+                                  ...formValues,
+                                  roleName: roles.find(
+                                      (rol) => rol.id === formValues.roleId,
+                                  )?.name,
+                              }
+                            : user,
                     );
+                    /* eslint-enable indent */
 
                     dispatch(usersSetUsers(updatedUsers));
 

@@ -19,7 +19,7 @@ export const MainScreen = () => {
     }
 
     return (
-        <Container>
+        <Container fluid>
             <Row>
                 <Col className="mb-3" xs={12} lg={6}>
                     <GeneralSection />

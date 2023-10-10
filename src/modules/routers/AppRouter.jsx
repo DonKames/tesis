@@ -68,28 +68,31 @@ export const AppRouter = () => {
                 if (settingsData) {
                     dispatch(settingsSetGlobalSettingsId(settingsData.id));
 
-                    if (settingsData.mainWarehouse) {
-                        const mainWarehouse = await getWarehouseById(
-                            settingsData.mainWarehouse,
-                        );
-
-                        dispatch(
-                            settingsSetMainWarehouse({
-                                id: settingsData.mainWarehouse,
-                                name: mainWarehouse.name,
-                            }),
-                        );
-                    }
-
                     if (settingsData.mainBranch) {
-                        const mainBranch = await getBranchById(
+                        const response = await getBranchById(
                             settingsData.mainBranch,
                         );
+
+                        console.log(response);
 
                         dispatch(
                             settingsSetMainBranch({
                                 id: settingsData.mainBranch,
-                                name: mainBranch.name,
+                                name: response.name,
+                            }),
+                        );
+                    }
+
+                    if (settingsData.mainWarehouse) {
+                        const { status, data, message } =
+                            await getWarehouseById(settingsData.mainWarehouse);
+
+                        console.log(data);
+
+                        dispatch(
+                            settingsSetMainWarehouse({
+                                id: settingsData.mainWarehouse,
+                                name: data.name,
                             }),
                         );
                     }

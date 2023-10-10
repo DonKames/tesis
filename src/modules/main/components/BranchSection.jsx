@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Col, Form, Row } from 'react-bootstrap';
+import { Card, Col, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     getBranchById,
     getBranchesNames,
 } from '../../locations/APIs/branchesAPI';
 import { uiSetBranchesNames } from '../../../shared/ui/slice/uiSlice';
+import { SelectBranches } from '../../../shared/ui/components/SelectBranches';
+import { getWarehousesQty } from '../../locations/APIs/warehouseAPI';
 
 export const BranchSection = () => {
     const dispatch = useDispatch();
@@ -23,7 +25,16 @@ export const BranchSection = () => {
 
         const branchData = await getBranchById(branchId);
 
-        setSelectedBranch(branchData);
+        const warehousesQty = await getWarehousesQty(branchId);
+
+        console.log(warehousesQty);
+
+        const branchDataWithWarehousesQty = {
+            ...branchData,
+            warehousesQty,
+        };
+
+        setSelectedBranch(branchDataWithWarehousesQty);
     };
 
     // Get branches names and main branch data
@@ -36,9 +47,21 @@ export const BranchSection = () => {
                 }
 
                 if (mainBranch) {
-                    const branch = await getBranchById(mainBranch.id);
-                    console.log(branch);
-                    setSelectedBranch(branch);
+                    const branchData = await getBranchById(mainBranch.id);
+
+                    console.log(branchData);
+
+                    const warehousesQty = await getWarehousesQty(mainBranch.id);
+
+                    console.log(warehousesQty);
+
+                    const branchDataWithWarehousesQty = {
+                        ...branchData,
+                        warehousesQty,
+                    };
+
+                    console.log(branchDataWithWarehousesQty);
+                    setSelectedBranch(branchDataWithWarehousesQty);
                 }
             };
 
@@ -48,15 +71,22 @@ export const BranchSection = () => {
         }
     }, [mainBranch]);
 
+    console.log(selectedBranch);
+
     return (
         <Card className="shadow h-100 animate__animated animate__fadeIn animate__fast">
             <Card.Header>
                 <Row>
-                    <Col>
-                        <h3>Sucursales</h3>
+                    <Col className="d-flex align-items-center">
+                        <h3 className="mb-0">Sucursales</h3>
                     </Col>
                     <Col>
-                        <Form.Select
+                        <SelectBranches
+                            onChange={handleBranchChange}
+                            name="mainBranch"
+                            branchId={mainBranch?.id}
+                        />
+                        {/* <Form.Select
                             value={selectedBranch?.id}
                             onChange={handleBranchChange}
                         >
@@ -65,7 +95,7 @@ export const BranchSection = () => {
                                     {branch.name}
                                 </option>
                             ))}
-                        </Form.Select>
+                        </Form.Select> */}
                     </Col>
                 </Row>
             </Card.Header>
@@ -74,10 +104,14 @@ export const BranchSection = () => {
                     Nombre: <strong>{selectedBranch?.name}</strong>
                 </Card.Text>
                 <Card.Text>
-                    Region: <strong>{selectedBranch?.regionId}</strong>
+                    Comuna: <strong>{selectedBranch?.municipalityId}</strong>
                 </Card.Text>
                 <Card.Text>
                     Dirección: <strong>{selectedBranch?.address}</strong>
+                </Card.Text>
+                <Card.Text>
+                    Cantidad de Bodegas:{' '}
+                    <strong>{selectedBranch?.warehousesQty}</strong>
                 </Card.Text>
             </Card.Body>
         </Card>

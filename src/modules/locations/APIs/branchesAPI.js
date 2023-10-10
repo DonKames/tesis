@@ -22,8 +22,13 @@ export const getBranches = async (
 export const getBranchById = async (branchId) => {
     try {
         const response = await fetch(`${BASE_URL}/branches/${branchId}`);
-        const data = await handleFetchError(response);
-        return data;
+        const { status, data, message } = await handleFetchError(response);
+
+        if (status === 'success') {
+            return data;
+        } else {
+            throw new Error(message);
+        }
     } catch (error) {
         console.log('Error al obtener Sucursal desde la API:', error);
         return [];
