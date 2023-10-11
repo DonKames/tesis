@@ -54,9 +54,13 @@ export const getWarehousesQty = async ({ branchId, showInactive } = {}) => {
             url += `?${params.toString()}`;
         }
 
+        console.log('Fetching URL:', url);
+
         const response = await fetch(url);
 
-        const { status, data, message } = await handleFetchError(response);
+        console.log(response);
+
+        const { status, message, data } = await handleFetchError(response);
 
         if (status === 'success') {
             return data;

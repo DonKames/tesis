@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Col, Form, Row } from 'react-bootstrap';
+import { Card, Col, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     getWarehouseById,
@@ -61,16 +61,6 @@ export const WarehouseSection = () => {
                             name="warehouseId"
                             warehouseId={selectedWarehouse?.id}
                         />
-                        {/* <Form.Select
-                            value={selectedWarehouse?.id}
-                            onChange={handleWarehouseChange}
-                        >
-                            {warehousesNames.map((warehouse) => (
-                                <option key={warehouse.id} value={warehouse.id}>
-                                    {warehouse.name}
-                                </option>
-                            ))}
-                        </Form.Select> */}
                     </Col>
                 </Row>
             </Card.Header>
@@ -93,6 +83,12 @@ export const WarehouseSection = () => {
                     Capacidad:{' '}
                     <strong>
                         {selectedWarehouse?.capacity || 'Sin Determinar'}
+                    </strong>
+                </Card.Text>
+                <Card.Text>
+                    Cantidad de productos:{' '}
+                    <strong>
+                        {selectedWarehouse?.productsQty || 'Sin Determinar'}
                     </strong>
                 </Card.Text>
             </Card.Body>

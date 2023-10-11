@@ -87,6 +87,10 @@ export const SelectWarehouses = ({
 
     return (
         <Select
+            menuPortalTarget={document.body}
+            styles={{
+                menuPortal: (base) => ({ ...base, zIndex: 99999 }),
+            }}
             isSearchable
             name={name}
             onChange={handleWarehouseChange}

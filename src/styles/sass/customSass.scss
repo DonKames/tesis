@@ -61,4 +61,8 @@ $table-caption-color: #a2b5be; // Color para el texto del título
     min-width: 3rem;
 }
 
+.mySelect__control {
+    z-index: 10000 !important;
+}
+
 @import '../../../node_modules/bootstrap/scss/bootstrap';

@@ -23,9 +23,11 @@ export const BranchSection = () => {
         // Formatting
         const branchId = +e.target.value;
 
+        console.log(branchId);
+
         const branchData = await getBranchById(branchId);
 
-        const warehousesQty = await getWarehousesQty(branchId);
+        const warehousesQty = await getWarehousesQty({ branchId });
 
         console.log(warehousesQty);
 
@@ -86,16 +88,6 @@ export const BranchSection = () => {
                             name="mainBranch"
                             branchId={mainBranch?.id}
                         />
-                        {/* <Form.Select
-                            value={selectedBranch?.id}
-                            onChange={handleBranchChange}
-                        >
-                            {branchesNames.map((branch) => (
-                                <option key={branch.id} value={branch.id}>
-                                    {branch.name}
-                                </option>
-                            ))}
-                        </Form.Select> */}
                     </Col>
                 </Row>
             </Card.Header>

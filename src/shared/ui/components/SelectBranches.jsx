@@ -50,6 +50,10 @@ export const SelectBranches = ({ onChange, name, branchId }) => {
 
     return (
         <Select
+            menuPortalTarget={document.body}
+            styles={{
+                menuPortal: (base) => ({ ...base, zIndex: 99999 }),
+            }}
             value={selectedValue}
             isSearchable
             name={name}
