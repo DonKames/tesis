@@ -8,6 +8,7 @@ import { updateUserUid } from '../../users/apis/usersAPI';
 import { GeneralSection } from './GeneralSection';
 import { WarehouseSection } from './WarehouseSection';
 import { BranchSection } from './BranchSection';
+import { UsersSection } from './UsersSection';
 
 export const MainScreen = () => {
     // Redux states
@@ -38,7 +39,7 @@ export const MainScreen = () => {
                         className="shadow h-100"
                     >
                         <Card.Header>
-                            <h3>Resumen de la bodega</h3>
+                            <h3>Últimos Movimientos</h3>
                         </Card.Header>
                         <Card.Body>
                             {/* <Card.Text className='my-2'>
@@ -72,40 +73,20 @@ export const MainScreen = () => {
                         </Card.Body>
                     </Card>
                 </Col>
-                <Col>
-                    <Card className="shadow h-100">
+                <Col xs="12" lg="3">
+                    <UsersSection />
+                    {/* <Card className="shadow h-100">
                         <Card.Header>
                             <h3>Tareas de movimiento de productos</h3>
                         </Card.Header>
                         <Card.Body>
                             <Card.Title></Card.Title>
-                            <Card.Text>
-                                {/* {taskLoading ? (
-                                    <p>Cargando tareas...</p>
-                                ) : (
-                                    <ul>
-                                        {taskList.map((task) => (
-                                            <li key={task.id}>
-                                                <Link to={`/tasks/${task.id}`}>
-                                                    {task.productName} (
-                                                    {task.quantity}) - de{' '}
-                                                    {task.fromLocation} a{' '}
-                                                    {task.toLocation} -{' '}
-                                                    {task.completed
-                                                        ? 'Completada'
-                                                        : 'Pendiente'}
-                                                </Link>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                )} */}
-                                Las tareas creo
-                            </Card.Text>
+                            <Card.Text>Las tareas creo</Card.Text>
                             <Link to="/tasks/new" className="btn btn-primary">
                                 Crear nueva tarea
                             </Link>
                         </Card.Body>
-                    </Card>
+                    </Card> */}
                 </Col>
             </Row>
 

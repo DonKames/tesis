@@ -146,6 +146,25 @@ export const getUserByEmail = async (userEmail) => {
     }
 };
 
+export const getUsersNames = async () => {
+    try {
+        const response = await fetch(`${BASE_URL}/users/names`);
+
+        const { status, data, message } = await handleFetchError(response);
+        if (status === 'success') {
+            return data;
+        } else {
+            throw new Error(message);
+        }
+    } catch (error) {
+        console.log(
+            'Error al obtener Nombres de USUARIOS desde la API:',
+            error,
+        );
+        return [];
+    }
+};
+
 export const updateUserUid = async (email, uid) => {
     try {
         console.log(email, uid);

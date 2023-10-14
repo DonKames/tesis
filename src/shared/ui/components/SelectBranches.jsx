@@ -39,6 +39,7 @@ export const SelectBranches = ({ onChange, name, branchId }) => {
     }, [branchId, branchesNames]);
 
     const handleChange = (selectedOption) => {
+        console.log(selectedOption);
         setSelectedValue(selectedOption);
         onChange({
             target: {

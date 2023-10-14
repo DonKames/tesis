@@ -22,6 +22,7 @@ export const getWarehouses = async (
 
 export const getWarehouseById = async (warehouseId) => {
     try {
+        console.log(warehouseId);
         const response = await fetch(`${BASE_URL}/warehouses/${warehouseId}`);
         const { status, data, message } = await handleFetchError(response);
 

@@ -20,16 +20,14 @@ export const BranchSection = () => {
     const [selectedBranch, setSelectedBranch] = useState(null);
 
     const handleBranchChange = async (e) => {
-        // Formatting
-        const branchId = +e.target.value;
+        console.log(e);
+        updateSelectedBranch(e.target.value);
+    };
 
-        console.log(branchId);
-
+    const updateSelectedBranch = async (branchId) => {
         const branchData = await getBranchById(branchId);
 
         const warehousesQty = await getWarehousesQty({ branchId });
-
-        console.log(warehousesQty);
 
         const branchDataWithWarehousesQty = {
             ...branchData,
@@ -49,21 +47,7 @@ export const BranchSection = () => {
                 }
 
                 if (mainBranch) {
-                    const branchData = await getBranchById(mainBranch.id);
-
-                    console.log(branchData);
-
-                    const warehousesQty = await getWarehousesQty(mainBranch.id);
-
-                    console.log(warehousesQty);
-
-                    const branchDataWithWarehousesQty = {
-                        ...branchData,
-                        warehousesQty,
-                    };
-
-                    console.log(branchDataWithWarehousesQty);
-                    setSelectedBranch(branchDataWithWarehousesQty);
+                    updateSelectedBranch(mainBranch.id);
                 }
             };
 
@@ -72,8 +56,6 @@ export const BranchSection = () => {
             console.log(error);
         }
     }, [mainBranch]);
-
-    console.log(selectedBranch);
 
     return (
         <Card className="shadow h-100 animate__animated animate__fadeIn animate__fast">

@@ -19,8 +19,11 @@ export const WarehouseSection = () => {
     const [selectedWarehouse, setSelectedWarehouse] = useState(null);
 
     const handleWarehouseChange = async (e) => {
+        console.log(e);
         // Formatting
         const warehouseId = +e.target.value;
+
+        console.log(warehouseId);
 
         const warehouseData = await getWarehouseById(warehouseId);
 
@@ -36,6 +39,7 @@ export const WarehouseSection = () => {
                 }
 
                 if (mainWarehouse) {
+                    console.log(mainWarehouse);
                     const warehouse = await getWarehouseById(mainWarehouse.id);
                     console.log(warehouse);
                     setSelectedWarehouse(warehouse);
@@ -59,7 +63,7 @@ export const WarehouseSection = () => {
                         <SelectWarehouses
                             handleInputChange={handleWarehouseChange}
                             name="warehouseId"
-                            warehouseId={selectedWarehouse?.id}
+                            warehouseId={selectedWarehouse?.id || 0}
                         />
                     </Col>
                 </Row>
