@@ -67,12 +67,15 @@ export const createUser = async (userData) => {
 
 export const getUserById = async (userId) => {
     try {
-        const response = await fetch(`${BASE_URL}/users/id/${userId}`);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+        const { status, data, message } = await fetch(
+            `${BASE_URL}/users/id/${userId}`,
+        );
+
+        if (status === 'success') {
+            return data;
+        } else {
+            throw new Error(message);
         }
-        const data = await response.json();
-        return data;
     } catch (error) {
         console.log(error);
         const msgError = await error.detail;

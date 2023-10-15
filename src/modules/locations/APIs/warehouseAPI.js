@@ -22,7 +22,7 @@ export const getWarehouses = async (
 
 export const getWarehouseById = async (warehouseId) => {
     try {
-        console.log(warehouseId);
+        // console.log(warehouseId);
         const response = await fetch(`${BASE_URL}/warehouses/${warehouseId}`);
         const { status, data, message } = await handleFetchError(response);
 
@@ -55,11 +55,11 @@ export const getWarehousesQty = async ({ branchId, showInactive } = {}) => {
             url += `?${params.toString()}`;
         }
 
-        console.log('Fetching URL:', url);
+        // console.log('Fetching URL:', url);
 
         const response = await fetch(url);
 
-        console.log(response);
+        // console.log(response);
 
         const { status, message, data } = await handleFetchError(response);
 
