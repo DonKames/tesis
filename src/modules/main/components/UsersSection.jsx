@@ -6,7 +6,7 @@ import { getUserById, getUsersNames } from '../../users/apis/usersAPI';
 import { uiSetUsersNames } from '../../../shared/ui/slice/uiSlice';
 import { capitalizeFirstLetter } from '../../../shared/utils/stringUtils';
 
-export const UsersSection = () => {
+export const UserSection = () => {
     const dispatch = useDispatch();
 
     const { usersNames } = useSelector((state) => state.ui);
@@ -79,9 +79,7 @@ export const UsersSection = () => {
                     Rol:{' '}
                     <strong>
                         {/* //! TODO: Obtener el nombre del rol */}
-                        {selectedUser?.role === 'admin'
-                            ? 'Administrador'
-                            : 'Usuario'}
+                        {selectedUser?.roleName}
                     </strong>
                 </Card.Text>
             </Card.Body>

@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import Select from 'react-select';
 import { getUsersNames } from '../../../modules/users/apis/usersAPI';
 import { uiSetUsersNames } from '../slice/uiSlice';
+import { capitalizeFirstLetter } from '../../utils/stringUtils';
 
 export const SelectUsers = ({ onChange, name, userId }) => {
     const dispatch = useDispatch();
@@ -34,14 +35,20 @@ export const SelectUsers = ({ onChange, name, userId }) => {
         if (defaultUser) {
             setSelectedValue({
                 value: defaultUser.id,
-                label: defaultUser.name,
+                label:
+                    capitalizeFirstLetter(defaultUser.name) +
+                    ' ' +
+                    capitalizeFirstLetter(defaultUser.lastName),
             });
         }
     }, [userId, usersNames]);
 
     const options = usersNames.map((user) => ({
         value: user.id,
-        label: user.name,
+        label:
+            capitalizeFirstLetter(user.name) +
+            ' ' +
+            capitalizeFirstLetter(user.lastName),
     }));
 
     const handleChange = (selectedOption) => {

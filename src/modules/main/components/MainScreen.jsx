@@ -2,12 +2,13 @@ import React from 'react';
 
 import { Card, Col, Container, Row } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
-import { updateUserUid } from '../../users/apis/usersAPI';
 
+import { updateUserUid } from '../../users/apis/usersAPI';
 import { GeneralSection } from './GeneralSection';
 import { WarehouseSection } from './WarehouseSection';
 import { BranchSection } from './BranchSection';
-import { UsersSection } from './UsersSection';
+import { UserSection } from './UsersSection';
+import { SkuSection } from './SkuSection';
 
 export const MainScreen = () => {
     // Redux states
@@ -33,6 +34,9 @@ export const MainScreen = () => {
             </Row>
             <Row className="my-3">
                 <Col>
+                    <SkuSection />
+                </Col>
+                <Col>
                     <Card
                         // bg='light'
                         className="shadow h-100"
@@ -44,7 +48,7 @@ export const MainScreen = () => {
                     </Card>
                 </Col>
                 <Col xs="12" md="6" lg="3">
-                    <UsersSection />
+                    <UserSection />
                 </Col>
             </Row>
 
