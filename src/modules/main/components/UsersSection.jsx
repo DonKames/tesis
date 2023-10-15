@@ -4,6 +4,7 @@ import { SelectUsers } from '../../../shared/ui/components/SelectUsers';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserById, getUsersNames } from '../../users/apis/usersAPI';
 import { uiSetUsersNames } from '../../../shared/ui/slice/uiSlice';
+import { capitalizeFirstLetter } from '../../../shared/utils/stringUtils';
 
 export const UsersSection = () => {
     const dispatch = useDispatch();
@@ -13,13 +14,19 @@ export const UsersSection = () => {
     // Local States
     const [selectedUser, setSelectedUser] = useState(null);
 
+    const handleUserChange = async (e) => {
+        console.log(e);
+        updateSelectedUser(e.target.value);
+    };
+
     useEffect(() => {
         try {
             const fetchData = async () => {
                 if (!usersNames.length) {
                     const usersData = await getUsersNames();
                     dispatch(uiSetUsersNames(usersData));
-                    setSelectedUser(usersData[0]);
+
+                    updateSelectedUser(usersData[0].id);
                     console.log(selectedUser);
                     console.log(usersData);
                 }
@@ -48,14 +55,34 @@ export const UsersSection = () => {
                         <h3 className="mb-0">Usuarios</h3>
                     </Col>
                     <Col>
-                        <SelectUsers name="userId" />
+                        <SelectUsers
+                            name="userId"
+                            onChange={handleUserChange}
+                            userId={selectedUser?.id}
+                        />
                     </Col>
                 </Row>
             </Card.Header>
             <Card.Body>
                 <Card.Text>
                     Nombre:{' '}
-                    {selectedUser?.firstName + ' ' + selectedUser?.lastName}
+                    <strong>
+                        {capitalizeFirstLetter(selectedUser?.name) +
+                            ' ' +
+                            capitalizeFirstLetter(selectedUser?.lastName)}
+                    </strong>
+                </Card.Text>
+                <Card.Text>
+                    Email: <strong>{selectedUser?.email}</strong>
+                </Card.Text>
+                <Card.Text>
+                    Rol:{' '}
+                    <strong>
+                        {/* //! TODO: Obtener el nombre del rol */}
+                        {selectedUser?.role === 'admin'
+                            ? 'Administrador'
+                            : 'Usuario'}
+                    </strong>
                 </Card.Text>
             </Card.Body>
         </Card>
