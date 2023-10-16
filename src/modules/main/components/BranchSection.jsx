@@ -20,7 +20,7 @@ export const BranchSection = () => {
     const [selectedBranch, setSelectedBranch] = useState(null);
 
     const handleBranchChange = async (e) => {
-        console.log(e);
+        // console.log(e);
         updateSelectedBranch(e.target.value);
     };
 

@@ -27,8 +27,8 @@ export const UserSection = () => {
                     dispatch(uiSetUsersNames(usersData));
 
                     updateSelectedUser(usersData[0].id);
-                    console.log(selectedUser);
-                    console.log(usersData);
+                } else {
+                    updateSelectedUser(usersNames[0].id);
                 }
             };
 
@@ -44,6 +44,8 @@ export const UserSection = () => {
         console.log(userData);
 
         setSelectedUser(userData);
+
+        return userData;
     };
 
     return (
