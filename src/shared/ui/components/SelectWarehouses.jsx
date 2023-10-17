@@ -14,9 +14,10 @@ export const SelectWarehouses = ({
     originalBranchId,
 }) => {
     const dispatch = useDispatch();
+
     const { warehousesNames } = useSelector((state) => state.ui);
+
     const [selectedValue, setSelectedValue] = useState(0);
-    // const [options, setOptions] = useState([]);
 
     useEffect(() => {
         const fetchWarehousesNames = async () => {
@@ -46,6 +47,7 @@ export const SelectWarehouses = ({
     }, [warehouseId, warehousesNames]);
 
     const handleWarehouseChange = (selectedOption) => {
+        console.log(selectedOption);
         setSelectedValue(selectedOption);
         handleInputChange({
             target: {
@@ -70,29 +72,36 @@ export const SelectWarehouses = ({
                   }));
     /* eslint-enable indent */
 
-    useEffect(() => {
-        if (originalBranchId !== selectedBranch) {
-            setSelectedValue({
-                value: options ? options[0]?.value : 0,
-                label: options ? options[0]?.label : '',
-            });
-            handleInputChange({
-                target: {
-                    name,
-                    value: options ? options[0]?.value : 0,
-                },
-            });
-        }
-    }, [selectedBranch]);
+    // ! Revisar esta parte, comentado funciona.
+    // FIXME
+    // useEffect(() => {
+    //     if (originalBranchId !== selectedBranch) {
+    //         console.log(options);
+    //         setSelectedValue({
+    //             value: options ? options[0]?.value : 0,
+    //             label: options ? options[0]?.label : '',
+    //         });
+    //         handleInputChange({
+    //             target: {
+    //                 name,
+    //                 value: options ? options[0]?.value : 0,
+    //             },
+    //         });
+    //     }
+    // }, [selectedBranch]);
 
     return (
         <Select
-            value={selectedValue}
+            menuPortalTarget={document.body}
+            styles={{
+                menuPortal: (base) => ({ ...base, zIndex: 99999 }),
+            }}
             isSearchable
             name={name}
             onChange={handleWarehouseChange}
             options={options}
             placeholder="Seleccione su Bodega"
+            value={selectedValue}
         />
     );
 };
@@ -100,8 +109,9 @@ export const SelectWarehouses = ({
 SelectWarehouses.propTypes = {
     handleInputChange: PropTypes.func.isRequired,
     name: PropTypes.string.isRequired,
-    warehouseId: PropTypes.number,
+    originalBranchId: PropTypes.number,
     selectedBranch: PropTypes.number,
+    warehouseId: PropTypes.number,
 };
 
 SelectWarehouses.defaultProps = {

@@ -1,110 +1,15 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { Col, Container, Row } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
 
 import { AddBranchModal } from './AddBranchModal';
 import { AddBranchLocationModal } from './AddBranchLocationModal';
 import { AddWarehouseModal } from './AddWarehouseModal';
-import {
-    locationsSetBranchLocations,
-    locationsSetBranchLocationsQty,
-    locationsSetBranches,
-    locationsSetBranchesQty,
-    locationsSetCountries,
-    locationsSetRegions,
-    locationsSetWarehouses,
-    locationsSetWarehousesQty,
-} from '../slice/locationsSlice';
-import { getRegions } from '../APIs/apiRegions';
-import { getBranches, getBranchesQty } from '../APIs/branchesAPI';
-import { getWarehouses, getWarehousesQty } from '../APIs/warehouseAPI';
-import { getCountries } from '../APIs/apiCountries';
-import {
-    getBranchLocations,
-    getBranchLocationsQty,
-} from '../APIs/apiBranchLocation';
 import { BranchesSection } from './BranchesSection';
 import { WarehousesSection } from './WarehousesSection';
 import { BranchLocationsSection } from './BranchLocationsSection';
 
 export const LocationsScreen = () => {
-    const dispatch = useDispatch();
-
-    // Pagination
-    // Branches
-
-    // Redux
-    const {
-        branches,
-        branchesQty,
-        regions,
-        countries,
-        warehouses,
-        warehousesQty,
-        branchLocations,
-        branchLocationsQty,
-    } = useSelector((state) => state.locations);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            // Branches Table, Pagination.
-            if (branchesQty === null) {
-                const branchesQty = await getBranchesQty();
-                dispatch(locationsSetBranchesQty(branchesQty));
-            } else {
-                const fetchedBranches = await getBranches(1, 10);
-                dispatch(locationsSetBranches(fetchedBranches));
-            }
-
-            if (!branches.length) {
-                const fetchedBranches = await getBranches(1, 10);
-                dispatch(locationsSetBranches(fetchedBranches));
-            }
-
-            // Warehouses Table, Pagination.
-            if (warehousesQty === null) {
-                const warehousesQty = await getWarehousesQty();
-                // setWarehousePagesQty(Math.ceil(warehousesQty / warehouseLimit));
-                dispatch(locationsSetWarehousesQty(warehousesQty));
-            }
-
-            if (!warehouses.length) {
-                const fetchedWarehouses = await getWarehouses(1, 10);
-                dispatch(locationsSetWarehouses(fetchedWarehouses));
-            }
-
-            // Branch Locations Table, Pagination.
-            if (branchLocationsQty === null) {
-                const branchLocationsQty = await getBranchLocationsQty();
-                console.log(branchLocationsQty);
-
-                dispatch(locationsSetBranchLocationsQty(branchLocationsQty));
-            } else {
-                const fetchedBranchLocations = await getBranchLocations(1, 10);
-                dispatch(locationsSetBranchLocations(fetchedBranchLocations));
-            }
-
-            if (!branchLocations.length) {
-                const fetchedBranchLocations = await getBranchLocations(1, 10);
-                dispatch(locationsSetBranchLocations(fetchedBranchLocations));
-            }
-
-            // Forms
-            if (!countries.length) {
-                const fetchedCountries = await getCountries();
-                dispatch(locationsSetCountries(fetchedCountries));
-            }
-
-            if (!regions.length) {
-                const fetchedRegions = await getRegions();
-                dispatch(locationsSetRegions(fetchedRegions));
-            }
-        };
-
-        fetchData();
-    }, [dispatch]);
-
     return (
         <Container fluid className="mt-2">
             <Row className="align-items-center">
@@ -120,7 +25,7 @@ export const LocationsScreen = () => {
                     <BranchesSection />
                 </Col>
                 <Row>
-                    <Col xs="12" md="6">
+                    <Col xs="12" lg="6">
                         <Row>
                             <Col>
                                 <h1>Bodegas</h1>
@@ -131,7 +36,7 @@ export const LocationsScreen = () => {
                         </Row>
                         <WarehousesSection />
                     </Col>
-                    <Col xs="12" md="6">
+                    <Col xs="12" lg="6">
                         <Row>
                             <Col>
                                 <h1>Lugares de Sucursal</h1>

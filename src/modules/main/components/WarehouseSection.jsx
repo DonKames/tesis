@@ -1,25 +1,29 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Col, Form, Row } from 'react-bootstrap';
+import { Card, Col, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     getWarehouseById,
     getWarehousesNames,
 } from '../../locations/APIs/warehouseAPI';
 import { uiSetWarehousesNames } from '../../../shared/ui/slice/uiSlice';
+import { SelectWarehouses } from '../../../shared/ui/components/SelectWarehouses';
 
 export const WarehouseSection = () => {
     const dispatch = useDispatch();
 
     // Redux states
-    const { warehousesNames } = useSelector((state) => state.ui);
+    const { warehousesNames, branchesNames } = useSelector((state) => state.ui);
     const { mainWarehouse } = useSelector((state) => state.settings);
 
     // Local States
     const [selectedWarehouse, setSelectedWarehouse] = useState(null);
 
     const handleWarehouseChange = async (e) => {
+        console.log(e);
         // Formatting
         const warehouseId = +e.target.value;
+
+        console.log(warehouseId);
 
         const warehouseData = await getWarehouseById(warehouseId);
 
@@ -35,7 +39,9 @@ export const WarehouseSection = () => {
                 }
 
                 if (mainWarehouse) {
+                    console.log(mainWarehouse);
                     const warehouse = await getWarehouseById(mainWarehouse.id);
+                    console.log(warehouse);
                     setSelectedWarehouse(warehouse);
                 }
             };
@@ -54,16 +60,11 @@ export const WarehouseSection = () => {
                         <h3>Bodegas</h3>
                     </Col>
                     <Col>
-                        <Form.Select
-                            value={selectedWarehouse?.id}
-                            onChange={handleWarehouseChange}
-                        >
-                            {warehousesNames.map((warehouse) => (
-                                <option key={warehouse.id} value={warehouse.id}>
-                                    {warehouse.name}
-                                </option>
-                            ))}
-                        </Form.Select>
+                        <SelectWarehouses
+                            handleInputChange={handleWarehouseChange}
+                            name="warehouseId"
+                            warehouseId={selectedWarehouse?.id || 0}
+                        />
                     </Col>
                 </Row>
             </Card.Header>
@@ -72,12 +73,26 @@ export const WarehouseSection = () => {
                     Nombre: <strong>{selectedWarehouse?.name}</strong>
                 </Card.Text>
                 <Card.Text>
-                    Sucursal: <strong>{selectedWarehouse?.branchId}</strong>
+                    Sucursal:{' '}
+                    <strong>
+                        {
+                            branchesNames.find(
+                                (branch) =>
+                                    branch.id === selectedWarehouse?.branchId,
+                            )?.name
+                        }
+                    </strong>
                 </Card.Text>
                 <Card.Text>
                     Capacidad:{' '}
                     <strong>
                         {selectedWarehouse?.capacity || 'Sin Determinar'}
+                    </strong>
+                </Card.Text>
+                <Card.Text>
+                    Cantidad de productos:{' '}
+                    <strong>
+                        {selectedWarehouse?.productsQty || 'Sin Determinar'}
                     </strong>
                 </Card.Text>
             </Card.Body>

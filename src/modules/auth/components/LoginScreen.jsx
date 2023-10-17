@@ -8,7 +8,7 @@ import {
     startLoginEmailPassword,
     startRegisterNameEmailPass,
 } from '../actions/auth';
-import { getUserByEmail } from '../../users/apis/apiUsers';
+import { getUserByEmail } from '../../users/apis/usersAPI';
 import { authIsRegistered } from '../authSlice';
 import validator from 'validator';
 import Swal from 'sweetalert2';

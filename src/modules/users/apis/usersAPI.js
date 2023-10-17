@@ -2,13 +2,18 @@ import { handleFetchError } from '../../../shared/utils/handleFetchError';
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
-export const getUsers = async (page = 1, limit = 10) => {
+export const getUsers = async (page = 1, limit = 10, showInactive = false) => {
     try {
         const response = await fetch(
-            `${BASE_URL}/users?page=${page}&limit=${limit}`,
+            `${BASE_URL}/users?page=${page}&limit=${limit}&showInactive=${showInactive}`,
         );
-        const data = await handleFetchError(response);
-        return data;
+
+        const { status, data } = await handleFetchError(response);
+
+        if (status === 'success') {
+            return data;
+        }
+        return [];
     } catch (error) {
         console.log('Error al obtener USUARIOS desde la API:', error);
         return [];
@@ -18,8 +23,12 @@ export const getUsers = async (page = 1, limit = 10) => {
 export const getUsersQty = async () => {
     try {
         const response = await fetch(`${BASE_URL}/users/qty`);
-        const data = await handleFetchError(response);
-        return data;
+        const { data, status } = await handleFetchError(response);
+
+        if (status === 'success') {
+            return data;
+        }
+        return 0;
     } catch (error) {
         console.log(
             'Error al obtener la CANTIDAD DE USUARIOS desde la API:',
@@ -58,12 +67,18 @@ export const createUser = async (userData) => {
 
 export const getUserById = async (userId) => {
     try {
+        // const { status, data, message } = await fetch(
+        //     `${BASE_URL}/users/id/${userId}`,
         const response = await fetch(`${BASE_URL}/users/id/${userId}`);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+        const { status, data, message } = await handleFetchError(response);
+
+        console.log(data);
+
+        if (status === 'success') {
+            return data;
+        } else {
+            throw new Error(message);
         }
-        const data = await response.json();
-        return data;
     } catch (error) {
         console.log(error);
         const msgError = await error.detail;
@@ -137,6 +152,25 @@ export const getUserByEmail = async (userEmail) => {
     }
 };
 
+export const getUsersNames = async () => {
+    try {
+        const response = await fetch(`${BASE_URL}/users/names`);
+
+        const { status, data, message } = await handleFetchError(response);
+        if (status === 'success') {
+            return data;
+        } else {
+            throw new Error(message);
+        }
+    } catch (error) {
+        console.log(
+            'Error al obtener Nombres de USUARIOS desde la API:',
+            error,
+        );
+        return [];
+    }
+};
+
 export const updateUserUid = async (email, uid) => {
     try {
         console.log(email, uid);
@@ -185,5 +219,27 @@ export const updateUser = async (userId, updatedUserData) => {
     } catch (error) {
         console.log('Error al actualizar USUARIO en la API:', error);
         return error;
+    }
+};
+
+export const changeUserState = async (userId, state) => {
+    try {
+        const response = await fetch(`${BASE_URL}/users/${userId}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ state }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.log('Error al cambiar estado de USUARIO en la API: ', error);
+        return null;
     }
 };

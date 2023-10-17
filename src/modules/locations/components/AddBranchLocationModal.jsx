@@ -9,7 +9,7 @@ import { useForm } from '../../../hooks/useForm';
 import {
     createBranchLocation,
     getBranchLocations,
-} from '../APIs/apiBranchLocation';
+} from '../APIs/branchLocationsAPI';
 import { locationsSetBranchLocations } from '../slice/locationsSlice';
 
 export const AddBranchLocationModal = () => {

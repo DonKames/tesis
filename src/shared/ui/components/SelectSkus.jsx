@@ -49,7 +49,10 @@ export const SelectSkus = ({ handleInputChange, name, skuId }) => {
 
     return (
         <Select
-            value={selectedValue}
+            menuPortalTarget={document.body}
+            styles={{
+                menuPortal: (base) => ({ ...base, zIndex: 99999 }),
+            }}
             isSearchable
             name={name}
             onChange={handleChange}
@@ -58,6 +61,7 @@ export const SelectSkus = ({ handleInputChange, name, skuId }) => {
                 label: sku.name,
             }))}
             placeholder="Seleccione su Sku"
+            value={selectedValue}
         />
     );
 };

@@ -39,6 +39,7 @@ export const SelectBranches = ({ onChange, name, branchId }) => {
     }, [branchId, branchesNames]);
 
     const handleChange = (selectedOption) => {
+        console.log(selectedOption);
         setSelectedValue(selectedOption);
         onChange({
             target: {
@@ -50,6 +51,10 @@ export const SelectBranches = ({ onChange, name, branchId }) => {
 
     return (
         <Select
+            menuPortalTarget={document.body}
+            styles={{
+                menuPortal: (base) => ({ ...base, zIndex: 99999 }),
+            }}
             value={selectedValue}
             isSearchable
             name={name}

@@ -26,8 +26,8 @@ $border-color: #d6d6d6;
 }
 
 // Padding y alineación
-$table-cell-padding-y: .5rem;
-$table-cell-padding-x: .5rem;
+$table-cell-padding-y: 0.5rem;
+$table-cell-padding-x: 0.5rem;
 $table-cell-vertical-align: middle;
 
 // // Colores generales y fondo
@@ -56,5 +56,13 @@ $table-border-color: #d6d6d6; // Color de los bordes
 // Caption (título de la tabla)
 $table-caption-color: #a2b5be; // Color para el texto del título
 
+// Clases Personalizadas
+.icon-width {
+    min-width: 3rem;
+}
 
-@import "../../../node_modules/bootstrap/scss/bootstrap";
+.mySelect__control {
+    z-index: 10000 !important;
+}
+
+@import '../../../node_modules/bootstrap/scss/bootstrap';

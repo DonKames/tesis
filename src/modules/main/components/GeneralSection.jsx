@@ -17,8 +17,8 @@ import {
     locationsSetWarehousesQty,
 } from '../../locations/slice/locationsSlice';
 import { getWarehousesQty } from '../../locations/APIs/warehouseAPI';
-import { getBranchLocationsQty } from '../../locations/APIs/apiBranchLocation';
-import { getUsersQty } from '../../users/apis/apiUsers';
+import { getBranchLocationsQty } from '../../locations/APIs/branchLocationsAPI';
+import { getUsersQty } from '../../users/apis/usersAPI';
 import { usersSetUsersQty } from '../../users/slice/usersSlice';
 import { PieChart } from '../../../shared/ui/components/PieChart';
 import { productsSetProductsCountByWarehouse } from '../../products/slice/productsSlice';
@@ -31,19 +31,18 @@ export const GeneralSection = () => {
     const { branchesQty, warehousesQty, branchLocationsQty } = useSelector(
         (state) => state.locations,
     );
-    const { mainWarehouse } = useSelector((state) => state.settings);
+    const { mainBranch, mainWarehouse } = useSelector(
+        (state) => state.settings,
+    );
 
     const { productsCountByWarehouse } = useSelector((state) => state.products);
 
-    console.log(productsCountByWarehouse);
     const { usersQty } = useSelector((state) => state.users);
 
     const graphData = productsCountByWarehouse?.map((element) => {
         // console.log(element);
         return [element.warehouse_name || '', parseInt(element.product_count)];
     });
-
-    console.log('productsCountByWarehouse: ', productsCountByWarehouse);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -101,43 +100,94 @@ export const GeneralSection = () => {
     return (
         <>
             <Card className="shadow h-100 animate__animated animate__fadeIn animate__fast">
-                <Card.Header>
-                    <h3>Resumen General</h3>
+                <Card.Header className="d-flex align-items-center">
+                    <h3 className="mb-0">Resumen General</h3>
                 </Card.Header>
                 <Card.Body>
                     <Row>
-                        <Col>
-                            <Card.Text className="my-2">
-                                <FontAwesomeIcon icon={faBuilding} />
-                                Sucursal Principal:
-                                <strong> {branchesQty}</strong>
-                            </Card.Text>
-                            <Card.Text className="my-2">
-                                <FontAwesomeIcon icon={faBuilding} />
-                                Bodega Principal:
-                                <strong> {mainWarehouse?.name}</strong>
-                            </Card.Text>
-                            <Card.Text className="my-2">
-                                <FontAwesomeIcon icon={faBuilding} />
-                                Total de Sucursales:
-                                <strong> {branchesQty}</strong>
-                            </Card.Text>
-                            <Card.Text className="my-2">
-                                <FontAwesomeIcon icon={faWarehouse} />
-                                Total de Bodegas:{' '}
-                                <strong>{warehousesQty}</strong>
-                            </Card.Text>
-                            <Card.Text className="my-2">
-                                <FontAwesomeIcon icon={faTent} /> Total de
-                                Ubicaciones de Sucursal:{' '}
-                                <strong>{branchLocationsQty}</strong>
-                            </Card.Text>
-                            <Card.Text className="my-2">
-                                <FontAwesomeIcon icon={faUser} /> Total de
-                                Usuarios: <strong>{usersQty}</strong>
-                            </Card.Text>
+                        <Col xs={12} md={6}>
+                            <Row className="align-items-center my-1 p-0">
+                                <Col xs={1} className="px-1 text-center">
+                                    <FontAwesomeIcon
+                                        icon={faBuilding}
+                                        className=""
+                                    />
+                                </Col>
+                                <Col xs={11} className="ps-0">
+                                    <Card.Text>
+                                        Sucursal Principal:
+                                        <strong> {mainBranch?.name}</strong>
+                                    </Card.Text>
+                                </Col>
+                            </Row>
+                            <Row className="align-items-center my-1">
+                                <Col xs={1} className="px-1 text-center">
+                                    <FontAwesomeIcon icon={faBuilding} />
+                                </Col>
+                                <Col xs={11} className="ps-0">
+                                    <Card.Text>
+                                        Bodega Principal:
+                                        <strong> {mainWarehouse?.name}</strong>
+                                    </Card.Text>
+                                </Col>
+                            </Row>
+                            <Row className="align-items-center my-1">
+                                <Col xs={1} className="px-1 text-center">
+                                    <FontAwesomeIcon icon={faBuilding} />
+                                </Col>
+                                <Col xs={11} className="ps-0">
+                                    <Card.Text>
+                                        Total de Sucursales:
+                                        <strong> {branchesQty}</strong>
+                                    </Card.Text>
+                                </Col>
+                            </Row>
+                            <Row className="align-items-center my-1">
+                                <Col xs={1} className="px-1 text-center">
+                                    <FontAwesomeIcon icon={faWarehouse} />
+                                </Col>
+                                <Col xs={11} className="ps-0">
+                                    <Card.Text>
+                                        Total de Bodegas:
+                                        <strong> {warehousesQty}</strong>
+                                    </Card.Text>
+                                </Col>
+                            </Row>
+                            <Row className="align-items-center my-1">
+                                <Col xs={1} className="px-1 text-center">
+                                    <FontAwesomeIcon icon={faTent} />
+                                </Col>
+                                <Col xs={11} className="ps-0">
+                                    <Card.Text>
+                                        Total de Ubicaciones de Sucursal:{' '}
+                                        <strong>{branchLocationsQty}</strong>
+                                    </Card.Text>
+                                </Col>
+                            </Row>
+                            <Row className="align-items-center my-1">
+                                <Col xs={1} className="px-1 text-center">
+                                    <FontAwesomeIcon icon={faUser} />
+                                </Col>
+                                <Col xs={11} className="ps-0">
+                                    <Card.Text>
+                                        Total de Usuarios:{' '}
+                                        <strong>{usersQty}</strong>
+                                    </Card.Text>
+                                </Col>
+                            </Row>
+                            <Row className="align-items-center my-1">
+                                <Col xs={1} className="px-1 text-center">
+                                    <FontAwesomeIcon icon={faUser} />
+                                </Col>
+                                <Col xs={11} className="ps-0">
+                                    <Card.Text>
+                                        Total de Productos:{' '}
+                                        <strong>En Trabajo</strong>
+                                    </Card.Text>
+                                </Col>
+                            </Row>
                         </Col>
-                        <Col className="mt-0">
+                        <Col xs={12} md={6} className="mt-0">
                             <PieChart
                                 className="mt-0"
                                 data={graphData}

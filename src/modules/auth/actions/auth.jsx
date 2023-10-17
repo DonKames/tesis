@@ -12,7 +12,7 @@ import {
     uiFinishLoading,
     uiStartLoading,
 } from '../../../shared/ui/slice/uiSlice';
-import { getUserByEmail } from '../../users/apis/apiUsers';
+import { getUserByEmail } from '../../users/apis/usersAPI';
 
 // Vamos de nuevo
 

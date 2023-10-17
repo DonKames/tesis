@@ -8,7 +8,12 @@ const initialState = {
 
     // Selects options
     branchesNames: [],
+    countries: [],
+    municipalities: [],
+    regions: [],
+    roles: [],
     skusNames: [],
+    usersNames: [],
     warehousesNames: [],
 };
 
@@ -49,6 +54,26 @@ export const uiSlice = createSlice({
             ...state,
             warehousesNames: action.payload,
         }),
+        uiSetCountries: (state, action) => ({
+            ...state,
+            countries: action.payload,
+        }),
+        uiSetRegions: (state, action) => ({
+            ...state,
+            regions: action.payload,
+        }),
+        uiSetMunicipalities: (state, action) => ({
+            ...state,
+            municipalities: action.payload,
+        }),
+        uiSetRoles: (state, action) => ({
+            ...state,
+            roles: action.payload,
+        }),
+        uiSetUsersNames: (state, action) => ({
+            ...state,
+            usersNames: action.payload,
+        }),
     },
     extraReducers: (builder) => {
         builder.addCase(reset, () => {
@@ -58,13 +83,18 @@ export const uiSlice = createSlice({
 });
 
 export const {
-    uiSetError,
-    uiRemoveError,
-    uiStartLoading,
     uiFinishLoading,
+    uiRemoveError,
     uiSetBranchesNames,
+    uiSetCountries,
+    uiSetError,
+    uiSetMunicipalities,
+    uiSetRegions,
+    uiSetRoles,
     uiSetSkusNames,
+    uiSetUsersNames,
     uiSetWarehousesNames,
+    uiStartLoading,
 } = uiSlice.actions;
 
 export default uiSlice.reducer;

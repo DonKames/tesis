@@ -9,7 +9,7 @@ import HomeScreen from '../../HomeScreen';
 import { PublicRoutes } from './PublicRoutes';
 import { PrivateRoutes } from './PrivateRoutes';
 import { authLogin } from '../auth/authSlice';
-import { getUserByUid, updateUserUid } from '../users/apis/apiUsers';
+import { getUserByUid, updateUserUid } from '../users/apis/usersAPI';
 import { getGlobalSettings } from '../settings/APIs/settingsApi';
 import {
     settingsSetGlobalSettingsId,
@@ -68,28 +68,32 @@ export const AppRouter = () => {
                 if (settingsData) {
                     dispatch(settingsSetGlobalSettingsId(settingsData.id));
 
-                    if (settingsData.mainWarehouse) {
-                        const mainWarehouse = await getWarehouseById(
-                            settingsData.mainWarehouse,
-                        );
-
-                        dispatch(
-                            settingsSetMainWarehouse({
-                                id: settingsData.mainWarehouse,
-                                name: mainWarehouse.name,
-                            }),
-                        );
-                    }
-
                     if (settingsData.mainBranch) {
-                        const mainBranch = await getBranchById(
+                        const branch = await getBranchById(
                             settingsData.mainBranch,
                         );
+
+                        console.log(branch);
 
                         dispatch(
                             settingsSetMainBranch({
                                 id: settingsData.mainBranch,
-                                name: mainBranch.name,
+                                name: branch.name,
+                            }),
+                        );
+                    }
+
+                    if (settingsData.mainWarehouse) {
+                        const warehouse = await getWarehouseById(
+                            settingsData.mainWarehouse,
+                        );
+
+                        console.log(warehouse);
+
+                        dispatch(
+                            settingsSetMainWarehouse({
+                                id: settingsData.mainWarehouse,
+                                name: warehouse.name,
                             }),
                         );
                     }

@@ -7,7 +7,7 @@ import Swal from 'sweetalert2';
 import validator from 'validator';
 
 import { useForm } from '../../../hooks/useForm';
-import { createUser, getUsers } from '../apis/apiUsers';
+import { createUser, getUsers } from '../apis/usersAPI';
 import { usersSetUsers } from '../slice/usersSlice';
 import { uiSetError } from '../../../shared/ui/slice/uiSlice';
 
