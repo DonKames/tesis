@@ -16,8 +16,8 @@ Este proyecto es una aplicación web basada en React que sirve como la interfaz 
 
 1. Clona el repositorio.
 2. Ejecuta `npm install` para instalar las dependencias.
-3. Ejecuta `npm start` para iniciar el servidor de desarrollo.
-4. Crea un archivo `.env` y añade la variable `VITE_BASE_URL` con el enlace a la API.
+3. Crea un archivo `.env` y añade la variable `VITE_BASE_URL` con el enlace a la API.
+4. Ejecuta `npx vite` para iniciar el servidor de desarrollo.
 
 ## Características
 
