@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Card, Col, Row } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
-import { SelectProducts } from '../../../shared/ui/components/SelectProducts';
+import { ProductSearcher } from '../../../shared/ui/components/ProductSearcher';
+import { getProductById } from '../../products/APIs/productsAPI';
 
 export const ProductSection = () => {
     const dispatch = useDispatch();
@@ -9,7 +10,17 @@ export const ProductSection = () => {
     // Local States
     const [selectedProduct, setSelectedProduct] = useState(null);
 
-    const handleProductChange = () => {};
+    const updateSelectedProducts = async (productId) => {
+        const productData = await getProductById(productId);
+
+        console.log(productData);
+
+        setSelectedProduct(productData);
+    };
+
+    const handleProductChange = (e) => {
+        updateSelectedProducts(e.target.value);
+    };
 
     return (
         <Card className="shadow h-100 animate__animated animate__fadeIn animate__fast">
@@ -19,19 +30,33 @@ export const ProductSection = () => {
                         <h3 className="mb-0">Productos</h3>
                     </Col>
                     <Col>
-                        <SelectProducts
-                            name="userId"
-                            onChange={handleProductChange}
-                            userId={selectedProduct?.id}
+                        <ProductSearcher
+                            name="productId"
+                            handleInputChange={handleProductChange}
+                            productId={selectedProduct?.id}
                         />
                     </Col>
                 </Row>
             </Card.Header>
             <Card.Body>
-                <Card.Text>EPC: </Card.Text>
-                <Card.Text>Sku: </Card.Text>
-                <Card.Text>Bodega: </Card.Text>
-                <Card.Text>Estado: </Card.Text>
+                <Card.Text>
+                    EPC: <strong>{selectedProduct?.epc}</strong>{' '}
+                </Card.Text>
+                <Card.Text>
+                    Sku: <strong>{selectedProduct?.sku}</strong>{' '}
+                </Card.Text>
+                <Card.Text>
+                    Sucursal: <strong>{selectedProduct?.branchName}</strong>{' '}
+                </Card.Text>
+                <Card.Text>
+                    Bodega: <strong>{selectedProduct?.warehouseName}</strong>{' '}
+                </Card.Text>
+                <Card.Text>
+                    Estado:{' '}
+                    <strong>
+                        {selectedProduct?.status ? 'Activo' : 'Inactivo'}
+                    </strong>{' '}
+                </Card.Text>
                 <Card.Text></Card.Text>
                 <Card.Text></Card.Text>
                 <Card.Text></Card.Text>

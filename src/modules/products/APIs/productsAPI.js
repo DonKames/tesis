@@ -33,6 +33,23 @@ export const getProductsQty = async (showInactive) => {
     }
 };
 
+export const searchProducts = async (query) => {
+    try {
+        const response = await fetch(
+            `${BASE_URL}/products/search?query=${query}`,
+        );
+        const { status, data, message } = await handleFetchError(response);
+        if (status === 'success') {
+            return data;
+        } else {
+            throw new Error(message);
+        }
+    } catch (error) {
+        console.log('Error al buscar productos desde la API:', error);
+        return [];
+    }
+};
+
 export const getProductsCountByWarehouse = async () => {
     try {
         const response = await fetch(`${BASE_URL}/products/countByWarehouse`);
@@ -89,11 +106,14 @@ export const createProduct = async (productData) => {
 export const getProductById = async (productId) => {
     try {
         const response = await fetch(`${BASE_URL}/products/${productId}`);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+
+        const { status, data, message } = await handleFetchError(response);
+
+        if (status === 'success') {
+            return data;
+        } else {
+            throw new Error(message);
         }
-        const data = await response.json();
-        return data;
     } catch (error) {
         console.log('Error al obtener Producto por ID desde la API:', error);
         return null;
