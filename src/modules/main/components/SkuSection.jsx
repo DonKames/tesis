@@ -53,9 +53,9 @@ export const SkuSection = () => {
     return (
         <Card className="shadow h-100 animate__animated animate__fadeIn animate__fast">
             <Card.Header>
-                <Row>
+                <Row className="d-flex align-items-center">
                     <Col>
-                        <h3>SKU</h3>
+                        <h3 className="mb-0">SKU</h3>
                     </Col>
                     <Col>
                         <SelectSkus
@@ -76,6 +76,7 @@ export const SkuSection = () => {
                     <strong>{selectedSku?.name}</strong>
                 </Card.Text>
                 <Card.Text>
+                    {/* // !: Recuperar la cantidad de Productos de este sku */}
                     Cantidad Total: <strong>{selectedSku?.name}</strong>{' '}
                 </Card.Text>
                 <Card.Text>

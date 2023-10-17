@@ -9,6 +9,7 @@ import { WarehouseSection } from './WarehouseSection';
 import { BranchSection } from './BranchSection';
 import { UserSection } from './UsersSection';
 import { SkuSection } from './SkuSection';
+import { ProductSection } from './ProductSection';
 
 export const MainScreen = () => {
     // Redux states
@@ -37,15 +38,7 @@ export const MainScreen = () => {
                     <SkuSection />
                 </Col>
                 <Col>
-                    <Card
-                        // bg='light'
-                        className="shadow h-100"
-                    >
-                        <Card.Header>
-                            <h3>Productos</h3>
-                        </Card.Header>
-                        <Card.Body></Card.Body>
-                    </Card>
+                    <ProductSection />
                 </Col>
                 <Col xs="12" md="6" lg="3">
                     <UserSection />
