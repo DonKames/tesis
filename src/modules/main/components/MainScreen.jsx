@@ -42,7 +42,7 @@ export const MainScreen = () => {
                         className="shadow h-100"
                     >
                         <Card.Header>
-                            <h3>Últimos Movimientos</h3>
+                            <h3>Productos</h3>
                         </Card.Header>
                         <Card.Body></Card.Body>
                     </Card>

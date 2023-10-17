@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Col, Row } from 'react-bootstrap';
 
 import { SelectSkus } from '../../../shared/ui/components/SelectSkus';
-import { useDispatch } from 'react-redux';
-import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getSkuById, getSkusNames } from '../../products/APIs/skusAPI';
+import { uiSetSkusNames } from '../../../shared/ui/slice/uiSlice';
 
 export const SkuSection = () => {
     const dispatch = useDispatch();
+
+    // Redux states
+    const { skusNames } = useSelector((state) => state.ui);
 
     // Local States
     const [selectedSku, setSelectedSku] = useState(null);
@@ -14,19 +18,29 @@ export const SkuSection = () => {
     const updateSelectedSku = async (skuId) => {
         const skuData = await getSkuById(skuId);
 
+        console.log(skuData);
+
         setSelectedSku(skuData);
     };
 
     const handleSkuChange = async (e) => {
-        // console.log(e);
+        console.log(e);
         updateSelectedSku(e.target.value);
-    }
+    };
 
     useEffect(() => {
         try {
             const fetchData = async () => {
-                if (mainBranch) {
-                    updateSelectedSku(mainBranch.id);
+                if (!skusNames.length) {
+                    const skusData = await getSkusNames();
+
+                    console.log(skusData);
+
+                    dispatch(uiSetSkusNames(skusData));
+
+                    updateSelectedSku(skusData[0].id);
+                } else {
+                    updateSelectedSku(skusNames[0].id);
                 }
             };
 
@@ -34,8 +48,7 @@ export const SkuSection = () => {
         } catch (error) {
             console.log(error);
         }
-    }, [mainBranch]);
-
+    }, []);
 
     return (
         <Card className="shadow h-100 animate__animated animate__fadeIn animate__fast">
@@ -47,19 +60,36 @@ export const SkuSection = () => {
                     <Col>
                         <SelectSkus
                             name="skuId"
-                            handleInputChange={() => {}}
-                            skuId={1}
+                            handleInputChange={handleSkuChange}
+                            skuId={selectedSku?.id}
                         />
                     </Col>
                 </Row>
             </Card.Header>
             <Card.Body>
-                <Card.Text>SKU: {selectedSku?.sku}</Card.Text>
-                <Card.Text>Nombre: {selectedSku?.}</Card.Text>
-                <Card.Text>Cantidad Total: {selectedSku?.}</Card.Text>
-                <Card.Text>Stock Mínimo: {selectedSku?.}</Card.Text>
-                <Card.Text>Estado: {selectedSku?.}</Card.Text>
-                <Card.Text>Descripción: {selectedSku?.}</Card.Text>
+                {console.log(selectedSku)}
+                <Card.Text>
+                    SKU: <strong>{selectedSku?.sku}</strong>
+                </Card.Text>
+                <Card.Text>
+                    Nombre:
+                    <strong>{selectedSku?.name}</strong>
+                </Card.Text>
+                <Card.Text>
+                    Cantidad Total: <strong>{selectedSku?.name}</strong>{' '}
+                </Card.Text>
+                <Card.Text>
+                    Stock Mínimo: <strong>{selectedSku?.minimumStock}</strong>
+                </Card.Text>
+                <Card.Text>
+                    Estado:{' '}
+                    <strong>
+                        {selectedSku?.active ? 'Activo' : 'Inactivo'}
+                    </strong>
+                </Card.Text>
+                <Card.Text>
+                    Descripción: <strong>{selectedSku?.description}</strong>
+                </Card.Text>
             </Card.Body>
         </Card>
     );

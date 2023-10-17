@@ -175,6 +175,17 @@ export const GeneralSection = () => {
                                     </Card.Text>
                                 </Col>
                             </Row>
+                            <Row className="align-items-center my-1">
+                                <Col xs={1} className="px-1 text-center">
+                                    <FontAwesomeIcon icon={faUser} />
+                                </Col>
+                                <Col xs={11} className="ps-0">
+                                    <Card.Text>
+                                        Total de Productos:{' '}
+                                        <strong>En Trabajo</strong>
+                                    </Card.Text>
+                                </Col>
+                            </Row>
                         </Col>
                         <Col xs={12} md={6} className="mt-0">
                             <PieChart

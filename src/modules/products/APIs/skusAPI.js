@@ -54,12 +54,13 @@ export const createSku = async (skuData) => {
             body: JSON.stringify(skuData), // convierte los datos del país a una cadena JSON
         });
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
+        const { status, data, message } = await handleFetchError(response);
 
-        const data = await response.json();
-        return data;
+        if (status === 'success') {
+            return data;
+        } else {
+            throw new Error(message);
+        }
     } catch (error) {
         console.log('Error al crear SKU en la API:', error);
         return null;
@@ -68,12 +69,18 @@ export const createSku = async (skuData) => {
 
 export const getSkuById = async (skuId) => {
     try {
-        const response = await fetch(`${BASE_URL}/products/${skuId}`);
+        const response = await fetch(`${BASE_URL}/skus/${skuId}`);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const data = await response.json();
-        return data;
+
+        const { status, data, message } = await handleFetchError(response);
+
+        if (status === 'success') {
+            return data;
+        } else {
+            throw new Error(message);
+        }
     } catch (error) {
         console.log('Error al obtener SKU por ID desde la API:', error);
         return null;

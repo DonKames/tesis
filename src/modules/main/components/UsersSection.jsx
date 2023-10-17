@@ -78,11 +78,7 @@ export const UserSection = () => {
                     Email: <strong>{selectedUser?.email}</strong>
                 </Card.Text>
                 <Card.Text>
-                    Rol:{' '}
-                    <strong>
-                        {/* //! TODO: Obtener el nombre del rol */}
-                        {selectedUser?.roleName}
-                    </strong>
+                    Rol: <strong>{selectedUser?.roleName}</strong>
                 </Card.Text>
             </Card.Body>
         </Card>
