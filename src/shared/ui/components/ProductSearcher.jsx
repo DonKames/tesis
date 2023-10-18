@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import AsyncSelect from 'react-select/async';
 import { searchProducts } from '../../../modules/products/APIs/productsAPI';
 
+import PropTypes from 'prop-types';
+
 export const ProductSearcher = ({ handleInputChange, name, productId }) => {
     const [selectedValue, setSelectedValue] = useState(0);
 
@@ -46,4 +48,10 @@ export const ProductSearcher = ({ handleInputChange, name, productId }) => {
             value={selectedValue}
         />
     );
+};
+
+ProductSearcher.propTypes = {
+    handleInputChange: PropTypes.func.isRequired,
+    name: PropTypes.string.isRequired,
+    productId: PropTypes.number,
 };
