@@ -46,6 +46,7 @@ export const PaginatedTable = ({
     }, [showInactive, selectedPage]);
 
     const handleShowInactiveChange = () => {
+        console.log('click showInactive: ', showInactive);
         handlePageChange(1);
         setShowInactive(!showInactive);
     };
@@ -76,11 +77,6 @@ export const PaginatedTable = ({
                                 </th>
                             ))}
                         </tr>
-                        {/* <tr>
-                            {columns.map((column) => (
-                                <th key={column}>{column}</th>
-                            ))}
-                        </tr> */}
                     </thead>
                     <tbody>{items?.map(itemRenderer)}</tbody>
                 </Table>

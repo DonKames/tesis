@@ -16,6 +16,7 @@ export const ProductSearcher = ({ handleInputChange, name, productId }) => {
                     value: item.id,
                 }));
                 callback(options);
+                handleChange(options[0]);
             })
             .catch((error) => {
                 console.error('Fetch error:', error);

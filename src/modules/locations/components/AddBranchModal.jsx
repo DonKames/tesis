@@ -12,6 +12,9 @@ import {
     locationsSetBranches,
     locationsSetWarehouses,
 } from '../slice/locationsSlice';
+import { SelectCountries } from '../../../shared/ui/components/SelectCountries';
+import { SelectRegions } from '../../../shared/ui/components/SelectRegions';
+import { SelectMunicipalities } from '../../../shared/ui/components/SelectMunicipalities';
 
 export const AddBranchModal = () => {
     const dispatch = useDispatch();
@@ -26,20 +29,23 @@ export const AddBranchModal = () => {
     }));
 
     const [formValues, handleInputChange, reset] = useForm({
+        address: '',
         branchName: '',
         country: 35,
-        region: '',
-        address: '',
+        municipality: 0,
+        region: 0,
     });
 
-    const { branchName, country, address } = formValues;
+    const { branchName, country, address, municipality, region } = formValues;
 
+    /* eslint-disable indent */
     const filteredRegions =
         country === '' || country === undefined
             ? []
             : regions.filter((region) => {
                   return region.fk_country_id === country;
               });
+    /* eslint-enable indent */
 
     const regionsOptions = filteredRegions.map((region) => ({
         value: region.region_id,
@@ -133,29 +139,34 @@ export const AddBranchModal = () => {
                             <Col>
                                 <Form.Group className="mb-3">
                                     <Form.Label>País</Form.Label>
-                                    <Select
-                                        isSearchable
+                                    <SelectCountries
+                                        handleInputChange={handleInputChange}
                                         name="country"
-                                        options={countryOptions}
-                                        onChange={handleCountryChange}
-                                        placeholder="Seleccione País"
-                                        defaultValue={countryOptions[34]}
+                                        countryId={country}
                                     />
                                 </Form.Group>
                             </Col>
                             <Col>
                                 <Form.Group className="mb-3">
                                     <Form.Label>Región</Form.Label>
-                                    <Select
-                                        isSearchable
+                                    <SelectRegions
+                                        handleInputChange={handleInputChange}
                                         name="region"
-                                        options={regionsOptions}
-                                        onChange={handleRegionChange}
-                                        placeholder="Seleccione Región"
+                                        regionId={region}
+                                        selectedCountry={country}
                                     />
                                 </Form.Group>
                             </Col>
                         </Row>
+                        <Form.Group>
+                            <Form.Label>Comuna</Form.Label>
+                            <SelectMunicipalities
+                                handleInputChange={handleInputChange}
+                                name="municipality"
+                                municipalityId={municipality}
+                                selectedRegion={region}
+                            />
+                        </Form.Group>
                         <Form.Group>
                             <Form.Label>Dirección</Form.Label>
                             <Form.Control

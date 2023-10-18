@@ -18,13 +18,13 @@ export const SkuSection = () => {
     const updateSelectedSku = async (skuId) => {
         const skuData = await getSkuById(skuId);
 
-        console.log(skuData);
+        // console.log(skuData);
 
         setSelectedSku(skuData);
     };
 
     const handleSkuChange = async (e) => {
-        console.log(e);
+        // console.log(e);
         updateSelectedSku(e.target.value);
     };
 
@@ -67,7 +67,6 @@ export const SkuSection = () => {
                 </Row>
             </Card.Header>
             <Card.Body>
-                {console.log(selectedSku)}
                 <Card.Text>
                     SKU: <strong>{selectedSku?.sku}</strong>
                 </Card.Text>
@@ -77,7 +76,7 @@ export const SkuSection = () => {
                 </Card.Text>
                 <Card.Text>
                     {/* // !: Recuperar la cantidad de Productos de este sku */}
-                    Cantidad Total: <strong>{selectedSku?.name}</strong>{' '}
+                    Stock: <strong>{selectedSku?.stock}</strong>{' '}
                 </Card.Text>
                 <Card.Text>
                     Stock Mínimo: <strong>{selectedSku?.minimumStock}</strong>

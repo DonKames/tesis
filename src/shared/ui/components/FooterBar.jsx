@@ -18,9 +18,9 @@ export const FooterBar = () => {
                     <Navbar.Brand className="">
                         <Link to="/">
                             <Image
-                                src="https://res.cloudinary.com/cloud-kames/image/upload/v1697569153/Tesis%20RFWID/mixoc4d2o7mr3j55h6qx.png"
+                                src="https://res.cloudinary.com/cloud-kames/image/upload/c_crop,h_650,w_650/Tesis RFWID/mixoc4d2o7mr3j55h6qx.png"
                                 alt="Keep"
-                                style={{ maxHeight: '300px', width: 'auto' }}
+                                style={{ maxHeight: '200px', width: 'auto' }}
                             />
                         </Link>
                     </Navbar.Brand>

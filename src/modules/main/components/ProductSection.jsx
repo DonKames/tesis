@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
 import { Card, Col, Row } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
 import { ProductSearcher } from '../../../shared/ui/components/ProductSearcher';
 import { getProductById } from '../../products/APIs/productsAPI';
 
 export const ProductSection = () => {
-    const dispatch = useDispatch();
-
     // Local States
     const [selectedProduct, setSelectedProduct] = useState(null);
 
@@ -54,11 +51,9 @@ export const ProductSection = () => {
                 <Card.Text>
                     Estado:{' '}
                     <strong>
-                        {selectedProduct?.status ? 'Activo' : 'Inactivo'}
+                        {selectedProduct?.active ? 'Activo' : 'Inactivo'}
                     </strong>{' '}
                 </Card.Text>
-                <Card.Text></Card.Text>
-                <Card.Text></Card.Text>
                 <Card.Text></Card.Text>
             </Card.Body>
         </Card>

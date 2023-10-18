@@ -37,6 +37,7 @@ export const getBranchById = async (branchId) => {
 
 export const getBranchesQty = async (showInactive) => {
     try {
+        console.log('getBranchesQty: ', showInactive);
         const response = await fetch(
             `${BASE_URL}/branches/qty?showInactive=${showInactive}`,
         );
@@ -53,7 +54,7 @@ export const getBranchesNames = async () => {
     try {
         const response = await fetch(`${BASE_URL}/branches/names`);
         const data = await handleFetchError(response);
-        console.log(data);
+        // console.log(data);
         return data;
     } catch (error) {
         console.log('Error al obtener Branches Names desde la API:', error);
