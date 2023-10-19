@@ -18,7 +18,7 @@ export const LocationsScreen = () => {
                         <Col>
                             <h1>Sucursales</h1>
                         </Col>
-                        <Col className="text-center">
+                        <Col className="text-end">
                             <AddBranchModal />
                         </Col>
                     </Row>
