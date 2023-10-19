@@ -57,7 +57,7 @@ export const AddBranchModal = () => {
 
     return (
         <>
-            <Button variant="primary" onClick={handleOpenModal}>
+            <Button variant="primary shadow" onClick={handleOpenModal}>
                 Agregar Sucursal
             </Button>
             <Modal show={showModal} onHide={handleCloseModal}>
@@ -66,11 +66,19 @@ export const AddBranchModal = () => {
                 </Modal.Header>
                 <Form onSubmit={formik.handleSubmit}>
                     <Modal.Body>
-                        <Row>
+                        <Row className="mb-3">
                             <Col>
                                 <Form.Group>
-                                    <Form.Label>Nombre Sucursal</Form.Label>
+                                    <Form.Label className="mb-0 ms-1">
+                                        Nombre Sucursal
+                                    </Form.Label>
                                     <Form.Control
+                                        className={
+                                            formik.touched.branchName &&
+                                            formik.errors.branchName
+                                                ? 'is-invalid'
+                                                : ''
+                                        }
                                         type="text"
                                         placeholder="Ingrese el nombre de la Sucursal"
                                         name="branchName"
@@ -87,10 +95,12 @@ export const AddBranchModal = () => {
                                 </Form.Group>
                             </Col>
                         </Row>
-                        <Row>
+                        <Row className="mb-3">
                             <Col>
                                 <Form.Group>
-                                    <Form.Label>País</Form.Label>
+                                    <Form.Label className="mb-0 ms-1">
+                                        País
+                                    </Form.Label>
                                     <SelectCountries
                                         setFieldValue={formik.setFieldValue}
                                         setFieldTouched={formik.setFieldTouched}
@@ -106,7 +116,9 @@ export const AddBranchModal = () => {
                             </Col>
                             <Col>
                                 <Form.Group>
-                                    <Form.Label>Región</Form.Label>
+                                    <Form.Label className="mb-0 ms-1">
+                                        Región
+                                    </Form.Label>
                                     <SelectRegions
                                         setFieldValue={formik.setFieldValue}
                                         setFieldTouched={formik.setFieldTouched}
@@ -122,10 +134,12 @@ export const AddBranchModal = () => {
                                 </Form.Group>
                             </Col>
                         </Row>
-                        <Row>
+                        <Row className="mb-3">
                             <Col>
                                 <Form.Group>
-                                    <Form.Label>Comuna</Form.Label>
+                                    <Form.Label className="mb-0 ms-1">
+                                        Comuna
+                                    </Form.Label>
                                     <SelectMunicipalities
                                         setFieldValue={formik.setFieldValue}
                                         setFieldTouched={formik.setFieldTouched}
@@ -145,10 +159,12 @@ export const AddBranchModal = () => {
                                 </Form.Group>
                             </Col>
                         </Row>
-                        <Row>
+                        <Row className="mb-3">
                             <Col>
                                 <Form.Group>
-                                    <Form.Label>Dirección</Form.Label>
+                                    <Form.Label className="mb-0 ms-1">
+                                        Dirección
+                                    </Form.Label>
                                     <Form.Control
                                         type="text"
                                         placeholder="Ingrese la Dirección"
@@ -160,6 +176,9 @@ export const AddBranchModal = () => {
                                             formik.errors.address
                                         }
                                     />
+                                    <Form.Control.Feedback type="invalid">
+                                        {formik.errors.address}
+                                    </Form.Control.Feedback>
                                 </Form.Group>
                             </Col>
                         </Row>

@@ -3,6 +3,18 @@
   --bs-btn-color: #f2f2f2;
 }
 
+.form-control.is-invalid {
+  border-color: red;
+  box-shadow: 0 0 5px red;
+}
+.form-control.is-invalid:hover, .form-control.is-invalid:focus {
+  border-color: red;
+}
+
+.invalid-feedback {
+  color: red;
+}
+
 .icon-width {
   min-width: 3rem;
 }

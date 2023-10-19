@@ -56,10 +56,24 @@ $table-border-color: #d6d6d6; // Color de los bordes
 // Caption (título de la tabla)
 $table-caption-color: #a2b5be; // Color para el texto del título
 
-// Inputs
+// *Inputs
 $input-bg: #fff;
 
-// Clases Personalizadas
+.form-control.is-invalid {
+    border-color: red;
+    box-shadow: 0 0 5px red;
+
+    &:hover,
+    &:focus {
+        border-color: red;
+    }
+}
+
+.invalid-feedback {
+    color: red;
+}
+
+// *Clases Personalizadas
 .icon-width {
     min-width: 3rem;
 }
