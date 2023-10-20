@@ -1,99 +1,232 @@
-import React from 'react';
-import { Button, Form, Modal } from 'react-bootstrap';
+// Validation
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
-import PropTypes from 'prop-types';
-import { SelectCountries } from '../../../shared/ui/components/SelectCountries';
+import React, { useState } from 'react';
+import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
 import { SelectRegions } from '../../../shared/ui/components/SelectRegions';
 import { SelectMunicipalities } from '../../../shared/ui/components/SelectMunicipalities';
+import { SelectCountries } from '../../../shared/ui/components/SelectCountries';
+import { getBranchById } from '../APIs/branchesAPI';
+import PropTypes from 'prop-types';
+import { BranchModal } from './Modals/BranchModal';
+
+const validationSchema = Yup.object({
+    branchName: Yup.string().required(
+        'El nombre de la sucursal es obligatorio',
+    ),
+    country: Yup.number()
+        .required('El país es obligatorio')
+        .notOneOf([0], 'Debe elegir un País'),
+    region: Yup.number()
+        .required('La región es obligatoria')
+        .notOneOf([0], 'Debe elegir una Región'),
+    municipality: Yup.number()
+        .required('La comuna es obligatoria')
+        .notOneOf([0], 'Debe elegir una Comuna'),
+    address: Yup.string().required('La dirección es obligatoria'),
+});
 
 export const ModalEditBranch = React.memo(function ModalEditBranch({
-    formValues,
-    handleInputChange,
-    handleInputChangeWithWarning,
     handleModalChange,
-    handleUpdate,
-    showModal,
-    showWarning,
+    branchId,
 }) {
-    const { name, country, region, address, municipality } = formValues;
+    // Local States
+    const [showModal, setShowModal] = useState(false);
+
+    const handleFormSubmit = async (values, { errors }) => {
+        console.log('click en formSubmit');
+    };
+
+    // Formik
+    const formik = useFormik({
+        initialValues: {
+            branchName: '',
+            country: 35,
+            region: 0,
+            municipality: 0,
+            address: '',
+        },
+        validationSchema,
+        onSubmit: handleFormSubmit,
+    });
+
+    const toggleModal = async (isOpen) => {
+        setShowModal(isOpen);
+        if (!isOpen) {
+            formik.resetForm();
+        } else {
+            if (branchId) {
+                const { data, message } = await getBranchById(branchId);
+
+                if (data) {
+                    console.log(data, message);
+                    const formikState = {
+                        branchName: data.name,
+                        country: data.countryId,
+                        region: data.regionId,
+                        municipality: data.municipalityId,
+                        address: data.address,
+                    };
+
+                    formik.setValues(formikState);
+                }
+            }
+        }
+    };
 
     return (
-        <Modal show={showModal} onHide={handleModalChange}>
-            <Modal.Header className="h1">Editar Sucursal</Modal.Header>
-            <Modal.Body>
-                <Form>
-                    <Form.Group>
-                        <Form.Label>Nombre</Form.Label>
-                        <Form.Control
-                            className="mb-3"
-                            name="name"
-                            placeholder="Nombre"
-                            type="text"
-                            value={name}
-                            onChange={handleInputChange}
-                        />
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label>País</Form.Label>
-                        <SelectCountries
-                            handleInputChange={handleInputChange}
-                            name="country"
-                            countryId={country}
-                        />
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label>Región</Form.Label>
-                        <SelectRegions
-                            handleInputChange={handleInputChange}
-                            name="region"
-                            regionId={region}
-                            selectedCountry={country}
-                        />
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label>Comunas</Form.Label>
-                        <SelectMunicipalities
-                            handleInputChange={handleInputChange}
-                            name="municipality"
-                            municipalityId={municipality}
-                            selectedRegion={region}
-                        />
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label>Dirección</Form.Label>
-                        <Form.Control
-                            className="mb-3"
-                            name="address"
-                            placeholder="Dirección"
-                            type="text"
-                            value={address}
-                            onChange={handleInputChange}
-                        />
-                    </Form.Group>
+        <>
+            <Button className="me-1" onClick={() => toggleModal(true)}>
+                <i className="bi bi-pencil-square" />
+            </Button>
+            <BranchModal
+                title="Editar Sucursal"
+                showModal={showModal}
+                toggleModal={toggleModal}
+                formik={formik}
+            />
+            {/* <Modal show={showModal}>
+                <Modal.Header>
+                    <Modal.Title>Editar Sucursal</Modal.Title>
+                </Modal.Header>
+                <Form onSubmit={formik.handleSubmit}>
+                    <Modal.Body>
+                        <Row className="mb-3">
+                            <Col>
+                                <Form.Group>
+                                    <Form.Label className="mb-0 ms-1">
+                                        Nombre Sucursal
+                                    </Form.Label>
+                                    <Form.Control
+                                        className={
+                                            formik.touched.branchName &&
+                                            formik.errors.branchName
+                                                ? 'is-invalid'
+                                                : ''
+                                        }
+                                        type="text"
+                                        placeholder="Ingrese el nombre de la Sucursal"
+                                        name="branchName"
+                                        value={formik.values.branchName}
+                                        onChange={formik.handleChange}
+                                        isInvalid={
+                                            formik.touched.branchName &&
+                                            formik.errors.branchName
+                                        }
+                                    />
+                                    <Form.Control.Feedback type="invalid">
+                                        {formik.errors.branchName}
+                                    </Form.Control.Feedback>
+                                </Form.Group>
+                            </Col>
+                        </Row>
+                        <Row className="mb-3">
+                            <Col>
+                                <Form.Group>
+                                    <Form.Label className="mb-0 ms-1">
+                                        País
+                                    </Form.Label>
+                                    <SelectCountries
+                                        setFieldValue={formik.setFieldValue}
+                                        setFieldTouched={formik.setFieldTouched}
+                                        name="country"
+                                        countryId={formik.values.country}
+                                        isInvalid={
+                                            formik.touched.country &&
+                                            !!formik.errors.country
+                                        }
+                                        errorMessage={formik.errors.country}
+                                    />
+                                </Form.Group>
+                            </Col>
+                            <Col>
+                                <Form.Group>
+                                    <Form.Label className="mb-0 ms-1">
+                                        Región
+                                    </Form.Label>
+                                    <SelectRegions
+                                        setFieldValue={formik.setFieldValue}
+                                        setFieldTouched={formik.setFieldTouched}
+                                        name="region"
+                                        regionId={formik.values.region}
+                                        selectedCountry={formik.values.country}
+                                        isInvalid={
+                                            formik.touched.region &&
+                                            !!formik.errors.region
+                                        }
+                                        errorMessage={formik.errors.region}
+                                    />
+                                </Form.Group>
+                            </Col>
+                        </Row>
+                        <Row className="mb-3">
+                            <Col>
+                                <Form.Group>
+                                    <Form.Label className="mb-0 ms-1">
+                                        Comuna
+                                    </Form.Label>
+                                    <SelectMunicipalities
+                                        setFieldValue={formik.setFieldValue}
+                                        setFieldTouched={formik.setFieldTouched}
+                                        name="municipality"
+                                        municipalityId={
+                                            formik.values.municipality
+                                        }
+                                        selectedRegion={formik.values.region}
+                                        isInvalid={
+                                            formik.touched.municipality &&
+                                            !!formik.errors.municipality
+                                        }
+                                        errorMessage={
+                                            formik.errors.municipality
+                                        }
+                                    />
+                                </Form.Group>
+                            </Col>
+                        </Row>
+                        <Row className="mb-3">
+                            <Col>
+                                <Form.Group>
+                                    <Form.Label className="mb-0 ms-1">
+                                        Dirección
+                                    </Form.Label>
+                                    <Form.Control
+                                        type="text"
+                                        placeholder="Ingrese la Dirección"
+                                        name="address"
+                                        value={formik.values.address}
+                                        onChange={formik.handleChange}
+                                        isInvalid={
+                                            formik.touched.address &&
+                                            formik.errors.address
+                                        }
+                                    />
+                                    <Form.Control.Feedback type="invalid">
+                                        {formik.errors.address}
+                                    </Form.Control.Feedback>
+                                </Form.Group>
+                            </Col>
+                        </Row>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button
+                            onClick={() => toggleModal(false)}
+                            variant="secondary"
+                        >
+                            Cancelar
+                        </Button>
+                        <Button type="submit" variant="primary">
+                            Agregar
+                        </Button>
+                    </Modal.Footer>
                 </Form>
-            </Modal.Body>
-            <Modal.Footer>
-                <Button
-                    className="btn btn-secondary"
-                    onClick={handleModalChange}
-                    type="button"
-                >
-                    Cancelar
-                </Button>
-                <Button onClick={handleUpdate} type="button">
-                    Actualizar
-                </Button>
-            </Modal.Footer>
-        </Modal>
+            </Modal> */}
+        </>
     );
 });
 
 ModalEditBranch.propTypes = {
-    formValues: PropTypes.object.isRequired,
-    handleInputChange: PropTypes.func.isRequired,
-    handleInputChangeWithWarning: PropTypes.func.isRequired,
-    handleModalChange: PropTypes.func.isRequired,
-    handleUpdate: PropTypes.func.isRequired,
-    showModal: PropTypes.bool.isRequired,
-    showWarning: PropTypes.bool.isRequired,
+    handleModalChange: PropTypes.func,
+    branchId: PropTypes.number.isRequired,
 };

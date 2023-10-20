@@ -15,9 +15,6 @@ export const LocationsScreen = () => {
             <Row className="align-items-center">
                 <Col className="mb-3">
                     <Row>
-                        <Col>
-                            <h1>Sucursales</h1>
-                        </Col>
                         <Col className="text-end">
                             <AddBranchModal />
                         </Col>
@@ -26,7 +23,7 @@ export const LocationsScreen = () => {
                 </Col>
                 <Row>
                     <Col xs="12" lg="6">
-                        <Row>
+                        {/* <Row>
                             <Col>
                                 <h1>Bodegas</h1>
                             </Col>
@@ -34,9 +31,9 @@ export const LocationsScreen = () => {
                                 <AddWarehouseModal />
                             </Col>
                         </Row>
-                        <WarehousesSection />
+                        <WarehousesSection /> */}
                     </Col>
-                    <Col xs="12" lg="6">
+                    {/* <Col xs="12" lg="6">
                         <Row>
                             <Col>
                                 <h1>Lugares de Sucursal</h1>
@@ -46,7 +43,7 @@ export const LocationsScreen = () => {
                             </Col>
                         </Row>
                         <BranchLocationsSection />
-                    </Col>
+                    </Col> */}
                 </Row>
             </Row>
         </Container>

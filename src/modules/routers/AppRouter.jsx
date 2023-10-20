@@ -43,8 +43,7 @@ export const AppRouter = () => {
                     fk_role_id: fkRoleId,
                     email,
                 } = respUid;
-                // console.log(respUid);
-                // console.log(first_name, fk_role_id, email, uid);
+
                 dispatch(
                     authLogin({
                         uid,
@@ -63,8 +62,6 @@ export const AppRouter = () => {
             if (!settings.globalSettingsId) {
                 const settingsData = await getGlobalSettings();
 
-                console.log(settingsData);
-
                 if (settingsData) {
                     dispatch(settingsSetGlobalSettingsId(settingsData.id));
 
@@ -72,8 +69,6 @@ export const AppRouter = () => {
                         const branch = await getBranchById(
                             settingsData.mainBranch,
                         );
-
-                        console.log(branch);
 
                         dispatch(
                             settingsSetMainBranch({
@@ -87,8 +82,6 @@ export const AppRouter = () => {
                         const warehouse = await getWarehouseById(
                             settingsData.mainWarehouse,
                         );
-
-                        console.log(warehouse);
 
                         dispatch(
                             settingsSetMainWarehouse({

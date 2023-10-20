@@ -16,8 +16,6 @@ export const NavBar = () => {
           displayName.slice(1).toLowerCase()
         : null;
 
-    console.log(displayName);
-
     const handleLogout = () => {
         console.log('Logout');
         dispatch(startLogout());

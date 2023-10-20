@@ -11,12 +11,16 @@ export const getWarehouses = async (
         const response = await fetch(
             `${BASE_URL}/warehouses?page=${page}&limit=${limit}&showInactive=${showInactive}`,
         );
-        const { data } = await handleFetchError(response);
+        const { status, data, message } = await handleFetchError(response);
         // console.log(data);
-        return data;
+        if (status === 'success') {
+            return { data, message };
+        } else {
+            throw new Error(message);
+        }
     } catch (error) {
         console.log('Error al obtener Bodegas desde la API:', error);
-        return [];
+        return { data: null, error };
     }
 };
 

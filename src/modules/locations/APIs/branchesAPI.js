@@ -11,11 +11,15 @@ export const getBranches = async (
         const response = await fetch(
             `${BASE_URL}/branches?page=${page}&limit=${limit}&showInactive=${showInactive}`,
         );
-        const data = await handleFetchError(response);
-        return data;
+        const { status, data, message } = await handleFetchError(response);
+
+        if (status === 'success') {
+            return { data, message };
+        } else {
+            throw new Error(message);
+        }
     } catch (error) {
-        console.log('Error al obtener Sucursales desde la API:', error);
-        return [];
+        return { data: null, message: error };
     }
 };
 
@@ -25,28 +29,25 @@ export const getBranchById = async (branchId) => {
         const { status, data, message } = await handleFetchError(response);
 
         if (status === 'success') {
-            return data;
+            return { data, message };
         } else {
             throw new Error(message);
         }
     } catch (error) {
-        console.log('Error al obtener Sucursal desde la API:', error);
-        return [];
+        return { data: null, message: error };
     }
 };
 
 export const getBranchesQty = async (showInactive) => {
     try {
-        console.log('getBranchesQty: ', showInactive);
         const response = await fetch(
             `${BASE_URL}/branches/qty?showInactive=${showInactive}`,
         );
         const data = await handleFetchError(response);
-        console.log('getBranches Data: ', data);
+
         return data;
     } catch (error) {
-        console.log('Error al obtener Branches Qty desde la API:', error);
-        return [];
+        return { data: null, message: error };
     }
 };
 
@@ -54,17 +55,15 @@ export const getBranchesNames = async () => {
     try {
         const response = await fetch(`${BASE_URL}/branches/names`);
         const data = await handleFetchError(response);
-        // console.log(data);
+        //
         return data;
     } catch (error) {
-        console.log('Error al obtener Branches Names desde la API:', error);
-        return [];
+        return { data: null, error };
     }
 };
 
 export const createBranch = async (branchData) => {
     try {
-        console.log(branchData);
         const response = await fetch(`${BASE_URL}/branches`, {
             method: 'POST', // especifica el método HTTP
             headers: {
@@ -73,15 +72,15 @@ export const createBranch = async (branchData) => {
             body: JSON.stringify(branchData), // convierte los datos del país a una cadena JSON
         });
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
+        const { status, data, message } = await handleFetchError(response);
 
-        const data = await response.json();
-        return data;
+        if (status === 'success') {
+            return { data, message };
+        } else {
+            throw new Error(message);
+        }
     } catch (error) {
-        console.log('Error al crear Sucursal en la API:', error);
-        return null;
+        return { data: null, message: error };
     }
 };
 
@@ -107,12 +106,11 @@ export const changeActiveStateBranch = async (branchId, activeState) => {
             error,
         );
 
-        return null;
+        return { data: null, message: error };
     }
 };
 
 export const updateBranch = async (branchId, branchData) => {
-    console.log(branchId, branchData);
     try {
         const response = await fetch(`${BASE_URL}/branches/${branchId}`, {
             method: 'PUT',
@@ -125,7 +123,7 @@ export const updateBranch = async (branchId, branchData) => {
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        console.log(response);
+
         const data = await response.json();
         return data;
     } catch (error) {
@@ -134,6 +132,6 @@ export const updateBranch = async (branchId, branchData) => {
             error,
         );
 
-        return null;
+        return { data: null, message: error };
     }
 };

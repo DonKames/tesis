@@ -12,19 +12,20 @@ export const getBranchLocations = async (
             `${BASE_URL}/branchLocations?page=${page}&limit=${limit}&showInactive=${showInactive}`,
         );
 
-        const { status, data } = await handleFetchError(response);
+        const { status, data, message } = await handleFetchError(response);
         // console.log(finalResp);
 
         if (status === 'success') {
-            return data;
+            return { data, message };
+        } else {
+            throw new Error(message);
         }
-        return [];
     } catch (error) {
         console.log(
             'Error al obtener Lugares de Sucursal desde la API: ',
             error,
         );
-        return [];
+        return { data: null, error };
     }
 };
 
@@ -43,7 +44,7 @@ export const getBranchLocationsQty = async () => {
             'Error al obtener cantidad de Lugares de Sucursal desde la API: ',
             error,
         );
-        return [];
+        return { data: null, error };
     }
 };
 
@@ -66,7 +67,7 @@ export const createBranchLocation = async (branchLocationData) => {
         return data;
     } catch (error) {
         console.log('Error al crear Lugar de Sucursal en la API:', error);
-        return null;
+        return { data: null, error };
     }
 };
 
@@ -93,7 +94,7 @@ export const changeBranchLocationState = async (branchLocationId, state) => {
         console.log(
             `Error al cambiar estado de Lugar de Sucursal en la API: ${error}`,
         );
-        return null;
+        return { data: null, error };
     }
 };
 
@@ -122,6 +123,6 @@ export const updateBranchLocation = async (
         return data;
     } catch (error) {
         console.log('Error al actualizar Lugar de Sucursal en la API:', error);
-        return null;
+        return { data: null, error };
     }
 };
