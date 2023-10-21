@@ -2,6 +2,7 @@ import React from 'react';
 import { Col, Form, Modal, Row } from 'react-bootstrap';
 
 import PropTypes from 'prop-types';
+import { SelectBranches } from '../../../../shared/ui/components/SelectBranches';
 
 export const WarehouseModal = ({
     title = 'Te falto agregar el titulo',
@@ -20,14 +21,22 @@ export const WarehouseModal = ({
                     <Row>
                         <Col>
                             <Form.Group>
-                                <Form.Label></Form.Label>
+                                <Form.Label>Nombre</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Nombre"
+                                    name="warehouseName"
+                                    value={formik.values.name}
+                                    onChange={formik.handleChange}
+                                />
                             </Form.Group>
                         </Col>
                     </Row>
                     <Row>
                         <Col>
                             <Form.Group>
-                                <Form.Label></Form.Label>
+                                <Form.Label>Sucursal</Form.Label>
+                                <SelectBranches />
                             </Form.Group>
                         </Col>
                     </Row>
