@@ -65,12 +65,6 @@ export const getBranchesQty = async ({ warehouseId, showInactive }) => {
         } else {
             throw new Error(message);
         }
-
-        // const response = await fetch(
-        //     `${BASE_URL}/branches/qty?showInactive=${showInactive}`,
-        // );
-        // const data = await handleFetchError(response);
-
         // return data;
     } catch (error) {
         return { data: null, message: error };
