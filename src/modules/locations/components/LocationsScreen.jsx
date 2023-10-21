@@ -23,15 +23,12 @@ export const LocationsScreen = () => {
                 </Col>
                 <Row>
                     <Col xs="12" lg="6">
-                        {/* <Row>
-                            <Col>
-                                <h1>Bodegas</h1>
-                            </Col>
-                            <Col>
+                        <Row>
+                            <Col className="text-end">
                                 <AddWarehouseModal />
                             </Col>
                         </Row>
-                        <WarehousesSection /> */}
+                        <WarehousesSection />
                     </Col>
                     {/* <Col xs="12" lg="6">
                         <Row>

@@ -7,11 +7,11 @@ import { SelectCountries } from '../../../../shared/ui/components/SelectCountrie
 import { SelectMunicipalities } from '../../../../shared/ui/components/SelectMunicipalities';
 
 export const BranchModal = ({
-    title,
+    title = 'Te falto agregar el titulo',
     formik,
     showModal,
     toggleModal,
-    primaryButtonText,
+    primaryButtonText = 'Guardar',
 }) => {
     return (
         <Modal show={showModal} onHide={() => toggleModal(false)}>
@@ -154,4 +154,5 @@ BranchModal.propTypes = {
     formik: PropTypes.object.isRequired,
     showModal: PropTypes.bool.isRequired,
     toggleModal: PropTypes.func.isRequired,
+    primaryButtonText: PropTypes.string,
 };

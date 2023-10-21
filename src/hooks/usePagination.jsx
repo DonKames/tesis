@@ -20,7 +20,8 @@ const usePagination = (
         // Obtener la nueva cantidad de elementos
 
         if (showInactive !== undefined) {
-            getItemsQty(showInactive).then((newItemsQty) => {
+            getItemsQty({ showInactive }).then((newItemsQty) => {
+                console.log(newItemsQty);
                 dispatch(setItemsQty(newItemsQty));
             });
         }

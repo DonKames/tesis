@@ -47,6 +47,8 @@ export const getWarehousesQty = async ({ branchId, showInactive } = {}) => {
 
         const params = new URLSearchParams();
 
+        console.log(showInactive);
+
         if (showInactive !== undefined) {
             params.append('showInactive', showInactive);
         }

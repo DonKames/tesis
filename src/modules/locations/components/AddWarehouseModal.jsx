@@ -6,6 +6,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { createWarehouse, getWarehouses } from '../APIs/warehouseAPI';
 import Swal from 'sweetalert2';
 import { locationsSetWarehouses } from '../slice/locationsSlice';
+import { SelectBranches } from '../../../shared/ui/components/SelectBranches';
+import { WarehouseModal } from './Modals/WarehouseModal';
+import { useFormik } from 'formik';
 
 export const AddWarehouseModal = () => {
     const dispatch = useDispatch();
@@ -71,16 +74,34 @@ export const AddWarehouseModal = () => {
         });
     };
 
+    const formik = useFormik({
+        initialValues: {
+            branchName: '',
+            country: 35,
+            region: 0,
+            municipality: 0,
+            address: '',
+        },
+        // validationSchema: branchSchema,
+        onSubmit: handleFormSubmit,
+    });
+
     return (
         <>
             <Button
-                style={{ '--bs-btn-color': '#f2f2f2' }}
                 variant="primary"
                 onClick={handleOpenModal}
+                className="mb-2 shadow-sm"
             >
                 Agregar Bodega
             </Button>
-            <Modal show={showModal} onHide={handleCloseModal}>
+            <WarehouseModal
+                formik={formik}
+                showModal={showModal}
+                toggleModal={setShowModal}
+                primaryButtonText="Agregar"
+            />
+            {/* <Modal show={showModal} onHide={handleCloseModal}>
                 <Modal.Header closeButton>
                     <Modal.Title>Agregar Bodega</Modal.Title>
                 </Modal.Header>
@@ -89,6 +110,7 @@ export const AddWarehouseModal = () => {
                         <Row>
                             <Form.Group>
                                 <Form.Label>Sucursal</Form.Label>
+                                <SelectBranches />
                                 <Select
                                     isSearchable
                                     placeholder="Seleccione la Sucursal"
@@ -133,7 +155,7 @@ export const AddWarehouseModal = () => {
                         Guardar Bodega
                     </Button>
                 </Modal.Footer>
-            </Modal>
+            </Modal> */}
         </>
     );
 };
