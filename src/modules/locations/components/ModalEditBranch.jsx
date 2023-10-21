@@ -7,7 +7,7 @@ import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
 import { SelectRegions } from '../../../shared/ui/components/SelectRegions';
 import { SelectMunicipalities } from '../../../shared/ui/components/SelectMunicipalities';
 import { SelectCountries } from '../../../shared/ui/components/SelectCountries';
-import { getBranchById } from '../APIs/branchesAPI';
+import { getBranchById, updateBranch } from '../APIs/branchesAPI';
 import PropTypes from 'prop-types';
 import { BranchModal } from './Modals/BranchModal';
 
@@ -35,7 +35,13 @@ export const ModalEditBranch = React.memo(function ModalEditBranch({
     const [showModal, setShowModal] = useState(false);
 
     const handleFormSubmit = async (values, { errors }) => {
-        console.log('click en formSubmit');
+        console.log('click modalEditBranch');
+        console.log(values);
+
+        console.log(branchId);
+        const response = await updateBranch(branchId, values);
+
+        console.log(response);
     };
 
     // Formik
