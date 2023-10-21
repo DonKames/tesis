@@ -120,12 +120,13 @@ export const updateBranch = async (branchId, branchData) => {
             body: JSON.stringify(branchData),
         });
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
+        const { data, message, status } = await handleFetchError(response);
 
-        const data = await response.json();
-        return data;
+        if (status === 'success') {
+            return { data, message };
+        } else {
+            throw new Error(message);
+        }
     } catch (error) {
         console.log(
             `Error al actualizar Sucursal ${branchId} en la API: `,

@@ -88,6 +88,7 @@ export const AddBranchModal = () => {
                 formik={formik}
                 showModal={showModal}
                 toggleModal={setShowModal}
+                primaryButtonText="Agregar"
             />
         </>
     );

@@ -6,9 +6,15 @@ import { SelectRegions } from '../../../../shared/ui/components/SelectRegions';
 import { SelectCountries } from '../../../../shared/ui/components/SelectCountries';
 import { SelectMunicipalities } from '../../../../shared/ui/components/SelectMunicipalities';
 
-export const BranchModal = ({ title, formik, showModal, toggleModal }) => {
+export const BranchModal = ({
+    title,
+    formik,
+    showModal,
+    toggleModal,
+    primaryButtonText,
+}) => {
     return (
-        <Modal show={showModal}>
+        <Modal show={showModal} onHide={() => toggleModal(false)}>
             <Modal.Header>
                 <Modal.Title>{title}</Modal.Title>
             </Modal.Header>
@@ -135,7 +141,7 @@ export const BranchModal = ({ title, formik, showModal, toggleModal }) => {
                         Cancelar
                     </Button>
                     <Button type="submit" variant="primary">
-                        Agregar
+                        {primaryButtonText}
                     </Button>
                 </Modal.Footer>
             </Form>

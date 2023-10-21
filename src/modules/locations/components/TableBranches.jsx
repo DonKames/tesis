@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'react-bootstrap';
@@ -10,15 +10,12 @@ import {
     changeActiveStateBranch,
     getBranches,
     getBranchesQty,
-    updateBranch,
 } from '../APIs/branchesAPI';
 import {
     locationsSetBranches,
     locationsSetBranchesQty,
 } from '../slice/locationsSlice';
-import { useForm } from '../../../hooks/useForm';
 import { ModalEditBranch } from './ModalEditBranch';
-import { useBranchValidationForm } from '../hooks/useBranchValidationForm';
 
 export const TableBranches = () => {
     const maxPaginationButtons = 10;
@@ -27,9 +24,6 @@ export const TableBranches = () => {
 
     // Redux states
     const { branches, branchesQty } = useSelector((state) => state.locations);
-
-    // // Local State
-    // const [showModal, setShowModal] = useState(false);
 
     const tableColumnsBranches = [
         { name: 'Nombre', className: '' },
