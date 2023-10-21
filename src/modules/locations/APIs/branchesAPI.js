@@ -38,14 +38,40 @@ export const getBranchById = async (branchId) => {
     }
 };
 
-export const getBranchesQty = async (showInactive) => {
+export const getBranchesQty = async ({ warehouseId, showInactive }) => {
     try {
-        const response = await fetch(
-            `${BASE_URL}/branches/qty?showInactive=${showInactive}`,
-        );
-        const data = await handleFetchError(response);
+        let url = `${BASE_URL}/branches/qty`;
 
-        return data;
+        const params = new URLSearchParams();
+
+        if (showInactive !== undefined) {
+            params.append('showInactive', showInactive);
+        }
+
+        if (warehouseId !== undefined) {
+            params.append('warehouseId', warehouseId);
+        }
+
+        if (params.toString()) {
+            url += `?${params.toString()}`;
+        }
+
+        const response = await fetch(url);
+
+        const { status, data, message } = await handleFetchError(response);
+
+        if (status === 'success') {
+            return { data, message };
+        } else {
+            throw new Error(message);
+        }
+
+        // const response = await fetch(
+        //     `${BASE_URL}/branches/qty?showInactive=${showInactive}`,
+        // );
+        // const data = await handleFetchError(response);
+
+        // return data;
     } catch (error) {
         return { data: null, message: error };
     }
