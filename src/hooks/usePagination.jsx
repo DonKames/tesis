@@ -20,15 +20,19 @@ const usePagination = (
         // Obtener la nueva cantidad de elementos
 
         if (showInactive !== undefined) {
-            getItemsQty({ showInactive }).then((newItemsQty) => {
-                console.log(newItemsQty);
-                dispatch(setItemsQty(newItemsQty));
+            getItemsQty({ showInactive }).then((newItemsQtyInfo) => {
+                // console.log(newItemsQtyInfo);
+                const { data } = newItemsQtyInfo;
+
+                // console.log(data, message);
+
+                dispatch(setItemsQty(data));
             });
         }
     }, [showInactive]);
 
     useEffect(() => {
-        console.log(pagesQty);
+        // console.log(pagesQty);
 
         const fetchData = async () => {
             try {
@@ -36,7 +40,7 @@ const usePagination = (
                 const { data } = await getItems(1, limit, showInactive);
                 // console.log('setItems', fetchedItems);
 
-                console.log(data);
+                // console.log(data);
                 if (data) {
                     dispatch(setItems(data));
                 }

@@ -65,8 +65,8 @@ export const SelectRegions = ({
     const options = regions
         .filter((region) => region.countryId === selectedCountry)
         .map((region) => ({
-            value: region.id,
             label: region.name,
+            value: region.id,
         }));
 
     return (

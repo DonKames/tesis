@@ -100,29 +100,37 @@ export const TableBranches = () => {
         if (result.isConfirmed) {
             console.log('Desactivando Branch con ID:', branchId);
 
-            const { status, data } = await changeActiveStateBranch(
-                branchId,
-                false,
-            );
-
-            if (status === 'success') {
-                Swal.fire({
-                    title: '¡Sucursal desactivada!',
-                    text: 'La sucursal ha sido desactivada con éxito.',
-                    icon: 'success',
-                });
-
-                const updatedBranches = branches.map((branch) =>
-                    branch.id === branchId
-                        ? { ...branch, active: false }
-                        : branch,
+            try {
+                const { status, data } = await changeActiveStateBranch(
+                    branchId,
+                    false,
                 );
 
-                dispatch(locationsSetBranches(updatedBranches));
-            } else {
+                if (status === 'success') {
+                    Swal.fire({
+                        title: '¡Sucursal desactivada!',
+                        text: 'La sucursal ha sido desactivada con éxito.',
+                        icon: 'success',
+                    });
+
+                    const updatedBranches = branches.map((branch) =>
+                        branch.id === branchId
+                            ? { ...branch, active: false }
+                            : branch,
+                    );
+
+                    dispatch(locationsSetBranches(updatedBranches));
+                } else {
+                    Swal.fire({
+                        title: '¡Error!',
+                        text: data.message,
+                        icon: 'error',
+                    });
+                }
+            } catch (error) {
                 Swal.fire({
                     title: '¡Error!',
-                    text: data.message,
+                    text: 'No se pudo desactivar la Sucursal - Error al conectar con la API',
                     icon: 'error',
                 });
             }

@@ -47,7 +47,7 @@ export const getWarehousesQty = async ({ branchId, showInactive } = {}) => {
 
         const params = new URLSearchParams();
 
-        console.log(showInactive);
+        // console.log(showInactive);
 
         if (showInactive !== undefined) {
             params.append('showInactive', showInactive);
@@ -70,7 +70,7 @@ export const getWarehousesQty = async ({ branchId, showInactive } = {}) => {
         const { status, message, data } = await handleFetchError(response);
 
         if (status === 'success') {
-            return data;
+            return { data, message };
         } else {
             throw new Error(message);
         }
@@ -79,7 +79,7 @@ export const getWarehousesQty = async ({ branchId, showInactive } = {}) => {
             'Error al obtener Cantidad de Bodegas desde la API:',
             error,
         );
-        return [];
+        return { data: null, message: error };
     }
 };
 

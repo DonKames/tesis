@@ -54,6 +54,12 @@ export const ModalEditBranch = React.memo(function ModalEditBranch({
             });
 
             dispatch(locationsSetBranches(updatedBranches));
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error al editar la sucursal',
+                text: message,
+            });
         }
     };
 

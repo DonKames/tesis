@@ -15,25 +15,58 @@ export const SelectBranches = ({
     setFieldTouched,
     setFieldValue,
 }) => {
+    const dispatch = useDispatch();
+
     // Redux State
-    const { brances: branches } = useSelector((state) => state.locations);
+    const { branches } = useSelector((state) => state.locations);
 
     // Local State
     const [selectedValue, setSelectedValue] = useState(null);
+
+    useEffect(() => {
+        const fetchBranches = async () => {
+            try {
+                if (!branches.length) {
+                    const fetchedBranches = await getBranchesNames();
+                    dispatch(uiSetBranchesNames(fetchedBranches));
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        fetchBranches();
+    }, []);
 
     const options = branches.map((branch) => ({
         label: branch.name,
         value: branch.id,
     }));
+
+    const handleChange = (selectedOption) => {
+        if (setFieldValue && setFieldTouched) {
+            setFieldValue(name, selectedOption.value, () => {
+                setFieldTouched(name, true);
+            });
+        } else {
+            setSelectedValue(selectedOption);
+            handleInputChange({
+                target: {
+                    name,
+                    value: selectedOption.value,
+                },
+            });
+        }
+    };
+
     return (
         <>
             <Select
                 className={isInvalid ? 'is-invalid' : ''}
-                isDisabled={true}
                 isInvalid={isInvalid}
                 isSearchable
                 name={name}
-                onChange={handleInputChange}
+                onChange={handleChange}
                 options={options}
                 placeholder="Selecciona una sucursal"
                 styles={errorStyle}

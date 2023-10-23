@@ -97,80 +97,80 @@ export const TableWarehouses = () => {
         );
     };
 
-    const [formValues, handleInputChange, reset, setFormValues] = useForm({
-        active: true,
-        branchId: 0,
-        capacity: '',
-        name: '',
-        warehouseId: 0,
-    });
+    // const [formValues, handleInputChange, reset, setFormValues] = useForm({
+    //     active: true,
+    //     branchId: 0,
+    //     capacity: '',
+    //     name: '',
+    //     warehouseId: 0,
+    // });
 
-    const handleModalChange = () => {
-        if (showModal) {
-            reset();
-        }
+    // const handleModalChange = () => {
+    //     if (showModal) {
+    //         reset();
+    //     }
 
-        setShowModal(!showModal);
-    };
+    //     setShowModal(!showModal);
+    // };
 
-    const handleOpenForm = (id) => {
-        const warehouseToEdit = warehouses.find((w) => w.id === id);
+    // const handleOpenForm = (id) => {
+    //     const warehouseToEdit = warehouses.find((w) => w.id === id);
 
-        setFormValues({
-            name: warehouseToEdit.name,
-            branchId: warehouseToEdit.branchId,
-            capacity: warehouseToEdit.capacity || 0,
-            active: warehouseToEdit.active,
-            warehouseId: warehouseToEdit.id,
-        });
+    //     setFormValues({
+    //         name: warehouseToEdit.name,
+    //         branchId: warehouseToEdit.branchId,
+    //         capacity: warehouseToEdit.capacity || 0,
+    //         active: warehouseToEdit.active,
+    //         warehouseId: warehouseToEdit.id,
+    //     });
 
-        handleModalChange();
-    };
+    //     handleModalChange();
+    // };
 
-    const handleUpdate = async () => {
-        const { warehouseId } = formValues;
+    // const handleUpdate = async () => {
+    //     const { warehouseId } = formValues;
 
-        // TODO - create validation hook and use it here
-        const isFormValid = true;
+    //     // TODO - create validation hook and use it here
+    //     const isFormValid = true;
 
-        if (isFormValid) {
-            try {
-                const resp = await updateWarehouse(warehouseId, formValues);
+    //     if (isFormValid) {
+    //         try {
+    //             const resp = await updateWarehouse(warehouseId, formValues);
 
-                if (resp.status === 'success') {
-                    const updatedWarehouses = warehouses.map((w) =>
-                        w.id === warehouseId ? { ...w, ...formValues } : w,
-                    );
+    //             if (resp.status === 'success') {
+    //                 const updatedWarehouses = warehouses.map((w) =>
+    //                     w.id === warehouseId ? { ...w, ...formValues } : w,
+    //                 );
 
-                    dispatch(locationsSetWarehouses(updatedWarehouses));
+    //                 dispatch(locationsSetWarehouses(updatedWarehouses));
 
-                    Swal.fire({
-                        title: '¡Bodega actualizada!',
-                        text: `La bodega ${formValues.name} ha sido actualizada exitosamente.`,
-                        icon: 'success',
-                    });
+    //                 Swal.fire({
+    //                     title: '¡Bodega actualizada!',
+    //                     text: `La bodega ${formValues.name} ha sido actualizada exitosamente.`,
+    //                     icon: 'success',
+    //                 });
 
-                    handleModalChange();
-                } else {
-                    Swal.fire({
-                        title: '¡Error!',
-                        text: resp.data.message,
-                        icon: 'error',
-                    });
-                }
-            } catch (error) {
-                console.log(error);
-                Swal.fire({
-                    title: '¡Error!',
-                    text: 'No se pudo actualizar la Bodega - Error al conectar con la API',
-                    icon: 'error',
-                });
-            }
-        }
-        handleModalChange();
-    };
+    //                 handleModalChange();
+    //             } else {
+    //                 Swal.fire({
+    //                     title: '¡Error!',
+    //                     text: resp.data.message,
+    //                     icon: 'error',
+    //                 });
+    //             }
+    //         } catch (error) {
+    //             console.log(error);
+    //             Swal.fire({
+    //                 title: '¡Error!',
+    //                 text: 'No se pudo actualizar la Bodega - Error al conectar con la API',
+    //                 icon: 'error',
+    //             });
+    //         }
+    //     }
+    //     handleModalChange();
+    // };
 
-    const handleDeactivateWarehouse = async (id) => {
+    const handleDeactivateWarehouse = async (WarehouseId) => {
         const result = await Swal.fire({
             title: '¿Estás seguro?',
             text: 'La bodega será desactivada y no podrá ser utilizada en el sistema.',
@@ -185,7 +185,7 @@ export const TableWarehouses = () => {
         if (result.isConfirmed) {
             try {
                 const { status, data } = await changeActiveStateWarehouse(
-                    id,
+                    WarehouseId,
                     false,
                 );
 
@@ -197,7 +197,7 @@ export const TableWarehouses = () => {
                     });
 
                     const updatedWarehouses = warehouses.map((w) =>
-                        w.id === id ? { ...w, active: false } : w,
+                        w.id === WarehouseId ? { ...w, active: false } : w,
                     );
 
                     dispatch(locationsSetWarehouses(updatedWarehouses));
@@ -257,13 +257,13 @@ export const TableWarehouses = () => {
 
     return (
         <>
-            <ModalEditWarehouse
+            {/* <ModalEditWarehouse
                 formValues={formValues}
                 handleInputChange={handleInputChange}
                 handleModalChange={handleModalChange}
                 handleUpdate={handleUpdate}
                 showModal={showModal}
-            />
+            /> */}
             <PaginatedTable
                 columns={tableColumnsWarehouses}
                 footerText={`Total de Bodegas: ${warehousesQty} | Páginas Totales: ${pagesQty} `}

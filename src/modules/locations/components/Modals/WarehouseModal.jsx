@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Form, Modal, Row } from 'react-bootstrap';
+import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
 
 import PropTypes from 'prop-types';
 import { SelectBranches } from '../../../../shared/ui/components/SelectBranches';
@@ -36,19 +36,46 @@ export const WarehouseModal = ({
                         <Col>
                             <Form.Group>
                                 <Form.Label>Sucursal</Form.Label>
-                                <SelectBranches />
+                                <SelectBranches
+                                    branchId={formik.branchId}
+                                    errorMessage={formik.errors.branch}
+                                    setFieldValue={formik.setFieldValue}
+                                    setFieldTouched={formik.setFieldTouched}
+                                    isInvalid={
+                                        formik.touched.branch &&
+                                        !!formik.errors.branch
+                                    }
+                                    name="branchId"
+                                />
                             </Form.Group>
                         </Col>
                     </Row>
                     <Row>
                         <Col>
                             <Form.Group>
-                                <Form.Label></Form.Label>
+                                <Form.Label>Capacidad</Form.Label>
+                                <Form.Control
+                                    type="number"
+                                    placeholder="Capacidad"
+                                    name="capacity"
+                                    value={formik.values.capacity}
+                                    onChange={formik.handleChange}
+                                />
                             </Form.Group>
                         </Col>
                     </Row>
                 </Modal.Body>
-                <Modal.Footer></Modal.Footer>
+                <Modal.Footer>
+                    <Button
+                        onClick={() => toggleModal(false)}
+                        variant="secondary"
+                    >
+                        Cancelar
+                    </Button>
+                    <Button type="submit" variant="primary">
+                        {primaryButtonText}
+                    </Button>
+                </Modal.Footer>
             </Form>
         </Modal>
     );
