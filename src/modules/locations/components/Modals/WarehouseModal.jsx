@@ -23,10 +23,16 @@ export const WarehouseModal = ({
                             <Form.Group>
                                 <Form.Label>Nombre</Form.Label>
                                 <Form.Control
+                                    className={
+                                        formik.touched.warehouseName &&
+                                        formik.errors.warehouseName
+                                            ? 'is-invalid'
+                                            : ''
+                                    }
                                     type="text"
                                     placeholder="Nombre"
                                     name="warehouseName"
-                                    value={formik.values.name}
+                                    value={formik.values.warehouseName}
                                     onChange={formik.handleChange}
                                 />
                             </Form.Group>
@@ -37,15 +43,15 @@ export const WarehouseModal = ({
                             <Form.Group>
                                 <Form.Label>Sucursal</Form.Label>
                                 <SelectBranches
-                                    branchId={formik.branchId}
-                                    errorMessage={formik.errors.branch}
-                                    setFieldValue={formik.setFieldValue}
+                                    errorMessage={formik.errors.branchId}
+                                    branchId={formik.values.branchId}
+                                    name="branchId"
                                     setFieldTouched={formik.setFieldTouched}
+                                    setFieldValue={formik.setFieldValue}
                                     isInvalid={
                                         formik.touched.branch &&
                                         !!formik.errors.branch
                                     }
-                                    name="branchId"
                                 />
                             </Form.Group>
                         </Col>

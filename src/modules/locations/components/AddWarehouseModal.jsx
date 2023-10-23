@@ -18,7 +18,7 @@ export const AddWarehouseModal = () => {
         if (data) {
             Swal.fire({
                 icon: 'success',
-                title: 'Bodega creada con éxito',
+                title: '',
                 showConfirmButton: false,
                 timer: 1500,
             });
@@ -67,9 +67,10 @@ export const AddWarehouseModal = () => {
             </Button>
             <WarehouseModal
                 formik={formik}
-                showModal={showModal}
-                toggleModal={toggleModal}
                 primaryButtonText="Agregar"
+                showModal={showModal}
+                title="Agregar Bodega"
+                toggleModal={toggleModal}
             />
         </>
     );

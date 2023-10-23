@@ -74,16 +74,16 @@ export const BranchModal = ({
                                     Región
                                 </Form.Label>
                                 <SelectRegions
-                                    setFieldValue={formik.setFieldValue}
-                                    setFieldTouched={formik.setFieldTouched}
+                                    errorMessage={formik.errors.region}
                                     name="region"
                                     regionId={formik.values.region}
                                     selectedCountry={formik.values.country}
+                                    setFieldTouched={formik.setFieldTouched}
+                                    setFieldValue={formik.setFieldValue}
                                     isInvalid={
                                         formik.touched.region &&
                                         !!formik.errors.region
                                     }
-                                    errorMessage={formik.errors.region}
                                 />
                             </Form.Group>
                         </Col>

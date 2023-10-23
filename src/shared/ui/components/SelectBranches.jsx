@@ -17,11 +17,11 @@ export const SelectBranches = ({
 }) => {
     const dispatch = useDispatch();
 
-    // Redux State
-    const { branches } = useSelector((state) => state.locations);
-
     // Local State
     const [selectedValue, setSelectedValue] = useState(null);
+
+    // Redux State
+    const { branches } = useSelector((state) => state.locations);
 
     useEffect(() => {
         const fetchBranches = async () => {
@@ -38,17 +38,26 @@ export const SelectBranches = ({
         fetchBranches();
     }, []);
 
-    const options = branches.map((branch) => ({
-        label: branch.name,
-        value: branch.id,
-    }));
+    useEffect(() => {
+        const defaultBranch = branches.find((branch) => branch.id === branchId);
+
+        if (defaultBranch) {
+            setSelectedValue({
+                value: defaultBranch.id,
+                label: defaultBranch.name,
+            });
+        }
+    }, [branchId, branches]);
 
     const handleChange = (selectedOption) => {
+        console.log('entre al primero', selectedOption);
+        console.log('entre al primero value', selectedValue);
         if (setFieldValue && setFieldTouched) {
-            setFieldValue(name, selectedOption.value, () => {
-                setFieldTouched(name, true);
-            });
-        } else {
+            setFieldValue(name, selectedOption.value);
+            setFieldTouched(name, true);
+        } else if (handleInputChange) {
+            console.log('entre al segundo');
+
             setSelectedValue(selectedOption);
             handleInputChange({
                 target: {
@@ -58,6 +67,11 @@ export const SelectBranches = ({
             });
         }
     };
+
+    const options = branches.map((branch) => ({
+        label: branch.name,
+        value: branch.id,
+    }));
 
     return (
         <>
@@ -72,6 +86,9 @@ export const SelectBranches = ({
                 styles={errorStyle}
                 value={selectedValue}
             />
+            {isInvalid && (
+                <div className="invalid-feedback">{errorMessage}</div>
+            )}
         </>
     );
 };

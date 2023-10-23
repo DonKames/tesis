@@ -27,9 +27,6 @@ export const TableWarehouses = () => {
         (state) => state.locations,
     );
 
-    // Local State
-    const [showModal, setShowModal] = useState(false);
-
     const tableColumnsWarehouses = [
         { name: 'Nombre', className: '' },
         { name: 'Sucursal', className: '' },

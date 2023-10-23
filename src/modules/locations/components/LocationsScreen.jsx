@@ -15,7 +15,7 @@ export const LocationsScreen = () => {
             <Row className="align-items-center">
                 <Col className="mb-3">
                     <Row>
-                        <Col className="text-end">
+                        <Col xs="12" className="text-end">
                             <AddBranchModal />
                         </Col>
                     </Row>

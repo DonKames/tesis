@@ -51,7 +51,11 @@ export const SelectRegions = ({
             setFieldValue(name, selectedOption.value, () => {
                 setFieldTouched(name, true);
             });
+            console.log('el primero ', selectedOption);
+            console.log('el primero value: ', selectedValue);
         } else if (handleInputChange) {
+            console.log('el segundo ', selectedOption);
+            console.log('el segundo ', selectedValue);
             setSelectedValue(selectedOption);
             handleInputChange({
                 target: {

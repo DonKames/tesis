@@ -26,6 +26,7 @@ export const AddBranchModal = () => {
                 timer: 1500,
                 title: message,
             });
+
             handleCloseModal();
 
             const { branchesData } = await getBranches();
@@ -54,6 +55,7 @@ export const AddBranchModal = () => {
         onSubmit: handleFormSubmit,
     });
 
+    // Modal Control
     const handleOpenModal = () => {
         setShowModal(true);
     };
@@ -64,15 +66,19 @@ export const AddBranchModal = () => {
 
     return (
         <>
-            <Button variant="primary shadow-sm mb-2" onClick={handleOpenModal}>
+            <Button
+                variant="primary "
+                onClick={handleOpenModal}
+                className="shadow-sm mb-2"
+            >
                 Agregar Sucursal
             </Button>
             <BranchModal
-                title="Agregar Sucursal"
                 formik={formik}
-                showModal={showModal}
-                toggleModal={setShowModal}
                 primaryButtonText="Agregar"
+                showModal={showModal}
+                title="Agregar Sucursal"
+                toggleModal={setShowModal}
             />
         </>
     );
