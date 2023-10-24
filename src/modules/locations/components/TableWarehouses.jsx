@@ -60,7 +60,11 @@ export const TableWarehouses = () => {
             >
                 <td className="align-middle">{warehouse.name}</td>
                 <td className="align-middle">{warehouse.branchName}</td>
-                <td className="align-middle">{warehouse.capacity} m3</td>
+                <td className="align-middle">
+                    {warehouse.capacity === null || warehouse.capacity === 0
+                        ? 'Sin Determinar'
+                        : warehouse.capacity + ' m3'}
+                </td>
                 <td className="align-middle text-end">
                     <Button
                         className="me-1"

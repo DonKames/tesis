@@ -10,14 +10,14 @@ export const WarehouseModal = ({
     showModal,
     toggleModal,
     primaryButtonText = 'Guardar',
-    handleFormSubmit,
+    // handleFormSubmit,   //Solo para pruebas
 }) => {
     return (
         <Modal show={showModal} onHide={() => toggleModal(false)}>
             <Modal.Header>
                 <Modal.Title>{title}</Modal.Title>
             </Modal.Header>
-            <Form onSubmit={handleFormSubmit}>
+            <Form onSubmit={formik.handleSubmit}>
                 <Modal.Body>
                     <Row>
                         <Col>

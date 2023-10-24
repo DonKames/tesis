@@ -32,20 +32,22 @@ export const AddWarehouseModal = () => {
             });
         }
     };
-    const handleFormSubmit = async (e) => {
-        e.preventDefault();
-        console.log(formik.values);
-        console.log(formik.errors);
-        console.log(formik.touched.capacity);
-        console.log(formik.errors.capacity);
 
-        console.log(formik.touched.warehouseName);
-        console.log(formik.errors.warehouseName);
-        await formik.validateForm();
-        if (formik.isValid) {
-            formik.handleSubmit(); // Llamar a la función de envío si el formulario es válido
-        }
-    };
+    // * Para pruebas
+    // const handleFormSubmit = async (e) => {
+    //     e.preventDefault();
+    //     console.log(formik.values);
+    //     console.log(formik.errors);
+    //     console.log(formik.touched.capacity);
+    //     console.log(formik.errors.capacity);
+
+    //     console.log(formik.touched.warehouseName);
+    //     console.log(formik.errors.warehouseName);
+    //     await formik.validateForm();
+    //     if (formik.isValid) {
+    //         formik.handleSubmit(); // Llamar a la función de envío si el formulario es válido
+    //     }
+    // };
 
     const formik = useFormik({
         initialValues: {
@@ -54,7 +56,6 @@ export const AddWarehouseModal = () => {
             capacity: 0,
             active: true,
         },
-        // ! TODO crear el Schema
         validationSchema: warehouseSchema,
         onSubmit: handleSubmit,
     });
@@ -82,7 +83,7 @@ export const AddWarehouseModal = () => {
                 showModal={showModal}
                 title="Agregar Bodega"
                 toggleModal={toggleModal}
-                handleFormSubmit={handleFormSubmit}
+                // handleFormSubmit={handleFormSubmit}
             />
         </>
     );
