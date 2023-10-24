@@ -6,17 +6,18 @@ import { useFormik } from 'formik';
 
 import { createWarehouse } from '../APIs/warehouseAPI';
 import { WarehouseModal } from './Modals/WarehouseModal';
+import { warehouseSchema } from '../../../validations/warehouseSchema';
 
 export const AddWarehouseModal = () => {
     const [showModal, setShowModal] = useState(false);
 
-    const handleFormSubmit = async (values) => {
+    const handleSubmit = async (values) => {
         const { data, message } = await createWarehouse(values);
 
         if (data) {
             Swal.fire({
                 icon: 'success',
-                title: '',
+                title: message,
                 showConfirmButton: false,
                 timer: 1500,
             });
@@ -31,6 +32,20 @@ export const AddWarehouseModal = () => {
             });
         }
     };
+    const handleFormSubmit = async (e) => {
+        e.preventDefault();
+        console.log(formik.values);
+        console.log(formik.errors);
+        console.log(formik.touched.capacity);
+        console.log(formik.errors.capacity);
+
+        console.log(formik.touched.warehouseName);
+        console.log(formik.errors.warehouseName);
+        await formik.validateForm();
+        if (formik.isValid) {
+            formik.handleSubmit(); // Llamar a la función de envío si el formulario es válido
+        }
+    };
 
     const formik = useFormik({
         initialValues: {
@@ -40,8 +55,8 @@ export const AddWarehouseModal = () => {
             active: true,
         },
         // ! TODO crear el Schema
-        // validationSchema: branchSchema,
-        onSubmit: handleFormSubmit,
+        validationSchema: warehouseSchema,
+        onSubmit: handleSubmit,
     });
 
     // Modal Control
@@ -67,6 +82,7 @@ export const AddWarehouseModal = () => {
                 showModal={showModal}
                 title="Agregar Bodega"
                 toggleModal={toggleModal}
+                handleFormSubmit={handleFormSubmit}
             />
         </>
     );

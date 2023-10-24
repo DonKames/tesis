@@ -50,11 +50,10 @@ export const SelectBranches = ({
     }, [branchId, branches]);
 
     const handleChange = (selectedOption) => {
-        console.log('entre al primero', selectedOption);
-        console.log('entre al primero value', selectedValue);
         if (setFieldValue && setFieldTouched) {
-            setFieldValue(name, selectedOption.value);
-            setFieldTouched(name, true);
+            setFieldValue(name, selectedOption.value, () => {
+                setFieldTouched(name, true);
+            });
         } else if (handleInputChange) {
             console.log('entre al segundo');
 
@@ -73,25 +72,59 @@ export const SelectBranches = ({
         value: branch.id,
     }));
 
+    console.log('branches' + isInvalid);
+
     return (
         <>
-            <Select
-                className={isInvalid ? 'is-invalid' : ''}
-                isInvalid={isInvalid}
-                isSearchable
-                name={name}
-                onChange={handleChange}
-                options={options}
-                placeholder="Selecciona una sucursal"
-                styles={errorStyle}
-                value={selectedValue}
-            />
-            {isInvalid && (
-                <div className="invalid-feedback">{errorMessage}</div>
-            )}
+            <div style={{ position: 'relative' }}>
+                <div
+                    style={{
+                        position: 'absolute',
+                        top: '10px',
+                        left: '10px',
+                        zIndex: 1,
+                        pointerEvents: 'none',
+                        fontSize: '14px',
+                        color: 'rgba(107, 137, 148, 0.65)',
+                    }}
+                >
+                    Seleccione una sucursal
+                </div>
+                <Select
+                    menuPlacement="auto"
+                    menuPortalTarget={document.body}
+                    className={isInvalid ? 'is-invalid' : ''}
+                    components={{ Placeholder: CustomPlaceholder }}
+                    isInvalid={isInvalid}
+                    isSearchable
+                    name={name}
+                    onChange={handleChange}
+                    options={options}
+                    placeholder=""
+                    styles={errorStyle}
+                    value={selectedValue}
+                />
+                {isInvalid && (
+                    <div className="invalid-feedback">{errorMessage}</div>
+                )}
+            </div>
         </>
     );
 };
+
+const CustomPlaceholder = ({ children }) => (
+    <div
+        style={{
+            position: 'absolute',
+            top: '10px',
+            transform: 'translateY(-50%)',
+            left: '10px',
+            color: '#ccc',
+        }}
+    >
+        {children}
+    </div>
+);
 
 // export const SelectBranches = ({ onChange, name, branchId }) => {
 //     const dispatch = useDispatch();

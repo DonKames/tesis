@@ -56,15 +56,15 @@ export const BranchModal = ({
                                     País
                                 </Form.Label>
                                 <SelectCountries
-                                    setFieldValue={formik.setFieldValue}
-                                    setFieldTouched={formik.setFieldTouched}
-                                    name="country"
                                     countryId={formik.values.country}
+                                    errorMessage={formik.errors.country}
+                                    name="country"
+                                    setFieldTouched={formik.setFieldTouched}
+                                    setFieldValue={formik.setFieldValue}
                                     isInvalid={
                                         formik.touched.country &&
                                         !!formik.errors.country
                                     }
-                                    errorMessage={formik.errors.country}
                                 />
                             </Form.Group>
                         </Col>

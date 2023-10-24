@@ -2,6 +2,8 @@
 export const errorStyle = {
     control: (provided, state) => ({
         ...provided,
+        height: '58px',
+
         borderColor: state.isFocused
             ? '#ddd'
             : state.selectProps.isInvalid
@@ -20,5 +22,14 @@ export const errorStyle = {
                 : '#ddd',
         },
     }),
+    valueContainer: (provided, state) => ({
+        ...provided,
+        display: 'flex',
+        alignItems: 'flex-end',
+        paddingTop: '10px',
+        marginTop: '10px',
+    }),
+    menuPortal: (base) => ({ ...base, zIndex: 9999 }),
 };
+
 /* eslint-enable indent */
