@@ -1,14 +1,14 @@
-// Validation
-import { useFormik } from 'formik';
-
 import React, { useState } from 'react';
+
 import { Button } from 'react-bootstrap';
-import { createBranch, getBranches } from '../APIs/branchesAPI';
-import Swal from 'sweetalert2';
 import { useDispatch } from 'react-redux';
-import { locationsSetBranches } from '../slice/locationsSlice';
+import { useFormik } from 'formik';
+import Swal from 'sweetalert2';
+
 import { BranchModal } from './Modals/BranchModal';
 import { branchSchema } from '../../../validations/branchSchema';
+import { createBranch, getBranches } from '../APIs/branchesAPI';
+import { locationsSetBranches } from '../slice/locationsSlice';
 
 export const AddBranchModal = () => {
     const dispatch = useDispatch();
@@ -27,7 +27,7 @@ export const AddBranchModal = () => {
                 title: message,
             });
 
-            handleCloseModal();
+            toggleModal(false);
 
             const { branchesData } = await getBranches();
 
@@ -56,19 +56,18 @@ export const AddBranchModal = () => {
     });
 
     // Modal Control
-    const handleOpenModal = () => {
-        setShowModal(true);
-    };
-    const handleCloseModal = () => {
-        setShowModal(false);
-        formik.resetForm();
+    const toggleModal = async (isOpen) => {
+        setShowModal(isOpen);
+        if (!isOpen) {
+            formik.resetForm();
+        }
     };
 
     return (
         <>
             <Button
                 variant="primary "
-                onClick={handleOpenModal}
+                onClick={() => toggleModal(true)}
                 className="shadow-sm mb-2"
             >
                 Agregar Sucursal

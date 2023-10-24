@@ -105,15 +105,16 @@ export const createWarehouse = async (warehouseData) => {
             body: JSON.stringify(warehouseData), // convierte los datos del país a una cadena JSON
         });
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
+        const { status, data, message } = await handleFetchError(response);
 
-        const data = await response.json();
-        return data;
+        if (status === 'success') {
+            return { data, message };
+        } else {
+            throw new Error(message);
+        }
     } catch (error) {
         console.log('Error al crear Bodega en la API:', error);
-        return null;
+        return { data: null, message: error };
     }
 };
 

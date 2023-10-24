@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
+
 import { Button } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
-import { createWarehouse, getWarehouses } from '../APIs/warehouseAPI';
 import Swal from 'sweetalert2';
-import { locationsSetWarehouses } from '../slice/locationsSlice';
-import { WarehouseModal } from './Modals/WarehouseModal';
 import { useFormik } from 'formik';
 
-export const AddWarehouseModal = () => {
-    const dispatch = useDispatch();
+import { createWarehouse } from '../APIs/warehouseAPI';
+import { WarehouseModal } from './Modals/WarehouseModal';
 
+export const AddWarehouseModal = () => {
     const [showModal, setShowModal] = useState(false);
 
     const handleFormSubmit = async (values) => {
@@ -24,9 +22,6 @@ export const AddWarehouseModal = () => {
             });
 
             toggleModal(false);
-
-            const warehouses = await getWarehouses();
-            dispatch(locationsSetWarehouses(warehouses));
         } else {
             console.log(message);
             Swal.fire({
@@ -44,6 +39,7 @@ export const AddWarehouseModal = () => {
             capacity: 0,
             active: true,
         },
+        // ! TODO crear el Schema
         // validationSchema: branchSchema,
         onSubmit: handleFormSubmit,
     });
