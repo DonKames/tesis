@@ -107,11 +107,11 @@ export const ModalEditBranch = React.memo(function ModalEditBranch({
                 <i className="bi bi-pencil-square" />
             </Button>
             <BranchModal
-                title="Editar Sucursal"
-                showModal={showModal}
-                toggleModal={toggleModal}
                 formik={formik}
                 primaryButtonText="Editar"
+                showModal={showModal}
+                title="Editar Sucursal"
+                toggleModal={toggleModal}
             />
         </>
     );

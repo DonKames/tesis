@@ -1,10 +1,9 @@
 import React from 'react';
 import { Button, Col, FloatingLabel, Form, Modal, Row } from 'react-bootstrap';
-
 import PropTypes from 'prop-types';
 import { SelectBranches } from '../../../../shared/ui/components/SelectBranches';
 
-export const WarehouseModal = ({
+export const BranchLocationModal = ({
     title = 'Te falto agregar el titulo',
     formik,
     showModal,
@@ -22,76 +21,63 @@ export const WarehouseModal = ({
                     <Row>
                         <Col>
                             <Form.Group>
-                                {/* <Form.Label>Nombre</Form.Label> */}
-                                <FloatingLabel
-                                    // controlId="floatingInput"
-                                    label="Nombre"
-                                >
+                                <FloatingLabel label="Nombre">
                                     <Form.Control
                                         className={
-                                            formik.touched.warehouseName &&
-                                            formik.errors.warehouseName
+                                            formik.touched.branchLocationName &&
+                                            formik.errors.branchLocationName
                                                 ? 'is-invalid'
                                                 : ''
                                         }
                                         type="text"
-                                        placeholder="Bodega Principal"
-                                        name="warehouseName"
-                                        value={formik.values.warehouseName}
+                                        placeholder="Lugar de Bodega"
+                                        name="branchLocationName"
+                                        value={formik.values.branchLocationName}
                                         onChange={formik.handleChange}
                                         isInvalid={
-                                            formik.touched.warehouseName &&
-                                            formik.errors.warehouseName
+                                            formik.touched.branchLocationName &&
+                                            formik.errors.branchLocationName
                                         }
                                     />
                                     <Form.Control.Feedback type="invalid">
-                                        {formik.errors.warehouseName}
+                                        {formik.errors.branchLocationName}
                                     </Form.Control.Feedback>
                                 </FloatingLabel>
                             </Form.Group>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
                             <Form.Group className="mt-3">
                                 <SelectBranches
                                     errorMessage={formik.errors.branchId}
                                     branchId={formik.values.branchId}
                                     name="branchId"
-                                    setFieldTouched={formik.setFieldTouched}
-                                    setFieldValue={formik.setFieldValue}
                                     isInvalid={
                                         formik.touched.branchId &&
-                                        !!formik.errors.branchId
+                                        formik.errors.branchId
                                     }
+                                    setFieldTouched={formik.setFieldTouched}
+                                    setFieldValue={formik.setFieldValue}
                                 />
                             </Form.Group>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
                             <Form.Group className="mt-3">
-                                <FloatingLabel label="Capacidad en m3">
+                                <FloatingLabel label="Descripción">
                                     <Form.Control
                                         className={
-                                            formik.touched.capacity &&
-                                            formik.errors.capacity
+                                            formik.touched.description &&
+                                            formik.errors.description
                                                 ? 'is-invalid'
                                                 : ''
                                         }
-                                        type="number"
-                                        placeholder="Capacidad en m3"
-                                        name="capacity"
-                                        value={formik.values.capacity}
+                                        as="textarea"
+                                        placeholder="Descripción"
+                                        name="description"
+                                        value={formik.values.description}
                                         onChange={formik.handleChange}
-                                        step="1"
                                         isInvalid={
-                                            formik.touched.capacity &&
-                                            formik.errors.capacity
+                                            formik.touched.description &&
+                                            formik.errors.description
                                         }
                                     />
                                     <Form.Control.Feedback type="invalid">
-                                        {formik.errors.capacity}
+                                        {formik.errors.description}
                                     </Form.Control.Feedback>
                                 </FloatingLabel>
                             </Form.Group>
@@ -105,7 +91,7 @@ export const WarehouseModal = ({
                     >
                         Cancelar
                     </Button>
-                    <Button type="submit" variant="primary">
+                    <Button type="Submit" variant="primary">
                         {primaryButtonText}
                     </Button>
                 </Modal.Footer>
@@ -114,10 +100,11 @@ export const WarehouseModal = ({
     );
 };
 
-WarehouseModal.propTypes = {
+BranchLocationModal.propTypes = {
     title: PropTypes.string,
     formik: PropTypes.object.isRequired,
     showModal: PropTypes.bool.isRequired,
     toggleModal: PropTypes.func.isRequired,
-    primaryButtonText: PropTypes.string.isRequired,
+    primaryButtonText: PropTypes.string,
+    // handleFormSubmit: PropTypes.func.isRequired,   //Solo para pruebas
 };

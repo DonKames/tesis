@@ -6,7 +6,7 @@ export const BranchLocationsSection = () => {
     return (
         <>
             <Row></Row>
-            <TableBranchLocations />
+            <TableBranchLocations className="h-100" />
         </>
     );
 };

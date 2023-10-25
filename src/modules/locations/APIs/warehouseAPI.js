@@ -30,8 +30,9 @@ export const getWarehouseById = async (warehouseId) => {
         const response = await fetch(`${BASE_URL}/warehouses/${warehouseId}`);
         const { status, data, message } = await handleFetchError(response);
 
+        console.log(data);
         if (status === 'success') {
-            return data;
+            return { data, message };
         } else {
             throw new Error(message);
         }

@@ -49,6 +49,7 @@ export const AddWarehouseModal = () => {
     //     }
     // };
 
+    // Formik
     const formik = useFormik({
         initialValues: {
             warehouseName: '',

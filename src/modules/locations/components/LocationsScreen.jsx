@@ -12,15 +12,17 @@ import { BranchLocationsSection } from './BranchLocationsSection';
 export const LocationsScreen = () => {
     return (
         <Container fluid className="mt-2">
-            <Row className="align-items-center">
-                <Col className="mb-3">
-                    <Row>
-                        <Col xs="12" className="text-end">
-                            <AddBranchModal />
-                        </Col>
-                    </Row>
-                    <BranchesSection />
-                </Col>
+            <Row className="justify-content-center">
+                <Row>
+                    <Col className="mb-3">
+                        <Row>
+                            <Col xs="12" className="text-end">
+                                <AddBranchModal />
+                            </Col>
+                        </Row>
+                        <BranchesSection />
+                    </Col>
+                </Row>
                 <Row>
                     <Col xs="12" lg="6">
                         <Row>
@@ -30,17 +32,14 @@ export const LocationsScreen = () => {
                         </Row>
                         <WarehousesSection />
                     </Col>
-                    {/* <Col xs="12" lg="6">
+                    <Col xs="12" lg="6">
                         <Row>
-                            <Col>
-                                <h1>Lugares de Sucursal</h1>
-                            </Col>
-                            <Col>
+                            <Col className="text-end">
                                 <AddBranchLocationModal />
                             </Col>
                         </Row>
                         <BranchLocationsSection />
-                    </Col> */}
+                    </Col>
                 </Row>
             </Row>
         </Container>
