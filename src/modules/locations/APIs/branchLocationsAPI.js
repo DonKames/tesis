@@ -29,8 +29,7 @@ export const getBranchLocations = async (
     }
 };
 
-export const getBranchLocationById = async (branchLocationId) =>
-
+// export const getBranchLocationById = async (branchLocationId) =>
 
 export const getBranchLocationsQty = async ({ branchId, showInactive }) => {
     try {
