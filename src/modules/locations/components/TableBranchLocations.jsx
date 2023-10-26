@@ -16,19 +16,24 @@ import { Button } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import { ModalEditBranchLocation } from './ModalEditBranchLocation';
 import { useForm } from '../../../hooks/useForm';
+import { BranchLocationModal } from './Modals/BranchLocationModal';
 
 export const TableBranchLocations = () => {
+    const maxPaginationButtons = 10;
+
     const dispatch = useDispatch();
 
-    // Local State
-    const [showModal, setShowModal] = useState(false);
-
     // Redux states
-    const { branchLocationsQty, branchLocations } = useSelector(
+    const { branchLocationsQty, branchLocations, branches } = useSelector(
         (state) => state.locations,
     );
 
-    const maxPaginationButtons = 10;
+    const tableColumnsBranchLocations = [
+        { name: 'Nombre', className: '' },
+        { name: 'Sucursal', className: '' },
+        { name: 'Descripción', className: '' },
+        { name: '', className: 'text-end' },
+    ];
 
     const {
         handlePageChange,
@@ -48,13 +53,6 @@ export const TableBranchLocations = () => {
         maxPaginationButtons,
     );
 
-    const tableColumnsBranchLocations = [
-        { name: 'Nombre', className: '' },
-        { name: 'Sucursal', className: '' },
-        { name: 'Descripción', className: '' },
-        { name: '', className: 'text-end' },
-    ];
-
     const itemRenderer = (branchLocation) => {
         return (
             <tr
@@ -65,12 +63,7 @@ export const TableBranchLocations = () => {
                 <td className="align-middle">{branchLocation.branchName}</td>
                 <td className="align-middle">{branchLocation.description}</td>
                 <td className="align-middle text-end">
-                    <Button
-                        className="me-1"
-                        onClick={() => handleOpenForm(branchLocation.id)}
-                    >
-                        <i className="bi bi-pencil-square"></i>
-                    </Button>
+                    <ModalEditBranchLocation branchId={branchLocation.id} />
                     {branchLocation.active ? (
                         <Button
                             className="me-1 text-white"
@@ -99,13 +92,13 @@ export const TableBranchLocations = () => {
         );
     };
 
-    const [formValues, handleInputChange, reset, setFormValues] = useForm({
-        active: true,
-        branchId: 0,
-        branchLocationId: 0,
-        description: '',
-        name: '',
-    });
+    // const [formValues, handleInputChange, reset, setFormValues] = useForm({
+    //     active: true,
+    //     branchId: 0,
+    //     branchLocationId: 0,
+    //     description: '',
+    //     name: '',
+    // });
 
     const handleDeactivateBranchLocation = async (id) => {
         const result = await Swal.fire({
@@ -207,79 +200,8 @@ export const TableBranchLocations = () => {
         }
     };
 
-    const handleModalChange = () => {
-        if (showModal) {
-            reset();
-        }
-
-        setShowModal(!showModal);
-    };
-
-    const handleUpdate = async () => {
-        const { id } = formValues;
-
-        // TODO: create validation hook for this
-        const isFormValid = true;
-
-        if (isFormValid) {
-            try {
-                const { status, data, message } = await updateBranchLocation(
-                    id,
-                    formValues,
-                );
-
-                if (status === 'success') {
-                    Swal.fire({
-                        title: '¡Lugar de Sucursal Actualizado!',
-                        text: message,
-                        icon: 'success',
-                    });
-
-                    const updatedBranchLocations = branchLocations.map((bL) =>
-                        bL.id === id ? { ...bL, ...formValues } : bL,
-                    );
-
-                    dispatch(
-                        locationsSetBranchLocations(updatedBranchLocations),
-                    );
-
-                    handleModalChange();
-                } else {
-                    Swal.fire({
-                        title: '¡Error!',
-                        text: message,
-                        icon: 'error',
-                    });
-                }
-            } catch (error) {
-                Swal.fire({
-                    title: '¡Error!',
-                    text: 'No se pudo actualizar el Lugar de Sucursal - Error al conectar con la API',
-                    icon: 'error',
-                });
-            }
-        }
-    };
-
-    const handleOpenForm = (id) => {
-        const branchLocation = branchLocations.find((bL) => bL.id === id);
-
-        console.log(branchLocation);
-
-        setFormValues(branchLocation);
-
-        handleModalChange();
-    };
-
     return (
         <>
-            <ModalEditBranchLocation
-                formValues={formValues}
-                handleInputChange={handleInputChange}
-                handleModalChange={handleModalChange}
-                handleUpdate={handleUpdate}
-                showModal={showModal}
-            />
             <PaginatedTable
                 columns={tableColumnsBranchLocations}
                 footerText={`Total de Lugares: ${branchLocationsQty} | Páginas Totales: ${pagesQty} `}

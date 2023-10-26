@@ -30,7 +30,7 @@ export const getWarehouseById = async (warehouseId) => {
         const response = await fetch(`${BASE_URL}/warehouses/${warehouseId}`);
         const { status, data, message } = await handleFetchError(response);
 
-        console.log(data);
+        // console.log(data);
         if (status === 'success') {
             return { data, message };
         } else {
@@ -38,7 +38,7 @@ export const getWarehouseById = async (warehouseId) => {
         }
     } catch (error) {
         console.log('Error al obtener Bodega desde la API:', error);
-        return [];
+        return { data: null, message: '' };
     }
 };
 

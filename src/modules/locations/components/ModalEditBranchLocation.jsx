@@ -1,18 +1,85 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Button, Form, Modal } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { SelectBranches } from '../../../shared/ui/components/SelectBranches';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateBranchLocation } from '../APIs/branchLocationsAPI';
+import Swal from 'sweetalert2';
+import { locationsSetBranchLocations } from '../slice/locationsSlice';
+import { useFormik } from 'formik';
 
 export const ModalEditBranchLocation = React.memo(
-    function ModalEditBranchLocation({
-        formValues,
-        handleInputChange,
-        handleModalChange,
-        handleUpdate,
-        showModal,
-    }) {
-        const { name, branchId, description } = formValues;
+    function ModalEditBranchLocation({ branchLocationId }) {
+        const dispatch = useDispatch();
+
+        // Local States
+        const [showModal, setShowModal] = useState(false);
+
+        // Redux States
+        const { branches } = useSelector((state) => state.locations);
+
+        // Form Submit
+        const handleFormSubmit = async (values) => {
+            const { data, message } = await updateBranchLocation(
+                branchLocationId,
+                values,
+            );
+
+            if (data) {
+                const updatedBranchLocations = branches.map((branch) => {
+                    if (branch.id === branchLocationId) {
+                        return { ...branch, ...data };
+                    }
+                    return branch;
+                });
+
+                Swal.fire({
+                    icon: 'success',
+                    showConfirmButton: false,
+                    timer: 1500,
+                    title: message,
+                });
+
+                dispatch(locationsSetBranchLocations(updatedBranchLocations));
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error al editar la sucursal',
+                    text: message,
+                });
+            }
+        };
+
+        // Formik
+        const formik = useFormik({
+            initialValues: {
+                name: '',
+                branchId: '',
+                description: '',
+            },
+            // validationSchema: branchLocationSchema,
+            onSubmit: handleFormSubmit,
+        });
+
+        // Modal Control
+        const toggleModal = async (isOpen) => {
+            setShowModal(isOpen);
+            if (!isOpen) {
+                formik.resetForm();
+            } else {
+                const { data, message } = await getBranchL;
+                const branchLocation = branches.find(
+                    (branch) => branch.id === branchLocationId,
+                );
+
+                formik.setValues({
+                    name: branchLocation.name,
+                    branchId: branchLocation.branchId,
+                    description: branchLocation.description,
+                });
+            }
+        };
 
         return (
             <Modal show={showModal} onHide={handleModalChange}>
@@ -76,9 +143,5 @@ export const ModalEditBranchLocation = React.memo(
 );
 
 ModalEditBranchLocation.propTypes = {
-    formValues: PropTypes.object.isRequired,
-    handleInputChange: PropTypes.func.isRequired,
-    handleModalChange: PropTypes.func.isRequired,
-    handleUpdate: PropTypes.func.isRequired,
-    showModal: PropTypes.bool.isRequired,
+    branchLocationId: PropTypes.number.isRequired,
 };

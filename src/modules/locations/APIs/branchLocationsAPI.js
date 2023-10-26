@@ -29,16 +29,45 @@ export const getBranchLocations = async (
     }
 };
 
-export const getBranchLocationsQty = async () => {
+export const getBranchLocationById = async (branchLocationId) =>
+
+
+export const getBranchLocationsQty = async ({ branchId, showInactive }) => {
     try {
-        const response = await fetch(`${BASE_URL}/branchLocations/qty`);
-        const { status, data } = await handleFetchError(response);
-        // console.log(finalResp);
-        if (status === 'success') {
-            return data;
+        let url = `${BASE_URL}/branchLocations/qty`;
+
+        const params = new URLSearchParams();
+
+        if (showInactive !== undefined) {
+            params.append('showInactive', showInactive);
         }
 
-        return 0;
+        if (branchId !== undefined) {
+            params.append('branchId', branchId);
+        }
+
+        if (params.toString()) {
+            url += `?${params.toString()}`;
+        }
+
+        const response = await fetch(url);
+
+        const { status, message, data } = await handleFetchError(response);
+
+        if (status === 'success') {
+            return { data, message };
+        } else {
+            throw new Error(message);
+        }
+
+        // const { status, data } = await handleFetchError(response);
+        // const response = await fetch(`${BASE_URL}/branchLocations/qty`);
+        // // console.log(finalResp);
+        // if (status === 'success') {
+        //     return data;
+        // }
+
+        // return 0;
     } catch (error) {
         console.log(
             'Error al obtener cantidad de Lugares de Sucursal desde la API: ',
