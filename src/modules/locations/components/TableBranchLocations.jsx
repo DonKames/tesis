@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { PaginatedTable } from '../../../shared/ui/components/PaginatedTable';
 import { useDispatch, useSelector } from 'react-redux';
 import usePagination from '../../../hooks/usePagination';
@@ -6,7 +6,6 @@ import {
     changeBranchLocationState,
     getBranchLocations,
     getBranchLocationsQty,
-    updateBranchLocation,
 } from '../APIs/branchLocationsAPI';
 import {
     locationsSetBranchLocations,
@@ -15,8 +14,6 @@ import {
 import { Button } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import { ModalEditBranchLocation } from './ModalEditBranchLocation';
-import { useForm } from '../../../hooks/useForm';
-import { BranchLocationModal } from './Modals/BranchLocationModal';
 
 export const TableBranchLocations = () => {
     const maxPaginationButtons = 10;
@@ -24,7 +21,7 @@ export const TableBranchLocations = () => {
     const dispatch = useDispatch();
 
     // Redux states
-    const { branchLocationsQty, branchLocations, branches } = useSelector(
+    const { branchLocationsQty, branchLocations } = useSelector(
         (state) => state.locations,
     );
 
@@ -63,7 +60,9 @@ export const TableBranchLocations = () => {
                 <td className="align-middle">{branchLocation.branchName}</td>
                 <td className="align-middle">{branchLocation.description}</td>
                 <td className="align-middle text-end">
-                    <ModalEditBranchLocation branchId={branchLocation.id} />
+                    <ModalEditBranchLocation
+                        branchLocationId={branchLocation?.id}
+                    />
                     {branchLocation.active ? (
                         <Button
                             className="me-1 text-white"

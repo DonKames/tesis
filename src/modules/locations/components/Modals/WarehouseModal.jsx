@@ -22,11 +22,7 @@ export const WarehouseModal = ({
                     <Row>
                         <Col>
                             <Form.Group>
-                                {/* <Form.Label>Nombre</Form.Label> */}
-                                <FloatingLabel
-                                    // controlId="floatingInput"
-                                    label="Nombre"
-                                >
+                                <FloatingLabel label="Nombre">
                                     <Form.Control
                                         className={
                                             formik.touched.warehouseName &&
@@ -57,13 +53,13 @@ export const WarehouseModal = ({
                                 <SelectBranches
                                     errorMessage={formik.errors.branchId}
                                     branchId={formik.values.branchId}
-                                    name="branchId"
-                                    setFieldTouched={formik.setFieldTouched}
-                                    setFieldValue={formik.setFieldValue}
                                     isInvalid={
                                         formik.touched.branchId &&
                                         !!formik.errors.branchId
                                     }
+                                    name="branchId"
+                                    setFieldTouched={formik.setFieldTouched}
+                                    setFieldValue={formik.setFieldValue}
                                 />
                             </Form.Group>
                         </Col>

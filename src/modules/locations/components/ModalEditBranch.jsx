@@ -86,7 +86,7 @@ export const ModalEditBranch = React.memo(function ModalEditBranch({
                 const { data, message } = await getBranchById(branchId);
 
                 if (data) {
-                    console.log(data, message);
+                    // console.log(data, message);
                     const formikState = {
                         branchName: data.name,
                         country: data.countryId,

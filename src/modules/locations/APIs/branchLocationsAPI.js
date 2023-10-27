@@ -29,7 +29,24 @@ export const getBranchLocations = async (
     }
 };
 
-// export const getBranchLocationById = async (branchLocationId) =>
+export const getBranchLocationById = async (branchLocationId) => {
+    try {
+        const response = await fetch(
+            `${BASE_URL}/branchLocations/${branchLocationId}`,
+        );
+
+        const { status, data, message } = await handleFetchError(response);
+
+        if (status === 'success') {
+            return { data, message };
+        } else {
+            throw new Error(message);
+        }
+    } catch (error) {
+        console.log('Error al obtener Lugar de Sucursal desde la API: ', error);
+        return { data: null, message: '' };
+    }
+};
 
 export const getBranchLocationsQty = async ({ branchId, showInactive }) => {
     try {

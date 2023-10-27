@@ -24,23 +24,23 @@ export const BranchLocationModal = ({
                                 <FloatingLabel label="Nombre">
                                     <Form.Control
                                         className={
-                                            formik.touched.branchLocationName &&
-                                            formik.errors.branchLocationName
+                                            formik.touched.name &&
+                                            formik.errors.name
                                                 ? 'is-invalid'
                                                 : ''
                                         }
                                         type="text"
                                         placeholder="Lugar de Bodega"
                                         name="branchLocationName"
-                                        value={formik.values.branchLocationName}
+                                        value={formik.values.name}
                                         onChange={formik.handleChange}
                                         isInvalid={
-                                            formik.touched.branchLocationName &&
-                                            formik.errors.branchLocationName
+                                            formik.touched.name &&
+                                            formik.errors.name
                                         }
                                     />
                                     <Form.Control.Feedback type="invalid">
-                                        {formik.errors.branchLocationName}
+                                        {formik.errors.name}
                                     </Form.Control.Feedback>
                                 </FloatingLabel>
                             </Form.Group>
@@ -48,11 +48,11 @@ export const BranchLocationModal = ({
                                 <SelectBranches
                                     errorMessage={formik.errors.branchId}
                                     branchId={formik.values.branchId}
-                                    name="branchId"
                                     isInvalid={
                                         formik.touched.branchId &&
                                         formik.errors.branchId
                                     }
+                                    name="branchId"
                                     setFieldTouched={formik.setFieldTouched}
                                     setFieldValue={formik.setFieldValue}
                                 />

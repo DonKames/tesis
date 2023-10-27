@@ -57,7 +57,7 @@ export const ModalEditWarehouse = React.memo(function ModalEditWarehouse({
             warehouseName: '',
             branchId: 0,
             capacity: 0,
-            active: true,
+            // active: true,
         },
         validationSchema: warehouseSchema,
         onSubmit: handleFormSubmit,

@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
 
-import { Button, Form, Modal } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-import { SelectBranches } from '../../../shared/ui/components/SelectBranches';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateBranchLocation } from '../APIs/branchLocationsAPI';
+import {
+    getBranchLocationById,
+    updateBranchLocation,
+} from '../APIs/branchLocationsAPI';
 import Swal from 'sweetalert2';
 import { locationsSetBranchLocations } from '../slice/locationsSlice';
 import { useFormik } from 'formik';
+import { BranchLocationModal } from './Modals/BranchLocationModal';
+import { branchLocationSchema } from '../../../validations/branchLocationSchema';
 
 export const ModalEditBranchLocation = React.memo(
     function ModalEditBranchLocation({ branchLocationId }) {
@@ -21,6 +25,7 @@ export const ModalEditBranchLocation = React.memo(
 
         // Form Submit
         const handleFormSubmit = async (values) => {
+            console.log(values);
             const { data, message } = await updateBranchLocation(
                 branchLocationId,
                 values,
@@ -55,10 +60,10 @@ export const ModalEditBranchLocation = React.memo(
         const formik = useFormik({
             initialValues: {
                 name: '',
-                branchId: '',
+                branchId: 0,
                 description: '',
             },
-            // validationSchema: branchLocationSchema,
+            validationSchema: branchLocationSchema,
             onSubmit: handleFormSubmit,
         });
 
@@ -68,76 +73,36 @@ export const ModalEditBranchLocation = React.memo(
             if (!isOpen) {
                 formik.resetForm();
             } else {
-                const { data, message } = await getBranchL;
-                const branchLocation = branches.find(
-                    (branch) => branch.id === branchLocationId,
-                );
+                const { data } = await getBranchLocationById(branchLocationId);
 
-                formik.setValues({
-                    name: branchLocation.name,
-                    branchId: branchLocation.branchId,
-                    description: branchLocation.description,
-                });
+                console.log(data);
+
+                if (data) {
+                    formik.setValues({
+                        name: data.name,
+                        branchId: data.branchId,
+                        description: data.description,
+                    });
+                }
+                // const branchLocation = branches.find(
+                //     (branch) => branch.id === branchLocationId,
+                // );
             }
         };
 
         return (
-            <Modal show={showModal} onHide={handleModalChange}>
-                <Modal.Header className="h1">
-                    Editar Lugar de Sucursal
-                </Modal.Header>
-                <Modal.Body>
-                    <Form>
-                        <Form.Group>
-                            <Form.Label>Nombre</Form.Label>
-                            <Form.Control
-                                className="mb-3"
-                                name="name"
-                                placeholder="Nombre"
-                                type="text"
-                                value={name}
-                                onChange={handleInputChange}
-                            />
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Label>Sucursal</Form.Label>
-                            <SelectBranches
-                                onChange={handleInputChange}
-                                name="branchId"
-                                branchId={branchId}
-                            />
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Label>Descripción</Form.Label>
-                            <Form.Control
-                                as="textarea"
-                                className="mb-3"
-                                name="description"
-                                placeholder="Capacidad"
-                                type="text"
-                                value={description}
-                                onChange={handleInputChange}
-                            />
-                        </Form.Group>
-                    </Form>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button
-                        className="btn btn-secondary"
-                        onClick={() => handleModalChange()}
-                    >
-                        Cancelar
-                    </Button>
-                    <Button
-                        className="btn btn-primary"
-                        onClick={() => {
-                            handleUpdate();
-                        }}
-                    >
-                        Guardar
-                    </Button>
-                </Modal.Footer>
-            </Modal>
+            <>
+                <Button className="me-1" onClick={() => toggleModal(true)}>
+                    <i className="bi bi-pencil-square" />
+                </Button>
+                <BranchLocationModal
+                    formik={formik}
+                    showModal={showModal}
+                    toggleModal={toggleModal}
+                    title="Editar Lugar de Sucursal"
+                    primaryButtonText="Editar"
+                />
+            </>
         );
     },
 );
