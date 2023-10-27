@@ -160,14 +160,15 @@ export const updateBranchLocation = async (
             },
         );
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
+        const { status, data, message } = await handleFetchError(response);
 
-        const data = await response.json();
-        return data;
+        if (status === 'success') {
+            return { data, message };
+        } else {
+            throw new Error(message);
+        }
     } catch (error) {
         console.log('Error al actualizar Lugar de Sucursal en la API:', error);
-        return { data: null, error };
+        return { data: null, message: error };
     }
 };

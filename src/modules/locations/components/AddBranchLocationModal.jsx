@@ -13,26 +13,10 @@ import {
 import { locationsSetBranchLocations } from '../slice/locationsSlice';
 import { useFormik } from 'formik';
 import { BranchLocationModal } from './Modals/BranchLocationModal';
+import { branchLocationSchema } from '../../../validations/branchLocationSchema';
 
 export const AddBranchLocationModal = () => {
     const [showModal, setShowModal] = useState(false);
-
-    // const [formValues, handleInputChange, reset] = useForm({
-    //     branchId: '',
-    //     branchLocationName: '',
-    //     description: '',
-    // });
-
-    // const { branchLocationName, description } = formValues;
-
-    // const handleBranchChange = (selectedOption) => {
-    //     handleInputChange({
-    //         target: {
-    //             name: 'branchId',
-    //             value: selectedOption ? selectedOption.value : '',
-    //         },
-    //     });
-    // };
 
     const handleFormSubmit = async (values) => {
         const { data, message } = await createBranchLocation(values);
@@ -58,10 +42,11 @@ export const AddBranchLocationModal = () => {
     // Formik
     const formik = useFormik({
         initialValues: {
-            branchLocationName: '',
+            name: '',
+            branchId: 0,
             description: '',
         },
-        // validationSchema: branchLocationSchema,
+        validationSchema: branchLocationSchema,
         onSubmit: handleFormSubmit,
     });
 

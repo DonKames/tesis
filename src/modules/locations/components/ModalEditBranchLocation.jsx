@@ -21,7 +21,7 @@ export const ModalEditBranchLocation = React.memo(
         const [showModal, setShowModal] = useState(false);
 
         // Redux States
-        const { branches } = useSelector((state) => state.locations);
+        const { branchLocations } = useSelector((state) => state.locations);
 
         // Form Submit
         const handleFormSubmit = async (values) => {
@@ -32,12 +32,14 @@ export const ModalEditBranchLocation = React.memo(
             );
 
             if (data) {
-                const updatedBranchLocations = branches.map((branch) => {
-                    if (branch.id === branchLocationId) {
-                        return { ...branch, ...data };
-                    }
-                    return branch;
-                });
+                const updatedBranchLocations = branchLocations.map(
+                    (branchLocation) => {
+                        if (branchLocation.id === branchLocationId) {
+                            return { ...branchLocation, ...data };
+                        }
+                        return branchLocation;
+                    },
+                );
 
                 Swal.fire({
                     icon: 'success',
@@ -47,6 +49,8 @@ export const ModalEditBranchLocation = React.memo(
                 });
 
                 dispatch(locationsSetBranchLocations(updatedBranchLocations));
+
+                toggleModal(false);
             } else {
                 Swal.fire({
                     icon: 'error',
@@ -84,9 +88,6 @@ export const ModalEditBranchLocation = React.memo(
                         description: data.description,
                     });
                 }
-                // const branchLocation = branches.find(
-                //     (branch) => branch.id === branchLocationId,
-                // );
             }
         };
 

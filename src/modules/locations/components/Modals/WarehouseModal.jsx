@@ -51,8 +51,8 @@ export const WarehouseModal = ({
                         <Col>
                             <Form.Group className="mt-3">
                                 <SelectBranches
-                                    errorMessage={formik.errors.branchId}
                                     branchId={formik.values.branchId}
+                                    errorMessage={formik.errors.branchId}
                                     isInvalid={
                                         formik.touched.branchId &&
                                         !!formik.errors.branchId

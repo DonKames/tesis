@@ -31,7 +31,7 @@ export const BranchLocationModal = ({
                                         }
                                         type="text"
                                         placeholder="Lugar de Bodega"
-                                        name="branchLocationName"
+                                        name="name"
                                         value={formik.values.name}
                                         onChange={formik.handleChange}
                                         isInvalid={
@@ -46,11 +46,11 @@ export const BranchLocationModal = ({
                             </Form.Group>
                             <Form.Group className="mt-3">
                                 <SelectBranches
-                                    errorMessage={formik.errors.branchId}
                                     branchId={formik.values.branchId}
+                                    errorMessage={formik.errors.branchId}
                                     isInvalid={
                                         formik.touched.branchId &&
-                                        formik.errors.branchId
+                                        !!formik.errors.branchId
                                     }
                                     name="branchId"
                                     setFieldTouched={formik.setFieldTouched}
