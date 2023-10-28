@@ -27,11 +27,11 @@ export const BranchSection = () => {
     const updateSelectedBranch = async (branchId) => {
         const branchData = await getBranchById(branchId);
 
-        const warehousesQty = await getWarehousesQty({ branchId });
+        const { data, message } = await getWarehousesQty({ branchId });
 
         const branchDataWithWarehousesQty = {
             ...branchData,
-            warehousesQty,
+            ...data,
         };
 
         setSelectedBranch(branchDataWithWarehousesQty);
