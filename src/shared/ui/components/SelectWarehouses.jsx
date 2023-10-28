@@ -5,19 +5,25 @@ import Select from 'react-select';
 import { useDispatch, useSelector } from 'react-redux';
 import { getWarehousesNames } from '../../../modules/locations/APIs/warehouseAPI';
 import { uiSetWarehousesNames } from '../slice/uiSlice';
+import { errorStyle } from '../../../styles/selectStyles';
 
 export const SelectWarehouses = ({
+    errorMessage,
     handleInputChange,
+    isInvalid,
     name,
-    warehouseId,
-    selectedBranch,
+    setFieldTouched,
+    setFieldValue,
     originalBranchId,
+    warehouseId,
 }) => {
     const dispatch = useDispatch();
 
-    const { warehousesNames } = useSelector((state) => state.ui);
-
+    // Local State
     const [selectedValue, setSelectedValue] = useState(0);
+
+    // Redux State
+    const { warehousesNames } = useSelector((state) => state.ui);
 
     useEffect(() => {
         const fetchWarehousesNames = async () => {
@@ -46,31 +52,28 @@ export const SelectWarehouses = ({
         }
     }, [warehouseId, warehousesNames]);
 
-    const handleWarehouseChange = (selectedOption) => {
-        console.log(selectedOption);
-        setSelectedValue(selectedOption);
-        handleInputChange({
-            target: {
-                name,
-                value: selectedOption.value,
-            },
-        });
+    const handleChange = (selectedOption) => {
+        if (setFieldValue && setFieldTouched) {
+            setFieldValue(name, selectedOption.value, () => {
+                setFieldTouched(name, true);
+            });
+        } else if (handleInputChange) {
+            setSelectedValue(selectedOption);
+
+            console.log(selectedOption);
+            handleInputChange({
+                target: {
+                    name,
+                    value: selectedOption.value,
+                },
+            });
+        }
     };
 
-    /* eslint-disable indent */
-    const options =
-        selectedBranch === 0
-            ? warehousesNames.map((warehouse) => ({
-                  value: warehouse.id,
-                  label: warehouse.name,
-              }))
-            : warehousesNames
-                  .filter((warehouse) => warehouse.branchId === selectedBranch)
-                  .map((warehouse) => ({
-                      value: warehouse.id,
-                      label: warehouse.name,
-                  }));
-    /* eslint-enable indent */
+    const options = warehousesNames.map((warehouse) => ({
+        label: warehouse.name,
+        value: warehouse.id,
+    }));
 
     // ! Revisar esta parte, comentado funciona.
     // FIXME
@@ -91,18 +94,40 @@ export const SelectWarehouses = ({
     // }, [selectedBranch]);
 
     return (
-        <Select
-            menuPortalTarget={document.body}
-            styles={{
-                menuPortal: (base) => ({ ...base, zIndex: 99999 }),
-            }}
-            isSearchable
-            name={name}
-            onChange={handleWarehouseChange}
-            options={options}
-            placeholder="Seleccione su Bodega"
-            value={selectedValue}
-        />
+        <>
+            <div style={{ position: 'relative' }}>
+                <div
+                    style={{
+                        color: 'rgba(107, 137, 148, 0.65)',
+                        fontSize: '14px',
+                        left: '10px',
+                        pointerEvents: 'none',
+                        position: 'absolute',
+                        top: '10px',
+                        zIndex: 1,
+                    }}
+                >
+                    Seleccione Bodega
+                </div>
+                <Select
+                    menuPlacement="auto"
+                    menuPortalTarget={document.body}
+                    className={isInvalid ? 'is-invalid' : ''}
+                    // components={}
+                    isInvalid={isInvalid}
+                    isSearchable
+                    name={name}
+                    onChange={handleChange}
+                    options={options}
+                    placeholder=""
+                    styles={errorStyle}
+                    value={selectedValue}
+                />
+                {isInvalid && (
+                    <div className="invalid-feedback">{errorMessage}</div>
+                )}
+            </div>
+        </>
     );
 };
 

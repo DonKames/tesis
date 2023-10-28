@@ -18,18 +18,37 @@ export const getProducts = async (
         return [];
     }
 };
-export const getProductsQty = async (showInactive) => {
+export const getProductsQty = async ({ warehouseId, showInactive }) => {
     console.log(showInactive);
     try {
-        const response = await fetch(
-            `${BASE_URL}/products/qty?showInactive=${showInactive}`,
-        );
-        const data = await response.json();
-        console.log('getProducts Data: ', data);
-        return data;
+        let url = `${BASE_URL}/products/qty`;
+
+        const params = new URLSearchParams();
+
+        if (showInactive !== undefined) {
+            params.append('showInactive', showInactive);
+        }
+
+        if (warehouseId !== undefined) {
+            params.append('warehouseId', warehouseId);
+        }
+
+        if (params.toString()) {
+            url += `?${params.toString()}`;
+        }
+
+        const response = await fetch(url);
+
+        const { status, data, message } = await handleFetchError(response);
+
+        if (status === 'success') {
+            return { data, message };
+        } else {
+            throw new Error(message);
+        }
     } catch (error) {
         console.log('Error al obtener Productos desde la API:', error);
-        return [];
+        return { data: null, message: error };
     }
 };
 

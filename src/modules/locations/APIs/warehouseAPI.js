@@ -91,7 +91,7 @@ export const getWarehousesNames = async () => {
         return data;
     } catch (error) {
         console.log('Error al obtener Nombres de Bodegas desde la API:', error);
-        return [];
+        return { data: null, message: error };
     }
 };
 

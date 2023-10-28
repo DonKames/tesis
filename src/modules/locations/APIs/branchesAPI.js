@@ -78,7 +78,7 @@ export const getBranchesNames = async () => {
         //
         return data;
     } catch (error) {
-        return { data: null, error };
+        return { data: null, message: error };
     }
 };
 

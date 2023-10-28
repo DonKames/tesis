@@ -21,13 +21,14 @@ export const SelectBranches = ({
     const [selectedValue, setSelectedValue] = useState(null);
 
     // Redux State
-    const { branches } = useSelector((state) => state.locations);
+    const { branchesNames } = useSelector((state) => state.ui);
 
     useEffect(() => {
-        const fetchBranches = async () => {
+        const fetchBranchesNames = async () => {
             try {
-                if (!branches.length) {
+                if (!branchesNames.length) {
                     const fetchedBranches = await getBranchesNames();
+                    console.log(fetchedBranches);
                     dispatch(uiSetBranchesNames(fetchedBranches));
                 }
             } catch (error) {
@@ -35,11 +36,13 @@ export const SelectBranches = ({
             }
         };
 
-        fetchBranches();
+        fetchBranchesNames();
     }, []);
 
     useEffect(() => {
-        const defaultBranch = branches.find((branch) => branch.id === branchId);
+        const defaultBranch = branchesNames.find(
+            (branch) => branch.id === branchId,
+        );
 
         if (defaultBranch) {
             setSelectedValue({
@@ -47,10 +50,11 @@ export const SelectBranches = ({
                 label: defaultBranch.name,
             });
         }
-    }, [branchId, branches]);
+    }, [branchId, branchesNames]);
 
     const handleChange = (selectedOption) => {
         if (setFieldValue && setFieldTouched) {
+            console.log('entre al primero');
             setFieldValue(name, selectedOption.value, () => {
                 setFieldTouched(name, true);
             });
@@ -67,34 +71,32 @@ export const SelectBranches = ({
         }
     };
 
-    const options = branches.map((branch) => ({
+    const options = branchesNames.map((branch) => ({
         label: branch.name,
         value: branch.id,
     }));
-
-    console.log('branches' + isInvalid);
 
     return (
         <>
             <div style={{ position: 'relative' }}>
                 <div
                     style={{
+                        color: 'rgba(107, 137, 148, 0.65)',
+                        fontSize: '14px',
+                        left: '10px',
+                        pointerEvents: 'none',
                         position: 'absolute',
                         top: '10px',
-                        left: '10px',
                         zIndex: 1,
-                        pointerEvents: 'none',
-                        fontSize: '14px',
-                        color: 'rgba(107, 137, 148, 0.65)',
                     }}
                 >
-                    Seleccione una sucursal
+                    Seleccione Sucursal
                 </div>
                 <Select
                     menuPlacement="auto"
                     menuPortalTarget={document.body}
                     className={isInvalid ? 'is-invalid' : ''}
-                    components={{ Placeholder: CustomPlaceholder }}
+                    // components={{ Placeholder: CustomPlaceholder }}
                     isInvalid={isInvalid}
                     isSearchable
                     name={name}
@@ -112,19 +114,19 @@ export const SelectBranches = ({
     );
 };
 
-const CustomPlaceholder = ({ children }) => (
-    <div
-        style={{
-            position: 'absolute',
-            top: '10px',
-            transform: 'translateY(-50%)',
-            left: '10px',
-            color: '#ccc',
-        }}
-    >
-        {children}
-    </div>
-);
+// const CustomPlaceholder = ({ children }) => (
+//     <div
+//         style={{
+//             position: 'absolute',
+//             top: '10px',
+//             transform: 'translateY(-50%)',
+//             left: '10px',
+//             color: '#ccc',
+//         }}
+//     >
+//         {children}
+//     </div>
+// );
 
 // export const SelectBranches = ({ onChange, name, branchId }) => {
 //     const dispatch = useDispatch();
