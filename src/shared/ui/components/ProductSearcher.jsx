@@ -76,7 +76,11 @@ export const ProductSearcher = ({
 };
 
 ProductSearcher.propTypes = {
+    errorMessage: PropTypes.string,
     handleInputChange: PropTypes.func.isRequired,
+    isInvalid: PropTypes.bool,
     name: PropTypes.string.isRequired,
     productId: PropTypes.number,
+    setFieldTouched: PropTypes.func,
+    setFieldValue: PropTypes.func,
 };
