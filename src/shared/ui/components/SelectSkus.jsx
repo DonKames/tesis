@@ -112,7 +112,11 @@ export const SelectSkus = ({
 };
 
 SelectSkus.propTypes = {
+    errorMessage: PropTypes.string,
     handleInputChange: PropTypes.func.isRequired,
+    isInvalid: PropTypes.bool.isRequired,
     name: PropTypes.string.isRequired,
+    setFieldTouched: PropTypes.func,
+    setFieldValue: PropTypes.func,
     skuId: PropTypes.number,
 };
