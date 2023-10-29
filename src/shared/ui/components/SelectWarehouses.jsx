@@ -12,9 +12,9 @@ export const SelectWarehouses = ({
     handleInputChange,
     isInvalid,
     name,
+    originalBranchId,
     setFieldTouched,
     setFieldValue,
-    originalBranchId,
     warehouseId,
 }) => {
     const dispatch = useDispatch();
@@ -132,10 +132,13 @@ export const SelectWarehouses = ({
 };
 
 SelectWarehouses.propTypes = {
+    errorMessage: PropTypes.string,
     handleInputChange: PropTypes.func.isRequired,
+    isInvalid: PropTypes.bool,
     name: PropTypes.string.isRequired,
     originalBranchId: PropTypes.number,
-    selectedBranch: PropTypes.number,
+    setFieldTouched: PropTypes.func,
+    setFieldValue: PropTypes.func,
     warehouseId: PropTypes.number,
 };
 

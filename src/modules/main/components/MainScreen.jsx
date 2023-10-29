@@ -34,13 +34,13 @@ export const MainScreen = () => {
                 </Col>
             </Row>
             <Row className="my-3">
-                <Col>
+                <Col xs={12} md={6} lg={3}>
                     <SkuSection />
                 </Col>
-                <Col>
+                <Col xs={12} md={6} lg={3}>
                     <ProductSection />
                 </Col>
-                <Col xs="12" md="6" lg="3">
+                <Col xs={12} md={6} lg={3}>
                     <UserSection />
                 </Col>
             </Row>

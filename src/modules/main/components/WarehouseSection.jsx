@@ -36,12 +36,12 @@ export const WarehouseSection = () => {
         const { data: warehouseData } = await getWarehouseById(warehouseId);
         console.log(warehouseData);
 
-        // const { data: productsQty } = await getProductsQty({ warehouseId });
+        const { data: productsQty } = await getProductsQty({ warehouseId });
 
-        // console.log(productsQty);
+        console.log(productsQty);
         const warehouseDataWithProductsQty = {
             ...warehouseData,
-            // productsQty,
+            productsQty,
         };
 
         setSelectedWarehouse(warehouseDataWithProductsQty);
@@ -106,7 +106,11 @@ export const WarehouseSection = () => {
                 <Card.Text>
                     Cantidad de productos:{' '}
                     <strong>
-                        {selectedWarehouse?.productsQty || 'Sin Determinar'}
+                        {console.log(selectedWarehouse?.productsQty)}
+                        {typeof selectedWarehouse?.productsQty === 'number' &&
+                        !isNaN(selectedWarehouse?.productsQty)
+                            ? selectedWarehouse?.productsQty
+                            : 'Sin Determinar'}
                     </strong>
                 </Card.Text>
             </Card.Body>

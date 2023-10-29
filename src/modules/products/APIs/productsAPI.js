@@ -20,6 +20,7 @@ export const getProducts = async (
 };
 export const getProductsQty = async ({ warehouseId, showInactive }) => {
     console.log(showInactive);
+    console.log(warehouseId);
     try {
         let url = `${BASE_URL}/products/qty`;
 
@@ -37,7 +38,11 @@ export const getProductsQty = async ({ warehouseId, showInactive }) => {
             url += `?${params.toString()}`;
         }
 
+        console.log(url);
+
         const response = await fetch(url);
+
+        console.log(response);
 
         const { status, data, message } = await handleFetchError(response);
 

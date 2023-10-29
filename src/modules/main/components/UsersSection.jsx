@@ -15,7 +15,7 @@ export const UserSection = () => {
     const [selectedUser, setSelectedUser] = useState(null);
 
     const handleUserChange = async (e) => {
-        console.log(e);
+        // console.log(e);
         updateSelectedUser(e.target.value);
     };
 

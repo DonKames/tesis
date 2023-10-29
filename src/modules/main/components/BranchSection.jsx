@@ -44,11 +44,9 @@ export const BranchSection = () => {
             const fetchData = async () => {
                 if (!branchesNames.length) {
                     const branchesData = await getBranchesNames();
-                    console.log(branchesData);
+
                     dispatch(uiSetBranchesNames(branchesData));
                 }
-
-                console.log(mainBranch);
 
                 if (mainBranch) {
                     updateSelectedBranch(mainBranch.id);
@@ -56,9 +54,7 @@ export const BranchSection = () => {
             };
 
             fetchData();
-        } catch (error) {
-            console.log(error);
-        }
+        } catch (error) {}
     }, [mainBranch]);
 
     return (

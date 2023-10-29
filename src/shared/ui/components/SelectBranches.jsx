@@ -28,12 +28,10 @@ export const SelectBranches = ({
             try {
                 if (!branchesNames.length) {
                     const fetchedBranches = await getBranchesNames();
-                    console.log(fetchedBranches);
+
                     dispatch(uiSetBranchesNames(fetchedBranches));
                 }
-            } catch (error) {
-                console.log(error);
-            }
+            } catch (error) {}
         };
 
         fetchBranchesNames();
@@ -54,13 +52,10 @@ export const SelectBranches = ({
 
     const handleChange = (selectedOption) => {
         if (setFieldValue && setFieldTouched) {
-            console.log('entre al primero');
             setFieldValue(name, selectedOption.value, () => {
                 setFieldTouched(name, true);
             });
         } else if (handleInputChange) {
-            console.log('entre al segundo');
-
             setSelectedValue(selectedOption);
             handleInputChange({
                 target: {
@@ -143,7 +138,7 @@ export const SelectBranches = ({
 //                     dispatch(uiSetBranchesNames(fetchedBranchesNames));
 //                 }
 //             } catch (error) {
-//                 console.log(error);
+//
 //             }
 //         };
 //         fetchBranchesNames();
@@ -162,7 +157,7 @@ export const SelectBranches = ({
 //     }, [branchId, branchesNames]);
 
 //     const handleChange = (selectedOption) => {
-//         console.log(selectedOption);
+//
 //         setSelectedValue(selectedOption);
 //         onChange({
 //             target: {
