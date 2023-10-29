@@ -19,6 +19,16 @@ export const UserSection = () => {
         updateSelectedUser(e.target.value);
     };
 
+    const updateSelectedUser = async (userId) => {
+        const userData = await getUserById(userId);
+
+        console.log(userData);
+
+        setSelectedUser(userData);
+
+        // return userData;
+    };
+
     useEffect(() => {
         try {
             const fetchData = async () => {
@@ -38,16 +48,6 @@ export const UserSection = () => {
         }
     }, []);
 
-    const updateSelectedUser = async (userId) => {
-        const userData = await getUserById(userId);
-
-        console.log(userData);
-
-        setSelectedUser(userData);
-
-        return userData;
-    };
-
     return (
         <Card className="shadow h-100 animate__animated animate__fadeIn animate__fast">
             <Card.Header>
@@ -59,7 +59,7 @@ export const UserSection = () => {
                     <Col>
                         <SelectUsers
                             name="userId"
-                            onChange={handleUserChange}
+                            handleInputChange={handleUserChange}
                             userId={selectedUser?.id}
                         />
                     </Col>
