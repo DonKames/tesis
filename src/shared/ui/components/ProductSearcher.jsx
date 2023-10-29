@@ -3,8 +3,17 @@ import AsyncSelect from 'react-select/async';
 import { searchProducts } from '../../../modules/products/APIs/productsAPI';
 
 import PropTypes from 'prop-types';
+import { errorStyle } from '../../../styles/selectStyles';
 
-export const ProductSearcher = ({ handleInputChange, name, productId }) => {
+export const ProductSearcher = ({
+    errorMessage,
+    handleInputChange,
+    isInvalid,
+    name,
+    productId,
+    setFieldTouched,
+    setFieldValue,
+}) => {
     const [selectedValue, setSelectedValue] = useState(0);
 
     // Function to fetch products asynchronously.
@@ -34,20 +43,35 @@ export const ProductSearcher = ({ handleInputChange, name, productId }) => {
     };
 
     return (
-        <AsyncSelect
-            menuPortalTarget={document.body}
-            styles={{
-                menuPortal: (base) => ({ ...base, zIndex: 99999 }),
-            }}
-            name={name}
-            onChange={handleChange}
-            cacheOptions
-            loadOptions={loadOptions}
-            defaultOptions
-            placeholder="Escriba el nombre del Producto"
-            loadingMessage={() => 'Cargando...'}
-            value={selectedValue}
-        />
+        <div style={{ position: 'relative' }}>
+            <div
+                style={{
+                    color: 'rgba(107, 137, 148, 0.65)',
+                    fontSize: '14px',
+                    left: '10px',
+                    pointerEvents: 'none',
+                    position: 'absolute',
+                    top: '10px',
+                    zIndex: 1,
+                }}
+            >
+                Seleccione Producto
+            </div>
+            <AsyncSelect
+                menuPlacement="auto"
+                menuPortalTarget={document.body}
+                className={isInvalid}
+                name={name}
+                onChange={handleChange}
+                cacheOptions
+                loadOptions={loadOptions}
+                defaultOptions
+                loadingMessage={() => 'Cargando...'}
+                placeholder="Escriba el nombre del Producto"
+                styles={errorStyle}
+                value={selectedValue}
+            />
+        </div>
     );
 };
 
