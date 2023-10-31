@@ -42,6 +42,7 @@ export const SelectSkus = ({
 
     useEffect(() => {
         const defaultSku = skusNames.find((sku) => sku.id === skuId);
+        console.log(defaultSku);
         if (defaultSku) {
             setSelectedValue({
                 value: defaultSku.id,
@@ -107,14 +108,17 @@ export const SelectSkus = ({
                 styles={errorStyle}
                 value={selectedValue}
             />
+            {isInvalid && (
+                <div className="invalid-feedback">{errorMessage}</div>
+            )}
         </div>
     );
 };
 
 SelectSkus.propTypes = {
     errorMessage: PropTypes.string,
-    handleInputChange: PropTypes.func.isRequired,
-    isInvalid: PropTypes.bool.isRequired,
+    handleInputChange: PropTypes.func,
+    isInvalid: PropTypes.bool,
     name: PropTypes.string.isRequired,
     setFieldTouched: PropTypes.func,
     setFieldValue: PropTypes.func,

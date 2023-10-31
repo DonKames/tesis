@@ -11,11 +11,16 @@ export const getProducts = async (
         const response = await fetch(
             `${BASE_URL}/products?page=${page}&limit=${limit}&showInactive=${showInactive}`,
         );
-        const data = await handleFetchError(response);
-        return data;
+        const { data, status, message } = await handleFetchError(response);
+
+        if (status === 'success') {
+            return { data, message };
+        } else {
+            throw new Error(message);
+        }
     } catch (error) {
         console.log('Error al obtener Productos desde la API:', error);
-        return [];
+        return { data: null, message: error };
     }
 };
 export const getProductsQty = async ({ warehouseId, showInactive }) => {
@@ -115,15 +120,17 @@ export const createProduct = async (productData) => {
             body: JSON.stringify(productData), // convierte los datos del país a una cadena JSON
         });
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
+        const { data, status, message } = await handleFetchError(response);
 
-        const data = await response.json();
-        return data;
+        console.log('createProduct: ', status, data, message);
+        if (status === 'success') {
+            return { data, message };
+        } else {
+            throw new Error(message);
+        }
     } catch (error) {
         console.log('Error al crear Producto en la API:', error);
-        return null;
+        return { data: null, message: error };
     }
 };
 

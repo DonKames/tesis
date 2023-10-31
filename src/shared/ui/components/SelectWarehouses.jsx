@@ -8,6 +8,7 @@ import { uiSetWarehousesNames } from '../slice/uiSlice';
 import { errorStyle } from '../../../styles/selectStyles';
 
 export const SelectWarehouses = ({
+    branchId,
     errorMessage,
     handleInputChange,
     isInvalid,
@@ -21,6 +22,7 @@ export const SelectWarehouses = ({
 
     // Local State
     const [selectedValue, setSelectedValue] = useState(0);
+    const [options, setOptions] = useState([]);
 
     // Redux State
     const { warehousesNames } = useSelector((state) => state.ui);
@@ -70,10 +72,31 @@ export const SelectWarehouses = ({
         }
     };
 
-    const options = warehousesNames.map((warehouse) => ({
-        label: warehouse.name,
-        value: warehouse.id,
-    }));
+    useEffect(() => {
+        let updatedOptions;
+
+        if (branchId === 0 || branchId === null || branchId === undefined) {
+            console.log('if branchId: ', branchId);
+            console.log(warehousesNames);
+            updatedOptions = warehousesNames.map((warehouse) => ({
+                label: warehouse.name,
+                value: warehouse.id,
+            }));
+
+            console.log(options);
+        } else {
+            console.log('else branchId: ', branchId);
+
+            updatedOptions = warehousesNames
+                .filter((warehouse) => warehouse.branchId === branchId)
+                .map((warehouse) => ({
+                    label: warehouse.name,
+                    value: warehouse.id,
+                }));
+        }
+
+        setOptions(updatedOptions);
+    }, [branchId, warehousesNames]);
 
     // ! Revisar esta parte, comentado funciona.
     // FIXME
@@ -119,7 +142,7 @@ export const SelectWarehouses = ({
                     name={name}
                     onChange={handleChange}
                     options={options}
-                    placeholder=""
+                    placeholder="Seleccione su Bodega"
                     styles={errorStyle}
                     value={selectedValue}
                 />
@@ -132,8 +155,9 @@ export const SelectWarehouses = ({
 };
 
 SelectWarehouses.propTypes = {
+    branchId: PropTypes.number,
     errorMessage: PropTypes.string,
-    handleInputChange: PropTypes.func.isRequired,
+    handleInputChange: PropTypes.func,
     isInvalid: PropTypes.bool,
     name: PropTypes.string.isRequired,
     originalBranchId: PropTypes.number,

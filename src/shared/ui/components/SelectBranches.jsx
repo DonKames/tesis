@@ -97,7 +97,7 @@ export const SelectBranches = ({
                     name={name}
                     onChange={handleChange}
                     options={options}
-                    placeholder=""
+                    placeholder="Seleccione su Sucursal"
                     styles={errorStyle}
                     value={selectedValue}
                 />
