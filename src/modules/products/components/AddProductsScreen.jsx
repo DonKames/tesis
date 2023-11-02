@@ -25,13 +25,14 @@ export const AddProductsScreen = () => {
 
     return (
         <Container>
+            <Row className="text-center">
+                <Col className="h1">Agregar SKU / Productos</Col>
+            </Row>
             <Row>
                 <Col>
-                    <h1>Agregar Productos</h1>
                     <AddSkuForm />
                 </Col>
                 <Col>
-                    <h1>Agregar Productos</h1>
                     <AddProductForm />
                 </Col>
             </Row>

@@ -1,32 +1,42 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Card, Col, FloatingLabel, Form, Row } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
-import Select from 'react-select';
-import { useForm } from '../../../hooks/useForm';
-import { productsSetProducts, productsSetSkus } from '../slice/productsSlice';
-import { getSkus } from '../APIs/skusAPI';
-import Swal from 'sweetalert2';
-import { createProduct, getProducts } from '../APIs/productsAPI';
-import { getBranches } from '../../locations/APIs/branchesAPI';
-import { locationsSetBranches } from '../../locations/slice/locationsSlice';
+import React from 'react';
+import { Button, Card, FloatingLabel, Form } from 'react-bootstrap';
+import { createProduct, getProductByEPC } from '../APIs/productsAPI';
 import { useFormik } from 'formik';
 import { SelectSkus } from '../../../shared/ui/components/SelectSkus';
 import { productSchema } from '../../../validations/productSchema';
 import { SelectBranches } from '../../../shared/ui/components/SelectBranches';
 import { SelectWarehouses } from '../../../shared/ui/components/SelectWarehouses';
+import Swal from 'sweetalert2';
 
 export const AddProductForm = () => {
-    const dispatch = useDispatch();
-
-    // Local States
-    const [isValidSku, setIsValidSku] = useState(false);
-
-    const [selectedSku, setSelectedSku] = useState(null);
-
     const handleFormSubmit = async (values) => {
-        const response = await createProduct(values);
-        console.log(response);
-        console.log('submit: ', values);
+        console.log(values);
+        const { data: epcCheck } = await getProductByEPC(values.epc);
+
+        console.log(epcCheck);
+
+        if (epcCheck === null) {
+            const response = await createProduct(values);
+            if (response) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Producto creado con éxito',
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ocurrió un error al crear el producto',
+                    text: 'Por favor intenta de nuevo más tarde',
+                });
+            }
+        } else {
+            formik.setFieldError(
+                'epc',
+                'Ya existe un producto con este EPC. Por favor, usa un EPC diferente.',
+            );
+        }
     };
 
     const formik = useFormik({
@@ -39,39 +49,6 @@ export const AddProductForm = () => {
         validationSchema: productSchema,
         onSubmit: handleFormSubmit,
     });
-
-    // const handleAddProduct = async () => {
-    //     if (isValidSku) {
-    //         const response = await createProduct(formValues);
-
-    //         const { products } = await getProducts();
-    //         dispatch(productsSetProducts(products));
-
-    //         if (response) {
-    //             console.log('Producto creado');
-    //             console.log(response);
-
-    //             Swal.fire({
-    //                 icon: 'success',
-    //                 title: 'Producto creado con éxito',
-    //                 showConfirmButton: false,
-    //                 timer: 1500,
-    //             });
-    //         }
-    //     } else {
-    //         console.log('El producto no existe');
-    //         Swal.fire({
-    //             icon: 'error',
-    //             title: 'Error al crear el producto',
-    //             text: 'El sku no existe',
-    //         });
-    //     }
-    // };
-
-    // const branchOptions = branches?.map((branch) => ({
-    //     value: branch.branch_id,
-    //     label: branch.name,
-    // }));
 
     return (
         <Card className="mb-3">
@@ -142,7 +119,7 @@ export const AddProductForm = () => {
                         </FloatingLabel>
                     </Form.Group>
                 </Card.Body>
-                <Card.Footer>
+                <Card.Footer className="text-end">
                     <Button type="submit" variant="primary">
                         Guardar Producto
                     </Button>

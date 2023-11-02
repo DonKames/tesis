@@ -109,6 +109,28 @@ export const getProductsByWarehouse = async (warehouseId) => {
     }
 };
 
+export const getProductByEPC = async (epc) => {
+    try {
+        const url = `${BASE_URL}/products/epc/${encodeURIComponent(epc)}`;
+        const response = await fetch(url);
+
+        console.log(response);
+        // const data = await handleFetchError(response);
+
+        // console.log(data);
+        const { status, data, message } = await handleFetchError(response);
+
+        if (status === 'success') {
+            return { data, message };
+        } else {
+            throw new Error(message);
+        }
+    } catch (error) {
+        console.log('Error al obtener Producto por EPC desde la API:', error);
+        return { data: null, message: error.message || 'Error desconocido' };
+    }
+};
+
 export const createProduct = async (productData) => {
     try {
         console.log(productData);
