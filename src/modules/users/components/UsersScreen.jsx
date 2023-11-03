@@ -1,7 +1,7 @@
 import React from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
-import { AddUsersModal } from './AddUsersModal';
 import { UsersSection } from './UsersSection';
+import { AddUserModal } from './AddUserModal';
 
 export const UsersScreen = () => {
     return (
@@ -9,11 +9,8 @@ export const UsersScreen = () => {
             <Row>
                 <Col>
                     <Row>
-                        <Col>
-                            <h1>Usuarios</h1>
-                        </Col>
-                        <Col className="text-center">
-                            <AddUsersModal />
+                        <Col className="text-end">
+                            <AddUserModal />
                         </Col>
                     </Row>
                     <UsersSection />

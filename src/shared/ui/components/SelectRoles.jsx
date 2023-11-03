@@ -2,12 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Select from 'react-select';
-import { getRoles, getRolesSelect } from '../../../modules/users/apis/rolesAPI';
+import { getRolesSelect } from '../../../modules/users/apis/rolesAPI';
 import { uiSetRoles } from '../slice/uiSlice';
 
 import PropTypes from 'prop-types';
+import { errorStyle } from '../../../styles/selectStyles';
 
-export const SelectRoles = ({ onChange, name, roleId }) => {
+export const SelectRoles = ({
+    roleId,
+    errorMessage,
+    handleInputChange,
+    isInvalid,
+    name,
+    setFieldTouched,
+    setFieldValue,
+}) => {
     const dispatch = useDispatch();
 
     const { roles } = useSelector((state) => state.ui);
@@ -42,32 +51,67 @@ export const SelectRoles = ({ onChange, name, roleId }) => {
     }, [roleId, roles]);
 
     const handleChange = (selectedOption) => {
-        setSelectedValue(selectedOption);
-        onChange({
-            target: {
-                name,
-                value: selectedOption.value,
-            },
-        });
+        if (setFieldValue && setFieldTouched) {
+            setFieldValue(name, selectedOption.value, () => {
+                setFieldTouched(name, true);
+            });
+        } else if (handleInputChange) {
+            setSelectedValue(selectedOption);
+            handleInputChange({
+                target: {
+                    name,
+                    value: selectedOption.value,
+                },
+            });
+        }
     };
 
     return (
-        <Select
-            value={selectedValue}
-            isSearchable
-            name={name}
-            onChange={handleChange}
-            options={roles.map((role) => ({
-                value: role.id,
-                label: role.name,
-            }))}
-            placeholder="Seleccione un rol"
-        />
+        <>
+            <div style={{ position: 'relative' }}>
+                <div
+                    style={{
+                        color: 'rgba(107, 137, 148, 0.65)',
+                        fontSize: '14px',
+                        left: '10px',
+                        pointerEvents: 'none',
+                        position: 'absolute',
+                        top: '10px',
+                        zIndex: 1,
+                    }}
+                >
+                    Seleccione Rol
+                </div>
+                <Select
+                    menuPlacement="auto"
+                    menuPortalTarget={document.body}
+                    className={isInvalid ? 'is-invalid' : ''}
+                    isInvalid={isInvalid}
+                    value={selectedValue}
+                    isSearchable
+                    name={name}
+                    onChange={handleChange}
+                    options={roles.map((role) => ({
+                        value: role.id,
+                        label: role.name,
+                    }))}
+                    placeholder="Seleccione un rol"
+                    styles={errorStyle}
+                />
+                {isInvalid && (
+                    <div className="invalid-feedback">{errorMessage}</div>
+                )}
+            </div>
+        </>
     );
 };
 
 SelectRoles.propTypes = {
     roleId: PropTypes.number,
-    onChange: PropTypes.func.isRequired,
+    errorMessage: PropTypes.string,
+    handleInputChange: PropTypes.func,
+    isInvalid: PropTypes.bool,
     name: PropTypes.string.isRequired,
+    setFieldTouched: PropTypes.func,
+    setFieldValue: PropTypes.func,
 };

@@ -8,33 +8,54 @@ export const getUsers = async (page = 1, limit = 10, showInactive = false) => {
             `${BASE_URL}/users?page=${page}&limit=${limit}&showInactive=${showInactive}`,
         );
 
-        const { status, data } = await handleFetchError(response);
+        const { status, data, message } = await handleFetchError(response);
 
         if (status === 'success') {
-            return data;
+            return { data, message };
+        } else {
+            throw new Error(message || 'Fallo la carga de los Usuarios');
         }
-        return [];
     } catch (error) {
         console.log('Error al obtener USUARIOS desde la API:', error);
-        return [];
+        return { data: null, message: error };
     }
 };
 
-export const getUsersQty = async () => {
+export const getUsersQty = async ({ userId, showInactive }) => {
     try {
-        const response = await fetch(`${BASE_URL}/users/qty`);
-        const { data, status } = await handleFetchError(response);
+        let url = `${BASE_URL}/users/qty`;
+
+        const params = new URLSearchParams();
+
+        if (showInactive !== undefined) {
+            params.append('showInactive', showInactive);
+        }
+
+        if (userId !== undefined) {
+            params.append('userId', userId);
+        }
+
+        if (params.toString()) {
+            url += `?${params.toString()}`;
+        }
+
+        const response = await fetch(url);
+
+        const { data, status, message } = await handleFetchError(response);
 
         if (status === 'success') {
-            return data;
+            return { data, message };
+        } else {
+            throw new Error(
+                message || 'Fallo la carga de la cantidad de Usuarios',
+            );
         }
-        return 0;
     } catch (error) {
         console.log(
             'Error al obtener la CANTIDAD DE USUARIOS desde la API:',
             error,
         );
-        return [];
+        return { data: null, message, error };
     }
 };
 

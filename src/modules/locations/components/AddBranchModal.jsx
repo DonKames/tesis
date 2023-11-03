@@ -66,7 +66,7 @@ export const AddBranchModal = () => {
     return (
         <>
             <Button
-                variant="primary "
+                variant="primary"
                 onClick={() => toggleModal(true)}
                 className="shadow-sm mb-2"
             >
