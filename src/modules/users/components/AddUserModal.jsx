@@ -26,7 +26,9 @@ export const AddUserModal = () => {
                     title: '',
                 });
 
-                const { data, status, message } = await getUsersQty();
+                const { data, status, message } = await getUsersQty({
+                    showInactive: false,
+                });
 
                 console.log(data, status, message);
 
