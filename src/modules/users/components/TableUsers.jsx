@@ -1,29 +1,18 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { PaginatedTable } from '../../../shared/ui/components/PaginatedTable';
 import { useDispatch, useSelector } from 'react-redux';
 import usePagination from '../../../hooks/usePagination';
-import {
-    changeUserState,
-    getUsers,
-    getUsersQty,
-    updateUser,
-} from '../apis/usersAPI';
+import { changeUserState, getUsers, getUsersQty } from '../apis/usersAPI';
 import { usersSetUsers, usersSetUsersQty } from '../slice/usersSlice';
 import { Button } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import { ModalEditUser } from './ModalEditUser';
-import { useForm } from '../../../hooks/useForm';
 
 export const TableUsers = () => {
     const dispatch = useDispatch();
 
     // Redux State
     const { users, usersQty } = useSelector((state) => state.users);
-
-    const { roles } = useSelector((state) => state.ui);
-
-    // Local State
-    const [showModal, setShowModal] = useState(false);
 
     const maxPaginationButtons = 10;
 
@@ -61,12 +50,8 @@ export const TableUsers = () => {
                 <td className="align-middle">{user.email}</td>
                 <td className="align-middle">{user.roleName}</td>
                 <td className="align-middle text-end">
-                    <Button
-                        className="me-1"
-                        onClick={() => handleOpenForm(user.id)}
-                    >
-                        <i className="bi bi-pencil-square" />
-                    </Button>
+                    <ModalEditUser userId={user.id} />
+
                     {user.active ? (
                         <Button
                             className="me-1 text-white"
@@ -182,92 +167,8 @@ export const TableUsers = () => {
         }
     };
 
-    const [formValues, handleInputChange, reset, setFormValues] = useForm({
-        name: '',
-        lastName: '',
-        email: '',
-        roleId: 0,
-        active: true,
-    });
-
-    const handleModalChange = () => {
-        if (showModal) {
-            reset();
-        }
-
-        setShowModal(!showModal);
-    };
-
-    const handleUpdate = async () => {
-        const { id } = formValues;
-
-        // TODO:create validation hook for this
-        const isFormValid = true;
-
-        if (isFormValid) {
-            try {
-                const { data: completeData } = await updateUser(id, formValues);
-
-                const { status, message } = completeData;
-
-                if (status === 'success') {
-                    Swal.fire({
-                        title: '¡Usuario Actualizado!',
-                        text: message || 'No Message',
-                        icon: 'success',
-                    });
-
-                    /* eslint-disable indent */
-                    const updatedUsers = users.map((user) =>
-                        user.id === id
-                            ? {
-                                  ...user,
-                                  ...formValues,
-                                  roleName: roles.find(
-                                      (rol) => rol.id === formValues.roleId,
-                                  )?.name,
-                              }
-                            : user,
-                    );
-                    /* eslint-enable indent */
-
-                    dispatch(usersSetUsers(updatedUsers));
-
-                    handleModalChange();
-                } else {
-                    Swal.fire({
-                        title: 'Error',
-                        text: message || 'No Message',
-                        icon: 'error',
-                    });
-                }
-            } catch (error) {
-                Swal.fire({
-                    title: 'Error',
-                    text: 'No se pudo actualizar el usuario - Error al conectar con la API',
-                    icon: 'error',
-                });
-            }
-        }
-    };
-
-    const handleOpenForm = (id) => {
-        const user = users.find((user) => user.id === id);
-
-        setFormValues(user);
-
-        handleModalChange();
-    };
-
     return (
         <>
-            <ModalEditUser
-                formValues={formValues}
-                handleInputChange={handleInputChange}
-                handleModalChange={handleModalChange}
-                handleUpdate={handleUpdate}
-                showModal={showModal}
-            />
             <PaginatedTable
                 columns={tableColumns}
                 footerText={`Total de usuarios: ${usersQty} | Páginas Totales: ${pagesQty}`}

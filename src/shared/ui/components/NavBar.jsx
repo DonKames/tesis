@@ -9,7 +9,8 @@ import { faBell } from '@fortawesome/free-solid-svg-icons';
 export const NavBar = () => {
     const dispatch = useDispatch();
 
-    const { displayName } = useSelector((state) => state.auth);
+    const { displayName, role } = useSelector((state) => state.auth);
+    console.log(role);
 
     const formattedDisplayName = displayName
         ? displayName.charAt(0).toUpperCase() +
@@ -47,9 +48,11 @@ export const NavBar = () => {
                         <Nav.Link as={Link} to="./tasks">
                             Tareas
                         </Nav.Link>
-                        <Nav.Link as={Link} to="./users">
-                            Usuarios
-                        </Nav.Link>
+                        {(role === 1 || role === 2) && (
+                            <Nav.Link as={Link} to="./users">
+                                Usuarios
+                            </Nav.Link>
+                        )}
                     </Nav>
                     <NavDropdown
                         className="ms-auto text-white"

@@ -23,7 +23,7 @@ export const AddUserModal = () => {
                     icon: 'success',
                     showConfirmButton: false,
                     timer: 1500,
-                    title: '',
+                    title: 'Usuario creado correctamente',
                 });
 
                 const { data, status, message } = await getUsersQty({
@@ -32,13 +32,15 @@ export const AddUserModal = () => {
 
                 console.log(data, status, message);
 
-                if (status === 'success') {
+                if (data) {
                     dispatch(usersSetUsersQty(data));
                 }
+
+                toggleModal(false);
             } else {
                 Swal.fire({
                     icon: 'error',
-                    title: 'Error al agregar la sucursal',
+                    title: 'Error al crear el Usuario',
                     text: 'Error',
                 });
             }
