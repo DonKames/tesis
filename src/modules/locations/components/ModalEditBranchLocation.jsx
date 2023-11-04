@@ -12,6 +12,7 @@ import { locationsSetBranchLocations } from '../slice/locationsSlice';
 import { useFormik } from 'formik';
 import { BranchLocationModal } from './Modals/BranchLocationModal';
 import { branchLocationSchema } from '../../../validations/branchLocationSchema';
+import useHasAccess from '../../../shared/hooks/useHasAccess';
 
 export const ModalEditBranchLocation = React.memo(
     function ModalEditBranchLocation({ branchLocationId }) {
@@ -22,6 +23,8 @@ export const ModalEditBranchLocation = React.memo(
 
         // Redux States
         const { branchLocations } = useSelector((state) => state.locations);
+
+        const hasAccess = useHasAccess([1, 2]);
 
         // Form Submit
         const handleFormSubmit = async (values) => {
@@ -93,7 +96,11 @@ export const ModalEditBranchLocation = React.memo(
 
         return (
             <>
-                <Button className="me-1" onClick={() => toggleModal(true)}>
+                <Button
+                    className="me-1"
+                    disabled={!hasAccess}
+                    onClick={() => toggleModal(true)}
+                >
                     <i className="bi bi-pencil-square" />
                 </Button>
                 <BranchLocationModal

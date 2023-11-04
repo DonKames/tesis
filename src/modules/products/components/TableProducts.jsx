@@ -19,6 +19,7 @@ import { ModalProduct } from './ModalProduct';
 import { useForm } from '../../../hooks/useForm';
 import Swal from 'sweetalert2';
 import { useProductValidationForm } from '../hooks/useProductValidationForm';
+import useHasAccess from '../../../shared/hooks/useHasAccess';
 
 export const TableProducts = () => {
     // Dispatch
@@ -33,6 +34,8 @@ export const TableProducts = () => {
     const [productToEdit, setProductToEdit] = useState({});
     const [showWarning, setShowWarning] = useState(false);
     const [originalActiveState, setOriginalActiveState] = useState(true);
+
+    const hasAccess = useHasAccess([1, 2]);
 
     // Product pagination hook
     const {
@@ -97,6 +100,7 @@ export const TableProducts = () => {
                 <Button
                     className="me-1"
                     onClick={() => handleOpenForm(product.id)}
+                    disabled={!hasAccess}
                 >
                     <i className="bi bi-pencil-square" />
                 </Button>
@@ -105,6 +109,7 @@ export const TableProducts = () => {
                     <Button
                         className="me-1 text-white"
                         variant="danger"
+                        disabled={!hasAccess}
                         onClick={() => handleDeactivateProduct(product.id)}
                     >
                         <i className="bi bi-trash3" />
@@ -114,6 +119,7 @@ export const TableProducts = () => {
                         className="me-1"
                         onClick={() => handleActivateProduct(product.id)}
                         variant="success"
+                        disabled={!hasAccess}
                     >
                         <i className="bi bi-recycle" />
                     </Button>

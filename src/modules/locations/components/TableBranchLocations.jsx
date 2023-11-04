@@ -14,6 +14,7 @@ import {
 import { Button } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import { ModalEditBranchLocation } from './ModalEditBranchLocation';
+import useHasAccess from '../../../shared/hooks/useHasAccess';
 
 export const TableBranchLocations = () => {
     const maxPaginationButtons = 10;
@@ -24,6 +25,8 @@ export const TableBranchLocations = () => {
     const { branchLocationsQty, branchLocations } = useSelector(
         (state) => state.locations,
     );
+
+    const hasAccess = useHasAccess([1, 2]);
 
     const tableColumnsBranchLocations = [
         { name: 'Nombre', className: '' },
@@ -72,6 +75,7 @@ export const TableBranchLocations = () => {
                                     branchLocation.id,
                                 )
                             }
+                            disabled={!hasAccess}
                         >
                             <i className="bi bi-trash" />
                         </Button>
@@ -82,6 +86,7 @@ export const TableBranchLocations = () => {
                             onClick={() =>
                                 handleActivateBranchLocation(branchLocation.id)
                             }
+                            disabled={!hasAccess}
                         >
                             <i className="bi bi-arrow-repeat" />
                         </Button>

@@ -14,11 +14,13 @@ import usePagination from '../../../hooks/usePagination';
 import { Button } from 'react-bootstrap';
 import { ModalEditWarehouse } from './ModalEditWarehouse';
 import Swal from 'sweetalert2';
+import useHasAccess from '../../../shared/hooks/useHasAccess';
 
 export const TableWarehouses = () => {
     const maxPaginationButtons = 10;
 
     const dispatch = useDispatch();
+    const hasAccess = useHasAccess([1, 2]);
 
     // Redux states
     const { warehouses, warehousesQty } = useSelector(
@@ -72,6 +74,7 @@ export const TableWarehouses = () => {
                             onClick={() =>
                                 handleDeactivateWarehouse(warehouse.id)
                             }
+                            disabled={!hasAccess}
                         >
                             <i className="bi bi-trash"></i>
                         </Button>
@@ -82,6 +85,7 @@ export const TableWarehouses = () => {
                             onClick={() =>
                                 handleActivateWarehouse(warehouse.id)
                             }
+                            disabled={!hasAccess}
                         >
                             <i className="bi bi-arrow-repeat" />
                         </Button>

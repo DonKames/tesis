@@ -22,6 +22,8 @@ export const NavBar = () => {
         dispatch(startLogout());
     };
 
+    const hasAccess = role === 1 || role === 2;
+
     return (
         <Navbar
             bg="dark"
@@ -42,13 +44,15 @@ export const NavBar = () => {
                             Productos
                         </Nav.Link>
 
-                        <Nav.Link as={Link} to="./dashboard">
-                            Informes
-                        </Nav.Link>
+                        {hasAccess && (
+                            <Nav.Link as={Link} to="./dashboard">
+                                Informes
+                            </Nav.Link>
+                        )}
                         <Nav.Link as={Link} to="./tasks">
                             Tareas
                         </Nav.Link>
-                        {(role === 1 || role === 2) && (
+                        {hasAccess && (
                             <Nav.Link as={Link} to="./users">
                                 Usuarios
                             </Nav.Link>

@@ -8,6 +8,7 @@ import { locationsSetWarehouses } from '../slice/locationsSlice';
 import { useFormik } from 'formik';
 import { warehouseSchema } from '../../../validations/warehouseSchema';
 import { WarehouseModal } from './Modals/WarehouseModal';
+import useHasAccess from '../../../shared/hooks/useHasAccess';
 
 export const ModalEditWarehouse = React.memo(function ModalEditWarehouse({
     warehouseId,
@@ -19,6 +20,8 @@ export const ModalEditWarehouse = React.memo(function ModalEditWarehouse({
 
     // Redux States
     const { warehouses } = useSelector((state) => state.locations);
+
+    const hasAccess = useHasAccess([1, 2]);
 
     const handleFormSubmit = async (values) => {
         console.log('valores', values);
@@ -92,7 +95,11 @@ export const ModalEditWarehouse = React.memo(function ModalEditWarehouse({
 
     return (
         <>
-            <Button className="me-1" onClick={() => toggleModal(true)}>
+            <Button
+                className="me-1"
+                disabled={!hasAccess}
+                onClick={() => toggleModal(true)}
+            >
                 <i className="bi bi-pencil-square" />
             </Button>
             <WarehouseModal

@@ -16,6 +16,7 @@ import { BranchModal } from './Modals/BranchModal';
 import { locationsSetBranches } from '../slice/locationsSlice';
 import { branchSchema } from '../../../validations/branchSchema';
 import { getBranchById, updateBranch } from '../APIs/branchesAPI';
+import useHasAccess from '../../../shared/hooks/useHasAccess';
 
 /**
  * Modal for editing a branch.
@@ -33,6 +34,8 @@ export const ModalEditBranch = React.memo(function ModalEditBranch({
 
     // Redux States
     const { branches } = useSelector((state) => state.locations);
+
+    const hasAccess = useHasAccess([1, 2]);
 
     // Form Submit
     const handleFormSubmit = async (values) => {
@@ -83,7 +86,7 @@ export const ModalEditBranch = React.memo(function ModalEditBranch({
             formik.resetForm();
         } else {
             if (branchId) {
-                const { data, message } = await getBranchById(branchId);
+                const { data } = await getBranchById(branchId);
 
                 if (data) {
                     // console.log(data, message);
@@ -103,7 +106,11 @@ export const ModalEditBranch = React.memo(function ModalEditBranch({
 
     return (
         <>
-            <Button className="me-1" onClick={() => toggleModal(true)}>
+            <Button
+                className="me-1"
+                disabled={!hasAccess}
+                onClick={() => toggleModal(true)}
+            >
                 <i className="bi bi-pencil-square" />
             </Button>
             <BranchModal

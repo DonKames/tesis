@@ -16,6 +16,7 @@ import { productsSetSkus, productsSetSkusQty } from '../slice/productsSlice';
 import { useForm } from '../../../hooks/useForm';
 import { ModalSku } from './ModalSku';
 import { useSkuValidation } from '../hooks/useSkuValidation';
+import useHasAccess from '../../../shared/hooks/useHasAccess';
 
 export const TableSkus = () => {
     // Dispatch
@@ -29,6 +30,8 @@ export const TableSkus = () => {
     const [skuToEdit, setSkuToEdit] = useState({});
     const [showWarning, setShowWarning] = useState(false);
     const [originalActiveState, setOriginalActiveState] = useState(true);
+
+    const hasAccess = useHasAccess([1, 2]);
 
     // Sku pagination hook
     const {
@@ -90,6 +93,7 @@ export const TableSkus = () => {
                 <Button
                     className="me-1 shadow"
                     onClick={() => handleOpenForm(sku.id)}
+                    disabled={!hasAccess}
                 >
                     <i className="bi bi-pencil-square"></i>
                 </Button>
@@ -99,6 +103,7 @@ export const TableSkus = () => {
                         className="me-1 text-white shadow"
                         variant="danger"
                         onClick={() => handleDeactivateSku(sku.id)}
+                        disabled={!hasAccess}
                     >
                         <i className="bi bi-trash3" />
                     </Button>
@@ -109,6 +114,7 @@ export const TableSkus = () => {
                         variant="success"
                     >
                         <i className="bi bi-recycle" />
+                        disabled={!hasAccess}
                     </Button>
                 )}
             </td>

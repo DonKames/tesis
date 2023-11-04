@@ -16,14 +16,17 @@ import {
     locationsSetBranchesQty,
 } from '../slice/locationsSlice';
 import { ModalEditBranch } from './ModalEditBranch';
+import useHasAccess from '../../../shared/hooks/useHasAccess';
 
 export const TableBranches = () => {
-    const maxPaginationButtons = 10;
-
     const dispatch = useDispatch();
 
     // Redux states
     const { branches, branchesQty } = useSelector((state) => state.locations);
+
+    const hasAccess = useHasAccess([1, 2]);
+
+    const maxPaginationButtons = 10;
 
     const tableColumnsBranches = [
         { name: 'Nombre', className: '' },
@@ -68,6 +71,7 @@ export const TableBranches = () => {
                             className="me-1 text-white"
                             variant="danger"
                             onClick={() => handleDeactivateBranch(branch.id)}
+                            disabled={!hasAccess}
                         >
                             <i className="bi bi-trash3" />
                         </Button>
