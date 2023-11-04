@@ -19,13 +19,13 @@ export const getProducts = async (
             throw new Error(message);
         }
     } catch (error) {
-        console.log('Error al obtener Productos desde la API:', error);
+        // console.log('Error al obtener Productos desde la API:', error);
         return { data: null, message: error };
     }
 };
 export const getProductsQty = async ({ warehouseId, showInactive }) => {
-    console.log(showInactive);
-    console.log(warehouseId);
+    // console.log(showInactive);
+    // console.log(warehouseId);
     try {
         let url = `${BASE_URL}/products/qty`;
 
@@ -43,11 +43,11 @@ export const getProductsQty = async ({ warehouseId, showInactive }) => {
             url += `?${params.toString()}`;
         }
 
-        console.log(url);
+        // console.log(url);
 
         const response = await fetch(url);
 
-        console.log(response);
+        // console.log(response);
 
         const { status, data, message } = await handleFetchError(response);
 
@@ -114,7 +114,7 @@ export const getProductByEPC = async (epc) => {
         const url = `${BASE_URL}/products/epc/${encodeURIComponent(epc)}`;
         const response = await fetch(url);
 
-        console.log(response);
+        // console.log(response);
         // const data = await handleFetchError(response);
 
         // console.log(data);
@@ -144,7 +144,7 @@ export const createProduct = async (productData) => {
 
         const { data, status, message } = await handleFetchError(response);
 
-        console.log('createProduct: ', status, data, message);
+        // console.log('createProduct: ', status, data, message);
         if (status === 'success') {
             return { data, message };
         } else {

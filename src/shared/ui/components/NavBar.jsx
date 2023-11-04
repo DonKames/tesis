@@ -10,7 +10,7 @@ export const NavBar = () => {
     const dispatch = useDispatch();
 
     const { displayName, role } = useSelector((state) => state.auth);
-    console.log(role);
+    // console.log(role);
 
     const formattedDisplayName = displayName
         ? displayName.charAt(0).toUpperCase() +

@@ -24,7 +24,7 @@ const usePagination = (
                 // console.log(newItemsQtyInfo);
                 const { data } = newItemsQtyInfo;
 
-                console.log(data);
+                // console.log(data);
 
                 // console.log(data, message);
 

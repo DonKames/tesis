@@ -83,7 +83,7 @@ export const AppRouter = () => {
                             settingsData.mainWarehouse,
                         );
 
-                        console.log(data);
+                        // console.log(data);
 
                         dispatch(
                             settingsSetMainWarehouse({

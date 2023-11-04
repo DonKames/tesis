@@ -8,6 +8,7 @@ import { PaginatedTable } from '../../../shared/ui/components/PaginatedTable';
 import usePagination from '../../../hooks/usePagination';
 import {
     changeActiveStateSku,
+    getSkuBySku,
     getSkus,
     getSkusQty,
     updateSku,
@@ -16,7 +17,7 @@ import { productsSetSkus, productsSetSkusQty } from '../slice/productsSlice';
 import { ModalSku } from './ModalSku';
 import useHasAccess from '../../../shared/hooks/useHasAccess';
 import { useFormik } from 'formik';
-import { productSchema } from '../../../validations/productSchema';
+import { skuSchema } from '../../../validations/skuSchema';
 
 export const TableSkus = () => {
     // Dispatch
@@ -27,7 +28,7 @@ export const TableSkus = () => {
 
     // Local States
     const [showModal, setShowModal] = useState(false);
-    const [skuToEdit, setSkuToEdit] = useState({});
+    const [skuToEdit, setSkuToEdit] = useState('');
     const [showWarning, setShowWarning] = useState(false);
 
     const hasAccess = useHasAccess([1, 2]);
@@ -61,45 +62,75 @@ export const TableSkus = () => {
         { name: '', className: '' },
     ];
 
-    // Sku form
-    // const [formValues, handleInputChange, reset, setFormValues] = useForm({
-    //     active: true,
-    //     description: '',
-    //     minimumStock: '',
-    //     name: '',
-    //     price: '',
-    //     sku: '',
-    // });
-
     const handleFormSubmit = async (values) => {
         console.log(values);
-        const { id: skuIdToEdit } = skuToEdit;
 
-        console.log(skuIdToEdit);
+        console.log(skuToEdit);
 
-        try {
-            await updateSku(skuIdToEdit, values);
+        if (skuToEdit.sku !== values.sku) {
+            const checkSku = await getSkuBySku(values.sku);
 
-            // Actualizar el estado de Redux
-            const updatedSkus = skus.map((sku) => {
-                if (sku.id === skuIdToEdit) {
-                    return { ...sku, ...formik.values };
+            console.log(checkSku);
+
+            if (checkSku) {
+                console.log('entra if');
+
+                formik.setFieldError(
+                    'sku',
+                    'Ya existe este SKU. Por favor, use un SKU diferente.',
+                );
+            } else {
+                console.log('entra else');
+                try {
+                    await updateSku(skuToEdit.id, values);
+                    // Actualizar el estado de Redux
+                    const updatedSkus = skus.map((sku) => {
+                        if (sku.id === skuToEdit.id) {
+                            return { ...sku, ...formik.values };
+                        }
+                        return sku;
+                    });
+                    dispatch(productsSetSkus(updatedSkus));
+                    Swal.fire(
+                        'Actualizado',
+                        'El SKU ha sido actualizado.',
+                        'success',
+                    );
+                    handleModalChange();
+                } catch (error) {
+                    console.log(error);
+                    Swal.fire(
+                        'Error',
+                        'Ha habido un problema al actualizar el SKU.',
+                        'error',
+                    );
                 }
-                return sku;
-            });
-
-            dispatch(productsSetSkus(updatedSkus));
-
-            Swal.fire('Actualizado', 'El SKU ha sido actualizado.', 'success');
-
-            handleModalChange();
-        } catch (error) {
-            console.log(error);
-            Swal.fire(
-                'Error',
-                'Ha habido un problema al actualizar el SKU.',
-                'error',
-            );
+            }
+        } else {
+            try {
+                await updateSku(skuToEdit.id, values);
+                // Actualizar el estado de Redux
+                const updatedSkus = skus.map((sku) => {
+                    if (sku.id === skuToEdit.id) {
+                        return { ...sku, ...formik.values };
+                    }
+                    return sku;
+                });
+                dispatch(productsSetSkus(updatedSkus));
+                Swal.fire(
+                    'Actualizado',
+                    'El SKU ha sido actualizado.',
+                    'success',
+                );
+                handleModalChange();
+            } catch (error) {
+                console.log(error);
+                Swal.fire(
+                    'Error',
+                    'Ha habido un problema al actualizar el SKU.',
+                    'error',
+                );
+            }
         }
     };
 
@@ -107,12 +138,11 @@ export const TableSkus = () => {
         initialValues: {
             active: true,
             description: '',
-            minimumStock: '',
+            minimumStock: 0,
             name: '',
-            price: '',
             sku: '',
         },
-        validationSchema: productSchema,
+        validationSchema: skuSchema,
         onSubmit: handleFormSubmit,
     });
 
@@ -153,9 +183,9 @@ export const TableSkus = () => {
                         className="me-1 shadow"
                         onClick={() => handleActivateSku(sku.id)}
                         variant="success"
+                        disabled={!hasAccess}
                     >
                         <i className="bi bi-recycle" />
-                        disabled={!hasAccess}
                     </Button>
                 )}
             </td>
@@ -165,22 +195,21 @@ export const TableSkus = () => {
     // Funciones para manejar las acciones de editar y eliminar
     const handleOpenForm = async (skuId) => {
         // Lógica para editar el SKU con el ID dado
-        const skuToEdit = skus.find((sku) => sku.id === skuId);
+        const elementToEdit = skus.find((sku) => sku.id === skuId);
 
-        console.log(skuToEdit);
-
-        if (skuToEdit) {
-            setSkuToEdit(skuToEdit);
+        if (elementToEdit) {
+            setSkuToEdit(elementToEdit);
             formik.setValues({
-                active: skuToEdit.active,
-                description: skuToEdit.description,
-                minimumStock: skuToEdit.minimumStock || 0,
-                name: skuToEdit.name,
-                price: skuToEdit.price,
-                sku: skuToEdit.sku,
+                active: elementToEdit.active,
+                description: elementToEdit.description,
+                minimumStock: elementToEdit.minimumStock || 0,
+                name: elementToEdit.name,
+                price: elementToEdit.price,
+                sku: elementToEdit.sku,
             });
         }
 
+        console.log(skuToEdit);
         handleModalChange();
         // setShowWarning(!skuToEdit.active);
     };
@@ -283,7 +312,6 @@ export const TableSkus = () => {
             <ModalSku
                 formik={formik}
                 handleModalChange={handleModalChange}
-                // handleUpdateSku={handleFormSubmit}
                 showModal={showModal}
                 showWarning={showWarning}
             />

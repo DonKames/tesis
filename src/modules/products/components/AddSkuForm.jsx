@@ -1,10 +1,8 @@
 import React from 'react';
 import { Button, Card, FloatingLabel, Form } from 'react-bootstrap';
-import { useForm } from '../../../hooks/useForm';
 import Swal from 'sweetalert2';
-import { createSku, getSkusNames } from '../APIs/skusAPI';
+import { createSku, getSkuBySku, getSkusNames } from '../APIs/skusAPI';
 import { useDispatch } from 'react-redux';
-import { productsSetSkus } from '../slice/productsSlice';
 import { useFormik } from 'formik';
 import { skuSchema } from '../../../validations/skuSchema';
 import { uiSetSkusNames } from '../../../shared/ui/slice/uiSlice';
@@ -18,29 +16,40 @@ export const AddSkuForm = () => {
         console.log('click skuForm: ', values);
         // const { name, description, minimumAmount, sku, lote, order } = values;
 
-        try {
-            const response = await createSku(values);
-            if (response) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'SKU creado con éxito',
-                    showConfirmButton: false,
-                    timer: 1500,
-                });
+        const checkSku = await getSkuBySku(values.sku);
 
-                const updatedSkus = await getSkusNames();
-                dispatch(uiSetSkusNames(updatedSkus));
-            } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Ocurrió un error al crear el SKU',
-                    text: 'Por favor intenta de nuevo más tarde',
-                });
+        console.log(checkSku);
 
-                throw new Error('Error al guardar el producto');
+        if (checkSku) {
+            formik.setFieldError(
+                'sku',
+                'Ya existe este SKU. Por favor, usa un SKU diferente.',
+            );
+        } else {
+            try {
+                const response = await createSku(values);
+                if (response) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'SKU creado con éxito',
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+
+                    const updatedSkus = await getSkusNames();
+                    dispatch(uiSetSkusNames(updatedSkus));
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Ocurrió un error al crear el SKU',
+                        text: 'Por favor intenta de nuevo más tarde',
+                    });
+
+                    throw new Error('Error al guardar el producto');
+                }
+            } catch (error) {
+                console.log('Error al crear el SKU');
             }
-        } catch (error) {
-            console.log('Error al crear el SKU');
         }
     };
 
@@ -48,7 +57,7 @@ export const AddSkuForm = () => {
         initialValues: {
             name: '',
             description: '',
-            minimumAmount: 0,
+            minimumStock: 0,
             sku: '',
             lote: '',
             order: '',
@@ -57,12 +66,12 @@ export const AddSkuForm = () => {
         onSubmit: handleFormSubmit,
     });
 
-    const { name, description, minimumAmount, sku } = formik.values;
+    const { name, description, minimumStock, sku } = formik.values;
 
     return (
         <Card className="mb-3">
             <Card.Header>
-                <Card.Title>Agregar SKU</Card.Title>
+                <Card.Title className="fs-3 mb-0">Agregar SKU</Card.Title>
             </Card.Header>
             <Form onSubmit={formik.handleSubmit}>
                 <Card.Body>
@@ -138,28 +147,28 @@ export const AddSkuForm = () => {
                         <FloatingLabel label="Cantidad Minima">
                             <Form.Control
                                 className={
-                                    formik.touched.minimumAmount &&
-                                    formik.errors.minimumAmount
+                                    formik.touched.minimumStock &&
+                                    formik.errors.minimumStock
                                         ? 'is-invalid'
                                         : ''
                                 }
                                 isInvalid={
-                                    formik.touched.minimumAmount &&
-                                    formik.errors.minimumAmount
+                                    formik.touched.minimumStock &&
+                                    formik.errors.minimumStock
                                 }
                                 min={0}
-                                name="minimumAmount"
+                                name="minimumStock"
                                 onChange={formik.handleChange}
                                 placeholder="Ingrese el precio del producto"
                                 step={1}
                                 type="number"
-                                value={minimumAmount}
+                                value={minimumStock}
                             />
                             <Form.Control.Feedback
                                 type="invalid"
                                 className="ms-2"
                             >
-                                {formik.errors.minimumAmount}
+                                {formik.errors.minimumStock}
                             </Form.Control.Feedback>
                         </FloatingLabel>
                     </Form.Group>

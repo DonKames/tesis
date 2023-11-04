@@ -2,13 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, FloatingLabel, Form, Modal } from 'react-bootstrap';
 
-export const ModalSku = ({
-    showModal,
-    handleModalChange,
-    formik,
-    // handleUpdateSku,
-    showWarning,
-}) => {
+export const ModalSku = ({ showModal, handleModalChange, formik }) => {
     const { description, minimumStock, name, sku } = formik.values;
 
     return (
@@ -152,5 +146,4 @@ ModalSku.propTypes = {
     formik: PropTypes.object.isRequired,
     showModal: PropTypes.bool.isRequired,
     handleModalChange: PropTypes.func.isRequired,
-    showWarning: PropTypes.bool.isRequired,
 };

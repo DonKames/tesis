@@ -8,7 +8,7 @@ import { UnauthorizedAccess } from '../../../shared/ui/components/UnauthorizedAc
 export const ProductsRouter = () => {
     const hasAccess = useHasAccess([1, 2]);
 
-    console.log(hasAccess);
+    // console.log(hasAccess);
     return (
         <Routes>
             <Route path="/" element={<ProductsScreen />} />

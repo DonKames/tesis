@@ -34,7 +34,7 @@ export const AddProductForm = () => {
         } else {
             formik.setFieldError(
                 'epc',
-                'Ya existe un producto con este EPC. Por favor, usa un EPC diferente.',
+                'Ya existe un producto con este EPC. Por favor, use un EPC diferente.',
             );
         }
     };
@@ -53,7 +53,7 @@ export const AddProductForm = () => {
     return (
         <Card className="mb-3">
             <Card.Header>
-                <Card.Title>Agregar Producto</Card.Title>
+                <Card.Title className="fs-3 mb-0">Agregar Producto</Card.Title>
             </Card.Header>
             <Form onSubmit={formik.handleSubmit}>
                 <Card.Body>

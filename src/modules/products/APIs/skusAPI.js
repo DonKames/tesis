@@ -8,7 +8,7 @@ export const getSkus = async (page = 1, limit = 10, showInactive = false) => {
             `${BASE_URL}/skus?page=${page}&limit=${limit}&showInactive=${showInactive}`,
         );
 
-        console.log(response);
+        // console.log(response);
         const { status, data, message } = await handleFetchError(response);
 
         if (status === 'success') {
