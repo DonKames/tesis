@@ -6,6 +6,7 @@ import { PaginatedTable } from '../../../shared/ui/components/PaginatedTable';
 import usePagination from '../../../hooks/usePagination';
 import {
     changeActiveStateProduct,
+    getProductByEPC,
     getProducts,
     getProductsQty,
     updateProduct,
@@ -16,9 +17,10 @@ import {
 } from '../slice/productsSlice';
 import { Button } from 'react-bootstrap';
 import { ModalProduct } from './ModalProduct';
-import { useForm } from '../../../hooks/useForm';
 import Swal from 'sweetalert2';
-import { useProductValidationForm } from '../hooks/useProductValidationForm';
+import useHasAccess from '../../../shared/hooks/useHasAccess';
+import { useFormik } from 'formik';
+import { productSchema } from '../../../validations/productSchema';
 
 export const TableProducts = () => {
     // Dispatch
@@ -26,13 +28,14 @@ export const TableProducts = () => {
 
     // Redux States
     const { products, productsQty } = useSelector((state) => state.products);
-    const { branchesNames, warehousesNames } = useSelector((state) => state.ui);
+    const { warehousesNames, branchesNames } = useSelector((state) => state.ui);
 
     // Local States
     const [showModal, setShowModal] = useState(false);
     const [productToEdit, setProductToEdit] = useState({});
     const [showWarning, setShowWarning] = useState(false);
-    const [originalActiveState, setOriginalActiveState] = useState(true);
+
+    const hasAccess = useHasAccess([1, 2]);
 
     // Product pagination hook
     const {
@@ -77,15 +80,121 @@ export const TableProducts = () => {
         },
     ];
 
-    // MODAL
-    // Product form
-    const [formValues, handleInputChange, reset, setFormValues] = useForm({
-        active: true,
-        branchId: 0,
-        epc: '',
-        skuId: 0,
-        warehouseId: 0,
+    const handleFormSubmit = async (values) => {
+        const { epc } = values;
+        if (productToEdit.epc !== epc) {
+            const { data } = await getProductByEPC(epc);
+
+            console.log(data);
+
+            if (data) {
+                console.log('entra if');
+
+                formik.setFieldError(
+                    'epc',
+                    'Ya existe este EPC. Por favor, use un EPC diferente.',
+                );
+            } else {
+                try {
+                    const { id } = productToEdit;
+                    const resp = await updateProduct(id, values);
+
+                    console.log(resp);
+
+                    /* eslint-disable indent */
+                    const updatedProducts = products.map((product) =>
+                        product.id === id
+                            ? {
+                                  ...product,
+                                  ...formik.values,
+                                  warehouseName: warehousesNames.find(
+                                      (warehouse) =>
+                                          warehouse.id === values.warehouseId,
+                                  ).name,
+                                  branchName: branchesNames.find(
+                                      (branch) => branch.id === values.branchId,
+                                  ).name,
+                              }
+                            : product,
+                    );
+                    /* eslint-enable indent */
+
+                    dispatch(productsSetProducts(updatedProducts));
+
+                    Swal.fire({
+                        title: '¡Producto actualizado!',
+                        text: 'El producto ha sido actualizado.',
+                        icon: 'success',
+                    });
+
+                    handleModalChange();
+                } catch (error) {
+                    console.log(error);
+                    Swal.fire({
+                        title: 'Error',
+                        text: error.message,
+                        icon: 'error',
+                    });
+                }
+            }
+        } else {
+            try {
+                const { id } = productToEdit;
+                const resp = await updateProduct(id, values);
+
+                console.log(resp);
+
+                /* eslint-disable indent */
+                const updatedProducts = products.map((product) =>
+                    product.id === id
+                        ? {
+                              ...product,
+                              ...formik.values,
+                              warehouseName: warehousesNames.find(
+                                  (warehouse) =>
+                                      warehouse.id === values.warehouseId,
+                              ).name,
+                              branchName: branchesNames.find(
+                                  (branch) => branch.id === values.branchId,
+                              ).name,
+                          }
+                        : product,
+                );
+                /* eslint-enable indent */
+
+                dispatch(productsSetProducts(updatedProducts));
+
+                Swal.fire({
+                    title: '¡Producto actualizado!',
+                    text: 'El producto ha sido actualizado.',
+                    icon: 'success',
+                });
+
+                handleModalChange();
+            } catch (error) {
+                console.log(error);
+                Swal.fire({
+                    title: 'Error',
+                    text: error.message,
+                    icon: 'error',
+                });
+            }
+        }
+    };
+
+    const formik = useFormik({
+        initialValues: {
+            active: true,
+            branchId: 0,
+            epc: '',
+            skuId: 0,
+            warehouseId: 0,
+        },
+        validationSchema: productSchema,
+        onSubmit: handleFormSubmit,
     });
+
+    // const { active, branchId, epc, skuId, warehouseId } = formik.values;
 
     const productRenderer = (product) => (
         <tr className={product.active ? '' : 'table-danger'} key={product.id}>
@@ -97,6 +206,7 @@ export const TableProducts = () => {
                 <Button
                     className="me-1"
                     onClick={() => handleOpenForm(product.id)}
+                    disabled={!hasAccess}
                 >
                     <i className="bi bi-pencil-square" />
                 </Button>
@@ -105,6 +215,7 @@ export const TableProducts = () => {
                     <Button
                         className="me-1 text-white"
                         variant="danger"
+                        disabled={!hasAccess}
                         onClick={() => handleDeactivateProduct(product.id)}
                     >
                         <i className="bi bi-trash3" />
@@ -114,6 +225,7 @@ export const TableProducts = () => {
                         className="me-1"
                         onClick={() => handleActivateProduct(product.id)}
                         variant="success"
+                        disabled={!hasAccess}
                     >
                         <i className="bi bi-recycle" />
                     </Button>
@@ -131,14 +243,13 @@ export const TableProducts = () => {
 
         if (getProductToEdit) {
             setProductToEdit(getProductToEdit);
-            setFormValues({
+            formik.setValues({
                 active: getProductToEdit.active,
                 branchId: getProductToEdit.branchId,
                 warehouseId: getProductToEdit.warehouseId,
                 skuId: getProductToEdit.skuId,
                 epc: getProductToEdit.epc,
             });
-            setOriginalActiveState(getProductToEdit.active);
             console.log('Estado original activo:', getProductToEdit.active);
         } else {
             console.log('No se encontró el producto con el ID:', productId);
@@ -241,86 +352,20 @@ export const TableProducts = () => {
         }
     };
 
-    const handleInputChangeWithWarning = ({ target }) => {
-        handleInputChange({ target }); // Llamada al handleInputChange original
-
-        // Mostrar u ocultar el mensaje de advertencia
-        if (target.name === 'active' && originalActiveState) {
-            setShowWarning(!target.checked);
-        }
-    };
-
     const handleModalChange = () => {
         if (showModal) {
-            reset();
-            setOriginalActiveState(true);
+            formik.resetForm();
+            // reset();
             setShowWarning(false);
         }
         setShowModal(!showModal);
     };
 
-    const handleUpdate = async () => {
-        // Lógica para actualizar el SKU
-        console.log('Actualizando SKU con ID:', productToEdit.id);
-
-        const { id } = productToEdit;
-
-        const { isFormValid } = useProductValidationForm(formValues);
-
-        if (isFormValid) {
-            try {
-                const resp = await updateProduct(id, formValues);
-
-                console.log(resp);
-
-                /* eslint-disable indent */
-                const updatedProducts = products.map((product) =>
-                    product.id === id
-                        ? {
-                              ...product,
-                              ...formValues,
-                              warehouseName: warehousesNames.find(
-                                  (warehouse) =>
-                                      warehouse.id === formValues.warehouseId,
-                              ).name,
-                              branchName: branchesNames.find(
-                                  (branch) => branch.id === formValues.branchId,
-                              ).name,
-                          }
-                        : product,
-                );
-                /* eslint-enable indent */
-
-                dispatch(productsSetProducts(updatedProducts));
-
-                Swal.fire({
-                    title: '¡Producto actualizado!',
-                    text: 'El producto ha sido actualizado.',
-                    icon: 'success',
-                });
-
-                handleModalChange();
-            } catch (error) {
-                console.log(error);
-                Swal.fire({
-                    title: 'Error',
-                    text: error.message,
-                    icon: 'error',
-                });
-            }
-        }
-    };
-
     return (
         <>
             <ModalProduct
-                formValues={formValues}
-                handleInputChange={handleInputChange}
-                handleInputChangeWithWarning={handleInputChangeWithWarning}
+                formik={formik}
                 handleModalChange={handleModalChange}
-                handleUpdate={handleUpdate}
-                originalBranchId={productToEdit.branchId}
-                productId={productToEdit.id}
                 showModal={showModal}
                 showWarning={showWarning}
             />

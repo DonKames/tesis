@@ -11,24 +11,70 @@ export const getProducts = async (
         const response = await fetch(
             `${BASE_URL}/products?page=${page}&limit=${limit}&showInactive=${showInactive}`,
         );
-        const data = await handleFetchError(response);
-        return data;
+        const { data, status, message } = await handleFetchError(response);
+
+        if (status === 'success') {
+            return { data, message };
+        } else {
+            throw new Error(message);
+        }
     } catch (error) {
-        console.log('Error al obtener Productos desde la API:', error);
-        return [];
+        // console.log('Error al obtener Productos desde la API:', error);
+        return { data: null, message: error };
     }
 };
-export const getProductsQty = async (showInactive) => {
-    console.log(showInactive);
+export const getProductsQty = async ({ warehouseId, showInactive }) => {
+    // console.log(showInactive);
+    // console.log(warehouseId);
     try {
-        const response = await fetch(
-            `${BASE_URL}/products/qty?showInactive=${showInactive}`,
-        );
-        const data = await response.json();
-        console.log('getProducts Data: ', data);
-        return data;
+        let url = `${BASE_URL}/products/qty`;
+
+        const params = new URLSearchParams();
+
+        if (showInactive !== undefined) {
+            params.append('showInactive', showInactive);
+        }
+
+        if (warehouseId !== undefined) {
+            params.append('warehouseId', warehouseId);
+        }
+
+        if (params.toString()) {
+            url += `?${params.toString()}`;
+        }
+
+        // console.log(url);
+
+        const response = await fetch(url);
+
+        // console.log(response);
+
+        const { status, data, message } = await handleFetchError(response);
+
+        if (status === 'success') {
+            return { data, message };
+        } else {
+            throw new Error(message);
+        }
     } catch (error) {
         console.log('Error al obtener Productos desde la API:', error);
+        return { data: null, message: error };
+    }
+};
+
+export const searchProducts = async (query) => {
+    try {
+        const response = await fetch(
+            `${BASE_URL}/products/search?query=${query}`,
+        );
+        const { status, data, message } = await handleFetchError(response);
+        if (status === 'success') {
+            return data;
+        } else {
+            throw new Error(message);
+        }
+    } catch (error) {
+        console.log('Error al buscar productos desde la API:', error);
         return [];
     }
 };
@@ -63,6 +109,28 @@ export const getProductsByWarehouse = async (warehouseId) => {
     }
 };
 
+export const getProductByEPC = async (epc) => {
+    try {
+        const url = `${BASE_URL}/products/epc/${encodeURIComponent(epc)}`;
+        const response = await fetch(url);
+
+        // console.log(response);
+        // const data = await handleFetchError(response);
+
+        // console.log(data);
+        const { status, data, message } = await handleFetchError(response);
+
+        if (status === 'success') {
+            return { data, message };
+        } else {
+            throw new Error(message);
+        }
+    } catch (error) {
+        console.log('Error al obtener Producto por EPC desde la API:', error);
+        return { data: null, message: error.message || 'Error desconocido' };
+    }
+};
+
 export const createProduct = async (productData) => {
     try {
         console.log(productData);
@@ -74,26 +142,31 @@ export const createProduct = async (productData) => {
             body: JSON.stringify(productData), // convierte los datos del país a una cadena JSON
         });
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
+        const { data, status, message } = await handleFetchError(response);
 
-        const data = await response.json();
-        return data;
+        // console.log('createProduct: ', status, data, message);
+        if (status === 'success') {
+            return { data, message };
+        } else {
+            throw new Error(message);
+        }
     } catch (error) {
         console.log('Error al crear Producto en la API:', error);
-        return null;
+        return { data: null, message: error };
     }
 };
 
 export const getProductById = async (productId) => {
     try {
         const response = await fetch(`${BASE_URL}/products/${productId}`);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+
+        const { status, data, message } = await handleFetchError(response);
+
+        if (status === 'success') {
+            return data;
+        } else {
+            throw new Error(message);
         }
-        const data = await response.json();
-        return data;
     } catch (error) {
         console.log('Error al obtener Producto por ID desde la API:', error);
         return null;

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Card, Col, Container, Row } from 'react-bootstrap';
+import { Col, Container, Row } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 
 import { updateUserUid } from '../../users/apis/usersAPI';
@@ -13,12 +13,16 @@ import { ProductSection } from './ProductSection';
 
 export const MainScreen = () => {
     // Redux states
-    const { isRegistered, email, uid } = useSelector((state) => state.auth);
+    const { isRegistered, email, uid, role } = useSelector(
+        (state) => state.auth,
+    );
 
     if (!isRegistered) {
         console.log('no registrado');
         updateUserUid(email, uid);
     }
+
+    const hasAccess = role === 1 || role === 2;
 
     return (
         <Container fluid>
@@ -33,32 +37,24 @@ export const MainScreen = () => {
                     <WarehouseSection />
                 </Col>
             </Row>
-            <Row className="my-3">
-                <Col>
+            <Row
+                className={`my-3 ${
+                    hasAccess
+                        ? 'justify-content-evenly'
+                        : 'justify-content-evenly'
+                }`}
+            >
+                <Col xs={12} md={6} lg={3}>
                     <SkuSection />
                 </Col>
-                <Col>
+                <Col xs={12} md={6} lg={3}>
                     <ProductSection />
                 </Col>
-                <Col xs="12" md="6" lg="3">
-                    <UserSection />
-                </Col>
-            </Row>
-
-            <Row className="my-3"></Row>
-
-            <Row className="my-3">
-                <Col>
-                    <Card className=" shadow">
-                        <Card.Body>
-                            <Card.Title>Búsqueda de productos</Card.Title>
-                            <Card.Text>
-                                Por nombre, código de barras o ubicación: por
-                                implementar
-                            </Card.Text>
-                        </Card.Body>
-                    </Card>
-                </Col>
+                {hasAccess && (
+                    <Col xs={12} md={6} lg={3}>
+                        <UserSection />
+                    </Col>
+                )}
             </Row>
         </Container>
     );

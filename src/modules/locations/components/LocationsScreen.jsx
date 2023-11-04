@@ -8,43 +8,45 @@ import { AddWarehouseModal } from './AddWarehouseModal';
 import { BranchesSection } from './BranchesSection';
 import { WarehousesSection } from './WarehousesSection';
 import { BranchLocationsSection } from './BranchLocationsSection';
+import useHasAccess from '../../../shared/hooks/useHasAccess';
 
 export const LocationsScreen = () => {
+    const hasAccess = useHasAccess([1, 2]);
+
     return (
         <Container fluid className="mt-2">
-            <Row className="align-items-center">
-                <Col className="mb-3">
-                    <Row>
-                        <Col>
-                            <h1>Sucursales</h1>
-                        </Col>
-                        <Col className="text-center">
-                            <AddBranchModal />
-                        </Col>
-                    </Row>
-                    <BranchesSection />
-                </Col>
+            <Row className="justify-content-center">
+                <Row>
+                    <Col className="mb-3">
+                        {hasAccess && (
+                            <Row>
+                                <Col xs="12" className="text-end">
+                                    <AddBranchModal />
+                                </Col>
+                            </Row>
+                        )}
+                        <BranchesSection />
+                    </Col>
+                </Row>
                 <Row>
                     <Col xs="12" lg="6">
-                        <Row>
-                            <Col>
-                                <h1>Bodegas</h1>
-                            </Col>
-                            <Col>
-                                <AddWarehouseModal />
-                            </Col>
-                        </Row>
+                        {hasAccess && (
+                            <Row>
+                                <Col className="text-end">
+                                    <AddWarehouseModal />
+                                </Col>
+                            </Row>
+                        )}
                         <WarehousesSection />
                     </Col>
                     <Col xs="12" lg="6">
-                        <Row>
-                            <Col>
-                                <h1>Lugares de Sucursal</h1>
-                            </Col>
-                            <Col>
-                                <AddBranchLocationModal />
-                            </Col>
-                        </Row>
+                        {hasAccess && (
+                            <Row>
+                                <Col className="text-end">
+                                    <AddBranchLocationModal />
+                                </Col>
+                            </Row>
+                        )}
                         <BranchLocationsSection />
                     </Col>
                 </Row>

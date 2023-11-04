@@ -1,99 +1,129 @@
-import React from 'react';
-import { Button, Form, Modal } from 'react-bootstrap';
+/* The code is a React component called `ModalEditBranch` that represents a modal for editing a branch.
+It uses the `useFormik` hook from the `formik` library for form validation. The component receives a
+`branchId` prop which is required. */
+/* The code is a React component called `ModalEditBranch` that represents a modal for editing a branch. */
 
+// Validation
+import { useFormik } from 'formik';
+
+import React, { useState } from 'react';
+import { Button } from 'react-bootstrap';
+import Swal from 'sweetalert2';
 import PropTypes from 'prop-types';
-import { SelectCountries } from '../../../shared/ui/components/SelectCountries';
-import { SelectRegions } from '../../../shared/ui/components/SelectRegions';
-import { SelectMunicipalities } from '../../../shared/ui/components/SelectMunicipalities';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { BranchModal } from './Modals/BranchModal';
+import { locationsSetBranches } from '../slice/locationsSlice';
+import { branchSchema } from '../../../validations/branchSchema';
+import { getBranchById, updateBranch } from '../APIs/branchesAPI';
+import useHasAccess from '../../../shared/hooks/useHasAccess';
+
+/**
+ * Modal for editing a branch.
+ * @param {Object} props - The component props.
+ * @param {number} props.branchId - The ID of the branch to edit.
+ * @returns {JSX.Element} - The ModalEditBranch component.
+ */
 export const ModalEditBranch = React.memo(function ModalEditBranch({
-    formValues,
-    handleInputChange,
-    handleInputChangeWithWarning,
-    handleModalChange,
-    handleUpdate,
-    showModal,
-    showWarning,
+    branchId,
 }) {
-    const { name, country, region, address, municipality } = formValues;
+    const dispatch = useDispatch();
+
+    // Local States
+    const [showModal, setShowModal] = useState(false);
+
+    // Redux States
+    const { branches } = useSelector((state) => state.locations);
+
+    const hasAccess = useHasAccess([1, 2]);
+
+    // Form Submit
+    const handleFormSubmit = async (values) => {
+        const { data, message } = await updateBranch(branchId, values);
+
+        if (data) {
+            const updatedBranches = branches.map((branch) => {
+                if (branch.id === branchId) {
+                    return { ...branch, ...data };
+                }
+                return branch;
+            });
+
+            Swal.fire({
+                icon: 'success',
+                showConfirmButton: false,
+                timer: 1500,
+                title: message,
+            });
+
+            dispatch(locationsSetBranches(updatedBranches));
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error al editar la sucursal',
+                text: message,
+            });
+        }
+    };
+
+    // Formik
+    const formik = useFormik({
+        initialValues: {
+            branchName: '',
+            country: 35,
+            region: 0,
+            municipality: 0,
+            address: '',
+        },
+        validationSchema: branchSchema,
+        onSubmit: handleFormSubmit,
+    });
+
+    // Modal Control
+    const toggleModal = async (isOpen) => {
+        setShowModal(isOpen);
+        if (!isOpen) {
+            formik.resetForm();
+        } else {
+            if (branchId) {
+                const { data } = await getBranchById(branchId);
+
+                if (data) {
+                    // console.log(data, message);
+                    const formikState = {
+                        branchName: data.name,
+                        country: data.countryId,
+                        region: data.regionId,
+                        municipality: data.municipalityId,
+                        address: data.address,
+                    };
+
+                    formik.setValues(formikState);
+                }
+            }
+        }
+    };
 
     return (
-        <Modal show={showModal} onHide={handleModalChange}>
-            <Modal.Header className="h1">Editar Sucursal</Modal.Header>
-            <Modal.Body>
-                <Form>
-                    <Form.Group>
-                        <Form.Label>Nombre</Form.Label>
-                        <Form.Control
-                            className="mb-3"
-                            name="name"
-                            placeholder="Nombre"
-                            type="text"
-                            value={name}
-                            onChange={handleInputChange}
-                        />
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label>País</Form.Label>
-                        <SelectCountries
-                            handleInputChange={handleInputChange}
-                            name="country"
-                            countryId={country}
-                        />
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label>Región</Form.Label>
-                        <SelectRegions
-                            handleInputChange={handleInputChange}
-                            name="region"
-                            regionId={region}
-                            selectedCountry={country}
-                        />
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label>Comunas</Form.Label>
-                        <SelectMunicipalities
-                            handleInputChange={handleInputChange}
-                            name="municipality"
-                            municipalityId={municipality}
-                            selectedRegion={region}
-                        />
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label>Dirección</Form.Label>
-                        <Form.Control
-                            className="mb-3"
-                            name="address"
-                            placeholder="Dirección"
-                            type="text"
-                            value={address}
-                            onChange={handleInputChange}
-                        />
-                    </Form.Group>
-                </Form>
-            </Modal.Body>
-            <Modal.Footer>
-                <Button
-                    className="btn btn-secondary"
-                    onClick={handleModalChange}
-                    type="button"
-                >
-                    Cancelar
-                </Button>
-                <Button onClick={handleUpdate} type="button">
-                    Actualizar
-                </Button>
-            </Modal.Footer>
-        </Modal>
+        <>
+            <Button
+                className="me-1"
+                disabled={!hasAccess}
+                onClick={() => toggleModal(true)}
+            >
+                <i className="bi bi-pencil-square" />
+            </Button>
+            <BranchModal
+                formik={formik}
+                primaryButtonText="Editar"
+                showModal={showModal}
+                title="Editar Sucursal"
+                toggleModal={toggleModal}
+            />
+        </>
     );
 });
 
 ModalEditBranch.propTypes = {
-    formValues: PropTypes.object.isRequired,
-    handleInputChange: PropTypes.func.isRequired,
-    handleInputChangeWithWarning: PropTypes.func.isRequired,
-    handleModalChange: PropTypes.func.isRequired,
-    handleUpdate: PropTypes.func.isRequired,
-    showModal: PropTypes.bool.isRequired,
-    showWarning: PropTypes.bool.isRequired,
+    branchId: PropTypes.number.isRequired,
 };

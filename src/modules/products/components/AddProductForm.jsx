@@ -1,165 +1,130 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Card, Col, Form, Row } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
-import Select from 'react-select';
-import { useForm } from '../../../hooks/useForm';
-import { productsSetProducts, productsSetSkus } from '../slice/productsSlice';
-import { getSkus } from '../APIs/skusAPI';
+import React from 'react';
+import { Button, Card, FloatingLabel, Form } from 'react-bootstrap';
+import { createProduct, getProductByEPC } from '../APIs/productsAPI';
+import { useFormik } from 'formik';
+import { SelectSkus } from '../../../shared/ui/components/SelectSkus';
+import { productSchema } from '../../../validations/productSchema';
+import { SelectBranches } from '../../../shared/ui/components/SelectBranches';
+import { SelectWarehouses } from '../../../shared/ui/components/SelectWarehouses';
 import Swal from 'sweetalert2';
-import { createProduct, getProducts } from '../APIs/productsAPI';
 
 export const AddProductForm = () => {
-    const dispatch = useDispatch();
+    const handleFormSubmit = async (values) => {
+        console.log(values);
+        const { data: epcCheck } = await getProductByEPC(values.epc);
 
-    const [isValidSku, setIsValidSku] = useState(false);
+        console.log(epcCheck);
 
-    const { branches } = useSelector((state) => state.locations);
-
-    const { skus } = useSelector((state) => state.products);
-
-    const branchOptions = branches.map((branch) => ({
-        value: branch.branch_id,
-        label: branch.name,
-    }));
-
-    const [formValues, handleInputChange] = useForm({
-        fkSku: '',
-        epc: '',
-    });
-
-    const { epc, fkSku } = formValues;
-
-    const handleBranchChange = (selectedOption) => {
-        handleInputChange({
-            target: {
-                name: 'branchId',
-                value: selectedOption ? selectedOption.value : '',
-            },
-        });
-    };
-
-    const handleSkuChange = (e) => {
-        const { name, value } = e.target;
-
-        if (name === 'fkSku') {
-            const sku = skus?.find((sku) => {
-                console.log(sku.sku, value);
-                return sku.sku === value;
-            });
-            console.log(sku);
-            setIsValidSku(!!sku);
-        }
-
-        handleInputChange(e);
-    };
-
-    useEffect(() => {
-        const fetchData = async () => {
-            if (!skus?.length) {
-                const fetchedSkus = await getSkus(1, 10);
-                dispatch(productsSetSkus(fetchedSkus));
-            }
-        };
-        fetchData();
-    }, [dispatch, skus]);
-
-    const handleAddProduct = async () => {
-        if (isValidSku) {
-            const response = await createProduct(formValues);
-
-            const { products } = await getProducts();
-            dispatch(productsSetProducts(products));
-
+        if (epcCheck === null) {
+            const response = await createProduct(values);
             if (response) {
-                console.log('Producto creado');
-                console.log(response);
-
                 Swal.fire({
                     icon: 'success',
                     title: 'Producto creado con éxito',
                     showConfirmButton: false,
                     timer: 1500,
                 });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ocurrió un error al crear el producto',
+                    text: 'Por favor intenta de nuevo más tarde',
+                });
             }
         } else {
-            console.log('El producto no existe');
-            Swal.fire({
-                icon: 'error',
-                title: 'Error al crear el producto',
-                text: 'El sku no existe',
-            });
+            formik.setFieldError(
+                'epc',
+                'Ya existe un producto con este EPC. Por favor, use un EPC diferente.',
+            );
         }
     };
 
+    const formik = useFormik({
+        initialValues: {
+            skuId: 0,
+            branchId: 0,
+            warehouseId: 0,
+            epc: '',
+        },
+        validationSchema: productSchema,
+        onSubmit: handleFormSubmit,
+    });
+
     return (
         <Card className="mb-3">
-            <Card.Body>
-                <Card.Title>Agregar Producto</Card.Title>
-                <Form>
+            <Card.Header>
+                <Card.Title className="fs-3 mb-0">Agregar Producto</Card.Title>
+            </Card.Header>
+            <Form onSubmit={formik.handleSubmit}>
+                <Card.Body>
                     <Form.Group>
-                        <Row className="justify-content-between">
-                            <Col>
-                                <Form.Label>Código SKU</Form.Label>
-                            </Col>
-                            <Col className="text-end">
-                                <Form.Label>
-                                    {isValidSku ? (
-                                        <span
-                                            style={{
-                                                color: 'green',
-                                                fontWeight: 'bold',
-                                            }}
-                                        >
-                                            El sku existe
-                                        </span>
-                                    ) : (
-                                        <span
-                                            style={{
-                                                color: 'red',
-                                                fontWeight: 'bold',
-                                            }}
-                                        >
-                                            El sku no existe
-                                        </span>
-                                    )}
-                                </Form.Label>
-                            </Col>
-                        </Row>
-                        <Form.Control
-                            type="text"
-                            placeholder="Ingrese el Sku del producto"
-                            name="fkSku"
-                            value={fkSku}
-                            onChange={handleSkuChange}
+                        <SelectSkus
+                            errorMessage={formik.errors.skuId}
+                            name="skuId"
+                            isInvalid={
+                                formik.touched.skuId && !!formik.errors.skuId
+                            }
+                            setFieldTouched={formik?.setFieldTouched}
+                            setFieldValue={formik?.setFieldValue}
+                            skuId={formik.values?.skuId}
                         />
                     </Form.Group>
-                    <Form.Group>
-                        <Form.Label>Sucursal</Form.Label>
-                        <Select
-                            isSearchable
-                            placeholder="Seleccione la Sucursal"
+                    <Form.Group className="mt-2">
+                        <SelectBranches
+                            errorMessage={formik.errors.branchId}
                             name="branchId"
-                            options={branchOptions}
-                            onChange={handleBranchChange}
+                            isInvalid={
+                                formik.touched.branchId &&
+                                !!formik.errors.branchId
+                            }
+                            setFieldTouched={formik.setFieldTouched}
+                            setFieldValue={formik.setFieldValue}
+                            branchId={formik.values.branchId}
                         />
                     </Form.Group>
-                    <Form.Group>
-                        <Form.Label>Código Etiqueta (EPC)</Form.Label>
-                        <Form.Control
-                            type="text"
-                            placeholder="Ingrese el epc para el producto"
-                            name="epc"
-                            value={epc}
-                            onChange={handleInputChange}
+                    <Form.Group className="mt-2">
+                        <SelectWarehouses
+                            branchId={formik.values.branchId}
+                            errorMessage={formik.errors.warehouseId}
+                            isInvalid={
+                                formik.touched.warehouseId &&
+                                !!formik.errors.warehouseId
+                            }
+                            name="warehouseId"
+                            setFieldTouched={formik.setFieldTouched}
+                            setFieldValue={formik.setFieldValue}
+                            warehouseId={formik.values.warehouseId}
                         />
                     </Form.Group>
-                </Form>
-            </Card.Body>
-            <Card.Footer>
-                <Button className="btn btn-primary" onClick={handleAddProduct}>
-                    Guardar Producto
-                </Button>
-            </Card.Footer>
+                    <Form.Group className="mt-2">
+                        <FloatingLabel label="Tag / EPC">
+                            <Form.Control
+                                className={
+                                    formik.touched.epc && formik.errors.epc
+                                        ? 'is-invalid'
+                                        : ''
+                                }
+                                type="text"
+                                placeholder="Ingrese el epc para el producto"
+                                name="epc"
+                                value={formik.values.epc}
+                                onChange={formik.handleChange}
+                                isInvalid={
+                                    formik.touched.epc && formik.errors.epc
+                                }
+                            />
+                            <Form.Control.Feedback type="invalid">
+                                {formik.errors.epc}
+                            </Form.Control.Feedback>
+                        </FloatingLabel>
+                    </Form.Group>
+                </Card.Body>
+                <Card.Footer className="text-end">
+                    <Button type="submit" variant="primary">
+                        Guardar Producto
+                    </Button>
+                </Card.Footer>
+            </Form>
         </Card>
     );
 };

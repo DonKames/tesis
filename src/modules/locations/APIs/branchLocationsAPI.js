@@ -12,38 +12,84 @@ export const getBranchLocations = async (
             `${BASE_URL}/branchLocations?page=${page}&limit=${limit}&showInactive=${showInactive}`,
         );
 
-        const { status, data } = await handleFetchError(response);
+        const { status, data, message } = await handleFetchError(response);
         // console.log(finalResp);
 
         if (status === 'success') {
-            return data;
+            return { data, message };
+        } else {
+            throw new Error(message);
         }
-        return [];
     } catch (error) {
         console.log(
             'Error al obtener Lugares de Sucursal desde la API: ',
             error,
         );
-        return [];
+        return { data: null, error };
     }
 };
 
-export const getBranchLocationsQty = async () => {
+export const getBranchLocationById = async (branchLocationId) => {
     try {
-        const response = await fetch(`${BASE_URL}/branchLocations/qty`);
-        const { status, data } = await handleFetchError(response);
-        // console.log(finalResp);
+        const response = await fetch(
+            `${BASE_URL}/branchLocations/${branchLocationId}`,
+        );
+
+        const { status, data, message } = await handleFetchError(response);
+
         if (status === 'success') {
-            return data;
+            return { data, message };
+        } else {
+            throw new Error(message);
+        }
+    } catch (error) {
+        console.log('Error al obtener Lugar de Sucursal desde la API: ', error);
+        return { data: null, message: '' };
+    }
+};
+
+export const getBranchLocationsQty = async ({ branchId, showInactive }) => {
+    try {
+        let url = `${BASE_URL}/branchLocations/qty`;
+
+        const params = new URLSearchParams();
+
+        if (showInactive !== undefined) {
+            params.append('showInactive', showInactive);
         }
 
-        return 0;
+        if (branchId !== undefined) {
+            params.append('branchId', branchId);
+        }
+
+        if (params.toString()) {
+            url += `?${params.toString()}`;
+        }
+
+        const response = await fetch(url);
+
+        const { status, message, data } = await handleFetchError(response);
+
+        if (status === 'success') {
+            return { data, message };
+        } else {
+            throw new Error(message);
+        }
+
+        // const { status, data } = await handleFetchError(response);
+        // const response = await fetch(`${BASE_URL}/branchLocations/qty`);
+        // // console.log(finalResp);
+        // if (status === 'success') {
+        //     return data;
+        // }
+
+        // return 0;
     } catch (error) {
         console.log(
             'Error al obtener cantidad de Lugares de Sucursal desde la API: ',
             error,
         );
-        return [];
+        return { data: null, error };
     }
 };
 
@@ -66,7 +112,7 @@ export const createBranchLocation = async (branchLocationData) => {
         return data;
     } catch (error) {
         console.log('Error al crear Lugar de Sucursal en la API:', error);
-        return null;
+        return { data: null, error };
     }
 };
 
@@ -93,7 +139,7 @@ export const changeBranchLocationState = async (branchLocationId, state) => {
         console.log(
             `Error al cambiar estado de Lugar de Sucursal en la API: ${error}`,
         );
-        return null;
+        return { data: null, error };
     }
 };
 
@@ -114,14 +160,15 @@ export const updateBranchLocation = async (
             },
         );
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
+        const { status, data, message } = await handleFetchError(response);
 
-        const data = await response.json();
-        return data;
+        if (status === 'success') {
+            return { data, message };
+        } else {
+            throw new Error(message);
+        }
     } catch (error) {
         console.log('Error al actualizar Lugar de Sucursal en la API:', error);
-        return null;
+        return { data: null, message: error };
     }
 };

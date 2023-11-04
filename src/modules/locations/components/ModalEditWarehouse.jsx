@@ -1,79 +1,118 @@
-import React from 'react';
-import { Button, Form, Modal } from 'react-bootstrap';
+import React, { useState } from 'react';
+import { Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-import { SelectBranches } from '../../../shared/ui/components/SelectBranches';
+import { useDispatch, useSelector } from 'react-redux';
+import { getWarehouseById, updateWarehouse } from '../APIs/warehouseAPI';
+import Swal from 'sweetalert2';
+import { locationsSetWarehouses } from '../slice/locationsSlice';
+import { useFormik } from 'formik';
+import { warehouseSchema } from '../../../validations/warehouseSchema';
+import { WarehouseModal } from './Modals/WarehouseModal';
+import useHasAccess from '../../../shared/hooks/useHasAccess';
 
 export const ModalEditWarehouse = React.memo(function ModalEditWarehouse({
-    formValues,
-    handleInputChange,
-    handleModalChange,
-    handleUpdate,
-    showModal,
+    warehouseId,
 }) {
-    const { name, branchId, capacity } = formValues;
+    const dispatch = useDispatch();
+
+    // Local States
+    const [showModal, setShowModal] = useState(false);
+
+    // Redux States
+    const { warehouses } = useSelector((state) => state.locations);
+
+    const hasAccess = useHasAccess([1, 2]);
+
+    const handleFormSubmit = async (values) => {
+        console.log('valores', values);
+        const { data, message } = await updateWarehouse(warehouseId, values);
+
+        if (data) {
+            const updatedWarehouses = warehouses.map((warehouse) => {
+                if (warehouse.id === warehouseId) {
+                    return { ...warehouse, ...data };
+                }
+                return warehouse;
+            });
+
+            Swal.fire({
+                icon: 'success',
+                showConfirmButton: false,
+                timer: 1500,
+                title: message,
+            });
+
+            dispatch(locationsSetWarehouses(updatedWarehouses));
+
+            toggleModal(false);
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error al editar la sucursal',
+                text: message,
+            });
+        }
+    };
+
+    // Formik
+    const formik = useFormik({
+        initialValues: {
+            warehouseName: '',
+            branchId: 0,
+            capacity: 0,
+            // active: true,
+        },
+        validationSchema: warehouseSchema,
+        onSubmit: handleFormSubmit,
+    });
+
+    // Modal Control
+    const toggleModal = async (isOpen) => {
+        console.log('warehouseId', warehouseId);
+        setShowModal(isOpen);
+
+        if (!isOpen) {
+            formik.resetForm();
+        } else {
+            if (warehouseId) {
+                const { data, message } = await getWarehouseById(warehouseId);
+
+                console.log(data);
+
+                if (data) {
+                    console.log(data, message);
+
+                    formik.setValues({
+                        warehouseName: data.name,
+                        branchId: data.branchId,
+                        capacity: data.capacity || 0,
+                        active: data.active,
+                    });
+                }
+            }
+        }
+    };
 
     return (
-        <Modal show={showModal} onHide={handleModalChange}>
-            <Modal.Header className="h1">Editar Bodega</Modal.Header>
-            <Modal.Body>
-                <Form>
-                    <Form.Group>
-                        <Form.Label>Nombre</Form.Label>
-                        <Form.Control
-                            className="mb-3"
-                            name="name"
-                            placeholder="Nombre"
-                            type="text"
-                            value={name}
-                            onChange={handleInputChange}
-                        />
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label>Sucursal</Form.Label>
-                        <SelectBranches
-                            onChange={handleInputChange}
-                            name="branchId"
-                            branchId={branchId}
-                        />
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label>Capacidad</Form.Label>
-                        <Form.Control
-                            className="mb-3"
-                            name="capacity"
-                            placeholder="Capacidad"
-                            type="number"
-                            value={capacity}
-                            onChange={handleInputChange}
-                        />
-                    </Form.Group>
-                </Form>
-            </Modal.Body>
-            <Modal.Footer>
-                <Button
-                    className="btn btn-secondary"
-                    onClick={() => handleModalChange()}
-                >
-                    Cancelar
-                </Button>
-                <Button
-                    className="btn btn-primary"
-                    onClick={() => {
-                        handleUpdate(formValues);
-                        handleModalChange();
-                    }}
-                >
-                    Guardar
-                </Button>
-            </Modal.Footer>
-        </Modal>
+        <>
+            <Button
+                className="me-1"
+                disabled={!hasAccess}
+                onClick={() => toggleModal(true)}
+            >
+                <i className="bi bi-pencil-square" />
+            </Button>
+            <WarehouseModal
+                formik={formik}
+                primaryButtonText="Editar"
+                showModal={showModal}
+                title="Editar Bodega"
+                toggleModal={toggleModal}
+            />
+        </>
     );
 });
 
 ModalEditWarehouse.propTypes = {
-    formValues: PropTypes.object.isRequired,
-    handleInputChange: PropTypes.func.isRequired,
-    handleModalChange: PropTypes.func.isRequired,
-    handleUpdate: PropTypes.func.isRequired,
-    showModal: PropTypes.bool.isRequired,
+    warehouseId: PropTypes.number.isRequired,
 };

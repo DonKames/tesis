@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'react-bootstrap';
@@ -10,26 +10,23 @@ import {
     changeActiveStateBranch,
     getBranches,
     getBranchesQty,
-    updateBranch,
 } from '../APIs/branchesAPI';
 import {
     locationsSetBranches,
     locationsSetBranchesQty,
 } from '../slice/locationsSlice';
-import { useForm } from '../../../hooks/useForm';
 import { ModalEditBranch } from './ModalEditBranch';
-import { useBranchValidationForm } from '../hooks/useBranchValidationForm';
+import useHasAccess from '../../../shared/hooks/useHasAccess';
 
 export const TableBranches = () => {
-    const maxPaginationButtons = 10;
-
     const dispatch = useDispatch();
 
     // Redux states
     const { branches, branchesQty } = useSelector((state) => state.locations);
 
-    // Local State
-    const [showModal, setShowModal] = useState(false);
+    const hasAccess = useHasAccess([1, 2]);
+
+    const maxPaginationButtons = 10;
 
     const tableColumnsBranches = [
         { name: 'Nombre', className: '' },
@@ -68,17 +65,13 @@ export const TableBranches = () => {
                 <td className="align-middle">{branch.municipalityName}</td>
                 <td className="align-middle">{branch.address}</td>
                 <td className="align-middle text-end">
-                    <Button
-                        className="me-1"
-                        onClick={() => handleOpenForm(branch.id)}
-                    >
-                        <i className="bi bi-pencil-square" />
-                    </Button>
+                    <ModalEditBranch branchId={branch.id} />
                     {branch.active ? (
                         <Button
                             className="me-1 text-white"
                             variant="danger"
                             onClick={() => handleDeactivateBranch(branch.id)}
+                            disabled={!hasAccess}
                         >
                             <i className="bi bi-trash3" />
                         </Button>
@@ -96,18 +89,6 @@ export const TableBranches = () => {
         );
     };
 
-    // Modal
-    // Form
-    const [formValues, handleInputChange, reset, setFormValues] = useForm({
-        address: '',
-        branchId: 0,
-        country: 0,
-        municipality: 0,
-        name: '',
-        region: 0,
-        active: true,
-    });
-
     const handleDeactivateBranch = async (branchId) => {
         const result = await Swal.fire({
             title: '¿Estás seguro?',
@@ -123,29 +104,37 @@ export const TableBranches = () => {
         if (result.isConfirmed) {
             console.log('Desactivando Branch con ID:', branchId);
 
-            const { status, data } = await changeActiveStateBranch(
-                branchId,
-                false,
-            );
-
-            if (status === 'success') {
-                Swal.fire({
-                    title: '¡Sucursal desactivada!',
-                    text: 'La sucursal ha sido desactivada con éxito.',
-                    icon: 'success',
-                });
-
-                const updatedBranches = branches.map((branch) =>
-                    branch.id === branchId
-                        ? { ...branch, active: false }
-                        : branch,
+            try {
+                const { status, data } = await changeActiveStateBranch(
+                    branchId,
+                    false,
                 );
 
-                dispatch(locationsSetBranches(updatedBranches));
-            } else {
+                if (status === 'success') {
+                    Swal.fire({
+                        title: '¡Sucursal desactivada!',
+                        text: 'La sucursal ha sido desactivada con éxito.',
+                        icon: 'success',
+                    });
+
+                    const updatedBranches = branches.map((branch) =>
+                        branch.id === branchId
+                            ? { ...branch, active: false }
+                            : branch,
+                    );
+
+                    dispatch(locationsSetBranches(updatedBranches));
+                } else {
+                    Swal.fire({
+                        title: '¡Error!',
+                        text: data.message,
+                        icon: 'error',
+                    });
+                }
+            } catch (error) {
                 Swal.fire({
                     title: '¡Error!',
-                    text: data.message,
+                    text: 'No se pudo desactivar la Sucursal - Error al conectar con la API',
                     icon: 'error',
                 });
             }
@@ -196,81 +185,8 @@ export const TableBranches = () => {
         }
     };
 
-    const handleModalChange = () => {
-        if (showModal) {
-            reset();
-            // setOriginalActiveState(true);
-            // setShowWarning(false);
-        }
-        setShowModal(!showModal);
-    };
-
-    const handleOpenForm = (branchId) => {
-        const branchToEdit = branches.find((branch) => branch.id === branchId);
-
-        // setBranchToEdit(branchToEdit);
-
-        setFormValues({
-            branchId: branchToEdit.id,
-            name: branchToEdit.name,
-            country: branchToEdit.countryId,
-            region: branchToEdit.regionId,
-            address: branchToEdit.address,
-            municipality: branchToEdit.municipalityId,
-            active: branchToEdit.active,
-        });
-
-        handleModalChange();
-    };
-
-    const handleUpdateBranch = async () => {
-        // const { id } = branchToEdit;
-
-        const { branchId } = formValues;
-
-        const { isFormValid } = useBranchValidationForm(formValues);
-
-        if (isFormValid) {
-            try {
-                const resp = await updateBranch(branchId, formValues);
-                console.log(resp);
-
-                if (resp.status === 'success') {
-                    const updatedBranches = branches.map((branch) =>
-                        branch.id === branchId
-                            ? { ...branch, ...formValues }
-                            : branch,
-                    );
-
-                    dispatch(locationsSetBranches(updatedBranches));
-
-                    Swal.fire({
-                        title: '¡Sucursal actualizada!',
-                        text: 'La sucursal ha sido actualizada con éxito.',
-                        icon: 'success',
-                    });
-
-                    handleModalChange();
-                }
-            } catch (error) {
-                console.log(error);
-            }
-        }
-        handleModalChange();
-    };
-
     return (
         <>
-            <ModalEditBranch
-                formValues={formValues}
-                handleInputChange={handleInputChange}
-                // TODO: Cambiar por handleInputChangeWithWarning
-                handleInputChangeWithWarning={() => console.log('Warning')}
-                handleModalChange={handleModalChange}
-                handleUpdate={handleUpdateBranch}
-                showModal={showModal}
-                showWarning={false}
-            />
             <PaginatedTable
                 columns={tableColumnsBranches}
                 footerText={`Total de Sucursales: ${branchesQty} | Páginas Totales: ${pagesQty} `}

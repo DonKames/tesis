@@ -7,6 +7,7 @@ import {
 } from '../../locations/APIs/warehouseAPI';
 import { uiSetWarehousesNames } from '../../../shared/ui/slice/uiSlice';
 import { SelectWarehouses } from '../../../shared/ui/components/SelectWarehouses';
+import { getProductsQty } from '../../products/APIs/productsAPI';
 
 export const WarehouseSection = () => {
     const dispatch = useDispatch();
@@ -19,15 +20,31 @@ export const WarehouseSection = () => {
     const [selectedWarehouse, setSelectedWarehouse] = useState(null);
 
     const handleWarehouseChange = async (e) => {
-        console.log(e);
-        // Formatting
-        const warehouseId = +e.target.value;
+        updateSelectedWarehouse(e.target.value);
+        // console.log(e);
+        // // Formatting
+        // const warehouseId = +e.target.value;
 
-        console.log(warehouseId);
+        // console.log(warehouseId);
 
-        const warehouseData = await getWarehouseById(warehouseId);
+        // const warehouseData = await getWarehouseById(warehouseId);
 
-        setSelectedWarehouse(warehouseData);
+        // setSelectedWarehouse(warehouseData);
+    };
+
+    const updateSelectedWarehouse = async (warehouseId) => {
+        const { data: warehouseData } = await getWarehouseById(warehouseId);
+        console.log(warehouseData);
+
+        const { data: productsQty } = await getProductsQty({ warehouseId });
+
+        console.log(productsQty);
+        const warehouseDataWithProductsQty = {
+            ...warehouseData,
+            productsQty,
+        };
+
+        setSelectedWarehouse(warehouseDataWithProductsQty);
     };
 
     useEffect(() => {
@@ -39,10 +56,7 @@ export const WarehouseSection = () => {
                 }
 
                 if (mainWarehouse) {
-                    console.log(mainWarehouse);
-                    const warehouse = await getWarehouseById(mainWarehouse.id);
-                    console.log(warehouse);
-                    setSelectedWarehouse(warehouse);
+                    updateSelectedWarehouse(mainWarehouse.id);
                 }
             };
 
@@ -56,8 +70,8 @@ export const WarehouseSection = () => {
         <Card className="shadow h-100 animate__animated animate__fadeIn animate__fast">
             <Card.Header>
                 <Row>
-                    <Col>
-                        <h3>Bodegas</h3>
+                    <Col className="d-flex align-items-center col-auto">
+                        <h3 className="mb-0">Bodegas</h3>
                     </Col>
                     <Col>
                         <SelectWarehouses
@@ -92,7 +106,11 @@ export const WarehouseSection = () => {
                 <Card.Text>
                     Cantidad de productos:{' '}
                     <strong>
-                        {selectedWarehouse?.productsQty || 'Sin Determinar'}
+                        {console.log(selectedWarehouse?.productsQty)}
+                        {typeof selectedWarehouse?.productsQty === 'number' &&
+                        !isNaN(selectedWarehouse?.productsQty)
+                            ? selectedWarehouse?.productsQty
+                            : 'Sin Determinar'}
                     </strong>
                 </Card.Text>
             </Card.Body>

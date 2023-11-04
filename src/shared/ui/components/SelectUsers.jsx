@@ -7,12 +7,23 @@ import Select from 'react-select';
 import { getUsersNames } from '../../../modules/users/apis/usersAPI';
 import { uiSetUsersNames } from '../slice/uiSlice';
 import { capitalizeFirstLetter } from '../../utils/stringUtils';
+import { errorStyle } from '../../../styles/selectStyles';
 
-export const SelectUsers = ({ onChange, name, userId }) => {
+export const SelectUsers = ({
+    errorMessage,
+    handleInputChange,
+    isInvalid,
+    name,
+    setFieldTouched,
+    setFieldValue,
+    userId,
+}) => {
     const dispatch = useDispatch();
 
+    // Redux State
     const { usersNames } = useSelector((state) => state.ui);
 
+    // Local State
     const [selectedValue, setSelectedValue] = useState(0);
 
     useEffect(() => {
@@ -43,6 +54,23 @@ export const SelectUsers = ({ onChange, name, userId }) => {
         }
     }, [userId, usersNames]);
 
+    const handleChange = (selectedOption) => {
+        if (setFieldValue && setFieldTouched) {
+            setFieldValue(name, selectedOption.value, () => {
+                setFieldTouched(name, true);
+            });
+        } else if (handleInputChange) {
+            console.log(selectedOption);
+            setSelectedValue(selectedOption);
+            handleInputChange({
+                target: {
+                    name,
+                    value: selectedOption.value,
+                },
+            });
+        }
+    };
+
     const options = usersNames.map((user) => ({
         value: user.id,
         label:
@@ -51,37 +79,46 @@ export const SelectUsers = ({ onChange, name, userId }) => {
             capitalizeFirstLetter(user.lastName),
     }));
 
-    const handleChange = (selectedOption) => {
-        console.log(selectedOption);
-        setSelectedValue(selectedOption);
-        onChange({
-            target: {
-                name,
-                value: selectedOption.value,
-            },
-        });
-    };
-
     return (
-        <Select
-            menuPortalTarget={document.body}
-            styles={{
-                menuPortal: (base) => ({ ...base, zIndex: 99999 }),
-            }}
-            className="text-truncate"
-            classNamePrefix="select"
-            value={selectedValue}
-            isSearchable
-            name={name}
-            options={options}
-            placeholder="Seleccione un usuario"
-            onChange={handleChange}
-        />
+        <div style={{ position: 'relative' }}>
+            <div
+                style={{
+                    color: 'rgba(107, 137, 148, 0.65)',
+                    fontSize: '14px',
+                    left: '10px',
+                    pointerEvents: 'none',
+                    position: 'absolute',
+                    top: '10px',
+                    zIndex: 1,
+                }}
+            >
+                Seleccione Usuario
+            </div>
+            <Select
+                menuPlacement="auto"
+                menuPortalTarget={document.body}
+                className={
+                    isInvalid ? 'is-invalid text-truncate' : 'text-truncate'
+                }
+                isInvalid={isInvalid}
+                isSearchable
+                name={name}
+                onChange={handleChange}
+                options={options}
+                placeholder="Seleccione un usuario"
+                styles={errorStyle}
+                value={selectedValue}
+            />
+        </div>
     );
 };
 
 SelectUsers.propTypes = {
-    userId: PropTypes.number,
-    onChange: PropTypes.func.isRequired,
+    errorMessage: PropTypes.string,
+    handleInputChange: PropTypes.func.isRequired,
+    isInvalid: PropTypes.bool,
     name: PropTypes.string.isRequired,
+    setFieldTouched: PropTypes.func,
+    setFieldValue: PropTypes.func,
+    userId: PropTypes.number,
 };

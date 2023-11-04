@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Navbar, Container, Nav, Col } from 'react-bootstrap';
+import { Navbar, Container, Nav, Col, Image } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 import {
@@ -11,32 +11,17 @@ import {
 } from '@fortawesome/free-brands-svg-icons';
 
 export const FooterBar = () => {
-    // return (
-    //     <footer className='footer mt-auto py-3 bg-light'>
-    //         <Container>
-    //             <Row>
-    //                 <Col>
-    //                     <span className='text-muted'>
-    //                         Place sticky footer content here.
-    //                     </span>
-    //                 </Col>
-    //             </Row>
-    //         </Container>
-    //     </footer>
-    // );
     return (
         <>
             <Navbar className="py-3 mt-auto navbar-dark bg-gradient" bg="dark">
                 <Container>
                     <Navbar.Brand className="">
                         <Link to="/">
-                            <img
-                                src="https://res.cloudinary.com/cloud-kames/image/upload/v1658686010/SIMB/simbLogo_vcpz3g.jpg"
-                                width="100"
-                                height="100"
+                            <Image
+                                src="https://res.cloudinary.com/cloud-kames/image/upload/c_crop,h_650,w_650/Tesis RFWID/mixoc4d2o7mr3j55h6qx.png"
                                 alt="Keep"
+                                style={{ maxHeight: '200px', width: 'auto' }}
                             />
-                            <div className="text-white text-center">RFWID</div>
                         </Link>
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="footer" />

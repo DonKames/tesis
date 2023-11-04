@@ -20,14 +20,15 @@ export const BranchSection = () => {
     const [selectedBranch, setSelectedBranch] = useState(null);
 
     const handleBranchChange = async (e) => {
-        // console.log(e);
         updateSelectedBranch(e.target.value);
     };
 
     const updateSelectedBranch = async (branchId) => {
-        const branchData = await getBranchById(branchId);
+        const { data: branchData } = await getBranchById(branchId);
 
-        const warehousesQty = await getWarehousesQty({ branchId });
+        const { data: warehousesQty } = await getWarehousesQty({
+            branchId,
+        });
 
         const branchDataWithWarehousesQty = {
             ...branchData,
@@ -43,6 +44,7 @@ export const BranchSection = () => {
             const fetchData = async () => {
                 if (!branchesNames.length) {
                     const branchesData = await getBranchesNames();
+
                     dispatch(uiSetBranchesNames(branchesData));
                 }
 
@@ -52,21 +54,19 @@ export const BranchSection = () => {
             };
 
             fetchData();
-        } catch (error) {
-            console.log(error);
-        }
+        } catch (error) {}
     }, [mainBranch]);
 
     return (
         <Card className="shadow h-100 animate__animated animate__fadeIn animate__fast">
             <Card.Header>
                 <Row>
-                    <Col className="d-flex align-items-center">
+                    <Col className="d-flex align-items-center col-auto">
                         <h3 className="mb-0">Sucursales</h3>
                     </Col>
                     <Col>
                         <SelectBranches
-                            onChange={handleBranchChange}
+                            handleInputChange={handleBranchChange}
                             name="mainBranch"
                             branchId={mainBranch?.id}
                         />

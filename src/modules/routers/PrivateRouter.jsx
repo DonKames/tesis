@@ -9,17 +9,33 @@ import { LocationsScreen } from '../locations/components/LocationsScreen';
 import { UsersScreen } from '../users/components/UsersScreen';
 import { SettingsScreen } from '../settings/components/SettingsScreen';
 import { Layout } from '../../shared/ui/components/Layout';
+import { useSelector } from 'react-redux';
+import { UnauthorizedAccess } from '../../shared/ui/components/UnauthorizedAccess';
 
 export const PrivateRouter = () => {
+    const { role } = useSelector((state) => state.auth);
+
+    const hasAccess = role === 1 || role === 2;
     return (
         <Routes>
             <Route path="/" element={<Layout />}>
                 <Route path="main" element={<MainScreen />} />
                 <Route path="tasks" element={<TasksScreen />} />
                 <Route path="products/*" element={<ProductsRouter />} />
-                <Route path="dashboard" element={<DashboardScreen />} />
+                {hasAccess ? (
+                    <Route path="dashboard" element={<DashboardScreen />} />
+                ) : (
+                    <Route path="*" element={<UnauthorizedAccess />} />
+                )}
                 <Route path="locations" element={<LocationsScreen />} />
-                <Route path="users" element={<UsersScreen />} />
+
+                {hasAccess ? (
+                    <Route path="users" element={<UsersScreen />} />
+                ) : (
+                    <Route path="*" element={<UnauthorizedAccess />} />
+                )}
+                {/* <Route path="users" element={<UsersScreen />} /> */}
+
                 <Route path="test" element={<MerchantApiTest />} />
                 <Route path="settings" element={<SettingsScreen />} />
             </Route>

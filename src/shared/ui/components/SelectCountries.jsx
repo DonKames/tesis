@@ -6,13 +6,21 @@ import Select from 'react-select';
 
 import { getCountries } from '../../../modules/locations/APIs/countriesAPI';
 import { uiSetCountries } from '../slice/uiSlice';
+import { errorStyle } from '../../../styles/selectStyles';
 
-export const SelectCountries = ({ handleInputChange, name, countryId }) => {
+export const SelectCountries = ({
+    countryId,
+    errorMessage,
+    handleInputChange,
+    isInvalid,
+    name,
+    setFieldTouched,
+    setFieldValue,
+}) => {
     const dispatch = useDispatch();
-
     const { countries } = useSelector((state) => state.ui);
 
-    const [selectedValue, setSelectedValue] = useState(0);
+    const [selectedValue, setSelectedValue] = useState(null);
 
     useEffect(() => {
         const fetchCountries = async () => {
@@ -42,32 +50,56 @@ export const SelectCountries = ({ handleInputChange, name, countryId }) => {
     }, [countryId, countries]);
 
     const handleChange = (selectedOption) => {
-        setSelectedValue(selectedOption);
-        handleInputChange({
-            target: {
-                name,
-                value: selectedOption.value,
-            },
-        });
+        if (setFieldValue && setFieldTouched) {
+            // Si estamos en un contexto de Formik
+            setFieldValue(name, selectedOption.value);
+            setFieldTouched(name, true);
+        } else if (handleInputChange) {
+            // Si estamos en un contexto independiente
+            setSelectedValue(selectedOption);
+            handleInputChange({
+                target: {
+                    name,
+                    value: selectedOption.value,
+                },
+            });
+        }
     };
 
+    const options = countries.map((country) => ({
+        label: country.name,
+        value: country.id,
+    }));
+
+    console.log('countries' + isInvalid);
+
     return (
-        <Select
-            isSearchable
-            name={name}
-            onChange={handleChange}
-            options={countries.map((country) => ({
-                value: country.id,
-                label: country.name,
-            }))}
-            placeholder="Seleccione su País"
-            value={selectedValue}
-        />
+        <>
+            <Select
+                className={isInvalid ? 'is-invalid' : ''}
+                isDisabled={true}
+                isInvalid={isInvalid}
+                isSearchable
+                name={name}
+                onChange={handleChange}
+                options={options}
+                placeholder="Seleccione su País"
+                styles={errorStyle}
+                value={selectedValue}
+            />
+            {isInvalid && (
+                <div className="invalid-feedback">{errorMessage}</div>
+            )}
+        </>
     );
 };
 
 SelectCountries.propTypes = {
-    handleInputChange: PropTypes.func.isRequired,
+    countryId: PropTypes.number,
+    errorMessage: PropTypes.string,
+    handleInputChange: PropTypes.func,
+    isInvalid: PropTypes.bool,
     name: PropTypes.string.isRequired,
-    countryId: PropTypes.number.isRequired,
+    setFieldTouched: PropTypes.func,
+    setFieldValue: PropTypes.func,
 };

@@ -7,27 +7,54 @@ export const getSkus = async (page = 1, limit = 10, showInactive = false) => {
         const response = await fetch(
             `${BASE_URL}/skus?page=${page}&limit=${limit}&showInactive=${showInactive}`,
         );
-        const finalResp = await handleFetchError(response);
-        return finalResp;
+
+        // console.log(response);
+        const { status, data, message } = await handleFetchError(response);
+
+        if (status === 'success') {
+            return { data, message };
+        } else {
+            throw new Error(message);
+        }
     } catch (error) {
         console.log('Error al obtener SKUS desde la API:', error);
-        return [];
+        return { data: null, message: error };
     }
 };
 
-export const getSkusQty = async (showInactive) => {
+export const getSkusQty = async ({ skuId, showInactive }) => {
     try {
-        const response = await fetch(
-            `${BASE_URL}/skus/qty?showInactive=${showInactive}`,
-        );
-        const finalResp = await handleFetchError(response);
-        return finalResp;
+        let url = `${BASE_URL}/skus/qty`;
+
+        const params = new URLSearchParams();
+
+        if (showInactive !== undefined) {
+            params.append('showInactive', showInactive);
+        }
+
+        if (skuId !== undefined) {
+            params.append('skuId', skuId);
+        }
+
+        if (params.toString()) {
+            url += `?${params.toString()}`;
+        }
+
+        const response = await fetch(url);
+
+        const { status, data, message } = await handleFetchError(response);
+
+        if (status === 'success') {
+            return { data, message };
+        } else {
+            throw new Error(message);
+        }
     } catch (error) {
         console.log(
             'Error al obtener la cantidad de Skus desde la API:',
             error,
         );
-        return [];
+        return { data: null, message: error };
     }
 };
 

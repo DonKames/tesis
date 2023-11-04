@@ -40,7 +40,7 @@ export const GeneralSection = () => {
     const { usersQty } = useSelector((state) => state.users);
 
     const graphData = productsCountByWarehouse?.map((element) => {
-        // console.log(element);
+        //
         return [element.warehouse_name || '', parseInt(element.product_count)];
     });
 
@@ -51,7 +51,6 @@ export const GeneralSection = () => {
                     const productsCountByWarehouse =
                         await getProductsCountByWarehouse();
 
-                    console.log(productsCountByWarehouse);
                     dispatch(
                         productsSetProductsCountByWarehouse(
                             productsCountByWarehouse,
@@ -61,30 +60,26 @@ export const GeneralSection = () => {
 
                 // Quantities
                 if (branchesQty === null) {
-                    const branchesQty = await getBranchesQty();
-                    console.log('GeneralSection branchesQty: ', branchesQty);
-                    dispatch(locationsSetBranchesQty(branchesQty));
+                    const { data, message } = await getBranchesQty({});
+
+                    dispatch(locationsSetBranchesQty(data));
                 }
 
                 if (warehousesQty === null) {
-                    const warehousesQty = await getWarehousesQty();
-                    dispatch(locationsSetWarehousesQty(warehousesQty));
+                    const { data, message } = await getWarehousesQty();
+                    dispatch(locationsSetWarehousesQty(data));
                 }
 
                 if (branchLocationsQty === null) {
-                    const branchLocationsQty = await getBranchLocationsQty();
-                    dispatch(
-                        locationsSetBranchLocationsQty(branchLocationsQty),
-                    );
+                    const { data, message } = await getBranchLocationsQty();
+                    dispatch(locationsSetBranchLocationsQty(data));
                 }
 
                 if (usersQty === null) {
                     const usersQty = await getUsersQty();
                     dispatch(usersSetUsersQty(usersQty));
                 }
-            } catch (error) {
-                console.log(error);
-            }
+            } catch (error) {}
         };
 
         fetchData();

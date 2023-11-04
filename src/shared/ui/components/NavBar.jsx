@@ -9,19 +9,20 @@ import { faBell } from '@fortawesome/free-solid-svg-icons';
 export const NavBar = () => {
     const dispatch = useDispatch();
 
-    const { displayName } = useSelector((state) => state.auth);
+    const { displayName, role } = useSelector((state) => state.auth);
+    // console.log(role);
 
     const formattedDisplayName = displayName
         ? displayName.charAt(0).toUpperCase() +
           displayName.slice(1).toLowerCase()
         : null;
 
-    console.log(displayName);
-
     const handleLogout = () => {
         console.log('Logout');
         dispatch(startLogout());
     };
+
+    const hasAccess = role === 1 || role === 2;
 
     return (
         <Navbar
@@ -43,15 +44,19 @@ export const NavBar = () => {
                             Productos
                         </Nav.Link>
 
-                        <Nav.Link as={Link} to="./dashboard">
-                            Informes
-                        </Nav.Link>
+                        {hasAccess && (
+                            <Nav.Link as={Link} to="./dashboard">
+                                Informes
+                            </Nav.Link>
+                        )}
                         <Nav.Link as={Link} to="./tasks">
                             Tareas
                         </Nav.Link>
-                        <Nav.Link as={Link} to="./users">
-                            Usuarios
-                        </Nav.Link>
+                        {hasAccess && (
+                            <Nav.Link as={Link} to="./users">
+                                Usuarios
+                            </Nav.Link>
+                        )}
                     </Nav>
                     <NavDropdown
                         className="ms-auto text-white"
