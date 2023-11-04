@@ -106,7 +106,7 @@ ModalProduct.propTypes = {
     handleInputChangeWithWarning: PropTypes.func.isRequired,
     handleModalChange: PropTypes.func.isRequired,
     handleUpdate: PropTypes.func.isRequired,
-    originalBranchId: PropTypes.number.isRequired,
+    originalBranchId: PropTypes.number,
     showModal: PropTypes.bool.isRequired,
     showWarning: PropTypes.bool.isRequired,
 };

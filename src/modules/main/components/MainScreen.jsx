@@ -38,7 +38,11 @@ export const MainScreen = () => {
                 </Col>
             </Row>
             <Row
-                className={`my-3 ${hasAccess ? '' : 'justify-content-evenly'}`}
+                className={`my-3 ${
+                    hasAccess
+                        ? 'justify-content-evenly'
+                        : 'justify-content-evenly'
+                }`}
             >
                 <Col xs={12} md={6} lg={3}>
                     <SkuSection />
