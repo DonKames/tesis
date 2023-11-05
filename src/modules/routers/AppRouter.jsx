@@ -33,6 +33,8 @@ export const AppRouter = () => {
             if (user?.uid) {
                 const respUid = await getUserByUid(user.uid);
 
+                console.log('userByUid:', respUid);
+
                 if (!respUid) {
                     updateUserUid(user.email, user.uid);
                 }
@@ -42,11 +44,15 @@ export const AppRouter = () => {
                     first_name: firstName,
                     fk_role_id: fkRoleId,
                     email,
+                    user_id: userId,
                 } = respUid;
+
+                console.log(userId);
 
                 dispatch(
                     authLogin({
                         uid,
+                        userId,
                         displayName: firstName,
                         role: fkRoleId,
                         email,

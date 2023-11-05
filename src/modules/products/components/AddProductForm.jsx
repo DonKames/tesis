@@ -7,8 +7,11 @@ import { productSchema } from '../../../validations/productSchema';
 import { SelectBranches } from '../../../shared/ui/components/SelectBranches';
 import { SelectWarehouses } from '../../../shared/ui/components/SelectWarehouses';
 import Swal from 'sweetalert2';
+import { useSelector } from 'react-redux';
 
 export const AddProductForm = () => {
+    const { userId } = useSelector((state) => state.auth);
+
     const handleFormSubmit = async (values) => {
         console.log(values);
         const { data: epcCheck } = await getProductByEPC(values.epc);
@@ -16,8 +19,10 @@ export const AddProductForm = () => {
         console.log(epcCheck);
 
         if (epcCheck === null) {
-            const response = await createProduct(values);
-            if (response) {
+            console.log('userId:', userId);
+            const { data } = await createProduct(values, userId);
+            console.log('product data: ', data);
+            if (data) {
                 Swal.fire({
                     icon: 'success',
                     title: 'Producto creado con éxito',

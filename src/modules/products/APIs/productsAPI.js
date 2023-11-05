@@ -133,15 +133,17 @@ export const getProductByEPC = async (epc) => {
     }
 };
 
-export const createProduct = async (productData) => {
+export const createProduct = async (productData, userId) => {
     try {
-        console.log(productData);
+        console.log(productData, userId);
+
+        const dataToSend = { ...productData, userId };
         const response = await fetch(`${BASE_URL}/products`, {
             method: 'POST', // especifica el método HTTP
             headers: {
                 'Content-Type': 'application/json', // especifica el tipo de contenido
             },
-            body: JSON.stringify(productData), // convierte los datos del país a una cadena JSON
+            body: JSON.stringify(dataToSend), // convierte los datos del país a una cadena JSON
         });
 
         const { data, status, message } = await handleFetchError(response);

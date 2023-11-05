@@ -69,14 +69,21 @@ export const startRegisterNameEmailPass = (name, email, password) => {
     };
 };
 
-export const startLoginEmailPassword = (email, password) => {
+export const startLoginEmailPassword = (
+    email,
+    password,
+    first_name,
+    fk_role_id,
+    userId,
+) => {
     return async (dispatch) => {
+        console.log('auth userId:', userId);
         dispatch(uiStartLoading());
 
         signInWithEmailAndPassword(auth, email, password)
             .then(({ user }) => {
                 const { uid, displayName } = user;
-                dispatch(authLogin({ uid, displayName }));
+                dispatch(authLogin({ uid, displayName, userId }));
                 dispatch(uiFinishLoading());
             })
             .catch((e) => {

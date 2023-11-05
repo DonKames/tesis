@@ -46,7 +46,7 @@ export const LoginScreen = () => {
 
             if (resp) {
                 console.log(resp);
-                const { uid, first_name, fk_role_id } = resp;
+                const { uid, first_name, fk_role_id, user_id } = resp;
 
                 dispatch(
                     startLoginEmailPassword(
@@ -54,6 +54,7 @@ export const LoginScreen = () => {
                         password,
                         first_name,
                         fk_role_id,
+                        user_id,
                     ),
                 );
                 dispatch(authIsRegistered(true));
