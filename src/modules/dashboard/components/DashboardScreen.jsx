@@ -1,5 +1,6 @@
 import React from 'react';
 import { Card, Col, Container, Row } from 'react-bootstrap';
+import { InventoryCard } from './cards/InventoryCard';
 
 export const DashboardScreen = () => {
     return (
@@ -7,6 +8,11 @@ export const DashboardScreen = () => {
             <Row className="my-3">
                 <Col>
                     <h1>Informes</h1>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <InventoryCard />
                 </Col>
             </Row>
             <Row className="my-3">

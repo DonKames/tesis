@@ -51,6 +51,8 @@ export const getProductsQty = async ({ warehouseId, showInactive }) => {
 
         const { status, data, message } = await handleFetchError(response);
 
+        console.log(status, data, message);
+
         if (status === 'success') {
             return { data, message };
         } else {
