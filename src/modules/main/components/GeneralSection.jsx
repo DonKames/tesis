@@ -60,18 +60,18 @@ export const GeneralSection = () => {
 
                 // Quantities
                 if (branchesQty === null) {
-                    const { data, message } = await getBranchesQty({});
+                    const { data } = await getBranchesQty({});
 
                     dispatch(locationsSetBranchesQty(data));
                 }
 
                 if (warehousesQty === null) {
-                    const { data, message } = await getWarehousesQty();
+                    const { data } = await getWarehousesQty();
                     dispatch(locationsSetWarehousesQty(data));
                 }
 
                 if (branchLocationsQty === null) {
-                    const { data, message } = await getBranchLocationsQty();
+                    const { data } = await getBranchLocationsQty();
                     dispatch(locationsSetBranchLocationsQty(data));
                 }
 
