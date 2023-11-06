@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-    Card,
-    Button,
-    ListGroup,
-    Row,
-    Col,
-    ListGroupItem,
-} from 'react-bootstrap';
+import { Card, Button, ListGroup, Row, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     getProductsCountByWarehouse,
