@@ -52,7 +52,7 @@ export const InventoryCard = () => {
                 }
 
                 if (!movements.length) {
-                    const data = await getLastAddedProducts();
+                    const data = await getLastAddedProducts(5);
 
                     console.log(data);
                 }
