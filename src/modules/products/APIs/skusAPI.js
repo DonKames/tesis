@@ -70,6 +70,23 @@ export const getSkusNames = async () => {
     }
 };
 
+export const getSkusWithLowInventory = async () => {
+    try {
+        const response = await fetch(
+            `${BASE_URL}/skus/getSkusWithLowInventory`,
+        );
+        // return await handleFetchError(response);
+        const finalResp = await handleFetchError(response);
+        return finalResp;
+    } catch (error) {
+        console.log(
+            'Error al obtener SKUS con inventario bajo desde la API:',
+            error,
+        );
+        return [];
+    }
+};
+
 export const createSku = async (skuData) => {
     try {
         console.log(skuData);

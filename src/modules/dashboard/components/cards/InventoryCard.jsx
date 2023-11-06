@@ -5,7 +5,10 @@ import {
     getProductsCountByWarehouse,
     getProductsQty,
 } from '../../../products/APIs/productsAPI';
-import { productsSetProductQty } from '../../../products/slice/productsSlice';
+import {
+    productsSetProductQty,
+    productsSetSkusWithLowInventory,
+} from '../../../products/slice/productsSlice';
 import { CustomBarChart } from '../../../../shared/ui/components/charts/CustomBarChart';
 import { getLastAddedProducts } from '../../../movements/APIs/movementAPI';
 import { movementsSetData } from '../../../movements/movementSlice';
@@ -13,6 +16,7 @@ import {
     timestampDate,
     timestampTime,
 } from '../../../../shared/utils/stringUtils';
+import { getSkusWithLowInventory } from '../../../products/APIs/skusAPI';
 
 export const InventoryCard = () => {
     // {
@@ -24,7 +28,9 @@ export const InventoryCard = () => {
 
     const [warehouseData, setWarehouseData] = useState(null);
 
-    const { productsQty } = useSelector((state) => state.products);
+    const { productsQty, skusWithLowInventory } = useSelector(
+        (state) => state.products,
+    );
     const { lastAdded } = useSelector((state) => state.movements);
 
     const getChartData = async () => {
@@ -63,6 +69,12 @@ export const InventoryCard = () => {
 
                     dispatch(movementsSetData({ lastAdded: data }));
                 }
+
+                if (!skusWithLowInventory.length) {
+                    const { data } = getSkusWithLowInventory();
+
+                    dispatch(productsSetSkusWithLowInventory(data));
+                }
             } catch (error) {
                 console.log(error);
             }
@@ -95,20 +107,22 @@ export const InventoryCard = () => {
 
                 {/* Sección de Ítems Recientemente Añadidos */}
                 <ListGroup.Item>
-                    <Col xs={12} lg={4}>
+                    <Row>
+                        {/* <Col xs={12} lg={12}> */}
                         <h4>Ítems Recientemente Añadidos</h4>
                         {lastAdded.map((m) => (
-                            <Card key={m.id} className="mb-2">
-                                <Card.Header>
-                                    <Card.Title>
-                                        <strong>{m.name}</strong>
-                                    </Card.Title>
-                                </Card.Header>
+                            <Col key={m.id} xs={12} lg={4}>
+                                <Card className="mb-2">
+                                    <Card.Header>
+                                        <Card.Title>
+                                            <strong>{m.name}</strong>
+                                        </Card.Title>
+                                    </Card.Header>
 
-                                {/*
+                                    {/*
                                     // * Para ver como queda con lineas separadoras
                                 */}
-                                {/* <ListGroup>
+                                    {/* <ListGroup>
                                     <ListGroupItem>
                                         <Row className="mb-2">
                                             <Col xs={4}>
@@ -127,64 +141,69 @@ export const InventoryCard = () => {
                                         </Row>
                                     </ListGroupItem>
                                 </ListGroup> */}
-                                <Card.Body>
-                                    <Row className="mb-2">
-                                        <Col xs={4}>
-                                            <Card.Text>Descripción</Card.Text>
-                                        </Col>
-                                        <Col xs={1}>
-                                            <Card.Text>:</Card.Text>
-                                        </Col>
-                                        <Col xs={7}>
-                                            <Card.Text>
-                                                {m.description}
-                                            </Card.Text>
-                                        </Col>
-                                    </Row>
-                                    <Row className="mb-2">
-                                        <Col xs={4}>
-                                            <Card.Text>Usuario</Card.Text>
-                                        </Col>
-                                        <Col xs={1}>
-                                            <Card.Text>:</Card.Text>
-                                        </Col>
-                                        <Col xs={7}>
-                                            <Card.Text>
-                                                {m.userFirstName +
-                                                    ' ' +
-                                                    m.userLastName}
-                                            </Card.Text>
-                                        </Col>
-                                    </Row>
-                                    <Row className="mb-2">
-                                        <Col xs={4}>
-                                            <Card.Text>EPC</Card.Text>
-                                        </Col>
-                                        <Col xs={1}>
-                                            <Card.Text>:</Card.Text>
-                                        </Col>
-                                        <Col xs={7}>
-                                            <Card.Text>{m.epc}</Card.Text>
-                                        </Col>
-                                    </Row>
-                                    <Row className="mb-2">
-                                        <Col xs={4}>
-                                            <Card.Text>Fecha</Card.Text>
-                                        </Col>
-                                        <Col xs={1}>
-                                            <Card.Text>:</Card.Text>
-                                        </Col>
-                                        <Col xs={7}>
-                                            <Card.Text>
-                                                {timestampDate(m.timestamp)} -{' '}
-                                                {timestampTime(m.timestamp)}
-                                            </Card.Text>
-                                        </Col>
-                                    </Row>
-                                </Card.Body>
-                            </Card>
+                                    <Card.Body>
+                                        <Row className="mb-2">
+                                            <Col xs={4}>
+                                                <Card.Text>
+                                                    Descripción
+                                                </Card.Text>
+                                            </Col>
+                                            <Col xs={1}>
+                                                <Card.Text>:</Card.Text>
+                                            </Col>
+                                            <Col xs={7}>
+                                                <Card.Text>
+                                                    {m.description}
+                                                </Card.Text>
+                                            </Col>
+                                        </Row>
+                                        <Row className="mb-2">
+                                            <Col xs={4}>
+                                                <Card.Text>Usuario</Card.Text>
+                                            </Col>
+                                            <Col xs={1}>
+                                                <Card.Text>:</Card.Text>
+                                            </Col>
+                                            <Col xs={7}>
+                                                <Card.Text>
+                                                    {m.userFirstName +
+                                                        ' ' +
+                                                        m.userLastName}
+                                                </Card.Text>
+                                            </Col>
+                                        </Row>
+                                        <Row className="mb-2">
+                                            <Col xs={4}>
+                                                <Card.Text>EPC</Card.Text>
+                                            </Col>
+                                            <Col xs={1}>
+                                                <Card.Text>:</Card.Text>
+                                            </Col>
+                                            <Col xs={7}>
+                                                <Card.Text>{m.epc}</Card.Text>
+                                            </Col>
+                                        </Row>
+                                        <Row className="mb-2">
+                                            <Col xs={4}>
+                                                <Card.Text>Fecha</Card.Text>
+                                            </Col>
+                                            <Col xs={1}>
+                                                <Card.Text>:</Card.Text>
+                                            </Col>
+                                            <Col xs={7}>
+                                                <Card.Text>
+                                                    {timestampDate(m.timestamp)}{' '}
+                                                    -{' '}
+                                                    {timestampTime(m.timestamp)}
+                                                </Card.Text>
+                                            </Col>
+                                        </Row>
+                                    </Card.Body>
+                                </Card>
+                            </Col>
                         ))}
-                    </Col>
+                        {/* </Col> */}
+                    </Row>
                 </ListGroup.Item>
 
                 {/* Sección de Alertas de Stock Bajo */}

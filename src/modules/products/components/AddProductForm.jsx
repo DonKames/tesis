@@ -1,15 +1,22 @@
 import React from 'react';
 import { Button, Card, FloatingLabel, Form } from 'react-bootstrap';
-import { createProduct, getProductByEPC } from '../APIs/productsAPI';
+import {
+    createProduct,
+    getProductByEPC,
+    getProductsQty,
+} from '../APIs/productsAPI';
 import { useFormik } from 'formik';
 import { SelectSkus } from '../../../shared/ui/components/SelectSkus';
 import { productSchema } from '../../../validations/productSchema';
 import { SelectBranches } from '../../../shared/ui/components/SelectBranches';
 import { SelectWarehouses } from '../../../shared/ui/components/SelectWarehouses';
 import Swal from 'sweetalert2';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { getBranchesQty } from '../../locations/APIs/branchesAPI';
+import { productsSetProductQty } from '../slice/productsSlice';
 
 export const AddProductForm = () => {
+    const dispatch = useDispatch();
     const { userId } = useSelector((state) => state.auth);
 
     const handleFormSubmit = async (values) => {
@@ -23,6 +30,10 @@ export const AddProductForm = () => {
             const { data } = await createProduct(values, userId);
             console.log('product data: ', data);
             if (data) {
+                const { data } = getProductsQty({});
+                console.log(data);
+                dispatch(productsSetProductQty(data));
+
                 Swal.fire({
                     icon: 'success',
                     title: 'Producto creado con éxito',
