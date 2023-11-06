@@ -159,7 +159,9 @@ export const TableSkus = () => {
             <td className="align-middle">{sku.name}</td>
             <td className="align-middle">{sku.description}</td>
             <td className="align-middle text-center">{sku.stock}</td>
-            <td className="align-middle text-center">{sku.minimumStock}</td>
+            <td className="align-middle text-center">
+                {sku.minimumStock || 'Sin Determinar'}
+            </td>
             <td className="align-middle text-end">
                 <Button
                     className="me-1 shadow"

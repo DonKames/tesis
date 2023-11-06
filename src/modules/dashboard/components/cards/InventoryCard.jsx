@@ -56,6 +56,7 @@ export const InventoryCard = () => {
                     const { data } = await getLastAddedProducts(5);
 
                     console.log(data);
+
                     dispatch(movementsSetData({ lastAdded: data }));
                 }
             } catch (error) {

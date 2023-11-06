@@ -62,6 +62,7 @@ export const AddSkuForm = () => {
             sku: '',
             lote: '',
             order: '',
+            active: true,
         },
         validationSchema: skuSchema,
         onSubmit: handleFormSubmit,

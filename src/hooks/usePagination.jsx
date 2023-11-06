@@ -21,7 +21,7 @@ const usePagination = (
 
         if (showInactive !== undefined) {
             getItemsQty({ showInactive }).then((newItemsQtyInfo) => {
-                // console.log(newItemsQtyInfo);
+                console.log(newItemsQtyInfo);
                 const { data } = newItemsQtyInfo;
 
                 // console.log(data);
