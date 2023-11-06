@@ -16,10 +16,10 @@ export const AddProductForm = () => {
         console.log(values);
         const { data: epcCheck } = await getProductByEPC(values.epc);
 
-        console.log(epcCheck);
+        // console.log(epcCheck);
 
         if (epcCheck === null) {
-            console.log('userId:', userId);
+            // console.log('userId:', userId);
             const { data } = await createProduct(values, userId);
             console.log('product data: ', data);
             if (data) {

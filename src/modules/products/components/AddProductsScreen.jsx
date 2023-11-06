@@ -16,8 +16,9 @@ export const AddProductsScreen = () => {
     useEffect(() => {
         const fetchData = async () => {
             if (!branches.length) {
-                const branches = await getBranches();
-                dispatch(locationsSetBranches(branches));
+                // !Corregir
+                const { data } = await getBranches();
+                dispatch(locationsSetBranches(data));
             }
         };
         fetchData();

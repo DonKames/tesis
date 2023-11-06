@@ -32,6 +32,28 @@ export const getMovementById = async (movementId) => {
     }
 };
 
+export const getLastAddedProducts = async (limit = 5) => {
+    try {
+        // Asegúrate de que la URL coincida con la ruta definida en el servidor para obtener los últimos productos agregados
+        const response = await fetch(
+            `${BASE_URL}/movements/last-added?limit=${limit}`,
+        );
+        const { status, data, message } = await handleFetchError(response);
+        if (status === 'success') {
+            // La API devuelve los últimos productos agregados según el límite especificado
+            return { data, message };
+        } else {
+            throw new Error(message);
+        }
+    } catch (error) {
+        console.log(
+            'Error al obtener los últimos productos agregados desde la API:',
+            error,
+        );
+        return { data: null, error };
+    }
+};
+
 export const createMovement = async (movementData) => {
     try {
         const response = await fetch(`${BASE_URL}/movements`, {

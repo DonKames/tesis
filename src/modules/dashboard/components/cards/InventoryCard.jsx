@@ -7,6 +7,7 @@ import {
 } from '../../../products/APIs/productsAPI';
 import { productsSetProductQty } from '../../../products/slice/productsSlice';
 import { CustomBarChart } from '../../../../shared/ui/components/charts/CustomBarChart';
+import { getLastAddedProducts } from '../../../movements/APIs/movementAPI';
 
 export const InventoryCard = () => {
     // {
@@ -16,9 +17,10 @@ export const InventoryCard = () => {
     // }
     const dispatch = useDispatch();
 
-    const { productsQty } = useSelector((state) => state.products);
-
     const [warehouseData, setWarehouseData] = useState(null);
+
+    const { productsQty } = useSelector((state) => state.products);
+    const { movements } = useSelector((state) => state.movements);
 
     const getChartData = async () => {
         const data = await getProductsCountByWarehouse();
@@ -48,6 +50,12 @@ export const InventoryCard = () => {
 
                     dispatch(productsSetProductQty(data));
                 }
+
+                if (!movements.length) {
+                    const data = await getLastAddedProducts();
+
+                    console.log(data);
+                }
             } catch (error) {
                 console.log(error);
             }
@@ -65,10 +73,6 @@ export const InventoryCard = () => {
                         <Col className="mt-3">
                             <h6>Visión General del Inventario</h6>
                             <div>Total de Ítems: {productsQty}</div>
-                            <div>
-                                Ítems por Categoría:{' '}
-                                {/* {inventoryOverview.itemsPerCategory} */}
-                            </div>
                             {/* <div>Estado del Stock: {inventoryOverview.stockStatus}</div> */}
                         </Col>
                         <Col>

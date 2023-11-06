@@ -146,6 +146,8 @@ export const createProduct = async (productData, userId) => {
             body: JSON.stringify(dataToSend), // convierte los datos del país a una cadena JSON
         });
 
+        console.log(response);
+
         const { data, status, message } = await handleFetchError(response);
 
         // console.log('createProduct: ', status, data, message);
