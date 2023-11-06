@@ -38,7 +38,10 @@ export const getLastAddedProducts = async (limit = 5) => {
         const response = await fetch(
             `${BASE_URL}/movements/last-added?limit=${limit}`,
         );
+
+        // console.log(response);
         const { status, data, message } = await handleFetchError(response);
+
         if (status === 'success') {
             // La API devuelve los últimos productos agregados según el límite especificado
             return { data, message };

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Button, ListGroup, Badge, Row, Col } from 'react-bootstrap';
+import { Card, Button, ListGroup, Row, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     getProductsCountByWarehouse,
@@ -8,6 +8,7 @@ import {
 import { productsSetProductQty } from '../../../products/slice/productsSlice';
 import { CustomBarChart } from '../../../../shared/ui/components/charts/CustomBarChart';
 import { getLastAddedProducts } from '../../../movements/APIs/movementAPI';
+import { movementsSetData } from '../../../movements/movementSlice';
 
 export const InventoryCard = () => {
     // {
@@ -20,11 +21,11 @@ export const InventoryCard = () => {
     const [warehouseData, setWarehouseData] = useState(null);
 
     const { productsQty } = useSelector((state) => state.products);
-    const { movements } = useSelector((state) => state.movements);
+    const { lastAdded } = useSelector((state) => state.movements);
 
     const getChartData = async () => {
         const data = await getProductsCountByWarehouse();
-        console.log(data);
+        // console.log(data);
 
         const formattedData = data.map((element) => {
             return {
@@ -46,15 +47,16 @@ export const InventoryCard = () => {
                 if (!productsQty) {
                     const { data } = await getProductsQty({});
 
-                    console.log(data);
+                    // console.log(data);
 
                     dispatch(productsSetProductQty(data));
                 }
 
-                if (!movements.length) {
-                    const data = await getLastAddedProducts(5);
+                if (!lastAdded.length) {
+                    const { data } = await getLastAddedProducts(5);
 
                     console.log(data);
+                    dispatch(movementsSetData({ lastAdded: data }));
                 }
             } catch (error) {
                 console.log(error);
@@ -90,16 +92,24 @@ export const InventoryCard = () => {
                 <ListGroup.Item>
                     <h6>Ítems Recientemente Añadidos</h6>
                     <div className="recent-items-container">
-                        {/* {recentItems.map((item, index) => (
-                            <Badge
-                                pill
-                                bg="secondary"
-                                key={index}
-                                className="me-2"
-                            >
-                                {item.name}
-                            </Badge>
-                        ))} */}
+                        {lastAdded.map((m) => (
+                            <Card key={m.id}>
+                                <Card.Body>
+                                    <Card.Title>{m.productName}</Card.Title>
+                                    <Card.Text>
+                                        Cantidad: {m.quantity}
+                                    </Card.Text>
+                                </Card.Body>
+                            </Card>
+                            // <Badge
+                            //     pill
+                            //     bg="secondary"
+                            //     key={m.id}
+                            //     className="me-2"
+                            // >
+                            //     {m.productId}
+                            // </Badge>
+                        ))}
                     </div>
                 </ListGroup.Item>
 
