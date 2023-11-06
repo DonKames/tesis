@@ -7,8 +7,11 @@ import Swal from 'sweetalert2';
 
 import { BranchModal } from './Modals/BranchModal';
 import { branchSchema } from '../../../validations/branchSchema';
-import { createBranch, getBranches } from '../APIs/branchesAPI';
-import { locationsSetBranches } from '../slice/locationsSlice';
+import { createBranch, getBranches, getBranchesQty } from '../APIs/branchesAPI';
+import {
+    locationsSetBranches,
+    locationsSetBranchesQty,
+} from '../slice/locationsSlice';
 
 export const AddBranchModal = () => {
     const dispatch = useDispatch();
@@ -29,10 +32,20 @@ export const AddBranchModal = () => {
 
             toggleModal(false);
 
-            const { branchesData } = await getBranches();
+            const { data: branchesData } = await getBranches();
+
+            // console.log(branchesData);
 
             if (branchesData) {
                 dispatch(locationsSetBranches(branchesData));
+            }
+
+            const { data } = await getBranchesQty({});
+
+            console.log(data);
+
+            if (branchesData) {
+                dispatch(locationsSetBranchesQty(data));
             }
         } else {
             Swal.fire({

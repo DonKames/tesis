@@ -26,7 +26,7 @@ export const BranchSection = () => {
     const updateSelectedBranch = async (branchId) => {
         const { data: branchData } = await getBranchById(branchId);
 
-        console.log('branchData', branchData);
+        // console.log('branchData', branchData);
 
         const { data: warehousesQty } = await getWarehousesQty({
             branchId,
@@ -59,7 +59,7 @@ export const BranchSection = () => {
         } catch (error) {}
     }, [mainBranch]);
 
-    console.log(selectedBranch);
+    // console.log(selectedBranch);
     return (
         <Card className="shadow h-100 animate__animated animate__fadeIn animate__fast">
             <Card.Header>
@@ -88,7 +88,7 @@ export const BranchSection = () => {
                 </Card.Text>
                 <Card.Text>
                     Cantidad de Bodegas:{' '}
-                    <strong>{selectedBranch?.warehousesQty}</strong>
+                    <strong>{selectedBranch?.warehousesQty || 0}</strong>
                 </Card.Text>
             </Card.Body>
         </Card>

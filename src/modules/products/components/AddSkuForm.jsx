@@ -28,6 +28,7 @@ export const AddSkuForm = () => {
         } else {
             try {
                 const response = await createSku(values);
+
                 if (response) {
                     Swal.fire({
                         icon: 'success',

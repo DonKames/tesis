@@ -56,68 +56,71 @@ export const GeneralSection = () => {
 
     // console.log(graphData);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                if (productsQty === null) {
-                    const { data } = await getProductsQty({});
+    useEffect(
+        () => {
+            const fetchData = async () => {
+                console.log('se reinicia');
+                try {
+                    if (productsQty === null) {
+                        const { data } = await getProductsQty({});
 
-                    console.log('data', data);
+                        console.log('data', data);
 
-                    dispatch(productsSetProductQty(data));
-                }
+                        dispatch(productsSetProductQty(data));
+                    }
 
-                if (!productsCountByWarehouse.length) {
-                    const productsCountByWarehouse =
-                        await getProductsCountByWarehouse();
+                    if (!productsCountByWarehouse.length) {
+                        const productsCountByWarehouse =
+                            await getProductsCountByWarehouse();
 
-                    dispatch(
-                        productsSetProductsCountByWarehouse(
-                            productsCountByWarehouse,
-                        ),
-                    );
-                }
+                        dispatch(
+                            productsSetProductsCountByWarehouse(
+                                productsCountByWarehouse,
+                            ),
+                        );
+                    }
 
-                // Quantities
-                if (branchesQty === null) {
-                    const { data } = await getBranchesQty({});
+                    // Quantities
+                    if (branchesQty === null) {
+                        const { data } = await getBranchesQty({});
 
-                    dispatch(locationsSetBranchesQty(data));
-                }
+                        dispatch(locationsSetBranchesQty(data));
+                    }
 
-                if (warehousesQty === null) {
-                    const { data } = await getWarehousesQty();
-                    dispatch(locationsSetWarehousesQty(data));
-                }
+                    if (warehousesQty === null) {
+                        const { data } = await getWarehousesQty();
+                        dispatch(locationsSetWarehousesQty(data));
+                    }
 
-                if (branchLocationsQty === null) {
-                    // console.log(response);
-                    const { data } = await getBranchLocationsQty({});
-                    dispatch(locationsSetBranchLocationsQty(data));
-                }
+                    if (branchLocationsQty === null) {
+                        // console.log(response);
+                        const { data } = await getBranchLocationsQty({});
+                        dispatch(locationsSetBranchLocationsQty(data));
+                    }
 
-                if (usersQty === null) {
-                    const { data } = await getUsersQty({});
-                    dispatch(usersSetUsersQty(data));
-                }
-            } catch (error) {}
-        };
+                    if (usersQty === null) {
+                        const { data } = await getUsersQty({});
+                        dispatch(usersSetUsersQty(data));
+                    }
+                } catch (error) {}
+            };
 
-        fetchData();
-    }, [
-        branchLocationsQty,
-        branchesQty,
-        productsCountByWarehouse,
-        usersQty,
-        warehousesQty,
-        dispatch,
-    ]);
+            fetchData();
+        },
+        [
+            // branchLocationsQty,
+            // branchesQty,
+            // productsCountByWarehouse,
+            // usersQty,
+            // warehousesQty,
+        ],
+    );
 
     return (
         <>
             <Card className="shadow h-100 animate__animated animate__fadeIn animate__fast">
-                <Card.Header className="d-flex align-items-center my-3">
-                    <h3 className="mb-0">Resumen General</h3>
+                <Card.Header className="d-flex align-items-center mt-3 mb-3">
+                    <h3 className="">Resumen General</h3>
                 </Card.Header>
                 <Card.Body className="d-flex flex-column">
                     <Row>
@@ -146,7 +149,8 @@ export const GeneralSection = () => {
                                             <Card.Text>
                                                 <strong>
                                                     {' '}
-                                                    {mainBranch?.name}
+                                                    {mainBranch?.name ||
+                                                        'Sin Determinar'}
                                                 </strong>
                                             </Card.Text>
                                         </Col>
@@ -164,15 +168,19 @@ export const GeneralSection = () => {
                                         </Col>
                                         <Col xs={5} className="ps-0">
                                             <Card.Text>
-                                                Bodega Principal:
+                                                Bodega Principal
                                             </Card.Text>
                                         </Col>
+                                        <Col xs={1} className="ps-0">
+                                            <Card.Text>:</Card.Text>
+                                        </Col>
 
-                                        <Col xs={6} className="ps-0">
+                                        <Col xs={5} className="ps-0">
                                             <Card.Text>
                                                 <strong>
                                                     {' '}
-                                                    {mainWarehouse?.name}
+                                                    {mainWarehouse?.name ||
+                                                        'Sin Determinar'}
                                                 </strong>
                                             </Card.Text>
                                         </Col>
@@ -190,12 +198,19 @@ export const GeneralSection = () => {
                                         </Col>
                                         <Col xs={5} className="ps-0">
                                             <Card.Text>
-                                                Total de Sucursales:
+                                                Total de Sucursales
                                             </Card.Text>
                                         </Col>
-                                        <Col xs={6} className="ps-0">
+                                        <Col xs={1} className="ps-0">
+                                            <Card.Text>:</Card.Text>
+                                        </Col>
+                                        <Col xs={5} className="ps-0">
                                             <Card.Text>
-                                                <strong> {branchesQty}</strong>
+                                                <strong>
+                                                    {' '}
+                                                    {branchesQty ||
+                                                        'Sin Determinar'}
+                                                </strong>
                                             </Card.Text>
                                         </Col>
                                     </Row>
@@ -215,11 +230,15 @@ export const GeneralSection = () => {
                                                 Total de Bodegas:
                                             </Card.Text>
                                         </Col>
-                                        <Col xs={6} className="ps-0">
+
+                                        <Col xs={1} className="ps-0">
+                                            <Card.Text>:</Card.Text>
+                                        </Col>
+                                        <Col xs={5} className="ps-0">
                                             <Card.Text>
                                                 <strong>
                                                     {' '}
-                                                    {warehousesQty}
+                                                    {warehousesQty || 0}
                                                 </strong>
                                             </Card.Text>
                                         </Col>
@@ -236,13 +255,16 @@ export const GeneralSection = () => {
                                         </Col>
                                         <Col xs={5} className="ps-0">
                                             <Card.Text>
-                                                Total de Ubicaciones:{' '}
+                                                Total de Ubicaciones:
                                             </Card.Text>
                                         </Col>
-                                        <Col xs={6} className="ps-0">
+                                        <Col xs={1} className="ps-0">
+                                            <Card.Text>:</Card.Text>
+                                        </Col>
+                                        <Col xs={5} className="ps-0">
                                             <Card.Text>
                                                 <strong>
-                                                    {branchLocationsQty}
+                                                    {branchLocationsQty || 0}
                                                 </strong>
                                             </Card.Text>
                                         </Col>
@@ -258,10 +280,13 @@ export const GeneralSection = () => {
                                         </Col>
                                         <Col xs={5} className="ps-0">
                                             <Card.Text>
-                                                Total de Usuarios:{' '}
+                                                Total de Usuarios:
                                             </Card.Text>
                                         </Col>
-                                        <Col xs={6} className="ps-0">
+                                        <Col xs={1} className="ps-0">
+                                            <Card.Text>:</Card.Text>
+                                        </Col>
+                                        <Col xs={5} className="ps-0">
                                             <Card.Text>
                                                 <strong>{usersQty}</strong>
                                             </Card.Text>
@@ -279,10 +304,13 @@ export const GeneralSection = () => {
                                         </Col>
                                         <Col xs={5} className="ps-0">
                                             <Card.Text>
-                                                Total de Productos:{' '}
+                                                Total de Productos
                                             </Card.Text>
                                         </Col>
-                                        <Col xs={6} className="ps-0">
+                                        <Col xs={1} className="ps-0">
+                                            <Card.Text>:</Card.Text>
+                                        </Col>
+                                        <Col xs={5} className="ps-0">
                                             <Card.Text>
                                                 <strong>{productsQty}</strong>
                                             </Card.Text>

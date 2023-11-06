@@ -71,7 +71,7 @@ export const SelectCountries = ({
         value: country.id,
     }));
 
-    console.log('countries' + isInvalid);
+    // console.log('countries', isInvalid);
 
     return (
         <>
