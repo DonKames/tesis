@@ -72,9 +72,7 @@ export const getSkusNames = async () => {
 
 export const getSkusWithLowInventory = async () => {
     try {
-        const response = await fetch(
-            `${BASE_URL}/skus/getSkusWithLowInventory`,
-        );
+        const response = await fetch(`${BASE_URL}/skus/skusWithLowInventory`);
         // return await handleFetchError(response);
         const finalResp = await handleFetchError(response);
         return finalResp;
