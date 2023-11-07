@@ -74,8 +74,11 @@ export const getSkusWithLowInventory = async () => {
     try {
         const response = await fetch(`${BASE_URL}/skus/skusWithLowInventory`);
         // return await handleFetchError(response);
-        const finalResp = await handleFetchError(response);
-        return finalResp;
+        const { data, status, message } = await handleFetchError(response);
+
+        if (status === 'success') {
+            return { data, message };
+        }
     } catch (error) {
         console.log(
             'Error al obtener SKUS con inventario bajo desde la API:',

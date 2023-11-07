@@ -54,13 +54,13 @@ export const InventoryCard = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                if (!productsQty) {
-                    const { data } = await getProductsQty({});
+                const { data } = await getProductsQty({
+                    showInactive: true,
+                });
 
-                    // console.log(data);
+                // console.log(data);
 
-                    dispatch(productsSetProductQty(data));
-                }
+                dispatch(productsSetProductQty(data));
 
                 if (!lastAdded.length) {
                     const { data } = await getLastAddedProducts(6);
@@ -72,6 +72,8 @@ export const InventoryCard = () => {
 
                 if (!skusWithLowInventory.length) {
                     const { data } = getSkusWithLowInventory();
+
+                    console.log(data);
 
                     dispatch(productsSetSkusWithLowInventory(data));
                 }
