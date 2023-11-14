@@ -8,6 +8,7 @@ const initialState = {
     skusQty: null,
     skus: [],
     productsCountByWarehouse: [],
+    countInWarehousesBySku: [],
     skusWithLowInventory: [],
 };
 
@@ -45,6 +46,12 @@ export const productsSlice = createSlice({
             skusWithLowInventory: action.payload,
         }),
 
+        // ProductsCountInWarehousesBySku
+        productsSetCountInWarehousesBySku: (state, action) => ({
+            ...state,
+            countInWarehousesBySku: action.payload,
+        }),
+
         // ProductsCountByWarehouse
         productsSetProductsCountByWarehouse: (state, action) => ({
             ...state,
@@ -63,6 +70,7 @@ export const {
     productsSetSkusQty,
     productsSetSkus,
     productsSetSkusWithLowInventory,
+    productsSetCountInWarehousesBySku,
     productsSetProductsCountByWarehouse,
 } = productsSlice.actions;
 export default productsSlice.reducer;

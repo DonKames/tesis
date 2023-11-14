@@ -119,7 +119,7 @@ export const GeneralSection = () => {
     return (
         <>
             <Card className="shadow h-100 animate__animated animate__fadeIn animate__fast">
-                <Card.Header className="d-flex align-items-center mt-3 mb-3">
+                <Card.Header className="d-flex align-items-center mt-3">
                     <h3 className="">Resumen General</h3>
                 </Card.Header>
                 <Card.Body className="d-flex flex-column">

@@ -75,7 +75,7 @@ export const getSkusWithLowInventory = async () => {
         const response = await fetch(`${BASE_URL}/skus/skusWithLowInventory`);
         // return await handleFetchError(response);
         const { data, status, message } = await handleFetchError(response);
-
+        // console.log(data);
         if (status === 'success') {
             return { data, message };
         }
@@ -85,6 +85,35 @@ export const getSkusWithLowInventory = async () => {
             error,
         );
         return [];
+    }
+};
+
+export const getProductCountInWarehousesBySku = async (skuIds) => {
+    try {
+        const response = await fetch(
+            `${BASE_URL}/skus/getProductsCountInWarehouses`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ skuIds }), // Enviamos el array de IDs como JSON
+            },
+        );
+
+        const { status, data, message } = await handleFetchError(response);
+
+        if (status === 'success') {
+            return { data, message };
+        } else {
+            throw new Error(message);
+        }
+    } catch (error) {
+        console.log(
+            'Error al obtener la cantidad de productos en bodegas por SKU desde la API:',
+            error,
+        );
+        return { data: null, message: error };
     }
 };
 

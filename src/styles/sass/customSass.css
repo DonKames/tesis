@@ -3,6 +3,10 @@
   --bs-btn-color: #f2f2f2;
 }
 
+.card.card-danger {
+  background-color: #f7aaa6;
+}
+
 .form-control.is-invalid {
   border-color: red;
   box-shadow: 0 0 5px red;

@@ -4,6 +4,7 @@ $font-family-sans-serif: 'Fira Sans', 'Nunito', 'Roboto', sans-serif;
 $primary: #6b8994;
 $secondary: #a2b5be;
 $danger: #ec2a21;
+$danger-light: mix($danger, #fff, 40%);
 
 $light: #d6d6d6;
 $dark: #383838;
@@ -58,6 +59,10 @@ $table-caption-color: #a2b5be; // Color para el texto del título
 
 // *Inputs
 $input-bg: #fff;
+
+.card.card-danger {
+    background-color: $danger-light;
+}
 
 .form-control.is-invalid {
     border-color: red;

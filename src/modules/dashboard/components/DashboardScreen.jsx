@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, Col, Container, Row } from 'react-bootstrap';
-import { InventoryCard } from './cards/InventoryCard';
+import { InventoryCard } from './inventory/cards/InventoryCard';
 
 export const DashboardScreen = () => {
     return (
