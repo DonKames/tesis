@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, Col, Container, Row } from 'react-bootstrap';
 import { InventoryCard } from './inventory/cards/InventoryCard';
+import { InOutVolumeCard } from './inventory/cards/InOutVolumeCard';
 
 export const DashboardScreen = () => {
     return (
@@ -17,15 +18,7 @@ export const DashboardScreen = () => {
             </Row>
             <Row className="my-3">
                 <Col>
-                    <Card>
-                        <Card.Header as="h5">
-                            Volumen entrada y salida
-                        </Card.Header>
-                        <Card.Body>
-                            <Card.Title>Dashboard</Card.Title>
-                            <Card.Text>Lorem ipsum</Card.Text>
-                        </Card.Body>
-                    </Card>
+                    <InOutVolumeCard />
                 </Col>
             </Row>
             <Row className="my-3">

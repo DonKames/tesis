@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Card, Col, ListGroup, Row } from 'react-bootstrap';
+import { Card, Col, Row } from 'react-bootstrap';
 import { getLastAddedProducts } from '../../../movements/APIs/movementAPI';
 import { useDispatch, useSelector } from 'react-redux';
 import { movementsSetData } from '../../../movements/movementSlice';
@@ -31,7 +31,7 @@ export const RecentlyAddedItems = () => {
         fetchData();
     }, []);
     return (
-        <ListGroup.Item>
+        <>
             <Row>
                 {/* <Col xs={12} lg={12}> */}
                 <h4>Ítems Recientemente Añadidos</h4>
@@ -124,6 +124,6 @@ export const RecentlyAddedItems = () => {
                 ))}
                 {/* </Col> */}
             </Row>
-        </ListGroup.Item>
+        </>
     );
 };

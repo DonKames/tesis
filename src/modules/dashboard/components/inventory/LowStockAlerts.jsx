@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Card, Col, ListGroup, Row, Table } from 'react-bootstrap';
+import { Card, Col, Row, Table } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     productsSetCountInWarehousesBySku,
@@ -26,12 +26,12 @@ export const LowStockAlerts = () => {
 
                     const skuIds = data.map((item) => item.id);
 
-                    console.log(skuIds);
+                    // console.log(skuIds);
 
                     const { data: countData } =
                         await getProductCountInWarehousesBySku(skuIds);
 
-                    console.log(countData);
+                    // console.log(countData);
 
                     dispatch(productsSetCountInWarehousesBySku(countData));
                 }
@@ -43,7 +43,7 @@ export const LowStockAlerts = () => {
         fetchData();
     }, []);
     return (
-        <ListGroup.Item>
+        <>
             <Row>
                 <h4>Alertas de Stock Bajo</h4>
                 {skusWithLowInventory.map((item) => (
@@ -54,7 +54,7 @@ export const LowStockAlerts = () => {
                                     <strong>{item.name}</strong>
                                 </Card.Title>
                             </Card.Header>
-                            <Card.Body className="">
+                            <Card.Body>
                                 <Card.Text>Sku: {item.sku}</Card.Text>
                                 <Card.Text>
                                     Stock mínimo: {item.minimumStock}
@@ -69,14 +69,16 @@ export const LowStockAlerts = () => {
                                             overflowY: 'auto',
                                         }}
                                     >
-                                        <Table>
+                                        <Table striped>
                                             <thead>
                                                 <tr>
                                                     <th>Bodega</th>
-                                                    <th>Cantidad</th>
+                                                    <th className="text-center">
+                                                        Cantidad
+                                                    </th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
+                                            <tbody className="table-group-divider">
                                                 {countInWarehousesBySku.map(
                                                     (countData, index) =>
                                                         countData.sku_id ===
@@ -87,7 +89,7 @@ export const LowStockAlerts = () => {
                                                                         countData.warehouse_name
                                                                     }
                                                                 </td>
-                                                                <td>
+                                                                <td className="text-center">
                                                                     {
                                                                         countData.product_count
                                                                     }
@@ -100,15 +102,12 @@ export const LowStockAlerts = () => {
                                     </div>
                                 )}
 
-                                {console.log(item.id, countInWarehousesBySku)}
+                                {/* {console.log(item.id, countInWarehousesBySku)} */}
                             </Card.Body>
                         </Card>
                     </Col>
-                    // <div key={item.id} className="low-stock-item">
-                    //     {item.name} (Quedan: {item.quantity})
-                    // </div>
                 ))}
             </Row>
-        </ListGroup.Item>
+        </>
     );
 };

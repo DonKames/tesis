@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Col, ListGroup, Row } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 import { CustomBarChart } from '../../../../shared/ui/components/charts/CustomBarChart';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -51,7 +51,7 @@ export const InventoryOverview = () => {
     }, []);
 
     return (
-        <ListGroup.Item>
+        <>
             <Row>
                 <Col className="mt-3">
                     <h6>Visión General del Inventario</h6>
@@ -67,6 +67,6 @@ export const InventoryOverview = () => {
                     />
                 </Col>
             </Row>
-        </ListGroup.Item>
+        </>
     );
 };
