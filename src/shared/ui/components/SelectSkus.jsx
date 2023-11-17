@@ -32,9 +32,7 @@ export const SelectSkus = ({
                     const fetchedSkusNames = await getSkusNames();
                     dispatch(uiSetSkusNames(fetchedSkusNames));
                 }
-            } catch (error) {
-                console.log(error);
-            }
+            } catch (error) {}
         };
 
         fetchSkusNames();
@@ -42,7 +40,7 @@ export const SelectSkus = ({
 
     useEffect(() => {
         const defaultSku = skusNames.find((sku) => sku.id === skuId);
-        console.log(defaultSku);
+
         if (defaultSku) {
             setSelectedValue({
                 value: defaultSku.id,

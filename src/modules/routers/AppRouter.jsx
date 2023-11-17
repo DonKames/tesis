@@ -31,35 +31,53 @@ export const AppRouter = () => {
     useEffect(() => {
         onAuthStateChanged(auth, async (user) => {
             if (user?.uid) {
-                const respUid = await getUserByUid(user.uid);
+                const checkUid = await getUserByUid(user.uid);
 
-                console.log('userByUid:', respUid);
+                let updatedUid;
 
-                if (!respUid) {
-                    updateUserUid(user.email, user.uid);
-                }
+                if (!checkUid) {
+                    updatedUid = await updateUserUid(user.email, user.uid);
 
-                const {
-                    uid,
-                    first_name: firstName,
-                    fk_role_id: fkRoleId,
-                    email,
-                    user_id: userId,
-                } = respUid;
-
-                console.log(userId);
-
-                dispatch(
-                    authLogin({
+                    const {
                         uid,
-                        userId,
-                        displayName: firstName,
-                        role: fkRoleId,
+                        first_name: firstName,
+                        fk_role_id: fkRoleId,
                         email,
-                        isRegistered: true,
-                    }),
-                );
-                setIsLoggedIn(true);
+                        user_id: userId,
+                    } = updatedUid;
+
+                    dispatch(
+                        authLogin({
+                            uid,
+                            userId,
+                            displayName: firstName,
+                            role: fkRoleId,
+                            email,
+                            isRegistered: true,
+                        }),
+                    );
+                    setIsLoggedIn(true);
+                } else {
+                    const {
+                        uid,
+                        first_name: firstName,
+                        fk_role_id: fkRoleId,
+                        email,
+                        user_id: userId,
+                    } = checkUid;
+
+                    dispatch(
+                        authLogin({
+                            uid,
+                            userId,
+                            displayName: firstName,
+                            role: fkRoleId,
+                            email,
+                            isRegistered: true,
+                        }),
+                    );
+                    setIsLoggedIn(true);
+                }
             } else {
                 setIsLoggedIn(false);
             }
@@ -89,7 +107,7 @@ export const AppRouter = () => {
                             settingsData.mainWarehouse,
                         );
 
-                        // console.log(data);
+                        //
 
                         dispatch(
                             settingsSetMainWarehouse({

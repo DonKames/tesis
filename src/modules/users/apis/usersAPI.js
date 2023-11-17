@@ -93,7 +93,7 @@ export const getUserById = async (userId) => {
         const response = await fetch(`${BASE_URL}/users/id/${userId}`);
         const { status, data, message } = await handleFetchError(response);
 
-        console.log(data);
+        // console.log(data);
 
         if (status === 'success') {
             return data;

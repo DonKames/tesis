@@ -10,7 +10,7 @@ export const ProductSection = () => {
     const updateSelectedProducts = async (productId) => {
         const productData = await getProductById(productId);
 
-        console.log(productData);
+        // console.log(productData);
 
         setSelectedProduct(productData);
     };

@@ -47,24 +47,21 @@ export const GeneralSection = () => {
 
     const { usersQty } = useSelector((state) => state.users);
 
-    // console.log(productsCountByWarehouse);
+    //
 
     const graphData = productsCountByWarehouse?.map((element) => {
         //
         return [element.warehouseName || '', parseInt(element.qty)];
     });
 
-    // console.log(graphData);
+    //
 
     useEffect(
         () => {
             const fetchData = async () => {
-                console.log('se reinicia');
                 try {
                     if (productsQty === null) {
                         const { data } = await getProductsQty({});
-
-                        console.log('data', data);
 
                         dispatch(productsSetProductQty(data));
                     }
@@ -93,7 +90,7 @@ export const GeneralSection = () => {
                     }
 
                     if (branchLocationsQty === null) {
-                        // console.log(response);
+                        //
                         const { data } = await getBranchLocationsQty({});
                         dispatch(locationsSetBranchLocationsQty(data));
                     }

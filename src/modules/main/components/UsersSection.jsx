@@ -22,7 +22,7 @@ export const UserSection = () => {
     const updateSelectedUser = async (userId) => {
         const userData = await getUserById(userId);
 
-        console.log(userData);
+        // console.log(userData);
 
         setSelectedUser(userData);
 

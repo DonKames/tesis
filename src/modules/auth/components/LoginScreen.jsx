@@ -45,7 +45,6 @@ export const LoginScreen = () => {
             resp = await getUserByEmail(email);
 
             if (resp) {
-                console.log(resp);
                 const { uid, first_name, fk_role_id, user_id } = resp;
 
                 dispatch(
@@ -73,11 +72,8 @@ export const LoginScreen = () => {
     const handleEmailBlur = async () => {
         resp = await getUserByEmail(email);
 
-        console.log(resp);
         if (resp) {
             const { uid, first_name } = resp;
-
-            console.log(uid, first_name);
 
             if (uid === null) {
                 dispatch(authIsRegistered(false));
@@ -98,19 +94,15 @@ export const LoginScreen = () => {
     const handleSavePassword = async () => {
         if (newPassword === reNewPassword) {
             resp = await getUserByEmail(email);
-            console.log(resp);
+
             if (resp) {
-                console.log(resp);
                 const { first_name, fk_role_id } = resp;
-                console.log(first_name, fk_role_id, email, newPassword);
 
                 dispatch(
                     startRegisterNameEmailPass(first_name, email, newPassword),
                 );
 
                 dispatch(authIsRegistered(true));
-
-                console.log('save password');
             }
         }
     };

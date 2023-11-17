@@ -13,7 +13,7 @@ export const getBranchLocations = async (
         );
 
         const { status, data, message } = await handleFetchError(response);
-        // console.log(finalResp);
+        //
 
         if (status === 'success') {
             return { data, message };
@@ -43,7 +43,6 @@ export const getBranchLocationById = async (branchLocationId) => {
             throw new Error(message);
         }
     } catch (error) {
-        console.log('Error al obtener Lugar de Sucursal desde la API: ', error);
         return { data: null, message: '' };
     }
 };
@@ -78,24 +77,23 @@ export const getBranchLocationsQty = async ({ branchId, showInactive }) => {
 
         // const { status, data } = await handleFetchError(response);
         // const response = await fetch(`${BASE_URL}/branchLocations/qty`);
-        // // console.log(finalResp);
+        // //
         // if (status === 'success') {
         //     return data;
         // }
 
         // return 0;
     } catch (error) {
-        console.log(
-            'Error al obtener cantidad de Lugares de Sucursal desde la API: ',
-            error,
-        );
+        // console.log(
+        //     'Error al obtener cantidad de Lugares de Sucursal desde la API: ',
+        //     error,
+        // );
         return { data: null, error };
     }
 };
 
 export const createBranchLocation = async (branchLocationData) => {
     try {
-        console.log(branchLocationData);
         const response = await fetch(`${BASE_URL}/branchLocations`, {
             method: 'POST', // especifica el método HTTP
             headers: {
@@ -111,7 +109,6 @@ export const createBranchLocation = async (branchLocationData) => {
         const data = await response.json();
         return data;
     } catch (error) {
-        console.log('Error al crear Lugar de Sucursal en la API:', error);
         return { data: null, error };
     }
 };
@@ -147,7 +144,6 @@ export const updateBranchLocation = async (
     branchLocationId,
     branchLocationData,
 ) => {
-    console.log(branchLocationId, branchLocationData);
     try {
         const response = await fetch(
             `${BASE_URL}/branchLocations/${branchLocationId}`,
@@ -168,7 +164,6 @@ export const updateBranchLocation = async (
             throw new Error(message);
         }
     } catch (error) {
-        console.log('Error al actualizar Lugar de Sucursal en la API:', error);
         return { data: null, message: error };
     }
 };
