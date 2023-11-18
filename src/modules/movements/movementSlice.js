@@ -5,6 +5,7 @@ import { reset } from '../../shared/resetSlice';
 const initialState = {
     movements: [],
     lastAdded: [],
+    entryMovements: [],
 };
 
 export const movementsSlice = createSlice({
@@ -18,6 +19,10 @@ export const movementsSlice = createSlice({
 
             if (action.payload.lastAdded) {
                 state.lastAdded = action.payload.lastAdded;
+            }
+
+            if (action.payload.entryMovements) {
+                state.entryMovements = action.payload.entryMovements;
             }
         },
     },

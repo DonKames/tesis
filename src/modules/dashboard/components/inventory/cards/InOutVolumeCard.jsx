@@ -1,8 +1,21 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Card, Col, ListGroup, Row } from 'react-bootstrap';
 import { CustomBarChart } from '../../../../../shared/ui/components/charts/CustomBarChart';
+import { getLastAddedProducts } from '../../../../movements/APIs/movementAPI';
 
 export const InOutVolumeCard = () => {
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const resp = await getLastAddedProducts();
+
+                console.log(resp);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        fetchData();
+    });
     return (
         <Card>
             <Card.Header>Volumen de Entrada y Salida</Card.Header>

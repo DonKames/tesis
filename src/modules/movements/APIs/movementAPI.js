@@ -32,7 +32,7 @@ export const getMovementById = async (movementId) => {
     }
 };
 
-export const getLastAddedProducts = async (limit = 5) => {
+export const getLastAddedProducts = async (limit) => {
     try {
         // Asegúrate de que la URL coincida con la ruta definida en el servidor para obtener los últimos productos agregados
         const response = await fetch(
