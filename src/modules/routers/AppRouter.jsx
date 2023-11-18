@@ -31,56 +31,35 @@ export const AppRouter = () => {
     useEffect(() => {
         onAuthStateChanged(auth, async (user) => {
             if (user?.uid) {
-                const checkUid = await getUserByUid(user.uid);
+                let userData = await getUserByUid(user.uid);
 
-                let updatedUid;
-
-                if (!checkUid) {
-                    updatedUid = await updateUserUid(user.email, user.uid);
-
-                    const {
-                        uid,
-                        first_name: firstName,
-                        fk_role_id: fkRoleId,
-                        email,
-                        user_id: userId,
-                    } = updatedUid;
-
-                    dispatch(
-                        authLogin({
-                            uid,
-                            userId,
-                            displayName: firstName,
-                            role: fkRoleId,
-                            email,
-                            isRegistered: true,
-                        }),
-                    );
-                    setIsLoggedIn(true);
-                } else {
-                    const {
-                        uid,
-                        first_name: firstName,
-                        fk_role_id: fkRoleId,
-                        email,
-                        user_id: userId,
-                    } = checkUid;
-
-                    dispatch(
-                        authLogin({
-                            uid,
-                            userId,
-                            displayName: firstName,
-                            role: fkRoleId,
-                            email,
-                            isRegistered: true,
-                        }),
-                    );
-                    setIsLoggedIn(true);
+                if (!userData) {
+                    userData = await updateUserUid(user.email, user.uid);
                 }
+
+                const {
+                    uid,
+                    first_name: firstName,
+                    fk_role_id: fkRoleId,
+                    email,
+                    user_id: userId,
+                } = userData;
+
+                dispatch(
+                    authLogin({
+                        uid,
+                        userId,
+                        displayName: firstName,
+                        role: fkRoleId,
+                        email,
+                        isRegistered: true,
+                    }),
+                );
+                setIsLoggedIn(true);
             } else {
                 setIsLoggedIn(false);
             }
+
             setChecking(false);
 
             if (!settings.globalSettingsId) {
