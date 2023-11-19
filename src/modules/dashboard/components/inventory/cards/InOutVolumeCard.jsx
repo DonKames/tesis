@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Col, Form, ListGroup, Row } from 'react-bootstrap';
+import {
+    Card,
+    Col,
+    FloatingLabel,
+    Form,
+    ListGroup,
+    Row,
+} from 'react-bootstrap';
 import { CustomBarChart } from '../../../../../shared/ui/components/charts/CustomBarChart';
 import { getLastAddedProducts } from '../../../../movements/APIs/movementAPI';
 
@@ -49,12 +56,23 @@ export const InOutVolumeCard = () => {
         <Card>
             <Card.Header>Volumen de Entrada y Salida</Card.Header>
             <Card.Body>
-                <ListGroup horizontal>
-                    <ListGroup.Item className="col-6">
+                <ListGroup horizontal="lg">
+                    <ListGroup.Item className="">
                         <Row>
                             <Col>Entrada</Col>
                             <Col>
-                                <Form.Control></Form.Control>
+                                <Form.Group>
+                                    <FloatingLabel label="Inicio">
+                                        <Form.Control type="date" />
+                                    </FloatingLabel>
+                                </Form.Group>
+                            </Col>
+                            <Col>
+                                <Form.Group>
+                                    <FloatingLabel label="Termino">
+                                        <Form.Control type="date" />
+                                    </FloatingLabel>
+                                </Form.Group>
                             </Col>
                         </Row>
                         <Row>
@@ -68,7 +86,7 @@ export const InOutVolumeCard = () => {
                             </Col>
                         </Row>
                     </ListGroup.Item>
-                    <ListGroup.Item className="col-6">Salida</ListGroup.Item>
+                    <ListGroup.Item className="">Salida</ListGroup.Item>
                 </ListGroup>
             </Card.Body>
         </Card>
