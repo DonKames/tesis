@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import {
+    Button,
     Card,
     Col,
     FloatingLabel,
     Form,
+    InputGroup,
     ListGroup,
     Row,
 } from 'react-bootstrap';
 import { CustomBarChart } from '../../../../../shared/ui/components/charts/CustomBarChart';
 import { getLastAddedProducts } from '../../../../movements/APIs/movementAPI';
+import { useFormik } from 'formik';
 
 export const InOutVolumeCard = () => {
     const [entriesData, setEntriesData] = useState([]);
@@ -52,27 +55,54 @@ export const InOutVolumeCard = () => {
     useEffect(() => {
         getChartData();
     }, []);
+
+    const formik = useFormik({
+        initialValues: {
+            startDate: '',
+            endDate: '',
+        },
+        onSubmit: (values) => {
+            console.log(values);
+        },
+    });
+
     return (
         <Card>
             <Card.Header>Volumen de Entrada y Salida</Card.Header>
             <Card.Body>
                 <ListGroup horizontal="lg">
-                    <ListGroup.Item className="">
+                    <ListGroup.Item className="col-lg-6">
                         <Row>
                             <Col>Entrada</Col>
-                            <Col>
-                                <Form.Group>
-                                    <FloatingLabel label="Inicio">
-                                        <Form.Control type="date" />
-                                    </FloatingLabel>
-                                </Form.Group>
+                        </Row>
+                        <Row>
+                            <Col xs={5}>
+                                <InputGroup size="sm">
+                                    <InputGroup.Text>Inicio</InputGroup.Text>
+                                    <Form.Control
+                                        placeholder="Inicio"
+                                        type="date"
+                                        name="startDate"
+                                        value={formik.values.startDate}
+                                        onChange={formik.handleChange}
+                                    />
+                                </InputGroup>
                             </Col>
-                            <Col>
-                                <Form.Group>
-                                    <FloatingLabel label="Termino">
-                                        <Form.Control type="date" />
-                                    </FloatingLabel>
-                                </Form.Group>
+                            <Col xs={5}>
+                                <InputGroup size="sm">
+                                    <InputGroup.Text>Termino</InputGroup.Text>
+                                    <Form.Control
+                                        type="date"
+                                        name="endDate"
+                                        value={formik.values.endDate}
+                                        onChange={formik.handleChange}
+                                    />
+                                </InputGroup>
+                            </Col>
+                            <Col xs={2} className="text-end">
+                                <Button className="col-12" size="sm">
+                                    Filtrar
+                                </Button>
                             </Col>
                         </Row>
                         <Row>
@@ -86,7 +116,11 @@ export const InOutVolumeCard = () => {
                             </Col>
                         </Row>
                     </ListGroup.Item>
-                    <ListGroup.Item className="">Salida</ListGroup.Item>
+                    <ListGroup.Item className="col-lg-6">
+                        <Row>
+                            <Col>Salida</Col>
+                        </Row>
+                    </ListGroup.Item>
                 </ListGroup>
             </Card.Body>
         </Card>
