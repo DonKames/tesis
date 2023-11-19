@@ -1,21 +1,50 @@
-import React, { useEffect } from 'react';
-import { Card, Col, ListGroup, Row } from 'react-bootstrap';
+import React, { useEffect, useState } from 'react';
+import { Card, Col, Form, ListGroup, Row } from 'react-bootstrap';
 import { CustomBarChart } from '../../../../../shared/ui/components/charts/CustomBarChart';
 import { getLastAddedProducts } from '../../../../movements/APIs/movementAPI';
 
 export const InOutVolumeCard = () => {
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const resp = await getLastAddedProducts();
+    const [entriesData, setEntriesData] = useState([]);
 
-                console.log(resp);
-            } catch (error) {
-                console.log(error);
-            }
-        };
-        fetchData();
-    });
+    const getChartData = async () => {
+        try {
+            const { data } = await getLastAddedProducts();
+
+            console.log(data);
+
+            const totalsByWarehouse = data.reduce((acc, item) => {
+                // Si el warehouseName ya existe en el acumulador, incrementa el contador
+                if (acc[item.warehouseName]) {
+                    acc[item.warehouseName]++;
+                } else {
+                    // Si no, inicializa el contador para ese warehouseName
+                    acc[item.warehouseName] = 1;
+                }
+                return acc;
+            }, {});
+
+            const formattedData = Object.entries(totalsByWarehouse).map(
+                ([name, Cantidad]) => {
+                    return { name, Cantidad };
+                },
+            );
+
+            setEntriesData(formattedData);
+
+            console.log(formattedData);
+
+            // const formattedData = {
+            //     name: 'Entrada',
+            //     Cantidad: parseInt(data.qty),
+            // };
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        getChartData();
+    }, []);
     return (
         <Card>
             <Card.Header>Volumen de Entrada y Salida</Card.Header>
@@ -24,11 +53,14 @@ export const InOutVolumeCard = () => {
                     <ListGroup.Item className="col-6">
                         <Row>
                             <Col>Entrada</Col>
+                            <Col>
+                                <Form.Control></Form.Control>
+                            </Col>
                         </Row>
                         <Row>
                             <Col>
                                 <CustomBarChart
-                                    // data={warehouseData}
+                                    data={entriesData}
                                     xKey="name"
                                     yKey="Cantidad"
                                     barFill="#8884d8"
