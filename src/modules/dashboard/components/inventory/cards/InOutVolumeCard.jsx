@@ -3,7 +3,6 @@ import {
     Button,
     Card,
     Col,
-    FloatingLabel,
     Form,
     InputGroup,
     ListGroup,
@@ -12,6 +11,7 @@ import {
 import { CustomBarChart } from '../../../../../shared/ui/components/charts/CustomBarChart';
 import { getLastAddedProducts } from '../../../../movements/APIs/movementAPI';
 import { useFormik } from 'formik';
+import { InVolumeInfo } from '../InVolumeInfo';
 
 export const InOutVolumeCard = () => {
     const [entriesData, setEntriesData] = useState([]);
@@ -72,6 +72,7 @@ export const InOutVolumeCard = () => {
             <Card.Body>
                 <ListGroup horizontal="lg">
                     <ListGroup.Item className="col-lg-6">
+                        <InVolumeInfo />
                         <Row>
                             <Col>Entrada</Col>
                         </Row>
