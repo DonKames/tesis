@@ -5,18 +5,25 @@ import { InVolumeInfo } from '../InVolumeInfo';
 import { OutVolumeInfo } from '../OutVolumeInfo';
 
 export const InOutVolumeCard = () => {
+    const outInfo = false;
+
     return (
         <Card>
             <Card.Header>Volumen de Entrada y Salida</Card.Header>
             <Card.Body>
-                <ListGroup horizontal="xxl">
-                    <ListGroup.Item className="col-xxl-6">
-                        <InVolumeInfo />
-                    </ListGroup.Item>
-                    <ListGroup.Item className="col-xxl-6">
-                        <OutVolumeInfo />
-                    </ListGroup.Item>
-                </ListGroup>
+                {outInfo ? (
+                    <ListGroup horizontal="xxl">
+                        <ListGroup.Item className="col-xxl-6">
+                            <InVolumeInfo outInfo={outInfo} />
+                        </ListGroup.Item>
+
+                        <ListGroup.Item className="col-xxl-6">
+                            <OutVolumeInfo />
+                        </ListGroup.Item>
+                    </ListGroup>
+                ) : (
+                    <InVolumeInfo />
+                )}
             </Card.Body>
         </Card>
     );
