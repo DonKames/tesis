@@ -40,8 +40,33 @@ export const InVolumeInfo = () => {
 
     const handleSubmit = async (values) => {
         const { startDate, endDate } = values;
-        const resp = await getLastAddedProducts(undefined, startDate, endDate);
-        console.log(resp);
+
+        const { data } = await getLastAddedProducts(
+            undefined,
+            startDate,
+            endDate,
+        );
+
+        console.log(data);
+
+        const totalsByWarehouse = data.reduce((acc, item) => {
+            // Si el warehouseName ya existe en el acumulador, incrementa el contador
+            if (acc[item.warehouseName]) {
+                acc[item.warehouseName]++;
+            } else {
+                // Si no, inicializa el contador para ese warehouseName
+                acc[item.warehouseName] = 1;
+            }
+            return acc;
+        }, {});
+
+        const formattedData = Object.entries(totalsByWarehouse).map(
+            ([name, Cantidad]) => {
+                return { name, Cantidad };
+            },
+        );
+
+        setEntriesData(formattedData);
     };
 
     const formik = useFormik({
@@ -51,6 +76,8 @@ export const InVolumeInfo = () => {
         },
         onSubmit: handleSubmit,
     });
+
+    const { startDate, endDate } = formik.values;
 
     return (
         <>
@@ -66,7 +93,7 @@ export const InVolumeInfo = () => {
                                 placeholder="Inicio"
                                 type="date"
                                 name="startDate"
-                                value={formik.values.startDate}
+                                value={startDate}
                                 onChange={formik.handleChange}
                             />
                         </InputGroup>
@@ -77,7 +104,7 @@ export const InVolumeInfo = () => {
                             <Form.Control
                                 type="date"
                                 name="endDate"
-                                value={formik.values.endDate}
+                                value={endDate}
                                 onChange={formik.handleChange}
                             />
                         </InputGroup>
@@ -90,7 +117,7 @@ export const InVolumeInfo = () => {
                 </Row>
             </Form>
             <Row>
-                <Col>
+                <Col xs={12}>
                     <CustomBarChart
                         data={entriesData}
                         xKey="name"

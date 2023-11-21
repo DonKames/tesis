@@ -32,12 +32,20 @@ export const getMovementById = async (movementId) => {
     }
 };
 
-export const getLastAddedProducts = async (limit) => {
+export const getLastAddedProducts = async (limit, startDate, endDate) => {
     try {
-        // Asegúrate de que la URL coincida con la ruta definida en el servidor para obtener los últimos productos agregados
-        const response = await fetch(
-            `${BASE_URL}/movements/last-added?limit=${limit}`,
-        );
+        let url = `${BASE_URL}/movements/last-added?`;
+        if (limit) {
+            url += `limit=${limit}&`;
+        }
+        if (startDate) {
+            url += `startDate=${startDate}&`;
+        }
+        if (endDate) {
+            url += `endDate=${endDate}`;
+        }
+
+        const response = await fetch(url);
 
         // console.log(response);
         const { status, data, message } = await handleFetchError(response);

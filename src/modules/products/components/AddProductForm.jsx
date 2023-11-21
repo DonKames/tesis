@@ -12,7 +12,6 @@ import { SelectBranches } from '../../../shared/ui/components/SelectBranches';
 import { SelectWarehouses } from '../../../shared/ui/components/SelectWarehouses';
 import Swal from 'sweetalert2';
 import { useDispatch, useSelector } from 'react-redux';
-import { getBranchesQty } from '../../locations/APIs/branchesAPI';
 import { productsSetProductQty } from '../slice/productsSlice';
 
 export const AddProductForm = () => {

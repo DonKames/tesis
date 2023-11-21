@@ -75,7 +75,9 @@ export const RecentlyAddedItems = () => {
                                         <Card.Text>:</Card.Text>
                                     </Col>
                                     <Col xs={7}>
-                                        <Card.Text>{m.description}</Card.Text>
+                                        <Card.Text className="text-truncate">
+                                            {m.description}
+                                        </Card.Text>
                                     </Col>
                                 </Row>
                                 <Row className="mb-2">

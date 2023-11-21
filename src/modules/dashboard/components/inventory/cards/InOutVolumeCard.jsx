@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Col, ListGroup, Row } from 'react-bootstrap';
+import { Card, ListGroup } from 'react-bootstrap';
 
 import { InVolumeInfo } from '../InVolumeInfo';
 import { OutVolumeInfo } from '../OutVolumeInfo';
