@@ -82,8 +82,11 @@ export const InVolumeInfo = ({ outInfo }) => {
     return (
         <>
             <Row>
-                <Col xs={2}>
-                    <Form onSubmit={formik.handleSubmit}>
+                <Col>Entrada</Col>
+            </Row>
+            <Form onSubmit={formik.handleSubmit}>
+                <Row>
+                    <Col xs={5}>
                         <InputGroup size="sm">
                             <InputGroup.Text>Inicio</InputGroup.Text>
                             <Form.Control
@@ -94,7 +97,8 @@ export const InVolumeInfo = ({ outInfo }) => {
                                 onChange={formik.handleChange}
                             />
                         </InputGroup>
-
+                    </Col>
+                    <Col xs={5}>
                         <InputGroup size="sm">
                             <InputGroup.Text>Termino</InputGroup.Text>
                             <Form.Control
@@ -104,27 +108,22 @@ export const InVolumeInfo = ({ outInfo }) => {
                                 onChange={formik.handleChange}
                             />
                         </InputGroup>
-
+                    </Col>
+                    <Col xs={2}>
                         <Button className="col-12" size="sm" type="submit">
                             Filtrar
                         </Button>
-                    </Form>
-                </Col>
-                <Col xs={outInfo ? 12 : 10}>
-                    <Row>
-                        <Col>Entrada</Col>
-                    </Row>
-
-                    <Row>
-                        <Col xs={12}>
-                            <CustomBarChart
-                                data={entriesData}
-                                xKey="name"
-                                yKey="Cantidad"
-                                barFill="#8884d8"
-                            />
-                        </Col>
-                    </Row>
+                    </Col>
+                </Row>
+            </Form>
+            <Row>
+                <Col xs={12}>
+                    <CustomBarChart
+                        data={entriesData}
+                        xKey="name"
+                        yKey="Cantidad"
+                        barFill="#8884d8"
+                    />
                 </Col>
             </Row>
         </>

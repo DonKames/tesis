@@ -17,6 +17,26 @@ export const getMovements = async () => {
     }
 };
 
+export const getMovementsQty = async ({ showInactive }) => {
+    try {
+        const response = await fetch(
+            `${BASE_URL}/movements/qty?showInactive=${showInactive}`,
+        );
+        const { status, data, message } = await handleFetchError(response);
+        if (status === 'success') {
+            return { data, message };
+        } else {
+            throw new Error(message);
+        }
+    } catch (error) {
+        console.log(
+            'Error al obtener la cantidad de Movimientos desde la API:',
+            error,
+        );
+        return { data: null, error };
+    }
+};
+
 export const getMovementById = async (movementId) => {
     try {
         const response = await fetch(`${BASE_URL}/movements/${movementId}`);

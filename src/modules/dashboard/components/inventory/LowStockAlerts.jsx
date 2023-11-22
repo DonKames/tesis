@@ -45,7 +45,6 @@ export const LowStockAlerts = () => {
     return (
         <>
             <Row>
-                <h4>Alertas de Stock Bajo</h4>
                 {skusWithLowInventory.map((item) => (
                     <Col key={item.id}>
                         <Card className="mb-2 text-dark card-danger h-100">

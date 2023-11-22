@@ -34,7 +34,6 @@ export const RecentlyAddedItems = () => {
         <>
             <Row>
                 {/* <Col xs={12} lg={12}> */}
-                <h4>Ítems Recientemente Añadidos</h4>
                 {lastAdded.map((m) => (
                     <Col key={m.id} xs={12} lg={4}>
                         <Card className="mb-2">

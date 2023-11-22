@@ -10,16 +10,14 @@ export const InventoryCard = () => {
     const [showLowStockAlerts, setShowLowStockAlerts] = useState(true);
 
     return (
-        <Card>
-            <Card.Header>Gestión de Inventario</Card.Header>
-            <ListGroup variant="flush" className="rounded">
-                {/* Sección de Vista General */}
-                <ListGroup.Item>
+        <>
+            <Card className="mb-2">
+                <Card.Header>
                     <Row>
-                        <Col>
+                        <Col xs={10}>
                             <Card.Title>Vista General</Card.Title>
                         </Col>
-                        <Col className="text-end">
+                        <Col xs={2} className="text-end">
                             {showInventoryOverview ? (
                                 <i
                                     className="bi bi-caret-up"
@@ -41,22 +39,26 @@ export const InventoryCard = () => {
                             )}
                         </Col>
                     </Row>
-                </ListGroup.Item>
+                </Card.Header>
                 <Collapse in={showInventoryOverview}>
-                    <ListGroup.Item>
-                        <InventoryOverview />
-                    </ListGroup.Item>
+                    <div>
+                        <Card.Body>
+                            <InventoryOverview />
+                        </Card.Body>
+                    </div>
                 </Collapse>
+            </Card>
 
+            <Card className="mb-2">
                 {/* Sección de Ítems Recientemente Añadidos */}
-                <ListGroup.Item>
+                <Card.Header>
                     <Row>
-                        <Col>
-                            <Card.Title>
+                        <Col xs={10}>
+                            <Card.Title className="text-truncate">
                                 Ítems Recientemente Añadidos
                             </Card.Title>
                         </Col>
-                        <Col className="text-end">
+                        <Col xs={2} className="text-end">
                             {showRecentlyAdded ? (
                                 <i
                                     className="bi bi-caret-up"
@@ -74,22 +76,26 @@ export const InventoryCard = () => {
                             )}
                         </Col>
                     </Row>
-                </ListGroup.Item>
+                </Card.Header>
                 <Collapse in={showRecentlyAdded}>
-                    <ListGroup.Item>
-                        <RecentlyAddedItems />
-                    </ListGroup.Item>
+                    <div>
+                        <Card.Body>
+                            <RecentlyAddedItems />
+                        </Card.Body>
+                    </div>
                 </Collapse>
+            </Card>
 
+            <Card className="mb-2">
                 {/* Sección de Alertas de Stock Bajo */}
-                <ListGroup.Item className={!showLowStockAlerts && 'rounded'}>
+                <Card.Header>
                     <Row>
-                        <Col>
-                            <Card.Title>
-                                Ítems Recientemente Añadidos
+                        <Col xs={10}>
+                            <Card.Title className="text-truncate">
+                                Alertas de Stock Bajo
                             </Card.Title>
                         </Col>
-                        <Col className="text-end">
+                        <Col xs={2} className="text-end">
                             {showLowStockAlerts ? (
                                 <i
                                     className="bi bi-caret-up"
@@ -111,13 +117,15 @@ export const InventoryCard = () => {
                             )}
                         </Col>
                     </Row>
-                </ListGroup.Item>
+                </Card.Header>
                 <Collapse in={showLowStockAlerts}>
-                    <ListGroup.Item>
-                        <LowStockAlerts />
-                    </ListGroup.Item>
+                    <div>
+                        <Card.Body>
+                            <LowStockAlerts />
+                        </Card.Body>
+                    </div>
                 </Collapse>
-            </ListGroup>
-        </Card>
+            </Card>
+        </>
     );
 };

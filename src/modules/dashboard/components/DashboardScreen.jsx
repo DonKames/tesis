@@ -2,11 +2,12 @@ import React from 'react';
 import { Card, Col, Container, Row } from 'react-bootstrap';
 import { InventoryCard } from './inventory/cards/InventoryCard';
 import { InOutVolumeCard } from './inventory/cards/InOutVolumeCard';
+import { AllMovementsCard } from './inventory/cards/AllMovementsCard';
 
 export const DashboardScreen = () => {
     return (
         <Container>
-            <Row className="my-3">
+            <Row>
                 <Col>
                     <h1>Informes</h1>
                 </Col>
@@ -16,23 +17,17 @@ export const DashboardScreen = () => {
                     <InventoryCard />
                 </Col>
             </Row>
-            <Row className="my-3">
+            <Row>
                 <Col>
                     <InOutVolumeCard />
                 </Col>
             </Row>
-            <Row className="my-3">
+            <Row>
                 <Col>
-                    <Card>
-                        <Card.Header as="h5">Inventario Actual</Card.Header>
-                        <Card.Body>
-                            <Card.Title>Dashboard</Card.Title>
-                            <Card.Text>Lorem ipsum</Card.Text>
-                        </Card.Body>
-                    </Card>
+                    <AllMovementsCard />
                 </Col>
             </Row>
-            <Row className="my-3">
+            <Row>
                 <Col>
                     <Card>
                         <Card.Header as="h5">Estado Actual</Card.Header>

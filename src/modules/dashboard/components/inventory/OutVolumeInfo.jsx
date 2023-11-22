@@ -36,7 +36,9 @@ export const OutVolumeInfo = () => {
                             </InputGroup>
                         </Col>
                         <Col>
-                            <Button size="sm">Filtrar</Button>
+                            <Button className="col-12" size="sm">
+                                Filtrar
+                            </Button>
                         </Col>
                     </Row>
                 </Form>
