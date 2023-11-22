@@ -2,9 +2,15 @@ import { handleFetchError } from '../../../shared/utils/handleFetchError';
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
-export const getMovements = async () => {
+export const getMovements = async (
+    page = 1,
+    limit = 10,
+    showInactive = true,
+) => {
     try {
-        const response = await fetch(`${BASE_URL}/movements`);
+        const response = await fetch(
+            `${BASE_URL}/movements?page=${page}&limit=${limit}&showInactive=${showInactive}`,
+        );
         const { status, data, message } = await handleFetchError(response);
         if (status === 'success') {
             return { data, message };

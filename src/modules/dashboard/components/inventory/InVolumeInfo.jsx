@@ -4,7 +4,7 @@ import { CustomBarChart } from '../../../../shared/ui/components/charts/CustomBa
 import { useFormik } from 'formik';
 import { getLastAddedProducts } from '../../../movements/APIs/movementAPI';
 
-export const InVolumeInfo = ({ outInfo }) => {
+export const InVolumeInfo = () => {
     const [entriesData, setEntriesData] = useState([]);
 
     const getChartData = async () => {

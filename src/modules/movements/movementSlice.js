@@ -6,6 +6,7 @@ const initialState = {
     movements: [],
     lastAdded: [],
     entryMovements: [],
+    movementsQty: 0,
 };
 
 export const movementsSlice = createSlice({
@@ -13,9 +14,9 @@ export const movementsSlice = createSlice({
     initialState,
     reducers: {
         movementsSetData: (state, action) => {
-            if (action.payload.movements) {
-                state.movements = action.payload.movements;
-            }
+            // if (action.payload.movements) {
+            //     state.movements = action.payload.movements;
+            // }
 
             if (action.payload.lastAdded) {
                 state.lastAdded = action.payload.lastAdded;
@@ -25,6 +26,12 @@ export const movementsSlice = createSlice({
                 state.entryMovements = action.payload.entryMovements;
             }
         },
+        movementsSetMovements: (state, action) => {
+            state.movements = action.payload;
+        },
+        movementsSetMovementsQty: (state, action) => {
+            state.movementsQty = action.payload;
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(reset, () => {
@@ -33,7 +40,11 @@ export const movementsSlice = createSlice({
     },
 });
 
-export const { movementsSetData } = movementsSlice.actions;
+export const {
+    movementsSetData,
+    movementsSetMovements,
+    movementsSetMovementsQty,
+} = movementsSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 // export const selectCount = (state: RootState) => state.auth

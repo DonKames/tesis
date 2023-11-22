@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Col, Container, Row } from 'react-bootstrap';
+import { Col, Container, Row } from 'react-bootstrap';
 import { InventoryCard } from './inventory/cards/InventoryCard';
 import { InOutVolumeCard } from './inventory/cards/InOutVolumeCard';
 import { AllMovementsCard } from './inventory/cards/AllMovementsCard';
@@ -27,7 +27,7 @@ export const DashboardScreen = () => {
                     <AllMovementsCard />
                 </Col>
             </Row>
-            <Row>
+            {/* <Row>
                 <Col>
                     <Card>
                         <Card.Header as="h5">Estado Actual</Card.Header>
@@ -37,7 +37,7 @@ export const DashboardScreen = () => {
                         </Card.Body>
                     </Card>
                 </Col>
-            </Row>
+            </Row> */}
         </Container>
     );
 };
