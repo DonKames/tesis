@@ -11,7 +11,7 @@ export const InventoryCard = () => {
 
     return (
         <>
-            <Card className="mb-2">
+            <Card className="mb-2 shadow">
                 <Card.Header>
                     <Row>
                         <Col xs={10}>
@@ -49,7 +49,7 @@ export const InventoryCard = () => {
                 </Collapse>
             </Card>
 
-            <Card className="mb-2">
+            <Card className="mb-2  shadow">
                 {/* Sección de Ítems Recientemente Añadidos */}
                 <Card.Header>
                     <Row>
@@ -86,7 +86,7 @@ export const InventoryCard = () => {
                 </Collapse>
             </Card>
 
-            <Card className="mb-2">
+            <Card className="mb-2 shadow">
                 {/* Sección de Alertas de Stock Bajo */}
                 <Card.Header>
                     <Row>

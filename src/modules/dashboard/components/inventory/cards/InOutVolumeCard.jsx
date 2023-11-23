@@ -10,7 +10,7 @@ export const InOutVolumeCard = () => {
     const outInfo = false;
 
     return (
-        <Card className="mb-2">
+        <Card className="mb-2 shadow">
             <Card.Header>
                 <Row>
                     <Col xs={10}>

@@ -6,7 +6,7 @@ export const AllMovementsCard = () => {
     const [showMovementsCard, setShowMovementsCard] = useState(true);
 
     return (
-        <Card className="mb-2">
+        <Card className="mb-2 shadow">
             <Card.Header>
                 <Row xs={11}>
                     <Col>
