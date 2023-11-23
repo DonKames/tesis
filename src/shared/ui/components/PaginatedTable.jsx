@@ -1,7 +1,16 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import { Table, Pagination, Card, Row, Col, Form } from 'react-bootstrap';
+import {
+    Table,
+    Pagination,
+    Card,
+    Row,
+    Col,
+    Form,
+    Button,
+    InputGroup,
+} from 'react-bootstrap';
 
 export const PaginatedTable = ({
     columns, // columns: Los nombres de las columnas de la tabla.
@@ -17,6 +26,8 @@ export const PaginatedTable = ({
     setShowInactive, // setShowInactive: La función para manejar el cambio de mostrar elementos inactivos.
     showInactive, // showInactive: Un booleano que indica si se deben mostrar elementos inactivos.
     title, // title: El título de la tabla.
+    setSearchTerm,
+    searchTerm,
 }) => {
     // console.log('limit', limit);
 
@@ -57,6 +68,18 @@ export const PaginatedTable = ({
                 <Card.Header>
                     <Row className="align-items-center">
                         <Col className="fs-2">{title}</Col>
+                        <Col>
+                            <InputGroup>
+                                <Form.Control
+                                    onChange={(e) =>
+                                        setSearchTerm(e.target.value)
+                                    }
+                                    placeholder=""
+                                    value={searchTerm}
+                                />
+                                <Button>Filtrar</Button>
+                            </InputGroup>
+                        </Col>
                         <Col>
                             <Form.Check
                                 reverse
@@ -194,4 +217,5 @@ PaginatedTable.propTypes = {
     setShowInactive: PropTypes.func,
     showInactive: PropTypes.bool,
     title: PropTypes.string.isRequired,
+    setSearchTerm: PropTypes.func,
 };

@@ -6,12 +6,18 @@ export const getMovements = async (
     page = 1,
     limit = 10,
     showInactive = true,
+    searchTerm,
 ) => {
     try {
         const response = await fetch(
-            `${BASE_URL}/movements?page=${page}&limit=${limit}&showInactive=${showInactive}`,
+            `${BASE_URL}/movements?page=${page}&limit=${limit}&showInactive=${showInactive}&searchTerm=${searchTerm}`,
         );
+
+        console.log(response);
         const { status, data, message } = await handleFetchError(response);
+
+        console.log('movementData: ', data);
+
         if (status === 'success') {
             return { data, message };
         } else {
@@ -23,10 +29,10 @@ export const getMovements = async (
     }
 };
 
-export const getMovementsQty = async ({ showInactive }) => {
+export const getMovementsQty = async ({ showInactive, searchTerm }) => {
     try {
         const response = await fetch(
-            `${BASE_URL}/movements/qty?showInactive=${showInactive}`,
+            `${BASE_URL}/movements/qty?showInactive=${showInactive}&searchTerm=${searchTerm}`,
         );
         const { status, data, message } = await handleFetchError(response);
         if (status === 'success') {

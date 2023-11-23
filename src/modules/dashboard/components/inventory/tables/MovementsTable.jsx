@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import usePagination from '../../../../../hooks/usePagination';
 import {
@@ -10,6 +10,11 @@ import {
     movementsSetMovementsQty,
 } from '../../../../movements/movementSlice';
 import { PaginatedTable } from '../../../../../shared/ui/components/PaginatedTable';
+import {
+    capitalizeFirstLetter,
+    timestampDate,
+    timestampTime,
+} from '../../../../../shared/utils/stringUtils';
 
 export const MovementsTable = () => {
     // Redux States
@@ -24,6 +29,8 @@ export const MovementsTable = () => {
         setPagesQty,
         setShowInactive,
         showInactive,
+        setSearchTerm,
+        searchTerm,
     } = usePagination(
         getMovements,
         getMovementsQty,
@@ -34,7 +41,6 @@ export const MovementsTable = () => {
     );
 
     const tableColumns = [
-        { name: 'ID', className: '' },
         { name: 'Producto', className: '' },
         { name: 'Usuario', className: '' },
         { name: 'Fecha y Hora', className: '' },
@@ -45,12 +51,21 @@ export const MovementsTable = () => {
     const itemRenderer = (movement) => {
         return (
             <tr key={movement.id}>
-                <td>{movement.id}</td>
-                <td>{movement.productId}</td>
-                <td>{movement.userId}</td>
-                <td>{movement.timestamp}</td>
-                <td>{movement.warehouseId}</td>
-                <td>{movement.movementTypeId}</td>
+                <td>{movement.skuName}</td>
+                <td>
+                    {capitalizeFirstLetter(movement.userFirstName) +
+                        ' ' +
+                        capitalizeFirstLetter(movement.userLastName)}
+                </td>
+                <td>
+                    {timestampDate(movement.timestamp) +
+                        ' - ' +
+                        timestampTime(movement.timestamp)}
+                </td>
+                <td>
+                    {'(' + movement.branchName + ') ' + movement.warehouseName}
+                </td>
+                <td>{movement.movementTypeName}</td>
             </tr>
         );
     };
@@ -71,6 +86,8 @@ export const MovementsTable = () => {
                 setShowInactive={setShowInactive}
                 showInactive={showInactive}
                 title="Movimientos"
+                setSearchTerm={setSearchTerm}
+                searchTerm={searchTerm}
             />
         </>
     );

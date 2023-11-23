@@ -7,7 +7,7 @@ import { AllMovementsCard } from './inventory/cards/AllMovementsCard';
 export const DashboardScreen = () => {
     return (
         <Container>
-            <Row>
+            {/* <Row>
                 <Col>
                     <h1>Informes</h1>
                 </Col>
@@ -21,7 +21,7 @@ export const DashboardScreen = () => {
                 <Col>
                     <InOutVolumeCard />
                 </Col>
-            </Row>
+            </Row> */}
             <Row>
                 <Col>
                     <AllMovementsCard />
