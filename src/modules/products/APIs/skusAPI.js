@@ -2,10 +2,15 @@ import { handleFetchError } from '../../../shared/utils/handleFetchError';
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
-export const getSkus = async (page = 1, limit = 10, showInactive = false) => {
+export const getSkus = async (
+    page = 1,
+    limit = 10,
+    showInactive = false,
+    searchTerm,
+) => {
     try {
         const response = await fetch(
-            `${BASE_URL}/skus?page=${page}&limit=${limit}&showInactive=${showInactive}`,
+            `${BASE_URL}/skus?page=${page}&limit=${limit}&showInactive=${showInactive}&searchTerm=${searchTerm}`,
         );
 
         // console.log(response);

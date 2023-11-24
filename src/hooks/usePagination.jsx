@@ -67,7 +67,7 @@ const usePagination = (
 
     const handlePageChange = async (pageNumber) => {
         setSelectedPage(pageNumber);
-        const { status, data, message } = await getItems(
+        const { data } = await getItems(
             pageNumber,
             limit,
             showInactive,

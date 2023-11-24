@@ -43,6 +43,8 @@ export const TableWarehouses = () => {
         setPagesQty,
         setShowInactive,
         showInactive,
+        setSearchTerm,
+        searchTerm,
     } = usePagination(
         getWarehouses,
         getWarehousesQty,
@@ -197,6 +199,8 @@ export const TableWarehouses = () => {
                 setShowInactive={setShowInactive}
                 showInactive={showInactive}
                 title="Bodegas"
+                setSearchTerm={setSearchTerm}
+                searchTerm={searchTerm}
             />
         </>
     );

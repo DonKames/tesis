@@ -6,10 +6,11 @@ export const getProducts = async (
     page = 1,
     limit = 10,
     showInactive = false,
+    searchTerm,
 ) => {
     try {
         const response = await fetch(
-            `${BASE_URL}/products?page=${page}&limit=${limit}&showInactive=${showInactive}`,
+            `${BASE_URL}/products?page=${page}&limit=${limit}&showInactive=${showInactive}&searchTerm=${searchTerm}`,
         );
         const { data, status, message } = await handleFetchError(response);
 

@@ -1,16 +1,7 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import {
-    Table,
-    Pagination,
-    Card,
-    Row,
-    Col,
-    Form,
-    Button,
-    InputGroup,
-} from 'react-bootstrap';
+import { Table, Pagination, Card, Row, Col, Form } from 'react-bootstrap';
 
 export const PaginatedTable = ({
     columns, // columns: Los nombres de las columnas de la tabla.
@@ -67,18 +58,13 @@ export const PaginatedTable = ({
             <Card className="shadow rounded animate__animated animate__fadeIn animate__fast">
                 <Card.Header>
                     <Row className="align-items-center">
-                        <Col className="fs-2">{title}</Col>
+                        <Col className="fs-2 text-truncate">{title}</Col>
                         <Col>
-                            <InputGroup>
-                                <Form.Control
-                                    onChange={(e) =>
-                                        setSearchTerm(e.target.value)
-                                    }
-                                    placeholder=""
-                                    value={searchTerm}
-                                />
-                                <Button>Filtrar</Button>
-                            </InputGroup>
+                            <Form.Control
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                placeholder="Búsqueda / Filtrado ..."
+                                value={searchTerm}
+                            />
                         </Col>
                         <Col>
                             <Form.Check
@@ -218,4 +204,5 @@ PaginatedTable.propTypes = {
     showInactive: PropTypes.bool,
     title: PropTypes.string.isRequired,
     setSearchTerm: PropTypes.func,
+    searchTerm: PropTypes.string,
 };

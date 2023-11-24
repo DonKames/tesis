@@ -43,6 +43,8 @@ export const TableSkus = () => {
         setPagesQty,
         setShowInactive,
         showInactive,
+        setSearchTerm,
+        searchTerm,
     } = usePagination(
         getSkus,
         getSkusQty,
@@ -332,6 +334,8 @@ export const TableSkus = () => {
                 setShowInactive={setShowInactive}
                 showInactive={showInactive}
                 title="SKUs"
+                setSearchTerm={setSearchTerm}
+                searchTerm={searchTerm}
             />
         </>
     );

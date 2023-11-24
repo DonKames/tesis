@@ -46,6 +46,8 @@ export const TableBranches = () => {
         setPagesQty,
         setShowInactive,
         showInactive,
+        setSearchTerm,
+        searchTerm,
     } = usePagination(
         getBranches,
         getBranchesQty,
@@ -202,6 +204,8 @@ export const TableBranches = () => {
                 setShowInactive={setShowInactive}
                 showInactive={showInactive}
                 title="Sucursales"
+                setSearchTerm={setSearchTerm}
+                searchTerm={searchTerm}
             />
         </>
     );

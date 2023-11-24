@@ -6,10 +6,11 @@ export const getWarehouses = async (
     page = 1,
     limit = 20,
     showInactive = false,
+    searchTerm,
 ) => {
     try {
         const response = await fetch(
-            `${BASE_URL}/warehouses?page=${page}&limit=${limit}&showInactive=${showInactive}`,
+            `${BASE_URL}/warehouses?page=${page}&limit=${limit}&showInactive=${showInactive}&searchTerm=${searchTerm}`,
         );
         const { status, data, message } = await handleFetchError(response);
         //
