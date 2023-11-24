@@ -54,6 +54,8 @@ export const SettingsScreen = () => {
             name: e.target.options[e.target.selectedIndex].text,
         };
 
+        console.log(mainBranch);
+
         setSelectedBranch(mainBranch);
 
         const success = await updateMainBranch(

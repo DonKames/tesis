@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 
 // Personal
-import SearchProductBar from './SearchProductBar';
 import { TableSkus } from './TableSkus';
 import { TableProducts } from './TableProducts';
 
@@ -24,9 +23,7 @@ const ProductsScreen = () => {
         <Container>
             <Row className="mt-3 mb-2">
                 <Col></Col>
-                <Col>
-                    <SearchProductBar />
-                </Col>
+                <Col></Col>
                 <Col className="text-end">
                     <Link to="add">
                         <Button>Agregar producto</Button>

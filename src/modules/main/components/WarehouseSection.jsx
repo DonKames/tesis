@@ -21,11 +21,11 @@ export const WarehouseSection = () => {
 
     const handleWarehouseChange = async (e) => {
         updateSelectedWarehouse(e.target.value);
-        // console.log(e);
+        //
         // // Formatting
         // const warehouseId = +e.target.value;
 
-        // console.log(warehouseId);
+        //
 
         // const warehouseData = await getWarehouseById(warehouseId);
 
@@ -34,11 +34,9 @@ export const WarehouseSection = () => {
 
     const updateSelectedWarehouse = async (warehouseId) => {
         const { data: warehouseData } = await getWarehouseById(warehouseId);
-        console.log(warehouseData);
 
         const { data: productsQty } = await getProductsQty({ warehouseId });
 
-        console.log(productsQty);
         const warehouseDataWithProductsQty = {
             ...warehouseData,
             productsQty,
@@ -61,9 +59,7 @@ export const WarehouseSection = () => {
             };
 
             fetchData();
-        } catch (error) {
-            console.log(error);
-        }
+        } catch (error) {}
     }, [mainWarehouse]);
 
     return (
@@ -106,7 +102,7 @@ export const WarehouseSection = () => {
                 <Card.Text>
                     Cantidad de productos:{' '}
                     <strong>
-                        {console.log(selectedWarehouse?.productsQty)}
+                        {}
                         {typeof selectedWarehouse?.productsQty === 'number' &&
                         !isNaN(selectedWarehouse?.productsQty)
                             ? selectedWarehouse?.productsQty

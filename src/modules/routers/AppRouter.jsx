@@ -31,10 +31,10 @@ export const AppRouter = () => {
     useEffect(() => {
         onAuthStateChanged(auth, async (user) => {
             if (user?.uid) {
-                const respUid = await getUserByUid(user.uid);
+                let userData = await getUserByUid(user.uid);
 
-                if (!respUid) {
-                    updateUserUid(user.email, user.uid);
+                if (!userData) {
+                    userData = await updateUserUid(user.email, user.uid);
                 }
 
                 const {
@@ -42,11 +42,13 @@ export const AppRouter = () => {
                     first_name: firstName,
                     fk_role_id: fkRoleId,
                     email,
-                } = respUid;
+                    user_id: userId,
+                } = userData;
 
                 dispatch(
                     authLogin({
                         uid,
+                        userId,
                         displayName: firstName,
                         role: fkRoleId,
                         email,
@@ -57,6 +59,7 @@ export const AppRouter = () => {
             } else {
                 setIsLoggedIn(false);
             }
+
             setChecking(false);
 
             if (!settings.globalSettingsId) {
@@ -83,7 +86,7 @@ export const AppRouter = () => {
                             settingsData.mainWarehouse,
                         );
 
-                        // console.log(data);
+                        //
 
                         dispatch(
                             settingsSetMainWarehouse({

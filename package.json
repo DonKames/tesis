@@ -32,6 +32,7 @@
     "react-router": "^6.15.0",
     "react-router-dom": "^6.15.0",
     "react-select": "^5.7.4",
+    "recharts": "^2.9.2",
     "redux": "^4.2.1",
     "sort-by": "^1.2.0",
     "sweetalert2": "^11.7.27",

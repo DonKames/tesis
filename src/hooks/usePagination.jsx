@@ -15,36 +15,47 @@ const usePagination = (
     const [pagesQty, setPagesQty] = useState(0);
     const [limit, setLimit] = useState(initialLimit);
     const [showInactive, setShowInactive] = useState(false);
+    const [searchTerm, setSearchTerm] = useState('');
 
-    useEffect(() => {
-        // Obtener la nueva cantidad de elementos
+    // useEffect(() => {
+    //     // Obtener la nueva cantidad de elementos
 
-        if (showInactive !== undefined) {
-            getItemsQty({ showInactive }).then((newItemsQtyInfo) => {
-                // console.log(newItemsQtyInfo);
-                const { data } = newItemsQtyInfo;
+    //     if (showInactive !== undefined) {
+    //         getItemsQty({ showInactive, searchTerm }).then(
+    //             (newItemsQtyInfo) => {
+    //                 console.log(newItemsQtyInfo);
+    //                 const { data } = newItemsQtyInfo;
 
-                // console.log(data);
+    //                 // console.log(data);
 
-                // console.log(data, message);
+    //                 // console.log(data, message);
 
-                dispatch(setItemsQty(data));
-            });
-        }
-    }, [showInactive]);
+    //                 dispatch(setItemsQty(data));
+    //             },
+    //         );
+    //     }
+    // }, [showInactive, searchTerm]);
 
     useEffect(() => {
         // console.log(pagesQty);
 
         const fetchData = async () => {
             try {
-                setPagesQty(Math.ceil(itemsQty / limit));
-                const { data } = await getItems(1, limit, showInactive);
-                // console.log('setItems', fetchedItems);
+                const { data } = await getItems(
+                    1,
+                    limit,
+                    showInactive,
+                    searchTerm,
+                );
 
-                // console.log(data);
+                dispatch(setItemsQty(data.qty));
+
+                setPagesQty(Math.ceil(itemsQty / limit));
+                console.log('setItems');
+
+                console.log(data);
                 if (data) {
-                    dispatch(setItems(data));
+                    dispatch(setItems(data.data));
                 }
             } catch (error) {
                 console.log(error);
@@ -52,16 +63,17 @@ const usePagination = (
         };
 
         fetchData();
-    }, [itemsQty, limit]);
+    }, [itemsQty, limit, searchTerm]);
 
     const handlePageChange = async (pageNumber) => {
         setSelectedPage(pageNumber);
-        const { status, data, message } = await getItems(
+        const { data } = await getItems(
             pageNumber,
             limit,
             showInactive,
+            searchTerm,
         );
-        dispatch(setItems(data));
+        dispatch(setItems(data.data));
     };
 
     return {
@@ -73,6 +85,8 @@ const usePagination = (
         setLimit,
         setShowInactive,
         showInactive,
+        setSearchTerm,
+        searchTerm,
     };
 };
 

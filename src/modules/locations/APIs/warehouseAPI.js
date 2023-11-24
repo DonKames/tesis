@@ -6,38 +6,37 @@ export const getWarehouses = async (
     page = 1,
     limit = 20,
     showInactive = false,
+    searchTerm,
 ) => {
     try {
         const response = await fetch(
-            `${BASE_URL}/warehouses?page=${page}&limit=${limit}&showInactive=${showInactive}`,
+            `${BASE_URL}/warehouses?page=${page}&limit=${limit}&showInactive=${showInactive}&searchTerm=${searchTerm}`,
         );
         const { status, data, message } = await handleFetchError(response);
-        // console.log(data);
+        //
         if (status === 'success') {
             return { data, message };
         } else {
             throw new Error(message);
         }
     } catch (error) {
-        console.log('Error al obtener Bodegas desde la API:', error);
         return { data: null, error };
     }
 };
 
 export const getWarehouseById = async (warehouseId) => {
     try {
-        // console.log(warehouseId);
+        //
         const response = await fetch(`${BASE_URL}/warehouses/${warehouseId}`);
         const { status, data, message } = await handleFetchError(response);
 
-        // console.log(data);
+        //
         if (status === 'success') {
             return { data, message };
         } else {
             throw new Error(message);
         }
     } catch (error) {
-        console.log('Error al obtener Bodega desde la API:', error);
         return { data: null, message: '' };
     }
 };
@@ -48,7 +47,7 @@ export const getWarehousesQty = async ({ branchId, showInactive } = {}) => {
 
         const params = new URLSearchParams();
 
-        // console.log(showInactive);
+        //
 
         if (showInactive !== undefined) {
             params.append('showInactive', showInactive);
@@ -62,11 +61,11 @@ export const getWarehousesQty = async ({ branchId, showInactive } = {}) => {
             url += `?${params.toString()}`;
         }
 
-        // console.log('Fetching URL:', url);
+        //
 
         const response = await fetch(url);
 
-        // console.log(response);
+        //
 
         const { status, message, data } = await handleFetchError(response);
 
@@ -76,10 +75,10 @@ export const getWarehousesQty = async ({ branchId, showInactive } = {}) => {
             throw new Error(message);
         }
     } catch (error) {
-        console.log(
-            'Error al obtener Cantidad de Bodegas desde la API:',
-            error,
-        );
+        // console.log(
+        //     'Error al obtener Cantidad de Bodegas desde la API:',
+        //     error,
+        // );
         return { data: null, message: error };
     }
 };
@@ -90,14 +89,12 @@ export const getWarehousesNames = async () => {
         const data = await handleFetchError(response);
         return data;
     } catch (error) {
-        console.log('Error al obtener Nombres de Bodegas desde la API:', error);
         return { data: null, message: error };
     }
 };
 
 export const createWarehouse = async (warehouseData) => {
     try {
-        console.log(warehouseData);
         const response = await fetch(`${BASE_URL}/warehouses`, {
             method: 'POST', // especifica el método HTTP
             headers: {
@@ -114,7 +111,6 @@ export const createWarehouse = async (warehouseData) => {
             throw new Error(message);
         }
     } catch (error) {
-        console.log('Error al crear Bodega en la API:', error);
         return { data: null, message: error };
     }
 };
@@ -136,7 +132,6 @@ export const updateWarehouse = async (warehouseId, warehouseData) => {
         const data = await response.json();
         return data;
     } catch (error) {
-        console.log('Error al actualizar Bodega en la API:', error);
         return null;
     }
 };

@@ -2,10 +2,15 @@ import { handleFetchError } from '../../../shared/utils/handleFetchError';
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
-export const getSkus = async (page = 1, limit = 10, showInactive = false) => {
+export const getSkus = async (
+    page = 1,
+    limit = 10,
+    showInactive = false,
+    searchTerm,
+) => {
     try {
         const response = await fetch(
-            `${BASE_URL}/skus?page=${page}&limit=${limit}&showInactive=${showInactive}`,
+            `${BASE_URL}/skus?page=${page}&limit=${limit}&showInactive=${showInactive}&searchTerm=${searchTerm}`,
         );
 
         // console.log(response);
@@ -67,6 +72,53 @@ export const getSkusNames = async () => {
     } catch (error) {
         console.log('Error al obtener SKUS Names desde la API:', error);
         return [];
+    }
+};
+
+export const getSkusWithLowInventory = async () => {
+    try {
+        const response = await fetch(`${BASE_URL}/skus/skusWithLowInventory`);
+        // return await handleFetchError(response);
+        const { data, status, message } = await handleFetchError(response);
+        // console.log(data);
+        if (status === 'success') {
+            return { data, message };
+        }
+    } catch (error) {
+        console.log(
+            'Error al obtener SKUS con inventario bajo desde la API:',
+            error,
+        );
+        return [];
+    }
+};
+
+export const getProductCountInWarehousesBySku = async (skuIds) => {
+    try {
+        const response = await fetch(
+            `${BASE_URL}/skus/getProductsCountInWarehouses`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ skuIds }), // Enviamos el array de IDs como JSON
+            },
+        );
+
+        const { status, data, message } = await handleFetchError(response);
+
+        if (status === 'success') {
+            return { data, message };
+        } else {
+            throw new Error(message);
+        }
+    } catch (error) {
+        console.log(
+            'Error al obtener la cantidad de productos en bodegas por SKU desde la API:',
+            error,
+        );
+        return { data: null, message: error };
     }
 };
 

@@ -17,6 +17,8 @@ export const PaginatedTable = ({
     setShowInactive, // setShowInactive: La función para manejar el cambio de mostrar elementos inactivos.
     showInactive, // showInactive: Un booleano que indica si se deben mostrar elementos inactivos.
     title, // title: El título de la tabla.
+    setSearchTerm,
+    searchTerm,
 }) => {
     // console.log('limit', limit);
 
@@ -56,7 +58,14 @@ export const PaginatedTable = ({
             <Card className="shadow rounded animate__animated animate__fadeIn animate__fast">
                 <Card.Header>
                     <Row className="align-items-center">
-                        <Col className="fs-2">{title}</Col>
+                        <Col className="fs-2 text-truncate">{title}</Col>
+                        <Col>
+                            <Form.Control
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                placeholder="Búsqueda / Filtrado ..."
+                                value={searchTerm}
+                            />
+                        </Col>
                         <Col>
                             <Form.Check
                                 reverse
@@ -194,4 +203,6 @@ PaginatedTable.propTypes = {
     setShowInactive: PropTypes.func,
     showInactive: PropTypes.bool,
     title: PropTypes.string.isRequired,
+    setSearchTerm: PropTypes.func,
+    searchTerm: PropTypes.string,
 };

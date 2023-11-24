@@ -28,6 +28,7 @@ export const AddSkuForm = () => {
         } else {
             try {
                 const response = await createSku(values);
+
                 if (response) {
                     Swal.fire({
                         icon: 'success',
@@ -61,6 +62,7 @@ export const AddSkuForm = () => {
             sku: '',
             lote: '',
             order: '',
+            active: true,
         },
         validationSchema: skuSchema,
         onSubmit: handleFormSubmit,

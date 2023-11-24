@@ -6,10 +6,11 @@ export const getBranches = async (
     page = 1,
     limit = 20,
     showInactive = false,
+    searchTerm,
 ) => {
     try {
         const response = await fetch(
-            `${BASE_URL}/branches?page=${page}&limit=${limit}&showInactive=${showInactive}`,
+            `${BASE_URL}/branches?page=${page}&limit=${limit}&showInactive=${showInactive}&searchTerm=${searchTerm}`,
         );
         const { status, data, message } = await handleFetchError(response);
 

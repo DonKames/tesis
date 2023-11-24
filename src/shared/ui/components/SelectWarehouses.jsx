@@ -34,9 +34,7 @@ export const SelectWarehouses = ({
                     const fetchedWarehousesNames = await getWarehousesNames();
                     dispatch(uiSetWarehousesNames(fetchedWarehousesNames));
                 }
-            } catch (error) {
-                console.log(error);
-            }
+            } catch (error) {}
         };
 
         fetchWarehousesNames();
@@ -62,7 +60,6 @@ export const SelectWarehouses = ({
         } else if (handleInputChange) {
             setSelectedValue(selectedOption);
 
-            console.log(selectedOption);
             handleInputChange({
                 target: {
                     name,
@@ -76,17 +73,11 @@ export const SelectWarehouses = ({
         let updatedOptions;
 
         if (branchId === 0 || branchId === null || branchId === undefined) {
-            console.log('if branchId: ', branchId);
-            console.log(warehousesNames);
             updatedOptions = warehousesNames.map((warehouse) => ({
                 label: warehouse.name,
                 value: warehouse.id,
             }));
-
-            console.log(options);
         } else {
-            console.log('else branchId: ', branchId);
-
             updatedOptions = warehousesNames
                 .filter((warehouse) => warehouse.branchId === branchId)
                 .map((warehouse) => ({
@@ -102,7 +93,7 @@ export const SelectWarehouses = ({
     // FIXME
     // useEffect(() => {
     //     if (originalBranchId !== selectedBranch) {
-    //         console.log(options);
+    //
     //         setSelectedValue({
     //             value: options ? options[0]?.value : 0,
     //             label: options ? options[0]?.label : '',

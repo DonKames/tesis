@@ -49,9 +49,12 @@ export const NavBar = () => {
                                 Informes
                             </Nav.Link>
                         )}
-                        <Nav.Link as={Link} to="./tasks">
+                        {
+                            // *Próximamente
+                        }
+                        {/* <Nav.Link as={Link} to="./tasks">
                             Tareas
-                        </Nav.Link>
+                        </Nav.Link> */}
                         {hasAccess && (
                             <Nav.Link as={Link} to="./users">
                                 Usuarios

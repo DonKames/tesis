@@ -31,13 +31,10 @@ export const startRegisterNewUserNameEmailPass = (name, email, password) => {
 
             const { uid, displayName } = user;
 
-            console.log(uid, displayName);
-
             // No se realiza el inicio de sesión automático
 
             // dispatch(authLogin({ uid, displayName }));
         } catch (error) {
-            console.log(error);
             Swal.fire('Error', 'Error en el registro', 'error');
         }
     };
@@ -58,29 +55,31 @@ export const startRegisterNameEmailPass = (name, email, password) => {
 
                 const { uid, displayName } = user;
 
-                console.log(uid, displayName);
-
                 dispatch(authLogin({ uid, displayName, email, role }));
             })
             .catch((e) => {
-                console.log(e);
                 Swal.fire('Error', 'Error en el registro', 'error');
             });
     };
 };
 
-export const startLoginEmailPassword = (email, password) => {
+export const startLoginEmailPassword = (
+    email,
+    password,
+    first_name,
+    fk_role_id,
+    userId,
+) => {
     return async (dispatch) => {
         dispatch(uiStartLoading());
 
         signInWithEmailAndPassword(auth, email, password)
             .then(({ user }) => {
                 const { uid, displayName } = user;
-                dispatch(authLogin({ uid, displayName }));
+                dispatch(authLogin({ uid, displayName, userId }));
                 dispatch(uiFinishLoading());
             })
             .catch((e) => {
-                console.log(e.code);
                 switch (e.code) {
                     case 'auth/user-not-found':
 

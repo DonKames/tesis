@@ -4,11 +4,22 @@ import { Button } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import { useFormik } from 'formik';
 
-import { createWarehouse } from '../APIs/warehouseAPI';
+import {
+    createWarehouse,
+    getWarehouses,
+    getWarehousesQty,
+} from '../APIs/warehouseAPI';
 import { WarehouseModal } from './Modals/WarehouseModal';
 import { warehouseSchema } from '../../../validations/warehouseSchema';
+import { useDispatch } from 'react-redux';
+import {
+    locationsSetWarehouses,
+    locationsSetWarehousesQty,
+} from '../slice/locationsSlice';
 
 export const AddWarehouseModal = () => {
+    const dispatch = useDispatch();
+
     const [showModal, setShowModal] = useState(false);
 
     const handleSubmit = async (values) => {
@@ -21,6 +32,18 @@ export const AddWarehouseModal = () => {
                 showConfirmButton: false,
                 timer: 1500,
             });
+
+            const { data: warehousesData } = await getWarehouses();
+
+            if (warehousesData) {
+                dispatch(locationsSetWarehouses(warehousesData));
+            }
+
+            const { data: warehousesQty } = await getWarehousesQty({});
+
+            if (warehousesQty) {
+                dispatch(locationsSetWarehousesQty(warehousesQty));
+            }
 
             toggleModal(false);
         } else {

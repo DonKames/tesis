@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Card, Col, Row } from 'react-bootstrap';
+import { Card, Col, ListGroup, ListGroupItem, Row } from 'react-bootstrap';
 import {
     faWarehouse,
     faBuilding,
@@ -21,8 +21,14 @@ import { getBranchLocationsQty } from '../../locations/APIs/branchLocationsAPI';
 import { getUsersQty } from '../../users/apis/usersAPI';
 import { usersSetUsersQty } from '../../users/slice/usersSlice';
 import { PieChart } from '../../../shared/ui/components/PieChart';
-import { productsSetProductsCountByWarehouse } from '../../products/slice/productsSlice';
-import { getProductsCountByWarehouse } from '../../products/APIs/productsAPI';
+import {
+    productsSetProductQty,
+    productsSetProductsCountByWarehouse,
+} from '../../products/slice/productsSlice';
+import {
+    getProductsCountByWarehouse,
+    getProductsQty,
+} from '../../products/APIs/productsAPI';
 
 export const GeneralSection = () => {
     const dispatch = useDispatch();
@@ -35,153 +41,282 @@ export const GeneralSection = () => {
         (state) => state.settings,
     );
 
-    const { productsCountByWarehouse } = useSelector((state) => state.products);
+    const { productsCountByWarehouse, productsQty } = useSelector(
+        (state) => state.products,
+    );
 
     const { usersQty } = useSelector((state) => state.users);
 
+    //
+
     const graphData = productsCountByWarehouse?.map((element) => {
         //
-        return [element.warehouse_name || '', parseInt(element.product_count)];
+        return [element.warehouseName || '', parseInt(element.qty)];
     });
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                if (!productsCountByWarehouse.length) {
-                    const productsCountByWarehouse =
-                        await getProductsCountByWarehouse();
+    //
 
-                    dispatch(
-                        productsSetProductsCountByWarehouse(
-                            productsCountByWarehouse,
-                        ),
-                    );
-                }
+    useEffect(
+        () => {
+            const fetchData = async () => {
+                try {
+                    if (productsQty === null) {
+                        const { data } = await getProductsQty({});
 
-                // Quantities
-                if (branchesQty === null) {
-                    const { data, message } = await getBranchesQty({});
+                        dispatch(productsSetProductQty(data));
+                    }
 
-                    dispatch(locationsSetBranchesQty(data));
-                }
+                    if (!productsCountByWarehouse.length) {
+                        const productsCountByWarehouse =
+                            await getProductsCountByWarehouse();
 
-                if (warehousesQty === null) {
-                    const { data, message } = await getWarehousesQty();
-                    dispatch(locationsSetWarehousesQty(data));
-                }
+                        dispatch(
+                            productsSetProductsCountByWarehouse(
+                                productsCountByWarehouse,
+                            ),
+                        );
+                    }
 
-                if (branchLocationsQty === null) {
-                    const { data, message } = await getBranchLocationsQty();
-                    dispatch(locationsSetBranchLocationsQty(data));
-                }
+                    // Quantities
+                    if (branchesQty === null) {
+                        const { data } = await getBranchesQty({});
 
-                if (usersQty === null) {
-                    const usersQty = await getUsersQty();
-                    dispatch(usersSetUsersQty(usersQty));
-                }
-            } catch (error) {}
-        };
+                        dispatch(locationsSetBranchesQty(data));
+                    }
 
-        fetchData();
-    }, [
-        branchLocationsQty,
-        branchesQty,
-        productsCountByWarehouse,
-        usersQty,
-        warehousesQty,
-        dispatch,
-    ]);
+                    if (warehousesQty === null) {
+                        const { data } = await getWarehousesQty();
+                        dispatch(locationsSetWarehousesQty(data));
+                    }
+
+                    if (branchLocationsQty === null) {
+                        //
+                        const { data } = await getBranchLocationsQty({});
+                        dispatch(locationsSetBranchLocationsQty(data));
+                    }
+
+                    if (usersQty === null) {
+                        const { data } = await getUsersQty({});
+                        dispatch(usersSetUsersQty(data));
+                    }
+                } catch (error) {}
+            };
+
+            fetchData();
+        },
+        [
+            // branchLocationsQty,
+            // branchesQty,
+            // productsCountByWarehouse,
+            // usersQty,
+            // warehousesQty,
+        ],
+    );
 
     return (
         <>
             <Card className="shadow h-100 animate__animated animate__fadeIn animate__fast">
-                <Card.Header className="d-flex align-items-center">
-                    <h3 className="mb-0">Resumen General</h3>
+                <Card.Header className="d-flex align-items-center mt-3">
+                    <h3 className="">Resumen General</h3>
                 </Card.Header>
-                <Card.Body>
+                <Card.Body className="d-flex flex-column">
                     <Row>
                         <Col xs={12} md={6}>
-                            <Row className="align-items-center my-1 p-0">
-                                <Col xs={1} className="px-1 text-center">
-                                    <FontAwesomeIcon
-                                        icon={faBuilding}
-                                        className=""
-                                    />
-                                </Col>
-                                <Col xs={11} className="ps-0">
-                                    <Card.Text>
-                                        Sucursal Principal:
-                                        <strong> {mainBranch?.name}</strong>
-                                    </Card.Text>
-                                </Col>
-                            </Row>
-                            <Row className="align-items-center my-1">
-                                <Col xs={1} className="px-1 text-center">
-                                    <FontAwesomeIcon icon={faBuilding} />
-                                </Col>
-                                <Col xs={11} className="ps-0">
-                                    <Card.Text>
-                                        Bodega Principal:
-                                        <strong> {mainWarehouse?.name}</strong>
-                                    </Card.Text>
-                                </Col>
-                            </Row>
-                            <Row className="align-items-center my-1">
-                                <Col xs={1} className="px-1 text-center">
-                                    <FontAwesomeIcon icon={faBuilding} />
-                                </Col>
-                                <Col xs={11} className="ps-0">
-                                    <Card.Text>
-                                        Total de Sucursales:
-                                        <strong> {branchesQty}</strong>
-                                    </Card.Text>
-                                </Col>
-                            </Row>
-                            <Row className="align-items-center my-1">
-                                <Col xs={1} className="px-1 text-center">
-                                    <FontAwesomeIcon icon={faWarehouse} />
-                                </Col>
-                                <Col xs={11} className="ps-0">
-                                    <Card.Text>
-                                        Total de Bodegas:
-                                        <strong> {warehousesQty}</strong>
-                                    </Card.Text>
-                                </Col>
-                            </Row>
-                            <Row className="align-items-center my-1">
-                                <Col xs={1} className="px-1 text-center">
-                                    <FontAwesomeIcon icon={faTent} />
-                                </Col>
-                                <Col xs={11} className="ps-0">
-                                    <Card.Text>
-                                        Total de Ubicaciones de Sucursal:{' '}
-                                        <strong>{branchLocationsQty}</strong>
-                                    </Card.Text>
-                                </Col>
-                            </Row>
-                            <Row className="align-items-center my-1">
-                                <Col xs={1} className="px-1 text-center">
-                                    <FontAwesomeIcon icon={faUser} />
-                                </Col>
-                                <Col xs={11} className="ps-0">
-                                    <Card.Text>
-                                        Total de Usuarios:{' '}
-                                        <strong>{usersQty}</strong>
-                                    </Card.Text>
-                                </Col>
-                            </Row>
-                            <Row className="align-items-center my-1">
-                                <Col xs={1} className="px-1 text-center">
-                                    <FontAwesomeIcon icon={faUser} />
-                                </Col>
-                                <Col xs={11} className="ps-0">
-                                    <Card.Text>
-                                        Total de Productos:{' '}
-                                        <strong>En Trabajo</strong>
-                                    </Card.Text>
-                                </Col>
-                            </Row>
+                            <ListGroup>
+                                <ListGroupItem>
+                                    <Row className="align-items-center my-1 p-0">
+                                        <Col
+                                            xs={1}
+                                            className="px-1 text-center"
+                                        >
+                                            <FontAwesomeIcon
+                                                icon={faBuilding}
+                                                className=""
+                                            />
+                                        </Col>
+                                        <Col xs={5} className="ps-0">
+                                            <Card.Text>
+                                                Sucursal Principal
+                                            </Card.Text>
+                                        </Col>
+                                        <Col xs={1} className="ps-0">
+                                            <Card.Text>:</Card.Text>
+                                        </Col>
+                                        <Col xs={5} className="ps-0">
+                                            <Card.Text>
+                                                <strong>
+                                                    {' '}
+                                                    {mainBranch?.name ||
+                                                        'Sin Determinar'}
+                                                </strong>
+                                            </Card.Text>
+                                        </Col>
+                                    </Row>
+                                </ListGroupItem>
+                                <ListGroupItem>
+                                    <Row className="align-items-center my-1">
+                                        <Col
+                                            xs={1}
+                                            className="px-1 text-center"
+                                        >
+                                            <FontAwesomeIcon
+                                                icon={faBuilding}
+                                            />
+                                        </Col>
+                                        <Col xs={5} className="ps-0">
+                                            <Card.Text>
+                                                Bodega Principal
+                                            </Card.Text>
+                                        </Col>
+                                        <Col xs={1} className="ps-0">
+                                            <Card.Text>:</Card.Text>
+                                        </Col>
+
+                                        <Col xs={5} className="ps-0">
+                                            <Card.Text>
+                                                <strong>
+                                                    {' '}
+                                                    {mainWarehouse?.name ||
+                                                        'Sin Determinar'}
+                                                </strong>
+                                            </Card.Text>
+                                        </Col>
+                                    </Row>
+                                </ListGroupItem>
+                                <ListGroupItem>
+                                    <Row className="align-items-center my-1">
+                                        <Col
+                                            xs={1}
+                                            className="px-1 text-center"
+                                        >
+                                            <FontAwesomeIcon
+                                                icon={faBuilding}
+                                            />
+                                        </Col>
+                                        <Col xs={5} className="ps-0">
+                                            <Card.Text>
+                                                Total de Sucursales
+                                            </Card.Text>
+                                        </Col>
+                                        <Col xs={1} className="ps-0">
+                                            <Card.Text>:</Card.Text>
+                                        </Col>
+                                        <Col xs={5} className="ps-0">
+                                            <Card.Text>
+                                                <strong>
+                                                    {' '}
+                                                    {branchesQty ||
+                                                        'Sin Determinar'}
+                                                </strong>
+                                            </Card.Text>
+                                        </Col>
+                                    </Row>
+                                </ListGroupItem>
+                                <ListGroupItem>
+                                    <Row className="align-items-center my-1">
+                                        <Col
+                                            xs={1}
+                                            className="px-1 text-center"
+                                        >
+                                            <FontAwesomeIcon
+                                                icon={faWarehouse}
+                                            />
+                                        </Col>
+                                        <Col xs={5} className="ps-0">
+                                            <Card.Text>
+                                                Total de Bodegas:
+                                            </Card.Text>
+                                        </Col>
+
+                                        <Col xs={1} className="ps-0">
+                                            <Card.Text>:</Card.Text>
+                                        </Col>
+                                        <Col xs={5} className="ps-0">
+                                            <Card.Text>
+                                                <strong>
+                                                    {' '}
+                                                    {warehousesQty || 0}
+                                                </strong>
+                                            </Card.Text>
+                                        </Col>
+                                    </Row>
+                                </ListGroupItem>
+
+                                <ListGroupItem>
+                                    <Row className="align-items-center my-1">
+                                        <Col
+                                            xs={1}
+                                            className="px-1 text-center"
+                                        >
+                                            <FontAwesomeIcon icon={faTent} />
+                                        </Col>
+                                        <Col xs={5} className="ps-0">
+                                            <Card.Text>
+                                                Total de Ubicaciones:
+                                            </Card.Text>
+                                        </Col>
+                                        <Col xs={1} className="ps-0">
+                                            <Card.Text>:</Card.Text>
+                                        </Col>
+                                        <Col xs={5} className="ps-0">
+                                            <Card.Text>
+                                                <strong>
+                                                    {branchLocationsQty || 0}
+                                                </strong>
+                                            </Card.Text>
+                                        </Col>
+                                    </Row>
+                                </ListGroupItem>
+                                <ListGroupItem>
+                                    <Row className="align-items-center my-1">
+                                        <Col
+                                            xs={1}
+                                            className="px-1 text-center"
+                                        >
+                                            <FontAwesomeIcon icon={faUser} />
+                                        </Col>
+                                        <Col xs={5} className="ps-0">
+                                            <Card.Text>
+                                                Total de Usuarios:
+                                            </Card.Text>
+                                        </Col>
+                                        <Col xs={1} className="ps-0">
+                                            <Card.Text>:</Card.Text>
+                                        </Col>
+                                        <Col xs={5} className="ps-0">
+                                            <Card.Text>
+                                                <strong>{usersQty}</strong>
+                                            </Card.Text>
+                                        </Col>
+                                    </Row>
+                                </ListGroupItem>
+
+                                <ListGroupItem>
+                                    <Row className="align-items-center my-1">
+                                        <Col
+                                            xs={1}
+                                            className="px-1 text-center"
+                                        >
+                                            <FontAwesomeIcon icon={faUser} />
+                                        </Col>
+                                        <Col xs={5} className="ps-0">
+                                            <Card.Text>
+                                                Total de Productos
+                                            </Card.Text>
+                                        </Col>
+                                        <Col xs={1} className="ps-0">
+                                            <Card.Text>:</Card.Text>
+                                        </Col>
+                                        <Col xs={5} className="ps-0">
+                                            <Card.Text>
+                                                <strong>{productsQty}</strong>
+                                            </Card.Text>
+                                        </Col>
+                                    </Row>
+                                </ListGroupItem>
+                            </ListGroup>
                         </Col>
+
                         <Col xs={12} md={6} className="mt-0">
                             <PieChart
                                 className="mt-0"

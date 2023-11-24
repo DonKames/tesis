@@ -34,7 +34,7 @@ export const SkuSection = () => {
                 if (!skusNames.length) {
                     const skusData = await getSkusNames();
 
-                    console.log(skusData);
+                    // console.log(skusData);
 
                     dispatch(uiSetSkusNames(skusData));
 

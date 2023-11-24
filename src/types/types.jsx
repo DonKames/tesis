@@ -1,8 +1,9 @@
 export const types = {
     auth: '[Auth]',
-    ui: '[Ui]',
+    movements: '[Movements]',
     locations: '[Locations]',
     products: '[Products]',
-    users: '[Users]',
     settings: '[Settings]',
+    ui: '[Ui]',
+    users: '[Users]',
 };

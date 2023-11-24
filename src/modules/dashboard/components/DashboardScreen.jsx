@@ -1,39 +1,33 @@
 import React from 'react';
-import { Card, Col, Container, Row } from 'react-bootstrap';
+import { Col, Container, Row } from 'react-bootstrap';
+import { InventoryCard } from './inventory/cards/InventoryCard';
+import { InOutVolumeCard } from './inventory/cards/InOutVolumeCard';
+import { AllMovementsCard } from './inventory/cards/AllMovementsCard';
 
 export const DashboardScreen = () => {
     return (
         <Container>
-            <Row className="my-3">
+            {/* <Row>
                 <Col>
                     <h1>Informes</h1>
                 </Col>
             </Row>
-            <Row className="my-3">
+            <Row>
                 <Col>
-                    <Card>
-                        <Card.Header as="h5">
-                            Volumen entrada y salida
-                        </Card.Header>
-                        <Card.Body>
-                            <Card.Title>Dashboard</Card.Title>
-                            <Card.Text>Lorem ipsum</Card.Text>
-                        </Card.Body>
-                    </Card>
+                    <InventoryCard />
                 </Col>
             </Row>
-            <Row className="my-3">
+            <Row>
                 <Col>
-                    <Card>
-                        <Card.Header as="h5">Inventario Actual</Card.Header>
-                        <Card.Body>
-                            <Card.Title>Dashboard</Card.Title>
-                            <Card.Text>Lorem ipsum</Card.Text>
-                        </Card.Body>
-                    </Card>
+                    <InOutVolumeCard />
+                </Col>
+            </Row> */}
+            <Row>
+                <Col>
+                    <AllMovementsCard />
                 </Col>
             </Row>
-            <Row className="my-3">
+            {/* <Row>
                 <Col>
                     <Card>
                         <Card.Header as="h5">Estado Actual</Card.Header>
@@ -43,7 +37,7 @@ export const DashboardScreen = () => {
                         </Card.Body>
                     </Card>
                 </Col>
-            </Row>
+            </Row> */}
         </Container>
     );
 };

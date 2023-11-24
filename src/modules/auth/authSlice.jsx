@@ -5,6 +5,7 @@ import { reset } from '../../shared/resetSlice';
 const initialState = {
     isLoggedIn: false,
     uid: null,
+    userId: null,
     displayName: null,
     // img: null,
     email: null,
@@ -20,6 +21,9 @@ export const authSlice = createSlice({
             state.isLoggedIn = true;
             if (action.payload.uid !== undefined) {
                 state.uid = action.payload.uid;
+            }
+            if (action.payload.userId !== undefined) {
+                state.userId = action.payload.userId;
             }
             if (action.payload.displayName !== undefined) {
                 state.displayName = action.payload.displayName;
