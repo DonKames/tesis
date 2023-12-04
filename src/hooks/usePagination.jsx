@@ -78,7 +78,7 @@ const usePagination = (
     };
 
     useEffect(() => {
-        const socket = io('http://localhost:3000/api'); // Asegúrate de usar la URL correcta
+        const socket = io('http://localhost:3000'); // Asegúrate de usar la URL correcta
 
         socket.on('dataUpdated', (updatedData) => {
             console.log('Datos actualizados recibidos:', updatedData);
