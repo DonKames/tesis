@@ -1,5 +1,6 @@
 import { useDispatch } from 'react-redux';
 import { useState, useEffect } from 'react';
+import io from 'socket.io-client';
 
 const usePagination = (
     getItems, // Función para obtener los elementos
@@ -75,6 +76,20 @@ const usePagination = (
         );
         dispatch(setItems(data.data));
     };
+
+    useEffect(() => {
+        const socket = io('http://localhost:3000/api'); // Asegúrate de usar la URL correcta
+
+        socket.on('dataUpdated', (updatedData) => {
+            console.log('Datos actualizados recibidos:', updatedData);
+            // Recargar los datos de la tabla
+            handlePageChange(selectedPage);
+        });
+
+        return () => {
+            socket.off('dataUpdated');
+        };
+    }, [selectedPage]);
 
     return {
         handlePageChange,
