@@ -20,6 +20,7 @@ export const ProductSearcher = ({
     const loadOptions = (inputValue, callback) => {
         searchProducts(inputValue)
             .then((data) => {
+                console.log(data);
                 const options = data.map((item) => ({
                     label: item.id.toString(),
                     value: item.id,

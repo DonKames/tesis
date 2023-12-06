@@ -68,6 +68,9 @@ export const searchProducts = async (query) => {
             `${BASE_URL}/products/search?query=${query}`,
         );
         const { status, data, message } = await handleFetchError(response);
+
+        console.log(data);
+
         if (status === 'success') {
             return data;
         } else {
