@@ -6,7 +6,7 @@ export const getBranchLocations = async (
     page = 1,
     limit = 10,
     showInactive = false,
-    searchTerm,
+    searchTerm = '',
 ) => {
     try {
         const response = await fetch(

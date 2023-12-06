@@ -1,21 +1,23 @@
 import React, { useState } from 'react';
 
-import { Button, Form, Modal, Row } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
-import Select from 'react-select';
+import { Button } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 
-import { useForm } from '../../../hooks/useForm';
 import {
     createBranchLocation,
     getBranchLocations,
 } from '../APIs/branchLocationsAPI';
-import { locationsSetBranchLocations } from '../slice/locationsSlice';
 import { useFormik } from 'formik';
 import { BranchLocationModal } from './Modals/BranchLocationModal';
 import { branchLocationSchema } from '../../../validations/branchLocationSchema';
+import { useDispatch } from 'react-redux';
+import {
+    locationsSetBranchLocations,
+    locationsSetBranchLocationsQty,
+} from '../slice/locationsSlice';
 
 export const AddBranchLocationModal = () => {
+    const dispatch = useDispatch();
     const [showModal, setShowModal] = useState(false);
 
     const handleFormSubmit = async (values) => {
@@ -30,6 +32,15 @@ export const AddBranchLocationModal = () => {
             });
 
             toggleModal(false);
+
+            const { data: branchLocations } = await getBranchLocations();
+
+            console.log('branchesData: ', branchLocations);
+
+            if (branchLocations) {
+                dispatch(locationsSetBranchLocations(branchLocations.data));
+                dispatch(locationsSetBranchLocationsQty(branchLocations.qty));
+            }
         } else {
             Swal.fire({
                 icon: 'error',

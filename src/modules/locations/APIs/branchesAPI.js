@@ -6,7 +6,7 @@ export const getBranches = async (
     page = 1,
     limit = 20,
     showInactive = false,
-    searchTerm,
+    searchTerm = '',
 ) => {
     try {
         const response = await fetch(
@@ -29,11 +29,11 @@ export const getBranchById = async (branchId) => {
     try {
         const response = await fetch(`${BASE_URL}/branches/${branchId}`);
 
-        console.log('branchById: ', response);
+        // console.log('branchById: ', response);
 
         const { status, data, message } = await handleFetchError(response);
 
-        console.log('branchById Data: ', data);
+        // console.log('branchById Data: ', data);
 
         if (status === 'success') {
             return { data, message };

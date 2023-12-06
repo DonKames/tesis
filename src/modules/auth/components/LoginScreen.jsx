@@ -223,7 +223,7 @@ export const LoginScreen = () => {
                                 Ingresar
                             </Button>
                         </div>
-                        <hr />
+                        {/* <hr />
                         <Row className="text-center">
                             <Col>
                                 <strong>PRÓXIMAMENTE</strong>
@@ -247,7 +247,7 @@ export const LoginScreen = () => {
                                     </span>
                                 </div>
                             </Card>
-                        </div>
+                        </div> */}
                         {/* <Link
                             className='link'
                             to='/pbl/register'

@@ -52,9 +52,9 @@ const usePagination = (
                 dispatch(setItemsQty(data.qty));
 
                 setPagesQty(Math.ceil(itemsQty / limit));
-                console.log('setItems');
+                // console.log('setItems');
 
-                console.log(data);
+                // console.log(data);
                 if (data) {
                     dispatch(setItems(data.data));
                 }
