@@ -18,25 +18,6 @@ const usePagination = (
     const [showInactive, setShowInactive] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
 
-    // useEffect(() => {
-    //     // Obtener la nueva cantidad de elementos
-
-    //     if (showInactive !== undefined) {
-    //         getItemsQty({ showInactive, searchTerm }).then(
-    //             (newItemsQtyInfo) => {
-    //                 console.log(newItemsQtyInfo);
-    //                 const { data } = newItemsQtyInfo;
-
-    //                 // console.log(data);
-
-    //                 // console.log(data, message);
-
-    //                 dispatch(setItemsQty(data));
-    //             },
-    //         );
-    //     }
-    // }, [showInactive, searchTerm]);
-
     useEffect(() => {
         // console.log(pagesQty);
 
@@ -67,6 +48,7 @@ const usePagination = (
     }, [itemsQty, limit, searchTerm]);
 
     const handlePageChange = async (pageNumber) => {
+        console.log('handlePageChange: ', showInactive);
         setSelectedPage(pageNumber);
         const { data } = await getItems(
             pageNumber,
@@ -75,6 +57,7 @@ const usePagination = (
             searchTerm,
         );
         dispatch(setItems(data.data));
+        dispatch(setItemsQty(data.qty));
     };
 
     useEffect(() => {
