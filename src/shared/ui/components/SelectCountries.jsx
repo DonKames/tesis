@@ -74,8 +74,22 @@ export const SelectCountries = ({
     // console.log('countries', isInvalid);
 
     return (
-        <>
+        <div style={{ position: 'relative' }}>
+            <div
+                style={{
+                    color: 'rgba(107, 137, 148, 0.65)',
+                    fontSize: '14px',
+                    left: '10px',
+                    pointerEvents: 'none',
+                    position: 'absolute',
+                    top: '10px',
+                    zIndex: 1,
+                }}
+            >
+                Seleccione País
+            </div>
             <Select
+                menuPlacement="auto"
                 className={isInvalid ? 'is-invalid' : ''}
                 isDisabled={true}
                 isInvalid={isInvalid}
@@ -90,7 +104,7 @@ export const SelectCountries = ({
             {isInvalid && (
                 <div className="invalid-feedback">{errorMessage}</div>
             )}
-        </>
+        </div>
     );
 };
 

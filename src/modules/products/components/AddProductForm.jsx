@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, Card, FloatingLabel, Form } from 'react-bootstrap';
 import {
     createProduct,
@@ -13,9 +13,11 @@ import { SelectWarehouses } from '../../../shared/ui/components/SelectWarehouses
 import Swal from 'sweetalert2';
 import { useDispatch, useSelector } from 'react-redux';
 import { productsSetProductQty } from '../slice/productsSlice';
+import { getSkuById } from '../APIs/skusAPI';
 
 export const AddProductForm = () => {
     const dispatch = useDispatch();
+
     const { userId } = useSelector((state) => state.auth);
 
     const handleFormSubmit = async (values) => {
@@ -60,10 +62,22 @@ export const AddProductForm = () => {
             branchId: 0,
             warehouseId: 0,
             epc: '',
+            skuName: '',
         },
         validationSchema: productSchema,
         onSubmit: handleFormSubmit,
     });
+
+    // useEffect para settear el nombre del Sku seleccionado.
+    useEffect(() => {
+        const showPickedSku = async () => {
+            const { skuId } = formik.values;
+            const skuBySku = await getSkuById(skuId);
+            skuBySku && formik.setFieldValue('skuName', skuBySku.name);
+        };
+
+        showPickedSku();
+    }, [formik.values.skuId]);
 
     return (
         <Card className="mb-3">
@@ -83,6 +97,18 @@ export const AddProductForm = () => {
                             setFieldValue={formik?.setFieldValue}
                             skuId={formik.values?.skuId}
                         />
+                    </Form.Group>
+                    <Form.Group className="mt-2">
+                        <FloatingLabel label="Nombre Sku">
+                            <Form.Control
+                                type="text"
+                                placeholder="Nombre Sku"
+                                name="skuName"
+                                value={formik.values.skuName}
+                                onChange={formik.handleChange}
+                                disabled
+                            />
+                        </FloatingLabel>
                     </Form.Group>
                     <Form.Group className="mt-2">
                         <SelectBranches

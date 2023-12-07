@@ -99,9 +99,9 @@ export const TableProducts = () => {
             } else {
                 try {
                     const { id } = productToEdit;
-                    const resp = await updateProduct(id, values);
+                    const updatedProduct = await updateProduct(id, values);
 
-                    console.log(resp);
+                    console.log(updatedProduct);
 
                     /* eslint-disable indent */
                     const updatedProducts = products.map((product) =>
@@ -116,6 +116,8 @@ export const TableProducts = () => {
                                   branchName: branchesNames.find(
                                       (branch) => branch.id === values.branchId,
                                   ).name,
+                                  // TODO update sku
+                                  sku: updatedProduct.sku,
                               }
                             : product,
                     );
@@ -142,9 +144,9 @@ export const TableProducts = () => {
         } else {
             try {
                 const { id } = productToEdit;
-                const resp = await updateProduct(id, values);
+                const updatedProduct = await updateProduct(id, values);
 
-                console.log(resp);
+                console.log(updatedProduct);
 
                 /* eslint-disable indent */
                 const updatedProducts = products.map((product) =>
@@ -159,6 +161,7 @@ export const TableProducts = () => {
                               branchName: branchesNames.find(
                                   (branch) => branch.id === values.branchId,
                               ).name,
+                              sku: updatedProduct.sku,
                           }
                         : product,
                 );
