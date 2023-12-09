@@ -33,7 +33,7 @@ export const BranchSection = () => {
         });
 
         const branchDataWithWarehousesQty = {
-            ...branchData,
+            ...branchData.data,
             warehousesQty,
         };
 
@@ -62,6 +62,7 @@ export const BranchSection = () => {
     // console.log(selectedBranch);
     return (
         <Card className="shadow h-100 animate__animated animate__fadeIn animate__fast">
+            {console.log('selectedBranch: ', selectedBranch)}
             <Card.Header>
                 <Row>
                     <Col className="d-flex align-items-center col-auto">

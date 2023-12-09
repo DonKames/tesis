@@ -74,7 +74,20 @@ export const SelectRegions = ({
         }));
 
     return (
-        <>
+        <div style={{ position: 'relative' }}>
+            <div
+                style={{
+                    color: 'rgba(107, 137, 148, 0.65)',
+                    fontSize: '14px',
+                    left: '10px',
+                    pointerEvents: 'none',
+                    position: 'absolute',
+                    top: '10px',
+                    zIndex: 1,
+                }}
+            >
+                Seleccione Región
+            </div>
             <Select
                 className={isInvalid ? 'is-invalid' : ''}
                 isInvalid={isInvalid}
@@ -89,7 +102,7 @@ export const SelectRegions = ({
             {isInvalid && (
                 <div className="invalid-feedback">{errorMessage}</div>
             )}
-        </>
+        </div>
     );
 };
 

@@ -33,6 +33,8 @@ export const TableUsers = () => {
         setPagesQty,
         setShowInactive,
         showInactive,
+        setSearchTerm,
+        searchTerm,
     } = usePagination(
         getUsers,
         getUsersQty,
@@ -184,6 +186,8 @@ export const TableUsers = () => {
                 setShowInactive={setShowInactive}
                 showInactive={showInactive}
                 title="Usuarios"
+                setSearchTerm={setSearchTerm}
+                searchTerm={searchTerm}
             />
         </>
     );

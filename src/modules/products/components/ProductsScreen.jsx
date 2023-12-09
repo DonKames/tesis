@@ -22,8 +22,6 @@ const ProductsScreen = () => {
     return (
         <Container>
             <Row className="mt-3 mb-2">
-                <Col></Col>
-                <Col></Col>
                 <Col className="text-end">
                     <Link to="add">
                         <Button>Agregar producto</Button>

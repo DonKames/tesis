@@ -4,11 +4,7 @@ import { Button } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import { useFormik } from 'formik';
 
-import {
-    createWarehouse,
-    getWarehouses,
-    getWarehousesQty,
-} from '../APIs/warehouseAPI';
+import { createWarehouse, getWarehouses } from '../APIs/warehouseAPI';
 import { WarehouseModal } from './Modals/WarehouseModal';
 import { warehouseSchema } from '../../../validations/warehouseSchema';
 import { useDispatch } from 'react-redux';
@@ -36,13 +32,13 @@ export const AddWarehouseModal = () => {
             const { data: warehousesData } = await getWarehouses();
 
             if (warehousesData) {
-                dispatch(locationsSetWarehouses(warehousesData));
+                dispatch(locationsSetWarehouses(warehousesData.data));
             }
 
-            const { data: warehousesQty } = await getWarehousesQty({});
+            // const { data: warehousesQty } = await getWarehousesQty({});
 
-            if (warehousesQty) {
-                dispatch(locationsSetWarehousesQty(warehousesQty));
+            if (warehousesData) {
+                dispatch(locationsSetWarehousesQty(warehousesData.qty));
             }
 
             toggleModal(false);

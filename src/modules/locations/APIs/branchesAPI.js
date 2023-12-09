@@ -6,12 +6,13 @@ export const getBranches = async (
     page = 1,
     limit = 20,
     showInactive = false,
-    searchTerm,
+    searchTerm = '',
 ) => {
     try {
         const response = await fetch(
             `${BASE_URL}/branches?page=${page}&limit=${limit}&showInactive=${showInactive}&searchTerm=${searchTerm}`,
         );
+
         const { status, data, message } = await handleFetchError(response);
 
         if (status === 'success') {
@@ -27,7 +28,12 @@ export const getBranches = async (
 export const getBranchById = async (branchId) => {
     try {
         const response = await fetch(`${BASE_URL}/branches/${branchId}`);
+
+        // console.log('branchById: ', response);
+
         const { status, data, message } = await handleFetchError(response);
+
+        // console.log('branchById Data: ', data);
 
         if (status === 'success') {
             return { data, message };
@@ -59,6 +65,7 @@ export const getBranchesQty = async ({ warehouseId, showInactive }) => {
 
         const response = await fetch(url);
 
+        console.log('branchesAPI', response);
         const { status, data, message } = await handleFetchError(response);
 
         if (status === 'success') {

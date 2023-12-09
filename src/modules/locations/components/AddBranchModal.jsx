@@ -7,7 +7,7 @@ import Swal from 'sweetalert2';
 
 import { BranchModal } from './Modals/BranchModal';
 import { branchSchema } from '../../../validations/branchSchema';
-import { createBranch, getBranches, getBranchesQty } from '../APIs/branchesAPI';
+import { createBranch, getBranches } from '../APIs/branchesAPI';
 import {
     locationsSetBranches,
     locationsSetBranchesQty,
@@ -22,6 +22,8 @@ export const AddBranchModal = () => {
     const handleFormSubmit = async (values) => {
         const { data, message } = await createBranch(values);
 
+        console.log('createBranch data: ', data);
+
         if (data) {
             Swal.fire({
                 icon: 'success',
@@ -34,18 +36,18 @@ export const AddBranchModal = () => {
 
             const { data: branchesData } = await getBranches();
 
-            // console.log(branchesData);
+            // console.log('branchesData', branchesData);
 
             if (branchesData) {
-                dispatch(locationsSetBranches(branchesData));
+                dispatch(locationsSetBranches(branchesData.data));
             }
 
-            const { data } = await getBranchesQty({});
+            // const { data } = await getBranchesQty({});
 
-            console.log(data);
+            // console.log(data);
 
             if (branchesData) {
-                dispatch(locationsSetBranchesQty(data));
+                dispatch(locationsSetBranchesQty(branchesData.qty));
             }
         } else {
             Swal.fire({

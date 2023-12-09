@@ -103,6 +103,7 @@ export const ModalEditUser = React.memo(function ModalEditUser({ userId }) {
                 showModal={showModal}
                 title="Editar Usuario"
                 toggleModal={toggleModal}
+                editing={true}
             />
         </>
     );

@@ -1,5 +1,6 @@
 import { useDispatch } from 'react-redux';
 import { useState, useEffect } from 'react';
+import io from 'socket.io-client';
 
 const usePagination = (
     getItems, // Función para obtener los elementos
@@ -17,25 +18,6 @@ const usePagination = (
     const [showInactive, setShowInactive] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
 
-    // useEffect(() => {
-    //     // Obtener la nueva cantidad de elementos
-
-    //     if (showInactive !== undefined) {
-    //         getItemsQty({ showInactive, searchTerm }).then(
-    //             (newItemsQtyInfo) => {
-    //                 console.log(newItemsQtyInfo);
-    //                 const { data } = newItemsQtyInfo;
-
-    //                 // console.log(data);
-
-    //                 // console.log(data, message);
-
-    //                 dispatch(setItemsQty(data));
-    //             },
-    //         );
-    //     }
-    // }, [showInactive, searchTerm]);
-
     useEffect(() => {
         // console.log(pagesQty);
 
@@ -51,9 +33,9 @@ const usePagination = (
                 dispatch(setItemsQty(data.qty));
 
                 setPagesQty(Math.ceil(itemsQty / limit));
-                console.log('setItems');
+                // console.log('setItems');
 
-                console.log(data);
+                // console.log(data);
                 if (data) {
                     dispatch(setItems(data.data));
                 }
@@ -66,6 +48,7 @@ const usePagination = (
     }, [itemsQty, limit, searchTerm]);
 
     const handlePageChange = async (pageNumber) => {
+        console.log('handlePageChange: ', showInactive);
         setSelectedPage(pageNumber);
         const { data } = await getItems(
             pageNumber,
@@ -74,7 +57,22 @@ const usePagination = (
             searchTerm,
         );
         dispatch(setItems(data.data));
+        dispatch(setItemsQty(data.qty));
     };
+
+    useEffect(() => {
+        const socket = io('http://localhost:3000'); // Asegúrate de usar la URL correcta
+
+        socket.on('dataUpdated', (updatedData) => {
+            console.log('Datos actualizados recibidos:', updatedData);
+            // Recargar los datos de la tabla
+            handlePageChange(selectedPage);
+        });
+
+        return () => {
+            socket.off('dataUpdated');
+        };
+    }, [selectedPage]);
 
     return {
         handlePageChange,

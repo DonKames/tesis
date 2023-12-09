@@ -87,15 +87,18 @@ export const ModalEditBranch = React.memo(function ModalEditBranch({
         } else {
             if (branchId) {
                 const { data } = await getBranchById(branchId);
+                const resp = await getBranchById(branchId);
+
+                console.log('getBranchById: ', resp);
 
                 if (data) {
-                    // console.log(data, message);
+                    console.log('data', data);
                     const formikState = {
-                        branchName: data.name,
-                        country: data.countryId,
-                        region: data.regionId,
-                        municipality: data.municipalityId,
-                        address: data.address,
+                        branchName: data.data.name,
+                        country: data.data.countryId,
+                        region: data.data.regionId,
+                        municipality: data.data.municipalityId,
+                        address: data.data.address,
                     };
 
                     formik.setValues(formikState);

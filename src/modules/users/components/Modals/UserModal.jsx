@@ -10,8 +10,9 @@ export const UserModal = ({
     showModal,
     toggleModal,
     primaryButtonText,
+    editing,
 }) => {
-    const { name, lastName, email, roleId, active } = formik.values;
+    const { name, lastName, email, roleId } = formik.values;
 
     return (
         <Modal show={showModal} onHide={() => toggleModal(false)}>
@@ -63,6 +64,7 @@ export const UserModal = ({
                     <Form.Group className="mb-2">
                         <FloatingLabel label="Correo electrónico">
                             <Form.Control
+                                disabled={editing}
                                 name="email"
                                 placeholder="E-Mail"
                                 type="text"
@@ -112,4 +114,5 @@ UserModal.propTypes = {
     showModal: PropTypes.bool.isRequired,
     toggleModal: PropTypes.func.isRequired,
     primaryButtonText: PropTypes.string,
+    editing: PropTypes.bool.isRequired,
 };

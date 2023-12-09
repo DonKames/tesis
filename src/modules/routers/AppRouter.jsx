@@ -73,10 +73,12 @@ export const AppRouter = () => {
                             settingsData.mainBranch,
                         );
 
+                        // console.log('AppRouter: ', data);
+
                         dispatch(
                             settingsSetMainBranch({
                                 id: settingsData.mainBranch,
-                                name: data.name,
+                                name: data.data.name,
                             }),
                         );
                     }
@@ -85,8 +87,6 @@ export const AppRouter = () => {
                         const { data } = await getWarehouseById(
                             settingsData.mainWarehouse,
                         );
-
-                        //
 
                         dispatch(
                             settingsSetMainWarehouse({

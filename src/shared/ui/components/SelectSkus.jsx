@@ -63,14 +63,6 @@ export const SelectSkus = ({
                 },
             });
         }
-
-        // setSelectedValue(selectedOption);
-        // handleInputChange({
-        //     target: {
-        //         name,
-        //         value: selectedOption.value,
-        //     },
-        // });
     };
 
     const options = skusNames.map((sku) => ({

@@ -6,7 +6,7 @@ import { userSchema } from '../../../validations/userSchema';
 import { UserModal } from './Modals/UserModal';
 import { createUser, getUsersQty } from '../apis/usersAPI';
 import Swal from 'sweetalert2';
-import { usersSetUsers, usersSetUsersQty } from '../slice/usersSlice';
+import { usersSetUsersQty } from '../slice/usersSlice';
 
 export const AddUserModal = () => {
     const dispatch = useDispatch();
@@ -84,6 +84,7 @@ export const AddUserModal = () => {
                 showModal={showModal}
                 title="Agregar Usuario"
                 toggleModal={setShowModal}
+                editing={false}
             />
         </>
     );

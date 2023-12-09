@@ -60,7 +60,7 @@ export const getUsersQty = async ({ userId, showInactive }) => {
             'Error al obtener la CANTIDAD DE USUARIOS desde la API:',
             error,
         );
-        return { data: null, message, error };
+        return { data: null, message: error };
     }
 };
 
