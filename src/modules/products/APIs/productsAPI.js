@@ -197,15 +197,20 @@ export const changeActiveStateProduct = async (productId, activeState) => {
     }
 };
 
-export const updateProduct = async (productId, productData) => {
+export const updateProduct = async (productId, productData, userId) => {
     try {
+        console.log('usuario en react: ', userId);
+        productData.userId = userId;
         const response = await fetch(`${BASE_URL}/products/${productId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(productData),
+            body: JSON.stringify(productData, userId),
         });
+
+        console.log('respuesta de actualización', response);
+
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
