@@ -49,13 +49,17 @@ export const MovementsTable = () => {
     ];
 
     const itemRenderer = (movement) => {
+        // console.log('movementData: ', movement);
         return (
             <tr key={movement.id}>
                 <td>{movement.skuName}</td>
                 <td>
-                    {capitalizeFirstLetter(movement.userFirstName) +
-                        ' ' +
-                        capitalizeFirstLetter(movement.userLastName)}
+                    {movement.userId
+                        ? 'U: ' +
+                          capitalizeFirstLetter(movement.userFirstName) +
+                          ' ' +
+                          capitalizeFirstLetter(movement.userLastName)
+                        : 'A: ' + movement.antenna}
                 </td>
                 <td>
                     {timestampDate(movement.timestamp) +

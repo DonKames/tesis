@@ -66,11 +66,14 @@ export const LoginScreen = () => {
     const { email, password } = loginFormik.values;
 
     const handleSavePassword = async () => {
+        console.log('handleSavePassword');
         if (newPassword === reNewPassword) {
             resp = await getUserByEmail(email);
 
             if (resp) {
                 const { first_name, fk_role_id } = resp;
+
+                console.log(resp);
 
                 dispatch(
                     startRegisterNameEmailPass(first_name, email, newPassword),
@@ -128,8 +131,8 @@ export const LoginScreen = () => {
 
     return (
         <>
-            <Form onSubmit={passFormik.handleSubmit}>
-                <Modal show={showModal} onHide={handleCloseModal}>
+            <Modal show={showModal} onHide={handleCloseModal}>
+                <Form onSubmit={passFormik.handleSubmit}>
                     <Modal.Header closeButton>
                         <Modal.Title>Primer Ingreso</Modal.Title>
                     </Modal.Header>
@@ -157,6 +160,9 @@ export const LoginScreen = () => {
                                     value={newPassword}
                                     onChange={passFormik.handleChange}
                                 />
+                                <Form.Control.Feedback type="invalid">
+                                    {passFormik.errors.newPassword}
+                                </Form.Control.Feedback>
                             </FloatingLabel>
                         </Form.Group>
                         <Form.Group className="mb-3">
@@ -170,7 +176,7 @@ export const LoginScreen = () => {
                                     onChange={passFormik.handleChange}
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                    {loginFormik.errors.reNewPassword}
+                                    {passFormik.errors.reNewPassword}
                                 </Form.Control.Feedback>
                             </FloatingLabel>
                         </Form.Group>
@@ -180,8 +186,8 @@ export const LoginScreen = () => {
                             Guardar Contraseña
                         </Button>
                     </Modal.Footer>
-                </Modal>
-            </Form>
+                </Form>
+            </Modal>
             <Card className="shadow position-absolute top-50 start-50 translate-middle col-10 col-md-4 col-xxl-2 animate__animated animate__fadeIn animate__faster">
                 <Card.Body>
                     <Card.Title className="text-center" tag="h5">

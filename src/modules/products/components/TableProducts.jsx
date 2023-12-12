@@ -29,6 +29,7 @@ export const TableProducts = () => {
     // Redux States
     const { products, productsQty } = useSelector((state) => state.products);
     const { warehousesNames, branchesNames } = useSelector((state) => state.ui);
+    const { userId } = useSelector((state) => state.auth);
 
     // Local States
     const [showModal, setShowModal] = useState(false);
@@ -99,7 +100,11 @@ export const TableProducts = () => {
             } else {
                 try {
                     const { id } = productToEdit;
-                    const updatedProduct = await updateProduct(id, values);
+                    const updatedProduct = await updateProduct(
+                        id,
+                        values,
+                        userId,
+                    );
 
                     console.log(updatedProduct);
 
@@ -144,7 +149,7 @@ export const TableProducts = () => {
         } else {
             try {
                 const { id } = productToEdit;
-                const updatedProduct = await updateProduct(id, values);
+                const updatedProduct = await updateProduct(id, values, userId);
 
                 console.log(updatedProduct);
 
