@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 export const productSchema = Yup.object({
     skuId: Yup.number()
         .required('El nombre de la sucursal es obligatorio')
-        .notOneOf([0], 'Debe elegir una Sucursal'),
+        .notOneOf([0], 'Debe elegir un SKU'),
     branchId: Yup.number()
         .required('La sucursal es obligatoria')
         .notOneOf([0], 'Debe elegir una Sucursal'),
