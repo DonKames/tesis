@@ -44,9 +44,9 @@ export const LowStockAlerts = () => {
     }, []);
     return (
         <>
-            <Row>
+            <Row className="  d-flex justify-content-evenly">
                 {skusWithLowInventory.map((item) => (
-                    <Col key={item.id}>
+                    <Col key={item.id} className="col-4 mb-3">
                         <Card className="mb-2 text-dark card-danger h-100">
                             <Card.Header>
                                 <Card.Title>
